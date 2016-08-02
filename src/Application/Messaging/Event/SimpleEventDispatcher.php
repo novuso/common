@@ -58,7 +58,6 @@ class SimpleEventDispatcher implements EventDispatcher
     }
 
     /**
-    /**
      * {@inheritdoc}
      */
     public function removeHandler(string $eventType, callable $handler)
