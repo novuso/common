@@ -24,7 +24,7 @@ class InMemoryCommandRouter implements CommandRouter
     /**
      * Constructs InMemoryCommandRouter
      *
-     * @param InMemoryCommandMap $commandMap
+     * @param InMemoryCommandMap $commandMap The command map
      */
     public function __construct(InMemoryCommandMap $commandMap)
     {
