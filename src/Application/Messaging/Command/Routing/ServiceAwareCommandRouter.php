@@ -6,27 +6,27 @@ use Novuso\Common\Domain\Messaging\Command\Command;
 use Novuso\Common\Domain\Messaging\Command\CommandHandler;
 
 /**
- * InMemoryCommandRouter matches commands from an in-memory map
+ * ServiceAwareCommandRouter matches commands from a service map
  *
  * @copyright Copyright (c) 2016, Novuso. <http://novuso.com>
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class InMemoryCommandRouter implements CommandRouter
+class ServiceAwareCommandRouter implements CommandRouter
 {
     /**
      * Command map
      *
-     * @var InMemoryCommandMap
+     * @var ServiceAwareCommandMap
      */
     protected $commandMap;
 
     /**
-     * Constructs InMemoryCommandRouter
+     * Constructs ServiceAwareCommandRouter
      *
-     * @param InMemoryCommandMap $commandMap The command map
+     * @param ServiceAwareCommandMap $commandMap The command map
      */
-    public function __construct(InMemoryCommandMap $commandMap)
+    public function __construct(ServiceAwareCommandMap $commandMap)
     {
         $this->commandMap = $commandMap;
     }

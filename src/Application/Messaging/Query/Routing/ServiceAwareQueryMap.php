@@ -2,6 +2,7 @@
 
 namespace Novuso\Common\Application\Messaging\Query\Routing;
 
+use Novuso\Common\Application\Service\Container;
 use Novuso\Common\Domain\Messaging\Query\Query;
 use Novuso\Common\Domain\Messaging\Query\QueryHandler;
 use Novuso\System\Exception\DomainException;
@@ -10,14 +11,21 @@ use Novuso\System\Type\Type;
 use Novuso\System\Utility\Test;
 
 /**
- * InMemoryQueryMap is a query class to handler instance map
+ * ServiceAwareQueryMap is a query class to handler service map
  *
  * @copyright Copyright (c) 2016, Novuso. <http://novuso.com>
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class InMemoryQueryMap
+class ServiceAwareQueryMap
 {
+    /**
+     * Service container
+     *
+     * @var Container
+     */
+    protected $container;
+
     /**
      * Query handlers
      *
@@ -26,14 +34,24 @@ class InMemoryQueryMap
     protected $handlers = [];
 
     /**
+     * Constructs ServiceAwareQueryMap
+     *
+     * @param Container $container The service container
+     */
+    public function __construct(Container $container)
+    {
+        $this->container = $container;
+    }
+
+    /**
      * Registers query handlers
      *
      * The query to handler map must follow this format:
      * [
-     *     SomeQuery::class => $someHandlerInstance
+     *     SomeQuery::class => 'handler_service_name'
      * ]
      *
-     * @param array $queryToHandlerMap A map of class names to handlers
+     * @param array $queryToHandlerMap A map of class names to service names
      *
      * @return void
      *
@@ -41,22 +59,22 @@ class InMemoryQueryMap
      */
     public function registerHandlers(array $queryToHandlerMap)
     {
-        foreach ($queryToHandlerMap as $queryClass => $handler) {
-            $this->registerHandler($queryClass, $handler);
+        foreach ($queryToHandlerMap as $queryClass => $serviceName) {
+            $this->registerHandler($queryClass, $serviceName);
         }
     }
 
     /**
      * Registers a query handler
      *
-     * @param string       $queryClass The full query class name
-     * @param QueryHandler $handler    The query handler
+     * @param string $queryClass  The full query class name
+     * @param string $serviceName The handler service name
      *
      * @return void
      *
      * @throws DomainException When the query class is not valid
      */
-    public function registerHandler(string $queryClass, QueryHandler $handler)
+    public function registerHandler(string $queryClass, string $serviceName)
     {
         if (!Test::implementsInterface($queryClass, Query::class)) {
             $message = sprintf('Invalid query class: %s', $queryClass);
@@ -65,7 +83,7 @@ class InMemoryQueryMap
 
         $type = Type::create($queryClass)->toString();
 
-        $this->handlers[$type] = $handler;
+        $this->handlers[$type] = $serviceName;
     }
 
     /**
@@ -79,14 +97,15 @@ class InMemoryQueryMap
      */
     public function getHandler(string $queryClass): QueryHandler
     {
-        $type = Type::create($queryClass)->toString();
-
-        if (!isset($this->handlers[$type])) {
+        if (!$this->hasHandler($queryClass)) {
             $message = sprintf('Handler not defined for query: %s', $queryClass);
             throw new LookupException($message);
         }
 
-        return $this->handlers[$type];
+        $type = Type::create($queryClass)->toString();
+        $service = $this->handlers[$type];
+
+        return $this->container->get($service);
     }
 
     /**
@@ -100,6 +119,12 @@ class InMemoryQueryMap
     {
         $type = Type::create($queryClass)->toString();
 
-        return isset($this->handlers[$type]);
+        if (!isset($this->handlers[$type])) {
+            return false;
+        }
+
+        $service = $this->handlers[$type];
+
+        return $this->container->has($service);
     }
 }

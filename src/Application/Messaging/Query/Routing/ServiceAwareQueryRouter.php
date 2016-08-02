@@ -6,27 +6,27 @@ use Novuso\Common\Domain\Messaging\Query\Query;
 use Novuso\Common\Domain\Messaging\Query\QueryHandler;
 
 /**
- * InMemoryQueryRouter matches queries from an in-memory map
+ * ServiceAwareQueryRouter matches queries from a service map
  *
  * @copyright Copyright (c) 2016, Novuso. <http://novuso.com>
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class InMemoryQueryRouter implements QueryRouter
+class ServiceAwareQueryRouter implements QueryRouter
 {
     /**
      * Query map
      *
-     * @var InMemoryQueryMap
+     * @var ServiceAwareQueryMap
      */
     protected $queryMap;
 
     /**
-     * Constructs InMemoryQueryRouter
+     * Constructs ServiceAwareQueryRouter
      *
-     * @param InMemoryQueryMap $queryMap The query map
+     * @param ServiceAwareQueryMap $queryMap The query map
      */
-    public function __construct(InMemoryQueryMap $queryMap)
+    public function __construct(ServiceAwareQueryMap $queryMap)
     {
         $this->queryMap = $queryMap;
     }

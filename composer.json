@@ -19,7 +19,11 @@
     "autoload": {
         "psr-4": {
             "Novuso\\Common\\Application\\": "src/Application",
-            "Novuso\\Common\\Domain\\": "src/Domain",
+            "Novuso\\Common\\Domain\\": "src/Domain"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
             "Novuso\\Test\\Common\\Application\\": "test/Application",
             "Novuso\\Test\\Common\\Domain\\": "test/Domain",
             "Novuso\\Test\\Common\\Resources\\": "test/Resources"
