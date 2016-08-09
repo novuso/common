@@ -6,6 +6,7 @@ use Novuso\Common\Domain\Messaging\Command\CommandMessage;
 use Novuso\Common\Domain\Messaging\MessageId;
 use Novuso\Common\Domain\Messaging\MetaData;
 use Novuso\Common\Domain\Model\DateTime\DateTime;
+use Novuso\System\Serialization\JsonSerializer;
 use Novuso\Test\Common\Resources\Domain\Messaging\Command\RegisterUserCommand;
 use Novuso\Test\System\TestCase\UnitTestCase;
 
@@ -148,9 +149,10 @@ class CommandMessageTest extends UnitTestCase
 
     public function test_that_it_is_serializable()
     {
-        $state = serialize($this->message);
+        $serializer = new JsonSerializer();
+        $state = $serializer->serialize($this->message);
         /** @var CommandMessage $message */
-        $message = unserialize($state);
+        $message = $serializer->deserialize($state);
         $this->assertTrue($message->equals($this->message));
     }
 
@@ -202,6 +204,24 @@ class CommandMessageTest extends UnitTestCase
     public function test_that_hash_value_returns_expected_value()
     {
         $this->assertSame($this->message->toString(), $this->message->hashValue());
+    }
+
+    /**
+     * @expectedException \Novuso\System\Exception\DomainException
+     */
+    public function test_that_deserialize_throws_exception_for_invalid_data()
+    {
+        CommandMessage::deserialize([]);
+    }
+
+    /**
+     * @expectedException \Novuso\System\Exception\DomainException
+     */
+    public function test_that_deserialize_throws_exception_for_invalid_type()
+    {
+        $data = $this->getMessageData();
+        $data['type'] = 'event';
+        CommandMessage::deserialize($data);
     }
 
     /**
