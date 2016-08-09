@@ -9,6 +9,7 @@ use Novuso\Common\Domain\Messaging\MetaData;
 use Novuso\Common\Domain\Model\DateTime\DateTime;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Type\Type;
+use Novuso\System\Utility\Test;
 use Novuso\System\Utility\VarPrinter;
 
 /**
@@ -75,8 +76,14 @@ class QueryMessage extends BaseMessage
         $metaData = MetaData::create($data['meta_data']);
         /** @var Type $payloadType */
         $payloadType = Type::create($data['payload_type']);
-        /** @var Query $payloadClass */
+        /** @var string $payloadClass */
         $payloadClass = $payloadType->toClassName();
+
+        assert(
+            Test::implementsInterface($payloadClass, Query::class),
+            sprintf('Unable to deserialize: %s', $payloadClass)
+        );
+
         /** @var Query $payload */
         $payload = $payloadClass::fromArray($data['payload']);
 
