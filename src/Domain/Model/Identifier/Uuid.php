@@ -415,7 +415,7 @@ class Uuid extends ValueObject implements Comparable
         $timestamp = [];
         $timestamp[] = sprintf('%04x', (($hi >> 16) & 0xfff));
         $timestamp[] = sprintf('%04x', $hi & 0xffff);
-        $timestamp[] = sprintf('%04x', $time & 0xffffffff);
+        $timestamp[] = sprintf('%08x', $time & 0xffffffff);
 
         return implode('', $timestamp);
     }
