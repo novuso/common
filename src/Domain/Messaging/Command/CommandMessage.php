@@ -52,7 +52,7 @@ class CommandMessage extends BaseMessage
     /**
      * {@inheritdoc}
      */
-    public static function deserialize(array $data)
+    public static function deserialize(array $data): CommandMessage
     {
         $keys = ['id', 'type', 'timestamp', 'meta_data', 'payload_type', 'payload'];
         foreach ($keys as $key) {
