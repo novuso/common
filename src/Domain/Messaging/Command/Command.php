@@ -23,7 +23,7 @@ interface Command extends Payload
      *
      * @throws DomainException When data is not valid
      */
-    public static function fromArray(array $data): Command;
+    public static function fromArray(array $data);
 
     /**
      * Retrieves an array representation

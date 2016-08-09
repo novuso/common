@@ -23,7 +23,7 @@ interface Event extends Payload
      *
      * @throws DomainException When data is not valid
      */
-    public static function fromArray(array $data): Event;
+    public static function fromArray(array $data);
 
     /**
      * Retrieves an array representation

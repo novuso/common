@@ -23,7 +23,7 @@ interface Query extends Payload
      *
      * @throws DomainException When data is not valid
      */
-    public static function fromArray(array $data): Query;
+    public static function fromArray(array $data);
 
     /**
      * Retrieves an array representation
