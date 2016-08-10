@@ -4,7 +4,9 @@ namespace Novuso\Test\Common\Domain\Model\DateTime;
 
 use DateTime as NativeDateTime;
 use DateTimeZone;
+use Novuso\Common\Domain\Model\DateTime\Date;
 use Novuso\Common\Domain\Model\DateTime\DateTime;
+use Novuso\Common\Domain\Model\DateTime\Time;
 use Novuso\Test\System\TestCase\UnitTestCase;
 
 /**
@@ -44,6 +46,76 @@ class DateTimeTest extends UnitTestCase
         $dateTimeString = '2015-06-20T16:30:06[America/Chicago]';
         $dateTime = DateTime::fromString($dateTimeString);
         $this->assertSame($dateTimeString, $dateTime->toString());
+    }
+
+    public function test_that_with_date_returns_expected_instance()
+    {
+        $dateTime = DateTime::now();
+        $dateTime = $dateTime->withDate(Date::create(2016, 1, 1));
+        $this->assertSame('2016-01-01', $dateTime->date()->toString());
+    }
+
+    public function test_that_with_year_returns_expected_instance()
+    {
+        $dateTime = DateTime::create(2016, 1, 1, 0, 0, 0, 'UTC');
+        $dateTime = $dateTime->withYear(2015);
+        $this->assertSame('2015-01-01T00:00:00[UTC]', $dateTime->toString());
+    }
+
+    public function test_that_with_month_returns_expected_instance()
+    {
+        $dateTime = DateTime::create(2016, 1, 1, 0, 0, 0, 'UTC');
+        $dateTime = $dateTime->withMonth(12);
+        $this->assertSame('2016-12-01T00:00:00[UTC]', $dateTime->toString());
+    }
+
+    public function test_that_with_day_returns_expected_instance()
+    {
+        $dateTime = DateTime::create(2016, 1, 1, 0, 0, 0, 'UTC');
+        $dateTime = $dateTime->withDay(31);
+        $this->assertSame('2016-01-31T00:00:00[UTC]', $dateTime->toString());
+    }
+
+    public function test_that_with_time_returns_expected_instance()
+    {
+        $dateTime = DateTime::now();
+        $dateTime = $dateTime->withTime(Time::create(12, 0, 0));
+        $this->assertSame('12:00:00', $dateTime->time()->toString());
+    }
+
+    public function test_that_with_hour_returns_expected_instance()
+    {
+        $dateTime = DateTime::create(2016, 1, 1, 0, 0, 0, 'UTC');
+        $dateTime = $dateTime->withHour(12);
+        $this->assertSame('2016-01-01T12:00:00[UTC]', $dateTime->toString());
+    }
+
+    public function test_that_with_minute_returns_expected_instance()
+    {
+        $dateTime = DateTime::create(2016, 1, 1, 0, 0, 0, 'UTC');
+        $dateTime = $dateTime->withMinute(30);
+        $this->assertSame('2016-01-01T00:30:00[UTC]', $dateTime->toString());
+    }
+
+    public function test_that_with_second_returns_expected_instance()
+    {
+        $dateTime = DateTime::create(2016, 1, 1, 0, 0, 0, 'UTC');
+        $dateTime = $dateTime->withSecond(30);
+        $this->assertSame('2016-01-01T00:00:30[UTC]', $dateTime->toString());
+    }
+
+    public function test_that_with_timezone_returns_expected_instance()
+    {
+        $dateTime = DateTime::create(2016, 1, 1, 0, 0, 0, 'UTC');
+        $dateTime = $dateTime->withTimezone('America/Chicago');
+        $this->assertSame('2016-01-01T00:00:00[America/Chicago]', $dateTime->toString());
+    }
+
+    public function test_that_to_timezone_returns_expected_instance()
+    {
+        $dateTime = DateTime::create(2016, 1, 1, 0, 0, 0, 'UTC');
+        $dateTime = $dateTime->toTimezone('America/Chicago');
+        $this->assertSame('2015-12-31T18:00:00[America/Chicago]', $dateTime->toString());
     }
 
     public function test_that_locale_format_returns_expected_value()

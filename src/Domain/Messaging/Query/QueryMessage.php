@@ -8,6 +8,8 @@ use Novuso\Common\Domain\Messaging\MessageType;
 use Novuso\Common\Domain\Messaging\MetaData;
 use Novuso\Common\Domain\Model\DateTime\DateTime;
 use Novuso\System\Exception\DomainException;
+use Novuso\System\Type\Type;
+use Novuso\System\Utility\Test;
 use Novuso\System\Utility\VarPrinter;
 
 /**
@@ -46,6 +48,54 @@ class QueryMessage extends BaseMessage
         $metaData = MetaData::create();
 
         return new static($id, $timestamp, $query, $metaData);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function deserialize(array $data): QueryMessage
+    {
+        $keys = ['id', 'type', 'timestamp', 'meta_data', 'payload_type', 'payload'];
+        foreach ($keys as $key) {
+            if (!isset($data[$key])) {
+                $message = sprintf('Invalid serialization data: %s', VarPrinter::toString($data));
+                throw new DomainException($message);
+            }
+        }
+
+        if ($data['type'] !== MessageType::QUERY) {
+            $message = sprintf('Invalid message type: %s', $data['type']);
+            throw new DomainException($message);
+        }
+
+        /** @var MessageId $id */
+        $id = MessageId::fromString($data['id']);
+        /** @var DateTime $timestamp */
+        $timestamp = DateTime::fromString($data['timestamp']);
+        /** @var MetaData $metaData */
+        $metaData = MetaData::create($data['meta_data']);
+        /** @var Type $payloadType */
+        $payloadType = Type::create($data['payload_type']);
+        /** @var string $payloadClass */
+        $payloadClass = $payloadType->toClassName();
+
+        assert(
+            Test::implementsInterface($payloadClass, Query::class),
+            sprintf('Unable to deserialize: %s', $payloadClass)
+        );
+
+        /** @var Query $payload */
+        $payload = $payloadClass::fromArray($data['payload']);
+
+        return new static($id, $timestamp, $payload, $metaData);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function serialize(): array
+    {
+        return $this->toArray();
     }
 
     /**

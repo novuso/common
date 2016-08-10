@@ -4,11 +4,12 @@ namespace Novuso\Common\Domain\Messaging;
 
 use JsonSerializable;
 use Novuso\Common\Domain\Model\DateTime\DateTime;
+use Novuso\System\Exception\DomainException;
+use Novuso\System\Serialization\Serializable;
 use Novuso\System\Type\Arrayable;
 use Novuso\System\Type\Comparable;
 use Novuso\System\Type\Equatable;
 use Novuso\System\Type\Type;
-use Serializable;
 
 /**
  * Message is the interface for a domain message
@@ -19,6 +20,24 @@ use Serializable;
  */
 interface Message extends Arrayable, Comparable, Equatable, JsonSerializable, Serializable
 {
+    /**
+     * Creates instance from a serialized representation
+     *
+     * @param array $data The serialized representation
+     *
+     * @return Serializable
+     *
+     * @throws DomainException When the data is not valid
+     */
+    public static function deserialize(array $data);
+
+    /**
+     * Retrieves a serialized representation
+     *
+     * @return array
+     */
+    public function serialize(): array;
+
     /**
      * Retrieves the ID
      *
@@ -106,22 +125,6 @@ interface Message extends Arrayable, Comparable, Equatable, JsonSerializable, Se
      * @return mixed
      */
     public function jsonSerialize();
-
-    /**
-     * Retrieves a serialized representation
-     *
-     * @return string
-     */
-    public function serialize(): string;
-
-    /**
-     * Handles construction from a serialized representation
-     *
-     * @param string $serialized The serialized representation
-     *
-     * @return void
-     */
-    public function unserialize($serialized);
 
     /**
      * Compares to another object

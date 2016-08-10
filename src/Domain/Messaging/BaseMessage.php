@@ -68,7 +68,7 @@ abstract class BaseMessage implements Message
      * @param Payload     $payload   The payload
      * @param MetaData    $metaData  The meta data
      */
-    public function __construct(
+    protected function __construct(
         MessageId $id,
         MessageType $type,
         DateTime $timestamp,
@@ -181,29 +181,6 @@ abstract class BaseMessage implements Message
     public function jsonSerialize()
     {
         return $this->toArray();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function serialize(): string
-    {
-        return serialize($this->toArray());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function unserialize($serialized)
-    {
-        $data = unserialize($serialized);
-        $this->id = MessageId::fromString($data['id']);
-        $this->type = MessageType::fromValue($data['type']);
-        $this->timestamp = DateTime::fromString($data['timestamp']);
-        $this->metaData = MetaData::create($data['meta_data']);
-        $this->payloadType = Type::create($data['payload_type']);
-        $payloadClass = $this->payloadType->toClassName();
-        $this->payload = $payloadClass::fromArray($data['payload']);
     }
 
     /**
