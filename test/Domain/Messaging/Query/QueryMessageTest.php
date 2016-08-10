@@ -1,0 +1,193 @@
+<?php
+
+namespace Novuso\Test\Common\Domain\Messaging\Query;
+
+use Novuso\Common\Domain\Messaging\Event\EventMessage;
+use Novuso\Common\Domain\Messaging\MessageId;
+use Novuso\Common\Domain\Messaging\MetaData;
+use Novuso\Common\Domain\Messaging\Query\QueryMessage;
+use Novuso\Common\Domain\Model\DateTime\DateTime;
+use Novuso\System\Serialization\JsonSerializer;
+use Novuso\Test\Common\Resources\Domain\Messaging\Query\UserByEmailQuery;
+use Novuso\Test\System\TestCase\UnitTestCase;
+
+/**
+ * @covers Novuso\Common\Domain\Messaging\Query\QueryMessage
+ */
+class QueryMessageTest extends UnitTestCase
+{
+    /**
+     * @var EventMessage
+     */
+    protected $message;
+
+    protected function setUp()
+    {
+        $this->message = new QueryMessage(
+            MessageId::fromString('0150deae-68df-40ca-aea1-6b4b06aadfc3'),
+            DateTime::fromString('2015-11-06T15:23:03[America/Chicago]'),
+            UserByEmailQuery::fromArray(['email' => 'jsmith@example.com']),
+            MetaData::create(['foo' => 'bar'])
+        );
+    }
+
+    public function test_that_create_returns_message_from_query()
+    {
+        $data = $this->getMessageData();
+        $query = UserByEmailQuery::fromArray($data['payload']);
+        $message = QueryMessage::create($query);
+        /** @var UserByEmailQuery $payload */
+        $payload = $message->payload();
+        $this->assertSame('jsmith@example.com', $payload->email());
+    }
+
+    public function test_that_id_returns_expected_instance()
+    {
+        $this->assertSame('0150deae-68df-40ca-aea1-6b4b06aadfc3', (string) $this->message->id());
+    }
+
+    public function test_that_type_returns_expected_instance()
+    {
+        $this->assertSame('query', $this->message->type()->value());
+    }
+
+    public function test_that_timestamp_returns_expected_instance()
+    {
+        $this->assertSame('2015-11-06T15:23:03[America/Chicago]', (string) $this->message->timestamp());
+    }
+
+    public function test_that_payload_returns_expected_instance()
+    {
+        $data = ['email' => 'jsmith@example.com'];
+        $this->assertSame($data, $this->message->payload()->toArray());
+    }
+
+    public function test_that_payload_type_returns_expected_instance()
+    {
+        $expected = 'Novuso.Test.Common.Resources.Domain.Messaging.Query.UserByEmailQuery';
+        $this->assertSame($expected, (string) $this->message->payloadType());
+    }
+
+    public function test_that_meta_data_returns_expected_instance()
+    {
+        $this->assertSame('{"foo":"bar"}', (string) $this->message->metaData());
+    }
+
+    public function test_that_with_meta_data_replaces_meta_data()
+    {
+        $metaData = MetaData::create(['ip_address' => '127.0.0.1']);
+        $this->message = $this->message->withMetaData($metaData);
+        $this->assertSame('{"ip_address":"127.0.0.1"}', (string) $this->message->metaData());
+    }
+
+    public function test_that_merge_meta_data_merges_meta_data()
+    {
+        $metaData = MetaData::create(['ip_address' => '127.0.0.1']);
+        $this->message = $this->message->mergeMetaData($metaData);
+        $this->assertSame('{"foo":"bar","ip_address":"127.0.0.1"}', (string) $this->message->metaData());
+    }
+
+    public function test_that_to_string_returns_expected_value()
+    {
+        $expected = '{id:0150deae-68df-40ca-aea1-6b4b06aadfc3,'
+            .'type:query,'
+            .'timestamp:2015-11-06T15:23:03[America/Chicago],'
+            .'meta_data:{foo:bar},'
+            .'payload_type:Novuso.Test.Common.Resources.Domain.Messaging.Query.UserByEmailQuery,'
+            .'payload:{email:jsmith@example.com}}';
+        $this->assertSame($expected, $this->message->toString());
+    }
+
+    public function test_that_string_cast_returns_expected_value()
+    {
+        $expected = '{id:0150deae-68df-40ca-aea1-6b4b06aadfc3,'
+            .'type:query,'
+            .'timestamp:2015-11-06T15:23:03[America/Chicago],'
+            .'meta_data:{foo:bar},'
+            .'payload_type:Novuso.Test.Common.Resources.Domain.Messaging.Query.UserByEmailQuery,'
+            .'payload:{email:jsmith@example.com}}';
+        $this->assertSame($expected, (string) $this->message);
+    }
+
+    public function test_that_it_is_json_encodable()
+    {
+        $expected = '{"id":"0150deae-68df-40ca-aea1-6b4b06aadfc3",'
+            .'"type":"query",'
+            .'"timestamp":"2015-11-06T15:23:03[America/Chicago]",'
+            .'"meta_data":{"foo":"bar"},'
+            .'"payload_type":"Novuso.Test.Common.Resources.Domain.Messaging.Query.UserByEmailQuery",'
+            .'"payload":{"email":"jsmith@example.com"}}';
+        $this->assertSame($expected, json_encode($this->message, JSON_UNESCAPED_SLASHES));
+    }
+
+    public function test_that_it_is_serializable()
+    {
+        $serializer = new JsonSerializer();
+        $state = $serializer->serialize($this->message);
+        /** @var QueryMessage $message */
+        $message = $serializer->deserialize($state);
+        $this->assertTrue($message->equals($this->message));
+    }
+
+    public function test_that_compare_to_returns_zero_for_same_instance()
+    {
+        $this->assertSame(0, $this->message->compareTo($this->message));
+    }
+
+    public function test_that_compare_to_returns_zero_for_same_value()
+    {
+        $message = $this->message->mergeMetaData(MetaData::create());
+        $this->assertSame(0, $this->message->compareTo($message));
+    }
+
+    public function test_that_compare_to_returns_one_for_greater_instance()
+    {
+        $message = $this->message->withMetaData(MetaData::create(['ip_address' => '127.0.0.1']));
+        $this->assertSame(1, $message->compareTo($this->message));
+    }
+
+    public function test_that_compare_to_returns_neg_one_for_lesser_instance()
+    {
+        $message = $this->message->withMetaData(MetaData::create(['ip_address' => '127.0.0.1']));
+        $this->assertSame(-1, $this->message->compareTo($message));
+    }
+
+    public function test_that_equals_returns_true_for_same_instance()
+    {
+        $this->assertTrue($this->message->equals($this->message));
+    }
+
+    public function test_that_equals_returns_true_for_same_value()
+    {
+        $message = $this->message->mergeMetaData(MetaData::create());
+        $this->assertTrue($this->message->equals($message));
+    }
+
+    public function test_that_equals_returns_false_for_invalid_argument()
+    {
+        $this->assertFalse($this->message->equals(null));
+    }
+
+    public function test_that_equals_returns_false_for_different_value()
+    {
+        $message = $this->message->mergeMetaData(MetaData::create(['ip_address' => '127.0.0.1']));
+        $this->assertFalse($this->message->equals($message));
+    }
+
+    public function test_that_hash_value_returns_expected_value()
+    {
+        $this->assertSame($this->message->toString(), $this->message->hashValue());
+    }
+
+    protected function getMessageData()
+    {
+        return [
+            'id'           => '0150deae-68df-40ca-aea1-6b4b06aadfc3',
+            'type'         => 'query',
+            'timestamp'    => '2015-11-06T15:23:03[America/Chicago]',
+            'meta_data'    => ['foo' => 'bar'],
+            'payload_type' => 'Novuso.Test.Common.Resources.Domain.Messaging.Query.UserByEmailQuery',
+            'payload'      => ['email' => 'jsmith@example.com']
+        ];
+    }
+}
