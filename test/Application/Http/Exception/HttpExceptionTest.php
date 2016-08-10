@@ -4,6 +4,8 @@ namespace Novuso\Test\Common\Application\Http\Exception;
 
 use Novuso\Common\Application\Http\Exception\HttpException;
 use Novuso\Test\System\TestCase\UnitTestCase;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * @covers Novuso\Common\Application\Http\Exception\HttpException
@@ -17,7 +19,7 @@ class HttpExceptionTest extends UnitTestCase
         $message .= "[status code]:418 ";
         $message .= "[reason phrase]:I'm a teapot";
 
-        $request = $this->mock('Psr\\Http\\Message\\RequestInterface');
+        $request = $this->mock(RequestInterface::class);
         $request
             ->shouldReceive('getRequestTarget')
             ->andReturn('https://www.google.com');
@@ -25,7 +27,7 @@ class HttpExceptionTest extends UnitTestCase
             ->shouldReceive('getMethod')
             ->andReturn('GET');
 
-        $response = $this->mock('Psr\\Http\\Message\\ResponseInterface');
+        $response = $this->mock(ResponseInterface::class);
         $response
             ->shouldReceive('getStatusCode')
             ->andReturn(418);
@@ -39,7 +41,7 @@ class HttpExceptionTest extends UnitTestCase
 
     public function test_that_get_response_returns_expected_instance()
     {
-        $request = $this->mock('Psr\\Http\\Message\\RequestInterface');
+        $request = $this->mock(RequestInterface::class);
         $request
             ->shouldReceive('getRequestTarget')
             ->andReturn('https://www.google.com');
@@ -47,7 +49,7 @@ class HttpExceptionTest extends UnitTestCase
             ->shouldReceive('getMethod')
             ->andReturn('GET');
 
-        $response = $this->mock('Psr\\Http\\Message\\ResponseInterface');
+        $response = $this->mock(ResponseInterface::class);
         $response
             ->shouldReceive('getStatusCode')
             ->andReturn(418);
