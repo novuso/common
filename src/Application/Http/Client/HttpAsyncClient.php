@@ -17,8 +17,9 @@ interface HttpAsyncClient
      * Sends a request asynchronously
      *
      * @param RequestInterface $request The request
+     * @param array            $options Request options
      *
      * @return Promise
      */
-    public function sendAsync(RequestInterface $request): Promise;
+    public function sendAsync(RequestInterface $request, array $options = []): Promise;
 }

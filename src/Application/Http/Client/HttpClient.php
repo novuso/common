@@ -19,10 +19,11 @@ interface HttpClient
      * Sends a request
      *
      * @param RequestInterface $request The request
+     * @param array            $options Request options
      *
      * @return ResponseInterface
      *
      * @throws Exception When an error occurs
      */
-    public function send(RequestInterface $request): ResponseInterface;
+    public function send(RequestInterface $request, array $options = []): ResponseInterface;
 }
