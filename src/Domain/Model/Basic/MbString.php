@@ -557,10 +557,12 @@ class MbString extends ValueObject implements StringLiteral
             throw new DomainException('Delimiter cannot be empty');
         }
 
+        $pattern = sprintf('#%s#u', preg_quote($delimiter, '#'));
+
         if ($limit === null) {
-            $parts = explode($delimiter, $this->value);
+            $parts = preg_split($pattern, $this->value);
         } else {
-            $parts = explode($delimiter, $this->value, $limit);
+            $parts = preg_split($pattern, $this->value, $limit);
         }
 
         $list = ArrayList::of(static::class);
