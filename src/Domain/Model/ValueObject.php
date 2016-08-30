@@ -3,7 +3,7 @@
 namespace Novuso\Common\Domain\Model;
 
 use Novuso\Common\Domain\Model\Api\Value;
-use Novuso\System\Utility\Test;
+use Novuso\System\Utility\Validate;
 
 /**
  * ValueObject is the base class for domain value objects
@@ -56,7 +56,7 @@ abstract class ValueObject implements Value
             return true;
         }
 
-        if (!Test::areSameType($this, $object)) {
+        if (!Validate::areSameType($this, $object)) {
             return false;
         }
 

@@ -4,7 +4,7 @@ namespace Novuso\Common\Domain\Model;
 
 use Novuso\System\Exception\DomainException;
 use Novuso\Common\Domain\Model\Api\Identifier;
-use Novuso\System\Utility\Test;
+use Novuso\System\Utility\Validate;
 
 /**
  * StringId is the base class for string identifiers
@@ -65,7 +65,7 @@ abstract class StringId extends ValueObject implements Identifier
         }
 
         assert(
-            Test::areSameType($this, $object),
+            Validate::areSameType($this, $object),
             sprintf('Comparison requires instance of %s', static::class)
         );
 

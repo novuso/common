@@ -5,7 +5,7 @@ namespace Novuso\Common\Domain\Model\Identifier;
 use Novuso\Common\Domain\Model\ValueObject;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Type\Comparable;
-use Novuso\System\Utility\Test;
+use Novuso\System\Utility\Validate;
 
 /**
  * Uuid represents a universally unique identifier
@@ -687,7 +687,7 @@ class Uuid extends ValueObject implements Comparable
         }
 
         assert(
-            Test::areSameType($this, $object),
+            Validate::areSameType($this, $object),
             sprintf('Comparison requires instance of %s', static::class)
         );
 
@@ -719,7 +719,7 @@ class Uuid extends ValueObject implements Comparable
             return true;
         }
 
-        if (!Test::areSameType($this, $object)) {
+        if (!Validate::areSameType($this, $object)) {
             return false;
         }
 

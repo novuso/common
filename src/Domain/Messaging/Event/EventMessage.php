@@ -9,7 +9,7 @@ use Novuso\Common\Domain\Messaging\MetaData;
 use Novuso\Common\Domain\Model\DateTime\DateTime;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Type\Type;
-use Novuso\System\Utility\Test;
+use Novuso\System\Utility\Validate;
 use Novuso\System\Utility\VarPrinter;
 
 /**
@@ -80,7 +80,7 @@ class EventMessage extends BaseMessage
         $payloadClass = $payloadType->toClassName();
 
         assert(
-            Test::implementsInterface($payloadClass, Event::class),
+            Validate::implementsInterface($payloadClass, Event::class),
             sprintf('Unable to deserialize: %s', $payloadClass)
         );
 

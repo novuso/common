@@ -10,7 +10,7 @@ use JsonSerializable;
 use Novuso\System\Collection\ArrayCollection;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Type\Arrayable;
-use Novuso\System\Utility\Test;
+use Novuso\System\Utility\Validate;
 use Novuso\System\Utility\VarPrinter;
 use Traversable;
 
@@ -156,7 +156,7 @@ class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggregate, 
     public function offsetSet($key, $value)
     {
         assert(
-            Test::isString($key),
+            Validate::isString($key),
             sprintf('Invalid metadata key: (%s) %s', gettype($key), VarPrinter::toString($key))
         );
 
@@ -173,7 +173,7 @@ class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggregate, 
     public function offsetGet($key)
     {
         assert(
-            Test::isString($key),
+            Validate::isString($key),
             sprintf('Invalid metadata key: (%s) %s', gettype($key), VarPrinter::toString($key))
         );
 
@@ -190,7 +190,7 @@ class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggregate, 
     public function offsetExists($key): bool
     {
         assert(
-            Test::isString($key),
+            Validate::isString($key),
             sprintf('Invalid metadata key: (%s) %s', gettype($key), VarPrinter::toString($key))
         );
 
@@ -207,7 +207,7 @@ class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggregate, 
     public function offsetUnset($key)
     {
         assert(
-            Test::isString($key),
+            Validate::isString($key),
             sprintf('Invalid metadata key: (%s) %s', gettype($key), VarPrinter::toString($key))
         );
 

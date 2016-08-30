@@ -6,7 +6,7 @@ use Novuso\Common\Application\Service\Container;
 use Novuso\Common\Domain\Messaging\Event\Event;
 use Novuso\Common\Domain\Messaging\Event\EventSubscriber;
 use Novuso\System\Utility\ClassName;
-use Novuso\System\Utility\Test;
+use Novuso\System\Utility\Validate;
 
 /**
  * ServiceAwareEventDispatcher dispatches events to subscriber services
@@ -62,7 +62,7 @@ class ServiceAwareEventDispatcher extends SimpleEventDispatcher
     public function registerService(string $className, string $serviceId)
     {
         assert(
-            Test::implementsInterface($className, EventSubscriber::class),
+            Validate::implementsInterface($className, EventSubscriber::class),
             sprintf('Invalid subscriber class: %s', $className)
         );
         /** @var EventSubscriber $className The subscriber class name */

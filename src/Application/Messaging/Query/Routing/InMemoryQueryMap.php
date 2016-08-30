@@ -7,7 +7,7 @@ use Novuso\Common\Domain\Messaging\Query\QueryHandler;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Exception\LookupException;
 use Novuso\System\Type\Type;
-use Novuso\System\Utility\Test;
+use Novuso\System\Utility\Validate;
 
 /**
  * InMemoryQueryMap is a query class to handler instance map
@@ -58,7 +58,7 @@ class InMemoryQueryMap
      */
     public function registerHandler(string $queryClass, QueryHandler $handler)
     {
-        if (!Test::implementsInterface($queryClass, Query::class)) {
+        if (!Validate::implementsInterface($queryClass, Query::class)) {
             $message = sprintf('Invalid query class: %s', $queryClass);
             throw new DomainException($message);
         }

@@ -9,7 +9,7 @@ use Novuso\System\Collection\ArrayList;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Exception\ImmutableException;
 use Novuso\System\Exception\IndexException;
-use Novuso\System\Utility\Test;
+use Novuso\System\Utility\Validate;
 use Novuso\System\Utility\VarPrinter;
 use Traversable;
 
@@ -141,7 +141,7 @@ class StdString extends ValueObject implements StringLiteral
     public function offsetGet($index): string
     {
         assert(
-            Test::isInt($index),
+            Validate::isInt($index),
             sprintf('Invalid character index: %s', VarPrinter::toString($index))
         );
 
@@ -154,7 +154,7 @@ class StdString extends ValueObject implements StringLiteral
     public function offsetExists($index): bool
     {
         assert(
-            Test::isInt($index),
+            Validate::isInt($index),
             sprintf('Invalid character index: %s', VarPrinter::toString($index))
         );
 
@@ -832,7 +832,7 @@ class StdString extends ValueObject implements StringLiteral
         }
 
         assert(
-            Test::areSameType($this, $object),
+            Validate::areSameType($this, $object),
             sprintf('Comparison requires instance of %s', static::class)
         );
 
