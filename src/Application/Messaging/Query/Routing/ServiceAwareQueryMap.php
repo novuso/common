@@ -8,7 +8,7 @@ use Novuso\Common\Domain\Messaging\Query\QueryHandler;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Exception\LookupException;
 use Novuso\System\Type\Type;
-use Novuso\System\Utility\Test;
+use Novuso\System\Utility\Validate;
 
 /**
  * ServiceAwareQueryMap is a query class to handler service map
@@ -76,7 +76,7 @@ class ServiceAwareQueryMap
      */
     public function registerHandler(string $queryClass, string $serviceName)
     {
-        if (!Test::implementsInterface($queryClass, Query::class)) {
+        if (!Validate::implementsInterface($queryClass, Query::class)) {
             $message = sprintf('Invalid query class: %s', $queryClass);
             throw new DomainException($message);
         }

@@ -7,7 +7,7 @@ use Novuso\Common\Domain\Messaging\Command\CommandHandler;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Exception\LookupException;
 use Novuso\System\Type\Type;
-use Novuso\System\Utility\Test;
+use Novuso\System\Utility\Validate;
 
 /**
  * InMemoryCommandMap is a command class to handler instance map
@@ -58,7 +58,7 @@ class InMemoryCommandMap
      */
     public function registerHandler(string $commandClass, CommandHandler $handler)
     {
-        if (!Test::implementsInterface($commandClass, Command::class)) {
+        if (!Validate::implementsInterface($commandClass, Command::class)) {
             $message = sprintf('Invalid command class: %s', $commandClass);
             throw new DomainException($message);
         }

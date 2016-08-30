@@ -5,7 +5,7 @@ namespace Novuso\Common\Domain\Messaging;
 use Novuso\Common\Domain\Model\DateTime\DateTime;
 use Novuso\System\Collection\ArrayCollection as Collection;
 use Novuso\System\Type\Type;
-use Novuso\System\Utility\Test;
+use Novuso\System\Utility\Validate;
 use Novuso\System\Utility\VarPrinter;
 
 /**
@@ -193,7 +193,7 @@ abstract class BaseMessage implements Message
         }
 
         assert(
-            Test::areSameType($this, $object),
+            Validate::areSameType($this, $object),
             sprintf('Comparison requires instance of %s', static::class)
         );
 
@@ -214,7 +214,7 @@ abstract class BaseMessage implements Message
             return true;
         }
 
-        if (!Test::areSameType($this, $object)) {
+        if (!Validate::areSameType($this, $object)) {
             return false;
         }
 

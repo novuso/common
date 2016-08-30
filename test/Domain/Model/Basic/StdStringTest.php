@@ -1029,6 +1029,15 @@ class StdStringTest extends UnitTestCase
     /**
      * @expectedException \Novuso\System\Exception\DomainException
      */
+    public function test_that_split_throws_exception_for_invalid_delimiter()
+    {
+        $string = StdString::create('hello');
+        $string->split('');
+    }
+
+    /**
+     * @expectedException \Novuso\System\Exception\DomainException
+     */
     public function test_that_slice_throws_exception_for_invalid_stop()
     {
         $string = StdString::create('hello');

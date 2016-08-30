@@ -8,7 +8,7 @@ use DateTimeZone;
 use Novuso\Common\Domain\Model\ValueObject;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Type\Comparable;
-use Novuso\System\Utility\Test;
+use Novuso\System\Utility\Validate;
 
 /**
  * Time represents a time of day
@@ -125,7 +125,7 @@ class Time extends ValueObject implements Comparable
     public static function now(string $timezone = null): Time
     {
         $timezone = $timezone ?: date_default_timezone_get();
-        assert(Test::isTimezone($timezone), sprintf('Invalid timezone: %s', $timezone));
+        assert(Validate::isTimezone($timezone), sprintf('Invalid timezone: %s', $timezone));
 
         $dateTime = new DateTimeImmutable('now', new DateTimeZone($timezone));
         $hour = (int) $dateTime->format('G');
@@ -162,7 +162,7 @@ class Time extends ValueObject implements Comparable
     public static function fromTimestamp(int $timestamp, string $timezone = null): Time
     {
         $timezone = $timezone ?: date_default_timezone_get();
-        assert(Test::isTimezone($timezone), sprintf('Invalid timezone: %s', $timezone));
+        assert(Validate::isTimezone($timezone), sprintf('Invalid timezone: %s', $timezone));
 
         $time = sprintf('%d', $timestamp);
         $dateTime = DateTimeImmutable::createFromFormat('U', $time, new DateTimeZone('UTC'));
@@ -247,7 +247,7 @@ class Time extends ValueObject implements Comparable
         }
 
         assert(
-            Test::areSameType($this, $object),
+            Validate::areSameType($this, $object),
             sprintf('Comparison requires instance of %s', static::class)
         );
 

@@ -7,7 +7,7 @@ use Novuso\System\Exception\DomainException;
 use Novuso\System\Exception\RangeException;
 use Novuso\System\Exception\TypeException;
 use Novuso\System\Type\Comparable;
-use Novuso\System\Utility\Test;
+use Novuso\System\Utility\Validate;
 use Novuso\System\Utility\VarPrinter;
 
 /**
@@ -361,7 +361,7 @@ class Money extends ValueObject implements Comparable
         }
 
         assert(
-            Test::areSameType($this, $object),
+            Validate::areSameType($this, $object),
             sprintf('Comparison requires instance of %s', static::class)
         );
 

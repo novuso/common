@@ -4,7 +4,7 @@ namespace Novuso\Common\Domain\Model;
 
 use Novuso\System\Exception\DomainException;
 use Novuso\Common\Domain\Model\Api\Identifier;
-use Novuso\System\Utility\Test;
+use Novuso\System\Utility\Validate;
 
 /**
  * IntegerId is the base class for integer identifiers
@@ -75,7 +75,7 @@ abstract class IntegerId extends ValueObject implements Identifier
         }
 
         assert(
-            Test::areSameType($this, $object),
+            Validate::areSameType($this, $object),
             sprintf('Comparison requires instance of %s', static::class)
         );
 
