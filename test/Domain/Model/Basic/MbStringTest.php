@@ -1028,6 +1028,15 @@ class MbStringTest extends UnitTestCase
     /**
      * @expectedException \Novuso\System\Exception\DomainException
      */
+    public function test_that_split_throws_exception_for_invalid_delimiter()
+    {
+        $string = MbString::create('hello');
+        $string->split('');
+    }
+
+    /**
+     * @expectedException \Novuso\System\Exception\DomainException
+     */
     public function test_that_slice_throws_exception_for_invalid_stop()
     {
         $string = MbString::create('hello');

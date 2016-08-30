@@ -335,14 +335,16 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
     public function substr(int $start, int $strlen = null): StringLiteral;
 
     /**
-     * Creates a list of strings split by a delimiter pattern
+     * Creates a list of strings split by a delimiter
      *
-     * @param string   $delimiter The delimiter pattern
+     * @param string   $delimiter The delimiter
      * @param int|null $limit     The limit or null for no limit
      *
      * @return IndexedList
+     *
+     * @throws DomainException When the delimiter is empty
      */
-    public function split(string $delimiter = '\s', int $limit = null): IndexedList;
+    public function split(string $delimiter = ' ', int $limit = null): IndexedList;
 
     /**
      * Creates a list of string chunks

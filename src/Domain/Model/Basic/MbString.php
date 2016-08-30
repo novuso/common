@@ -551,15 +551,16 @@ class MbString extends ValueObject implements StringLiteral
     /**
      * {@inheritdoc}
      */
-    public function split(string $delimiter = '\s', int $limit = null): IndexedList
+    public function split(string $delimiter = ' ', int $limit = null): IndexedList
     {
-        $delimiter = str_replace('#', '\#', $delimiter);
-        $pattern = sprintf('#%s#u', $delimiter);
+        if (empty($delimiter)) {
+            throw new DomainException('Delimiter cannot be empty');
+        }
 
         if ($limit === null) {
-            $parts = preg_split($pattern, $this->value);
+            $parts = explode($delimiter, $this->value);
         } else {
-            $parts = preg_split($pattern, $this->value, $limit);
+            $parts = explode($delimiter, $this->value, $limit);
         }
 
         $list = ArrayList::of(static::class);
