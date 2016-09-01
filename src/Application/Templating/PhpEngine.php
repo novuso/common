@@ -16,6 +16,13 @@ use Novuso\Common\Application\Templating\Exception\TemplatingException;
 class PhpEngine implements TemplateEngine
 {
     /**
+     * Content block
+     *
+     * @var ContentBlock
+     */
+    protected $block;
+
+    /**
      * Template paths
      *
      * @var string[]
@@ -79,6 +86,7 @@ class PhpEngine implements TemplateEngine
      */
     public function __construct(array $paths, array $helpers = [])
     {
+        $this->block = new ContentBlock();
         $this->paths = $paths;
         foreach ($helpers as $helper) {
             $this->addHelper($helper);
@@ -140,13 +148,8 @@ class PhpEngine implements TemplateEngine
 
         $content = $this->evaluate($file, $data);
 
-        if ($this->has('block') && $this->parents[$key]) {
-            /** @var BlockHelper $blockHelper */
-            $blockHelper = $this->get('block');
-            $this->stack[] = $blockHelper->get('_content');
-            $blockHelper->set('_content', $content);
+        if ($this->parents[$key]) {
             $content = $this->render($this->parents[$key], $data);
-            $blockHelper->set('_content', array_pop($this->stack));
         }
 
         return $content;

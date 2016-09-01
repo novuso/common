@@ -5,21 +5,14 @@ namespace Novuso\Common\Application\Templating;
 use Novuso\Common\Application\Templating\Exception\TemplatingException;
 
 /**
- * BlockHelper provides template inheritance and content blocks
+ * ContentBlock provides template inheritance and content blocks
  *
  * @copyright Copyright (c) 2016, Novuso. <http://novuso.com>
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class BlockHelper implements TemplateHelper
+class ContentBlock
 {
-    /**
-     * Helper name
-     *
-     * @var string
-     */
-    const NAME = 'block';
-
     /**
      * Blocks
      *
@@ -138,15 +131,5 @@ class BlockHelper implements TemplateHelper
         echo $this->blocks[$name];
 
         return true;
-    }
-
-    /**
-     * Retrieves the name
-     *
-     * @return string
-     */
-    public function getName(): string
-    {
-        return static::NAME;
     }
 }
