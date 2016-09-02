@@ -16,13 +16,6 @@ use Novuso\Common\Application\Templating\Exception\TemplatingException;
 class PhpEngine implements TemplateEngine
 {
     /**
-     * Content block
-     *
-     * @var ContentBlock
-     */
-    protected $block;
-
-    /**
      * Template paths
      *
      * @var string[]
@@ -58,6 +51,20 @@ class PhpEngine implements TemplateEngine
     protected $stack = [];
 
     /**
+     * Blocks
+     *
+     * @var array
+     */
+    protected $blocks = [];
+
+    /**
+     * Open blocks
+     *
+     * @var array
+     */
+    protected $openBlocks = [];
+
+    /**
      * Current key
      *
      * @var string
@@ -86,7 +93,6 @@ class PhpEngine implements TemplateEngine
      */
     public function __construct(array $paths, array $helpers = [])
     {
-        $this->block = new ContentBlock();
         $this->paths = $paths;
         foreach ($helpers as $helper) {
             $this->addHelper($helper);
@@ -131,7 +137,7 @@ class PhpEngine implements TemplateEngine
      *
      * @return void
      */
-    public function extend(string $template)
+    public function extends(string $template)
     {
         $this->parents[$this->current] = $template;
     }
@@ -153,6 +159,95 @@ class PhpEngine implements TemplateEngine
         }
 
         return $content;
+    }
+
+    /**
+     * Starts a block
+     *
+     * @param string $name The block name
+     *
+     * @return void
+     *
+     * @throws TemplatingException When the block is already started
+     */
+    public function startBlock(string $name)
+    {
+        if (in_array($name, $this->openBlocks)) {
+            $message = sprintf('Block "%s" is already started', $name);
+            throw new TemplatingException($message);
+        }
+
+        $this->openBlocks[] = $name;
+        if (!isset($this->blocks[$name])) {
+            $this->blocks[$name] = '';
+        }
+
+        ob_start();
+        ob_implicit_flush(0);
+    }
+
+    /**
+     * Ends a block
+     *
+     * @throws TemplatingException When there is no block started
+     */
+    public function endBlock()
+    {
+        if (!$this->openBlocks) {
+            throw new TemplatingException('No block started');
+        }
+
+        $name = array_pop($this->openBlocks);
+
+        $content = ob_get_clean();
+
+        if (empty($this->blocks[$name])) {
+            $this->blocks[$name] = $content;
+        }
+
+        $this->outputContent($name);
+    }
+
+    /**
+     * Checks if a block exists
+     *
+     * @param string $name The block name
+     *
+     * @return bool
+     */
+    public function hasBlock(string $name): bool
+    {
+        return isset($this->blocks[$name]);
+    }
+
+    /**
+     * Sets block content
+     *
+     * @param string $name    The block name
+     * @param string $content The block content
+     *
+     * @return void
+     */
+    public function setContent(string $name, string $content)
+    {
+        $this->blocks[$name] = $content;
+    }
+
+    /**
+     * Retrieves block content
+     *
+     * @param string      $name    The block name
+     * @param string|null $default The default content
+     *
+     * @return string|null
+     */
+    public function getContent(string $name, string $default = null)
+    {
+        if (!isset($this->blocks[$name])) {
+            return $default;
+        }
+
+        return $this->blocks[$name];
     }
 
     /**
@@ -221,6 +316,31 @@ class PhpEngine implements TemplateEngine
         $this->evalFile = null;
 
         return ob_get_clean();
+    }
+
+    /**
+     * Outputs a block
+     *
+     * @param string      $name    The block name
+     * @param string|null $default The default content
+     *
+     * @return bool
+     */
+    public function outputContent(string $name, string $default = null): bool
+    {
+        if (!isset($this->blocks[$name])) {
+            if ($default !== null) {
+                echo $default;
+
+                return true;
+            }
+
+            return false;
+        }
+
+        echo $this->blocks[$name];
+
+        return true;
     }
 
     /**
