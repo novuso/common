@@ -52,7 +52,8 @@ class PhpEngineTest extends UnitTestCase
 </body>
 </html>
 HTML;
-        $html = $this->engine->render('project:default:index.html.php', ['content' => 'Sample content']);
+        $data = ['content' => 'Sample content'];
+        $html = $this->engine->render('project:default:index.html.php', $data);
         $this->assertSame($expected, $html);
     }
 }
