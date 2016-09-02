@@ -305,6 +305,20 @@ class PhpEngine implements TemplateEngine
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function hasHelper(TemplateHelper $helper): bool
+    {
+        $name = $helper->getName();
+
+        if (isset($this->helpers[$name])) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Evaluates a PHP template
      *
      * @param string $file Template file path

@@ -54,4 +54,13 @@ interface TemplateEngine
      * @throws DuplicateHelperExtension When the helper name is registered
      */
     public function addHelper(TemplateHelper $helper);
+
+    /**
+     * Checks if a template helper exists
+     *
+     * @param TemplateHelper $helper The helper
+     *
+     * @return bool
+     */
+    public function hasHelper(TemplateHelper $helper): bool;
 }
