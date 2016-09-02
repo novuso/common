@@ -131,6 +131,22 @@ class PhpEngine implements TemplateEngine
     }
 
     /**
+     * Escapes HTML content
+     *
+     * @param mixed $value The value
+     *
+     * @return string
+     */
+    public function escape($value)
+    {
+        if (is_string($value)) {
+            return htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false);
+        }
+
+        return $value;
+    }
+
+    /**
      * Extends the current template
      *
      * @param string $template The parent template

@@ -42,7 +42,7 @@ class PhpEngineTest extends UnitTestCase
 </header><!-- #header -->
 <div id="content" class="content">
     <h2>Index</h2>
-    <p>Sample content</p>
+    <p>Sample content -&gt; escaped</p>
 </div><!-- #content -->
 <footer id="footer" class="footer" role="contentinfo">
     <p>&copy; 2016 Novuso.</p>
@@ -52,7 +52,7 @@ class PhpEngineTest extends UnitTestCase
 </body>
 </html>
 HTML;
-        $data = ['content' => 'Sample content'];
+        $data = ['content' => 'Sample content -> escaped'];
         $html = $this->engine->render('project:default:index.html.php', $data);
         $this->assertSame($expected, $html);
     }
