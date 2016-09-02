@@ -48,7 +48,9 @@ class DelegatingEngine implements TemplateEngine
         $engine = $this->getEngine($template);
 
         foreach ($this->helpers as $helper) {
-            $engine->addHelper($helper);
+            if (!$engine->hasHelper($helper)) {
+                $engine->addHelper($helper);
+            }
         }
 
         return $engine->render($template, $data);
@@ -92,6 +94,20 @@ class DelegatingEngine implements TemplateEngine
         }
 
         $this->helpers[$name] = $helper;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasHelper(TemplateHelper $helper): bool
+    {
+        $name = $helper->getName();
+
+        if (isset($this->helpers[$name])) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
