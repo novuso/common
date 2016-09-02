@@ -25,7 +25,7 @@ class PhpEngine implements TemplateEngine
     /**
      * Template helpers
      *
-     * @var TemplateHelper[]
+     * @var array
      */
     protected $helpers = [];
 
