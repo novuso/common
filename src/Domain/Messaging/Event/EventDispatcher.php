@@ -3,6 +3,7 @@
 namespace Novuso\Common\Domain\Messaging\Event;
 
 use Exception;
+use Novuso\Common\Domain\Model\Api\AggregateRoot;
 
 /**
  * EventDispatcher is the interface for an event dispatcher
@@ -23,6 +24,17 @@ interface EventDispatcher
      * @throws Exception When an error occurs
      */
     public function dispatch(Event $event);
+
+    /**
+     * Dispatches recorded aggregate events
+     *
+     * @param AggregateRoot $aggregateRoot The aggregate root
+     *
+     * @return void
+     *
+     * @throws Exception When an error occurs
+     */
+    public function dispatchEvents(AggregateRoot $aggregateRoot);
 
     /**
      * Registers a subscriber to handle events
