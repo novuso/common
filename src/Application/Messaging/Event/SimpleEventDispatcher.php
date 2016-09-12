@@ -6,6 +6,7 @@ use Novuso\Common\Domain\Messaging\Event\Event;
 use Novuso\Common\Domain\Messaging\Event\EventDispatcher;
 use Novuso\Common\Domain\Messaging\Event\EventMessage;
 use Novuso\Common\Domain\Messaging\Event\EventSubscriber;
+use Novuso\Common\Domain\Model\Api\AggregateRoot;
 use Novuso\System\Utility\ClassName;
 
 /**
@@ -45,6 +46,16 @@ class SimpleEventDispatcher implements EventDispatcher
 
         foreach ($this->getHandlers(EventSubscriber::ALL_EVENTS) as $handler) {
             call_user_func($handler, $message);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function dispatchEvents(AggregateRoot $aggregateRoot)
+    {
+        foreach ($aggregateRoot->extractRecordedEvents() as $event) {
+            $this->dispatch($event);
         }
     }
 

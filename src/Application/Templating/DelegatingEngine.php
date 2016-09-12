@@ -24,7 +24,7 @@ class DelegatingEngine implements TemplateEngine
     /**
      * Template helpers
      *
-     * @var TemplateHelper[]
+     * @var array
      */
     protected $helpers = [];
 
