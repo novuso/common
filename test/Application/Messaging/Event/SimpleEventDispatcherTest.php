@@ -32,6 +32,20 @@ class SimpleEventDispatcherTest extends UnitTestCase
         $this->assertTrue($subscriber->isUserRegistered('jsmith@example.com'));
     }
 
+    public function test_that_aggregate_event_is_dispatched_as_expected()
+    {
+        $subscriber = new UserRegisteredSubscriber();
+        $this->dispatcher->register($subscriber);
+        $events = [new UserRegisteredEvent('jsmith@example.com', 'James', 'Smith', 'D')];
+        $aggregate = $this->mock('Novuso\\Common\\Domain\\Model\\Api\\AggregateRoot');
+        $aggregate
+            ->shouldReceive('extractRecordedEvents')
+            ->once()
+            ->andReturn($events);
+        $this->dispatcher->dispatchEvents($aggregate);
+        $this->assertTrue($subscriber->isUserRegistered('jsmith@example.com'));
+    }
+
     public function test_that_event_is_not_dispatched_to_unregistered_subscriber()
     {
         $subscriber = new UserRegisteredSubscriber();
