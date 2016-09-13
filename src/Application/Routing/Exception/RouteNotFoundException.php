@@ -1,0 +1,14 @@
+<?php declare(strict_types=1);
+
+namespace Novuso\Common\Application\Routing\Exception;
+
+/**
+ * RouteNotFoundException is thrown when a route is not defined
+ *
+ * @copyright Copyright (c) 2016, Novuso. <http://novuso.com>
+ * @license   http://opensource.org/licenses/MIT The MIT License
+ * @author    John Nickell <email@johnnickell.com>
+ */
+class RouteNotFoundException extends RoutingException
+{
+}
