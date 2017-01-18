@@ -8,7 +8,7 @@ use Psr\Http\Message\ResponseInterface;
 /**
  * HttpException thrown when a response is received but the request failed
  *
- * @copyright Copyright (c) 2016, Novuso. <http://novuso.com>
+ * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */

@@ -12,7 +12,7 @@ use Novuso\System\Utility\VarPrinter;
  * Uri represents a uniform resource identifier
  *
  * @link      http://tools.ietf.org/html/rfc3986 RFC 3986
- * @copyright Copyright (c) 2016, Novuso. <http://novuso.com>
+ * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */

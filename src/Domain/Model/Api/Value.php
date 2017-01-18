@@ -19,7 +19,7 @@ use Serializable;
  * * It can be compared with others using value equality
  * * It supplies its collaborators with side-effect-free behavior
  *
- * @copyright Copyright (c) 2016, Novuso. <http://novuso.com>
+ * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */

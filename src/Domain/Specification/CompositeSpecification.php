@@ -5,7 +5,7 @@ namespace Novuso\Common\Domain\Specification;
 /**
  * CompositeSpecification is the base class for composite specifications
  *
- * @copyright Copyright (c) 2016, Novuso. <http://novuso.com>
+ * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */

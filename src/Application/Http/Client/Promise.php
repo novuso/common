@@ -10,7 +10,7 @@ use Psr\Http\Message\ResponseInterface;
  * Promise is an extension of the promises/a+ specification
  *
  * @link      https://promisesaplus.com/ Promises/A+
- * @copyright Copyright (c) 2016, Novuso. <http://novuso.com>
+ * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
