@@ -8,7 +8,7 @@ use Novuso\System\Type\Enum;
  * Currency represents an ISO 4217 currency
  *
  * @link      http://www.iso.org/iso/home/standards/currency_codes.htm Currency Codes
- * @copyright Copyright (c) 2016, Novuso. <http://novuso.com>
+ * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */

@@ -13,7 +13,7 @@ use Novuso\System\Utility\Validate;
 /**
  * ServiceAwareCommandMap is a command class to handler service map
  *
- * @copyright Copyright (c) 2016, Novuso. <http://novuso.com>
+ * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
