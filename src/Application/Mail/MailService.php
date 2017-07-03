@@ -22,5 +22,5 @@ interface MailService
      *
      * @throws MailException When an error occurs
      */
-    public function send(Message $message);
+    public function send(Message $message): void;
 }
