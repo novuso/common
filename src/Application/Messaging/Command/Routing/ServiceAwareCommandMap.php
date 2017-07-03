@@ -2,13 +2,13 @@
 
 namespace Novuso\Common\Application\Messaging\Command\Routing;
 
-use Novuso\Common\Application\Service\Container;
 use Novuso\Common\Domain\Messaging\Command\Command;
 use Novuso\Common\Domain\Messaging\Command\CommandHandler;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Exception\LookupException;
 use Novuso\System\Type\Type;
 use Novuso\System\Utility\Validate;
+use Psr\Container\ContainerInterface;
 
 /**
  * ServiceAwareCommandMap is a command class to handler service map
@@ -22,7 +22,7 @@ class ServiceAwareCommandMap
     /**
      * Service container
      *
-     * @var Container
+     * @var ContainerInterface
      */
     protected $container;
 
@@ -36,9 +36,9 @@ class ServiceAwareCommandMap
     /**
      * Constructs ServiceAwareCommandMap
      *
-     * @param Container $container The service container
+     * @param ContainerInterface $container The service container
      */
-    public function __construct(Container $container)
+    public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
@@ -57,7 +57,7 @@ class ServiceAwareCommandMap
      *
      * @throws DomainException When a command class is not valid
      */
-    public function registerHandlers(array $commandToHandlerMap)
+    public function registerHandlers(array $commandToHandlerMap): void
     {
         foreach ($commandToHandlerMap as $commandClass => $serviceName) {
             $this->registerHandler($commandClass, $serviceName);
@@ -74,7 +74,7 @@ class ServiceAwareCommandMap
      *
      * @throws DomainException When the command class is not valid
      */
-    public function registerHandler(string $commandClass, string $serviceName)
+    public function registerHandler(string $commandClass, string $serviceName): void
     {
         if (!Validate::implementsInterface($commandClass, Command::class)) {
             $message = sprintf('Invalid command class: %s', $commandClass);

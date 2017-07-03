@@ -4,6 +4,7 @@ namespace Novuso\Common\Application\Service;
 
 use ArrayAccess;
 use Novuso\Common\Application\Service\Exception\ServiceNotFoundException;
+use Psr\Container\ContainerInterface;
 
 /**
  * ServiceContainer is an application service container
@@ -12,7 +13,7 @@ use Novuso\Common\Application\Service\Exception\ServiceNotFoundException;
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class ServiceContainer implements ArrayAccess, Container
+class ServiceContainer implements ArrayAccess, ContainerInterface
 {
     /**
      * Service factories
@@ -36,7 +37,7 @@ class ServiceContainer implements ArrayAccess, Container
      *
      * @return void
      */
-    public function factory(string $name, callable $callback)
+    public function factory(string $name, callable $callback): void
     {
         $this->services[$name] = $callback;
     }
@@ -49,7 +50,7 @@ class ServiceContainer implements ArrayAccess, Container
      *
      * @return void
      */
-    public function set(string $name, callable $callback)
+    public function set(string $name, callable $callback): void
     {
         $this->services[$name] = function ($c) use ($callback) {
             static $object;
@@ -63,9 +64,15 @@ class ServiceContainer implements ArrayAccess, Container
     }
 
     /**
-     * {@inheritdoc}
+     * Retrieves a service by name
+     *
+     * @param string $name The service name
+     *
+     * @return mixed
+     *
+     * @throws ServiceNotFoundException When the service is not found
      */
-    public function get(string $name)
+    public function get($name)
     {
         if (!isset($this->services[$name])) {
             throw ServiceNotFoundException::fromName($name);
@@ -75,9 +82,13 @@ class ServiceContainer implements ArrayAccess, Container
     }
 
     /**
-     * {@inheritdoc}
+     * Checks if a service is defined
+     *
+     * @param string $name The service name
+     *
+     * @return bool
      */
-    public function has(string $name): bool
+    public function has($name): bool
     {
         return isset($this->services[$name]);
     }
@@ -89,7 +100,7 @@ class ServiceContainer implements ArrayAccess, Container
      *
      * @return void
      */
-    public function remove(string $name)
+    public function remove(string $name): void
     {
         unset($this->services[$name]);
     }
@@ -102,7 +113,7 @@ class ServiceContainer implements ArrayAccess, Container
      *
      * @return void
      */
-    public function setParameter(string $name, $value)
+    public function setParameter(string $name, $value): void
     {
         $this->parameters[$name] = $value;
     }
@@ -143,7 +154,7 @@ class ServiceContainer implements ArrayAccess, Container
      *
      * @return void
      */
-    public function removeParameter(string $name)
+    public function removeParameter(string $name): void
     {
         unset($this->parameters[$name]);
     }
@@ -156,7 +167,7 @@ class ServiceContainer implements ArrayAccess, Container
      *
      * @return void
      */
-    public function offsetSet($name, $value)
+    public function offsetSet($name, $value): void
     {
         $this->setParameter($name, $value);
     }
@@ -192,7 +203,7 @@ class ServiceContainer implements ArrayAccess, Container
      *
      * @return void
      */
-    public function offsetUnset($name)
+    public function offsetUnset($name): void
     {
         $this->removeParameter($name);
     }

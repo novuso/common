@@ -29,5 +29,5 @@ interface CommandFilter
      *
      * @throws Exception When an error occurs
      */
-    public function process(CommandMessage $message, callable $next);
+    public function process(CommandMessage $message, callable $next): void;
 }

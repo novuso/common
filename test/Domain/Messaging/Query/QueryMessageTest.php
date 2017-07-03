@@ -6,13 +6,13 @@ use Novuso\Common\Domain\Messaging\Event\EventMessage;
 use Novuso\Common\Domain\Messaging\MessageId;
 use Novuso\Common\Domain\Messaging\MetaData;
 use Novuso\Common\Domain\Messaging\Query\QueryMessage;
-use Novuso\Common\Domain\Model\DateTime\DateTime;
+use Novuso\Common\Domain\DateTime\DateTime;
 use Novuso\System\Serialization\JsonSerializer;
 use Novuso\Test\Common\Resources\Domain\Messaging\Query\UserByEmailQuery;
 use Novuso\Test\System\TestCase\UnitTestCase;
 
 /**
- * @covers Novuso\Common\Domain\Messaging\Query\QueryMessage
+ * @covers \Novuso\Common\Domain\Messaging\Query\QueryMessage
  */
 class QueryMessageTest extends UnitTestCase
 {

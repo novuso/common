@@ -6,7 +6,7 @@ use Novuso\Common\Application\Templating\PhpEngine;
 use Novuso\Test\System\TestCase\UnitTestCase;
 
 /**
- * @covers Novuso\Common\Application\Templating\PhpEngine
+ * @covers \Novuso\Common\Application\Templating\PhpEngine
  */
 class PhpEngineTest extends UnitTestCase
 {

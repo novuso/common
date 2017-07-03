@@ -20,14 +20,14 @@ interface ProcessManager
      *
      * @return void
      */
-    public function attach(Process $process);
+    public function attach(Process $process): void;
 
     /**
      * Clears attached processes
      *
      * @return void
      */
-    public function clear();
+    public function clear(): void;
 
     /**
      * Runs attached processes
@@ -36,5 +36,5 @@ interface ProcessManager
      *
      * @throws Exception When an error occurs
      */
-    public function run();
+    public function run(): void;
 }

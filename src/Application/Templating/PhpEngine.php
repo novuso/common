@@ -1,8 +1,8 @@
-<?php declare(strict_types=1);
+<?php
 
 namespace Novuso\Common\Application\Templating;
 
-use Novuso\Common\Application\Templating\Exception\DuplicateHelperExtension;
+use Novuso\Common\Application\Templating\Exception\DuplicateHelperException;
 use Novuso\Common\Application\Templating\Exception\TemplateNotFoundException;
 use Novuso\Common\Application\Templating\Exception\TemplatingException;
 
@@ -133,17 +133,13 @@ class PhpEngine implements TemplateEngine
     /**
      * Escapes HTML content
      *
-     * @param mixed $value The value
+     * @param string $value The value
      *
      * @return string
      */
-    public function escape($value)
+    public function escape(string $value): string
     {
-        if (is_string($value)) {
-            return htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false);
-        }
-
-        return $value;
+        return htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false);
     }
 
     /**
@@ -153,7 +149,7 @@ class PhpEngine implements TemplateEngine
      *
      * @return void
      */
-    public function extends(string $template)
+    public function extends(string $template): void
     {
         $this->parents[$this->current] = $template;
     }
@@ -186,7 +182,7 @@ class PhpEngine implements TemplateEngine
      *
      * @throws TemplatingException When the block is already started
      */
-    public function startBlock(string $name)
+    public function startBlock(string $name): void
     {
         if (in_array($name, $this->openBlocks)) {
             $message = sprintf('Block "%s" is already started', $name);
@@ -205,9 +201,11 @@ class PhpEngine implements TemplateEngine
     /**
      * Ends a block
      *
+     * @return void
+     *
      * @throws TemplatingException When there is no block started
      */
-    public function endBlock()
+    public function endBlock(): void
     {
         if (!$this->openBlocks) {
             throw new TemplatingException('No block started');
@@ -244,7 +242,7 @@ class PhpEngine implements TemplateEngine
      *
      * @return void
      */
-    public function setContent(string $name, string $content)
+    public function setContent(string $name, string $content): void
     {
         $this->blocks[$name] = $content;
     }
@@ -257,7 +255,7 @@ class PhpEngine implements TemplateEngine
      *
      * @return string|null
      */
-    public function getContent(string $name, string $default = null)
+    public function getContent(string $name, ?string $default = null): ?string
     {
         if (!isset($this->blocks[$name])) {
             return $default;
@@ -293,12 +291,12 @@ class PhpEngine implements TemplateEngine
     /**
      * {@inheritdoc}
      */
-    public function addHelper(TemplateHelper $helper)
+    public function addHelper(TemplateHelper $helper): void
     {
         $name = $helper->getName();
 
         if (isset($this->helpers[$name])) {
-            throw DuplicateHelperExtension::fromName($name);
+            throw DuplicateHelperException::fromName($name);
         }
 
         $this->helpers[$name] = $helper;
@@ -356,7 +354,7 @@ class PhpEngine implements TemplateEngine
      *
      * @return bool
      */
-    public function outputContent(string $name, string $default = null): bool
+    public function outputContent(string $name, ?string $default = null): bool
     {
         if (!isset($this->blocks[$name])) {
             if ($default !== null) {
@@ -380,7 +378,7 @@ class PhpEngine implements TemplateEngine
      *
      * @return string
      */
-    protected function loadTemplate(string $template)
+    protected function loadTemplate(string $template): string
     {
         if (!isset($this->cache[$template])) {
             $file = $this->getTemplatePath($template);

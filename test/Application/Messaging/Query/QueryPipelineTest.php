@@ -15,11 +15,11 @@ use Novuso\Test\Common\Resources\Domain\Messaging\Query\UserByEmailQuery;
 use Novuso\Test\System\TestCase\UnitTestCase;
 
 /**
- * @covers Novuso\Common\Application\Messaging\Query\Filter\QueryLogger
- * @covers Novuso\Common\Application\Messaging\Query\Routing\InMemoryQueryMap
- * @covers Novuso\Common\Application\Messaging\Query\Routing\InMemoryQueryRouter
- * @covers Novuso\Common\Application\Messaging\Query\QueryPipeline
- * @covers Novuso\Common\Application\Messaging\Query\RoutingQueryBus
+ * @covers \Novuso\Common\Application\Messaging\Query\Filter\QueryLogger
+ * @covers \Novuso\Common\Application\Messaging\Query\Routing\InMemoryQueryMap
+ * @covers \Novuso\Common\Application\Messaging\Query\Routing\InMemoryQueryRouter
+ * @covers \Novuso\Common\Application\Messaging\Query\QueryPipeline
+ * @covers \Novuso\Common\Application\Messaging\Query\RoutingQueryBus
  */
 class QueryPipelineTest extends UnitTestCase
 {

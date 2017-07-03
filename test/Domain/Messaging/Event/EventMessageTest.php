@@ -5,13 +5,13 @@ namespace Novuso\Test\Common\Domain\Messaging\Event;
 use Novuso\Common\Domain\Messaging\Event\EventMessage;
 use Novuso\Common\Domain\Messaging\MessageId;
 use Novuso\Common\Domain\Messaging\MetaData;
-use Novuso\Common\Domain\Model\DateTime\DateTime;
+use Novuso\Common\Domain\DateTime\DateTime;
 use Novuso\System\Serialization\JsonSerializer;
 use Novuso\Test\Common\Resources\Domain\Messaging\Event\UserRegisteredEvent;
 use Novuso\Test\System\TestCase\UnitTestCase;
 
 /**
- * @covers Novuso\Common\Domain\Messaging\Event\EventMessage
+ * @covers \Novuso\Common\Domain\Messaging\Event\EventMessage
  */
 class EventMessageTest extends UnitTestCase
 {

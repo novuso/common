@@ -9,8 +9,8 @@ use Novuso\Test\Common\Resources\Domain\Messaging\Command\RegisterUserHandler;
 use Novuso\Test\System\TestCase\UnitTestCase;
 
 /**
- * @covers Novuso\Common\Application\Messaging\Command\Routing\ServiceAwareCommandMap
- * @covers Novuso\Common\Application\Messaging\Command\Routing\ServiceAwareCommandRouter
+ * @covers \Novuso\Common\Application\Messaging\Command\Routing\ServiceAwareCommandMap
+ * @covers \Novuso\Common\Application\Messaging\Command\Routing\ServiceAwareCommandRouter
  */
 class ServiceAwareCommandRouterTest extends UnitTestCase
 {

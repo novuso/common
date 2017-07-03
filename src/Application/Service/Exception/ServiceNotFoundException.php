@@ -3,6 +3,7 @@
 namespace Novuso\Common\Application\Service\Exception;
 
 use Exception;
+use Psr\Container\NotFoundExceptionInterface;
 
 /**
  * ServiceNotFoundException is thrown when a service is not defined
@@ -11,7 +12,7 @@ use Exception;
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class ServiceNotFoundException extends ServiceContainerException
+class ServiceNotFoundException extends ServiceContainerException implements NotFoundExceptionInterface
 {
     /**
      * Creates exception for a given service name
@@ -21,7 +22,7 @@ class ServiceNotFoundException extends ServiceContainerException
      *
      * @return ServiceNotFoundException
      */
-    public static function fromName(string $name, Exception $previous = null): ServiceNotFoundException
+    public static function fromName(string $name, ?Exception $previous = null): ServiceNotFoundException
     {
         $message = sprintf('Undefined service: %s', $name);
 

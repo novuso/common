@@ -39,7 +39,7 @@ class InMemoryCommandMap
      *
      * @throws DomainException When a command class is not valid
      */
-    public function registerHandlers(array $commandToHandlerMap)
+    public function registerHandlers(array $commandToHandlerMap): void
     {
         foreach ($commandToHandlerMap as $commandClass => $handler) {
             $this->registerHandler($commandClass, $handler);
@@ -56,7 +56,7 @@ class InMemoryCommandMap
      *
      * @throws DomainException When the command class is not valid
      */
-    public function registerHandler(string $commandClass, CommandHandler $handler)
+    public function registerHandler(string $commandClass, CommandHandler $handler): void
     {
         if (!Validate::implementsInterface($commandClass, Command::class)) {
             $message = sprintf('Invalid command class: %s', $commandClass);

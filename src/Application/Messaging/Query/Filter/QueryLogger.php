@@ -35,7 +35,7 @@ class QueryLogger implements QueryFilter
     /**
      * {@inheritdoc}
      */
-    public function process(QueryMessage $message, callable $next)
+    public function process(QueryMessage $message, callable $next): void
     {
         $name = $message->payloadType()->toString();
 

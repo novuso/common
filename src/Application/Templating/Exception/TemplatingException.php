@@ -22,13 +22,13 @@ class TemplatingException extends RuntimeException
     protected $template;
 
     /**
-     * Constructs ServiceContainerException
+     * Constructs TemplatingException
      *
      * @param string         $message  The message
      * @param string|null    $template The template name
      * @param Exception|null $previous The previous exception
      */
-    public function __construct(string $message, string $template = null, Exception $previous = null)
+    public function __construct(string $message, ?string $template = null, ?Exception $previous = null)
     {
         $this->template = $template;
         parent::__construct($message, 0, $previous);
@@ -39,7 +39,7 @@ class TemplatingException extends RuntimeException
      *
      * @return string|null
      */
-    public function getTemplate()
+    public function getTemplate(): ?string
     {
         return $this->template;
     }

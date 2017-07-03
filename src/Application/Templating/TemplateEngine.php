@@ -2,7 +2,7 @@
 
 namespace Novuso\Common\Application\Templating;
 
-use Novuso\Common\Application\Templating\Exception\DuplicateHelperExtension;
+use Novuso\Common\Application\Templating\Exception\DuplicateHelperException;
 use Novuso\Common\Application\Templating\Exception\TemplatingException;
 
 /**
@@ -51,9 +51,9 @@ interface TemplateEngine
      *
      * @return void
      *
-     * @throws DuplicateHelperExtension When the helper name is registered
+     * @throws DuplicateHelperException When the helper name is registered
      */
-    public function addHelper(TemplateHelper $helper);
+    public function addHelper(TemplateHelper $helper): void;
 
     /**
      * Checks if a template helper exists

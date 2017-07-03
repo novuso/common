@@ -47,7 +47,7 @@ class EventLogger implements EventSubscriber
      *
      * @return void
      */
-    public function logEvent(EventMessage $message)
+    public function logEvent(EventMessage $message): void
     {
         $name = $message->payloadType()->toString();
 

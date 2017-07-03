@@ -3,7 +3,6 @@
 namespace Novuso\Common\Domain\Messaging\Event;
 
 use Exception;
-use Novuso\Common\Domain\Model\Api\AggregateRoot;
 
 /**
  * EventDispatcher is the interface for an event dispatcher
@@ -23,18 +22,7 @@ interface EventDispatcher
      *
      * @throws Exception When an error occurs
      */
-    public function dispatch(Event $event);
-
-    /**
-     * Dispatches recorded aggregate events
-     *
-     * @param AggregateRoot $aggregateRoot The aggregate root
-     *
-     * @return void
-     *
-     * @throws Exception When an error occurs
-     */
-    public function dispatchEvents(AggregateRoot $aggregateRoot);
+    public function dispatch(Event $event): void;
 
     /**
      * Registers a subscriber to handle events
@@ -43,7 +31,7 @@ interface EventDispatcher
      *
      * @return void
      */
-    public function register(EventSubscriber $subscriber);
+    public function register(EventSubscriber $subscriber): void;
 
     /**
      * Unregisters a subscriber from handling events
@@ -52,7 +40,7 @@ interface EventDispatcher
      *
      * @return void
      */
-    public function unregister(EventSubscriber $subscriber);
+    public function unregister(EventSubscriber $subscriber): void;
 
     /**
      * Adds a handler for a specific event
@@ -63,7 +51,7 @@ interface EventDispatcher
      *
      * @return void
      */
-    public function addHandler(string $eventType, callable $handler, int $priority = 0);
+    public function addHandler(string $eventType, callable $handler, int $priority = 0): void;
 
     /**
      * Retrieves handlers for an event or all events
@@ -72,7 +60,7 @@ interface EventDispatcher
      *
      * @return array
      */
-    public function getHandlers(string $eventType = null): array;
+    public function getHandlers(?string $eventType = null): array;
 
     /**
      * Checks if handlers are registered for an event or any event
@@ -81,7 +69,7 @@ interface EventDispatcher
      *
      * @return bool
      */
-    public function hasHandlers(string $eventType = null): bool;
+    public function hasHandlers(?string $eventType = null): bool;
 
     /**
      * Removes a handler from a specified event
@@ -91,5 +79,5 @@ interface EventDispatcher
      *
      * @return void
      */
-    public function removeHandler(string $eventType, callable $handler);
+    public function removeHandler(string $eventType, callable $handler): void;
 }

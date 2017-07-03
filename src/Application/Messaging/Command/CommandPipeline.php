@@ -57,7 +57,7 @@ class CommandPipeline implements CommandBus, CommandFilter
      *
      * @return void
      */
-    public function addFilter(CommandFilter $filter)
+    public function addFilter(CommandFilter $filter): void
     {
         $this->filters->push($filter);
     }
@@ -65,7 +65,7 @@ class CommandPipeline implements CommandBus, CommandFilter
     /**
      * {@inheritdoc}
      */
-    public function execute(Command $command)
+    public function execute(Command $command): void
     {
         $this->stack = clone $this->filters;
         $this->pipe(CommandMessage::create($command));
@@ -74,7 +74,7 @@ class CommandPipeline implements CommandBus, CommandFilter
     /**
      * {@inheritdoc}
      */
-    public function process(CommandMessage $message, callable $next)
+    public function process(CommandMessage $message, callable $next): void
     {
         /** @var Command $command */
         $command = $message->payload();
@@ -88,7 +88,7 @@ class CommandPipeline implements CommandBus, CommandFilter
      *
      * @return void
      */
-    public function pipe(CommandMessage $message)
+    public function pipe(CommandMessage $message): void
     {
         /** @var CommandFilter $filter */
         $filter = $this->stack->pop();

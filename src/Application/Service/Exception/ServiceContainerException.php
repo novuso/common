@@ -4,6 +4,7 @@ namespace Novuso\Common\Application\Service\Exception;
 
 use Exception;
 use Novuso\System\Exception\RuntimeException;
+use Psr\Container\ContainerExceptionInterface;
 
 /**
  * ServiceContainerException is thrown for service container errors
@@ -12,7 +13,7 @@ use Novuso\System\Exception\RuntimeException;
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class ServiceContainerException extends RuntimeException
+class ServiceContainerException extends RuntimeException implements ContainerExceptionInterface
 {
     /**
      * Service name
@@ -28,7 +29,7 @@ class ServiceContainerException extends RuntimeException
      * @param string|null    $service  The service name
      * @param Exception|null $previous The previous exception
      */
-    public function __construct(string $message, string $service = null, Exception $previous = null)
+    public function __construct(string $message, ?string $service = null, ?Exception $previous = null)
     {
         $this->service = $service;
         parent::__construct($message, 0, $previous);

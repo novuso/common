@@ -21,7 +21,7 @@ class TemplateNotFoundException extends TemplatingException
      *
      * @return TemplateNotFoundException
      */
-    public static function fromName(string $name, Exception $previous = null): TemplateNotFoundException
+    public static function fromName(string $name, ?Exception $previous = null): TemplateNotFoundException
     {
         $message = sprintf('Template not found: %s', $name);
 

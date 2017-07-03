@@ -5,14 +5,14 @@ namespace Novuso\Test\Common\Domain\Messaging\Command;
 use Novuso\Common\Domain\Messaging\Command\CommandMessage;
 use Novuso\Common\Domain\Messaging\MessageId;
 use Novuso\Common\Domain\Messaging\MetaData;
-use Novuso\Common\Domain\Model\DateTime\DateTime;
+use Novuso\Common\Domain\DateTime\DateTime;
 use Novuso\System\Serialization\JsonSerializer;
 use Novuso\Test\Common\Resources\Domain\Messaging\Command\RegisterUserCommand;
 use Novuso\Test\System\TestCase\UnitTestCase;
 
 /**
- * @covers Novuso\Common\Domain\Messaging\BaseMessage
- * @covers Novuso\Common\Domain\Messaging\Command\CommandMessage
+ * @covers \Novuso\Common\Domain\Messaging\BaseMessage
+ * @covers \Novuso\Common\Domain\Messaging\Command\CommandMessage
  */
 class CommandMessageTest extends UnitTestCase
 {

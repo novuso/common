@@ -11,7 +11,7 @@ use Novuso\Test\Common\Resources\Domain\Messaging\Event\UserRegisteredEvent;
 use Novuso\Test\System\TestCase\UnitTestCase;
 
 /**
- * @covers Novuso\Common\Application\Messaging\Event\Subscriber\EventLogger
+ * @covers \Novuso\Common\Application\Messaging\Event\Subscriber\EventLogger
  */
 class EventLoggerTest extends UnitTestCase
 {

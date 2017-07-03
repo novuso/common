@@ -2,8 +2,8 @@
 
 namespace Novuso\Test\Common\Resources\Domain\Model;
 
-use Novuso\Common\Domain\Model\Api\AggregateRoot;
-use Novuso\Common\Domain\Model\EventRecords;
+use Novuso\Common\Domain\Aggregate\AggregateRoot;
+use Novuso\Common\Domain\Aggregate\EventRecords;
 use Novuso\Test\Common\Resources\Domain\Messaging\Event\UserRegisteredEvent;
 
 class User implements AggregateRoot

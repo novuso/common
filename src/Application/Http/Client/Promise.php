@@ -21,21 +21,21 @@ interface Promise
      *
      * @var string
      */
-    const PENDING = 'pending';
+    public const PENDING = 'pending';
 
     /**
      * Fulfilled state
      *
      * @var string
      */
-    const FULFILLED = 'fulfilled';
+    public const FULFILLED = 'fulfilled';
 
     /**
      * Rejected state
      *
      * @var string
      */
-    const REJECTED = 'rejected';
+    public const REJECTED = 'rejected';
 
     /**
      * Adds callbacks for when the promise is resolved or rejected
@@ -45,7 +45,7 @@ interface Promise
      *
      * @return Promise
      */
-    public function then(callable $onFulfilled = null, callable $onRejected = null): Promise;
+    public function then(?callable $onFulfilled = null, ?callable $onRejected = null): Promise;
 
     /**
      * Retrieves the state
@@ -77,5 +77,5 @@ interface Promise
      *
      * @return void
      */
-    public function wait();
+    public function wait(): void;
 }

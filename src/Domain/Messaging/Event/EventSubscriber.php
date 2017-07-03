@@ -16,7 +16,7 @@ interface EventSubscriber
      *
      * @var string
      */
-    const ALL_EVENTS = 'ALL_EVENTS';
+    public const ALL_EVENTS = 'ALL_EVENTS';
 
     /**
      * Retrieves event registration

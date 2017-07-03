@@ -51,6 +51,6 @@ interface MessageFactory
         array $headers = [],
         $body = null,
         string $protocol = '1.1',
-        string $reason = null
+        ?string $reason = null
     ): ResponseInterface;
 }

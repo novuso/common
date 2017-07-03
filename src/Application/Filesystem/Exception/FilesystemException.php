@@ -28,7 +28,7 @@ class FilesystemException extends RuntimeException
      * @param string|null    $path     The file path
      * @param Exception|null $previous The previous exception
      */
-    public function __construct(string $message, string $path = null, Exception $previous = null)
+    public function __construct(string $message, ?string $path = null, ?Exception $previous = null)
     {
         $this->path = $path;
         parent::__construct($message, 0, $previous);

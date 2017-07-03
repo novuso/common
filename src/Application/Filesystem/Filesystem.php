@@ -24,7 +24,7 @@ interface Filesystem
      *
      * @throws FilesystemException When an error occurs
      */
-    public function mkdir($dirs, int $mode = 0775);
+    public function mkdir($dirs, int $mode = 0775): void;
 
     /**
      * Sets access and modification times
@@ -37,7 +37,7 @@ interface Filesystem
      *
      * @throws FilesystemException When an error occurs
      */
-    public function touch($files, int $time = null, int $atime = null);
+    public function touch($files, ?int $time = null, ?int $atime = null): void;
 
     /**
      * Renames a file or directory
@@ -50,7 +50,7 @@ interface Filesystem
      *
      * @throws FilesystemException When an error occurs
      */
-    public function rename(string $origin, string $target, bool $override = false);
+    public function rename(string $origin, string $target, bool $override = false): void;
 
     /**
      * Creates a symbolic link
@@ -63,7 +63,7 @@ interface Filesystem
      *
      * @throws FilesystemException When an error occurs
      */
-    public function symlink(string $origin, string $target, bool $copyOnWindows = false);
+    public function symlink(string $origin, string $target, bool $copyOnWindows = false): void;
 
     /**
      * Copies a file
@@ -76,7 +76,7 @@ interface Filesystem
      *
      * @throws FilesystemException When an error occurs
      */
-    public function copy(string $originFile, string $targetFile, bool $override = false);
+    public function copy(string $originFile, string $targetFile, bool $override = false): void;
 
     /**
      * Mirrors a directory
@@ -98,7 +98,7 @@ interface Filesystem
         bool $override = false,
         bool $delete = false,
         bool $copyOnWindows = false
-    );
+    ): void;
 
     /**
      * Checks for the existence of files or directories
@@ -118,7 +118,7 @@ interface Filesystem
      *
      * @throws FilesystemException When an error occurs
      */
-    public function remove($paths);
+    public function remove($paths): void;
 
     /**
      * Retrieves file contents
@@ -141,7 +141,7 @@ interface Filesystem
      *
      * @throws FilesystemException When an error occurs
      */
-    public function put(string $path, string $content);
+    public function put(string $path, string $content): void;
 
     /**
      * Checks if a path is a file
@@ -271,7 +271,7 @@ interface Filesystem
      *
      * @throws FilesystemException When an error occurs
      */
-    public function baseName(string $path, string $suffix = null): string;
+    public function baseName(string $path, ?string $suffix = null): string;
 
     /**
      * Retrieves the file type
@@ -315,7 +315,7 @@ interface Filesystem
      *
      * @throws FilesystemException When an error occurs
      */
-    public function requireOnce(string $path);
+    public function requireOnce(string $path): void;
 
     /**
      * Changes mode of files or directories
@@ -330,7 +330,7 @@ interface Filesystem
      *
      * @throws FilesystemException When an error occurs
      */
-    public function chmod($paths, int $mode, int $umask = 0000, bool $recursive = false);
+    public function chmod($paths, int $mode, int $umask = 0000, bool $recursive = false): void;
 
     /**
      * Changes the owner of files or directories
@@ -344,7 +344,7 @@ interface Filesystem
      *
      * @throws FilesystemException When an error occurs
      */
-    public function chown($paths, string $user, bool $recursive = false);
+    public function chown($paths, string $user, bool $recursive = false): void;
 
     /**
      * Changes the group of files or directories
@@ -358,5 +358,5 @@ interface Filesystem
      *
      * @throws FilesystemException When an error occurs
      */
-    public function chgrp($paths, string $group, bool $recursive = false);
+    public function chgrp($paths, string $group, bool $recursive = false): void;
 }

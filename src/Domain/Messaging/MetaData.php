@@ -92,7 +92,7 @@ class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggregate, 
      *
      * @throws DomainException When value is not valid
      */
-    public function set(string $key, $value)
+    public function set(string $key, $value): void
     {
         $this->guardValue($value);
         $this->data[$key] = $value;
@@ -134,7 +134,7 @@ class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggregate, 
      *
      * @return void
      */
-    public function remove(string $key)
+    public function remove(string $key): void
     {
         unset($this->data[$key]);
     }
@@ -153,7 +153,7 @@ class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggregate, 
      *
      * @throws DomainException When value is not valid
      */
-    public function offsetSet($key, $value)
+    public function offsetSet($key, $value): void
     {
         assert(
             Validate::isString($key),
@@ -204,7 +204,7 @@ class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggregate, 
      *
      * @return void
      */
-    public function offsetUnset($key)
+    public function offsetUnset($key): void
     {
         assert(
             Validate::isString($key),
@@ -231,7 +231,7 @@ class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggregate, 
      *
      * @return void
      */
-    public function merge(MetaData $data)
+    public function merge(MetaData $data): void
     {
         foreach ($data->toArray() as $key => $value) {
             $this->set($key, $value);
@@ -295,7 +295,7 @@ class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggregate, 
      *
      * @throws DomainException When value is not valid
      */
-    protected function guardValue($value)
+    protected function guardValue($value): void
     {
         if (!$this->isValid($value)) {
             $message = 'Value must be scalar or an array of scalars';

@@ -6,7 +6,7 @@ use Novuso\Common\Application\Process\ProcessBuilder;
 use Novuso\Test\System\TestCase\UnitTestCase;
 
 /**
- * @covers Novuso\Common\Application\Process\ProcessBuilder
+ * @covers \Novuso\Common\Application\Process\ProcessBuilder
  */
 class ProcessBuilderTest extends UnitTestCase
 {

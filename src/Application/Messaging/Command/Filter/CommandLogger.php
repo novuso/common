@@ -35,7 +35,7 @@ class CommandLogger implements CommandFilter
     /**
      * {@inheritdoc}
      */
-    public function process(CommandMessage $message, callable $next)
+    public function process(CommandMessage $message, callable $next): void
     {
         $name = $message->payloadType()->toString();
 

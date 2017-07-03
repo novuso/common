@@ -8,7 +8,7 @@ use Novuso\Common\Application\Mail\Priority;
 use Novuso\Test\System\TestCase\UnitTestCase;
 
 /**
- * @covers Novuso\Common\Application\Mail\Message
+ * @covers \Novuso\Common\Application\Mail\Message
  */
 class MessageTest extends UnitTestCase
 {

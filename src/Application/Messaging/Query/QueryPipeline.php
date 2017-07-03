@@ -64,7 +64,7 @@ class QueryPipeline implements QueryBus, QueryFilter
      *
      * @return void
      */
-    public function addFilter(QueryFilter $filter)
+    public function addFilter(QueryFilter $filter): void
     {
         $this->filters->push($filter);
     }
@@ -86,7 +86,7 @@ class QueryPipeline implements QueryBus, QueryFilter
     /**
      * {@inheritdoc}
      */
-    public function process(QueryMessage $message, callable $next)
+    public function process(QueryMessage $message, callable $next): void
     {
         /** @var Query $query */
         $query = $message->payload();
@@ -100,7 +100,7 @@ class QueryPipeline implements QueryBus, QueryFilter
      *
      * @return void
      */
-    public function pipe(QueryMessage $message)
+    public function pipe(QueryMessage $message): void
     {
         /** @var QueryFilter $filter */
         $filter = $this->stack->pop();

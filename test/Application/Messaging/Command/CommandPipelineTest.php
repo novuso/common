@@ -15,11 +15,11 @@ use Novuso\Test\Common\Resources\Domain\Messaging\Command\RegisterUserHandler;
 use Novuso\Test\System\TestCase\UnitTestCase;
 
 /**
- * @covers Novuso\Common\Application\Messaging\Command\Filter\CommandLogger
- * @covers Novuso\Common\Application\Messaging\Command\Routing\InMemoryCommandMap
- * @covers Novuso\Common\Application\Messaging\Command\Routing\InMemoryCommandRouter
- * @covers Novuso\Common\Application\Messaging\Command\CommandPipeline
- * @covers Novuso\Common\Application\Messaging\Command\RoutingCommandBus
+ * @covers \Novuso\Common\Application\Messaging\Command\Filter\CommandLogger
+ * @covers \Novuso\Common\Application\Messaging\Command\Routing\InMemoryCommandMap
+ * @covers \Novuso\Common\Application\Messaging\Command\Routing\InMemoryCommandRouter
+ * @covers \Novuso\Common\Application\Messaging\Command\CommandPipeline
+ * @covers \Novuso\Common\Application\Messaging\Command\RoutingCommandBus
  */
 class CommandPipelineTest extends UnitTestCase
 {

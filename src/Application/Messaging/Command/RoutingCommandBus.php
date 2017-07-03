@@ -35,7 +35,7 @@ class RoutingCommandBus implements CommandBus
     /**
      * {@inheritdoc}
      */
-    public function execute(Command $command)
+    public function execute(Command $command): void
     {
         $this->router->match($command)->handle($command);
     }

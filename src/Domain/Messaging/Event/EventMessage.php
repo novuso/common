@@ -2,11 +2,12 @@
 
 namespace Novuso\Common\Domain\Messaging\Event;
 
+use Novuso\Common\Domain\DateTime\DateTime;
 use Novuso\Common\Domain\Messaging\BaseMessage;
+use Novuso\Common\Domain\Messaging\Message;
 use Novuso\Common\Domain\Messaging\MessageId;
 use Novuso\Common\Domain\Messaging\MessageType;
 use Novuso\Common\Domain\Messaging\MetaData;
-use Novuso\Common\Domain\Model\DateTime\DateTime;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Type\Type;
 use Novuso\System\Utility\Validate;
@@ -93,15 +94,7 @@ class EventMessage extends BaseMessage
     /**
      * {@inheritdoc}
      */
-    public function serialize(): array
-    {
-        return $this->toArray();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function withMetaData(MetaData $metaData)
+    public function withMetaData(MetaData $metaData): EventMessage
     {
         /** @var Event $event */
         $event = $this->payload;
@@ -117,7 +110,7 @@ class EventMessage extends BaseMessage
     /**
      * {@inheritdoc}
      */
-    public function mergeMetaData(MetaData $metaData)
+    public function mergeMetaData(MetaData $metaData): EventMessage
     {
         $meta = clone $this->metaData;
         $meta->merge($metaData);

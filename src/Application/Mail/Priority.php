@@ -18,33 +18,33 @@ class Priority extends Enum
      *
      * @var int
      */
-    const HIGHEST = 1;
+    public const HIGHEST = 1;
 
     /**
      * High priority
      *
      * @var int
      */
-    const HIGH = 2;
+    public const HIGH = 2;
 
     /**
      * Normal priority
      *
      * @var int
      */
-    const NORMAL = 3;
+    public const NORMAL = 3;
 
     /**
      * Low priority
      *
      * @var int
      */
-    const LOW = 4;
+    public const LOW = 4;
 
     /**
      * Lowest priority
      *
      * @var int
      */
-    const LOWEST = 5;
+    public const LOWEST = 5;
 }

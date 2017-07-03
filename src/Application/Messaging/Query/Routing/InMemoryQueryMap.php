@@ -39,7 +39,7 @@ class InMemoryQueryMap
      *
      * @throws DomainException When a query class is not valid
      */
-    public function registerHandlers(array $queryToHandlerMap)
+    public function registerHandlers(array $queryToHandlerMap): void
     {
         foreach ($queryToHandlerMap as $queryClass => $handler) {
             $this->registerHandler($queryClass, $handler);
@@ -56,7 +56,7 @@ class InMemoryQueryMap
      *
      * @throws DomainException When the query class is not valid
      */
-    public function registerHandler(string $queryClass, QueryHandler $handler)
+    public function registerHandler(string $queryClass, QueryHandler $handler): void
     {
         if (!Validate::implementsInterface($queryClass, Query::class)) {
             $message = sprintf('Invalid query class: %s', $queryClass);

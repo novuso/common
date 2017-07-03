@@ -21,7 +21,7 @@ class FileNotFoundException extends FilesystemException
      *
      * @return FileNotFoundException
      */
-    public static function fromPath(string $path, Exception $previous = null): FileNotFoundException
+    public static function fromPath(string $path, ?Exception $previous = null): FileNotFoundException
     {
         $message = sprintf('File not found: %s', $path);
 

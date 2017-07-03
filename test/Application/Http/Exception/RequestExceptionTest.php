@@ -7,7 +7,7 @@ use Novuso\Test\System\TestCase\UnitTestCase;
 use Psr\Http\Message\RequestInterface;
 
 /**
- * @covers Novuso\Common\Application\Http\Exception\RequestException
+ * @covers \Novuso\Common\Application\Http\Exception\RequestException
  */
 class RequestExceptionTest extends UnitTestCase
 {

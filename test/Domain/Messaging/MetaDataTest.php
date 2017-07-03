@@ -6,7 +6,7 @@ use Novuso\Common\Domain\Messaging\MetaData;
 use Novuso\Test\System\TestCase\UnitTestCase;
 
 /**
- * @covers Novuso\Common\Domain\Messaging\MetaData
+ * @covers \Novuso\Common\Domain\Messaging\MetaData
  */
 class MetaDataTest extends UnitTestCase
 {

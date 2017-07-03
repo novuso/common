@@ -8,8 +8,8 @@ use Novuso\Test\Common\Resources\Domain\Messaging\Query\UserByEmailQuery;
 use Novuso\Test\System\TestCase\UnitTestCase;
 
 /**
- * @covers Novuso\Common\Application\Messaging\Query\Routing\ServiceAwareQueryMap
- * @covers Novuso\Common\Application\Messaging\Query\Routing\ServiceAwareQueryRouter
+ * @covers \Novuso\Common\Application\Messaging\Query\Routing\ServiceAwareQueryMap
+ * @covers \Novuso\Common\Application\Messaging\Query\Routing\ServiceAwareQueryRouter
  */
 class ServiceAwareQueryRouterTest extends UnitTestCase
 {

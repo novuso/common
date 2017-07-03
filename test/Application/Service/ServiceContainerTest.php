@@ -7,7 +7,7 @@ use Novuso\Common\Application\Service\ServiceContainer;
 use Novuso\Test\System\TestCase\UnitTestCase;
 
 /**
- * @covers Novuso\Common\Application\Service\ServiceContainer
+ * @covers \Novuso\Common\Application\Service\ServiceContainer
  */
 class ServiceContainerTest extends UnitTestCase
 {

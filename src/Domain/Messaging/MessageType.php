@@ -18,19 +18,19 @@ class MessageType extends Enum
      *
      * @var string
      */
-    const EVENT = 'event';
+    public const EVENT = 'event';
 
     /**
      * Command type
      *
      * @var string
      */
-    const COMMAND = 'command';
+    public const COMMAND = 'command';
 
     /**
      * Query type
      *
      * @var string
      */
-    const QUERY = 'query';
+    public const QUERY = 'query';
 }

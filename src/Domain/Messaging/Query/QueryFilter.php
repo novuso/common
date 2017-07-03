@@ -29,5 +29,5 @@ interface QueryFilter
      *
      * @throws Exception When an error occurs
      */
-    public function process(QueryMessage $message, callable $next);
+    public function process(QueryMessage $message, callable $next): void;
 }

@@ -22,5 +22,5 @@ interface CommandBus
      *
      * @throws Exception When an error occurs
      */
-    public function execute(Command $command);
+    public function execute(Command $command): void;
 }

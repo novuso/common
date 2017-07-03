@@ -8,7 +8,7 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * @covers Novuso\Common\Application\Http\Exception\HttpException
+ * @covers \Novuso\Common\Application\Http\Exception\HttpException
  */
 class HttpExceptionTest extends UnitTestCase
 {

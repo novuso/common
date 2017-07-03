@@ -22,5 +22,5 @@ interface CommandHandler
      *
      * @throws Exception When an error occurs
      */
-    public function handle(Command $command);
+    public function handle(Command $command): void;
 }

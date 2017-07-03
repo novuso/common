@@ -6,7 +6,6 @@ use Novuso\Common\Domain\Messaging\Event\Event;
 use Novuso\Common\Domain\Messaging\Event\EventDispatcher;
 use Novuso\Common\Domain\Messaging\Event\EventMessage;
 use Novuso\Common\Domain\Messaging\Event\EventSubscriber;
-use Novuso\Common\Domain\Model\Api\AggregateRoot;
 use Novuso\System\Utility\ClassName;
 
 /**
@@ -35,7 +34,7 @@ class SimpleEventDispatcher implements EventDispatcher
     /**
      * {@inheritdoc}
      */
-    public function dispatch(Event $event)
+    public function dispatch(Event $event): void
     {
         $message = EventMessage::create($event);
         $eventType = ClassName::underscore($event);
@@ -52,17 +51,7 @@ class SimpleEventDispatcher implements EventDispatcher
     /**
      * {@inheritdoc}
      */
-    public function dispatchEvents(AggregateRoot $aggregateRoot)
-    {
-        foreach ($aggregateRoot->extractRecordedEvents() as $event) {
-            $this->dispatch($event);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function register(EventSubscriber $subscriber)
+    public function register(EventSubscriber $subscriber): void
     {
         foreach ($subscriber->eventRegistration() as $eventType => $params) {
             if (is_string($params)) {
@@ -82,7 +71,7 @@ class SimpleEventDispatcher implements EventDispatcher
     /**
      * {@inheritdoc}
      */
-    public function unregister(EventSubscriber $subscriber)
+    public function unregister(EventSubscriber $subscriber): void
     {
         foreach ($subscriber->eventRegistration() as $eventType => $params) {
             if (is_array($params) && is_array($params[0])) {
@@ -99,7 +88,7 @@ class SimpleEventDispatcher implements EventDispatcher
     /**
      * {@inheritdoc}
      */
-    public function addHandler(string $eventType, callable $handler, int $priority = 0)
+    public function addHandler(string $eventType, callable $handler, int $priority = 0): void
     {
         if (!isset($this->handlers[$eventType])) {
             $this->handlers[$eventType] = [];
@@ -116,7 +105,7 @@ class SimpleEventDispatcher implements EventDispatcher
     /**
      * {@inheritdoc}
      */
-    public function getHandlers(string $eventType = null): array
+    public function getHandlers(?string $eventType = null): array
     {
         if ($eventType !== null) {
             if (!isset($this->handlers[$eventType])) {
@@ -142,7 +131,7 @@ class SimpleEventDispatcher implements EventDispatcher
     /**
      * {@inheritdoc}
      */
-    public function hasHandlers(string $eventType = null): bool
+    public function hasHandlers(?string $eventType = null): bool
     {
         return (bool) count($this->getHandlers($eventType));
     }
@@ -150,7 +139,7 @@ class SimpleEventDispatcher implements EventDispatcher
     /**
      * {@inheritdoc}
      */
-    public function removeHandler(string $eventType, callable $handler)
+    public function removeHandler(string $eventType, callable $handler): void
     {
         if (!isset($this->handlers[$eventType])) {
             return;
@@ -178,7 +167,7 @@ class SimpleEventDispatcher implements EventDispatcher
      *
      * @return void
      */
-    protected function sortHandlers(string $eventType)
+    protected function sortHandlers(string $eventType): void
     {
         $this->sorted[$eventType] = [];
         if (isset($this->handlers[$eventType])) {

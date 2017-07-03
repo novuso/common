@@ -2,7 +2,7 @@
 
 namespace Novuso\Common\Application\Templating;
 
-use Novuso\Common\Application\Templating\Exception\DuplicateHelperExtension;
+use Novuso\Common\Application\Templating\Exception\DuplicateHelperException;
 use Novuso\Common\Application\Templating\Exception\TemplatingException;
 
 /**
@@ -85,12 +85,12 @@ class DelegatingEngine implements TemplateEngine
     /**
      * {@inheritdoc}
      */
-    public function addHelper(TemplateHelper $helper)
+    public function addHelper(TemplateHelper $helper): void
     {
         $name = $helper->getName();
 
         if (isset($this->helpers[$name])) {
-            throw DuplicateHelperExtension::fromName($name);
+            throw DuplicateHelperException::fromName($name);
         }
 
         $this->helpers[$name] = $helper;
@@ -117,7 +117,7 @@ class DelegatingEngine implements TemplateEngine
      *
      * @return void
      */
-    public function addEngine(TemplateEngine $engine)
+    public function addEngine(TemplateEngine $engine): void
     {
         $this->engines[] = $engine;
     }

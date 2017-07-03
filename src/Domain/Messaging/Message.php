@@ -3,7 +3,7 @@
 namespace Novuso\Common\Domain\Messaging;
 
 use JsonSerializable;
-use Novuso\Common\Domain\Model\DateTime\DateTime;
+use Novuso\Common\Domain\DateTime\DateTime;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Serialization\Serializable;
 use Novuso\System\Type\Arrayable;
@@ -122,9 +122,9 @@ interface Message extends Arrayable, Comparable, Equatable, JsonSerializable, Se
     /**
      * Retrieves a value for JSON encoding
      *
-     * @return mixed
+     * @return array
      */
-    public function jsonSerialize();
+    public function jsonSerialize(): array;
 
     /**
      * Compares to another object

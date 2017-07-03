@@ -2,11 +2,12 @@
 
 namespace Novuso\Common\Domain\Messaging\Command;
 
+use Novuso\Common\Domain\DateTime\DateTime;
 use Novuso\Common\Domain\Messaging\BaseMessage;
+use Novuso\Common\Domain\Messaging\Message;
 use Novuso\Common\Domain\Messaging\MessageId;
 use Novuso\Common\Domain\Messaging\MessageType;
 use Novuso\Common\Domain\Messaging\MetaData;
-use Novuso\Common\Domain\Model\DateTime\DateTime;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Type\Type;
 use Novuso\System\Utility\Validate;
@@ -76,7 +77,7 @@ class CommandMessage extends BaseMessage
         $metaData = MetaData::create($data['meta_data']);
         /** @var Type $payloadType */
         $payloadType = Type::create($data['payload_type']);
-        /** @var string $payloadClass */
+        /** @var Command|string $payloadClass */
         $payloadClass = $payloadType->toClassName();
 
         assert(
@@ -93,15 +94,7 @@ class CommandMessage extends BaseMessage
     /**
      * {@inheritdoc}
      */
-    public function serialize(): array
-    {
-        return $this->toArray();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function withMetaData(MetaData $metaData)
+    public function withMetaData(MetaData $metaData): CommandMessage
     {
         /** @var Command $command */
         $command = $this->payload;
@@ -117,7 +110,7 @@ class CommandMessage extends BaseMessage
     /**
      * {@inheritdoc}
      */
-    public function mergeMetaData(MetaData $metaData)
+    public function mergeMetaData(MetaData $metaData): CommandMessage
     {
         $meta = clone $this->metaData;
         $meta->merge($metaData);

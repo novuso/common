@@ -2,7 +2,7 @@
 
 namespace Novuso\Test\Common\Resources\Domain\Model;
 
-use Novuso\Common\Domain\Model\UniqueId;
+use Novuso\Common\Domain\Identification\UniqueId;
 
 class ThingId extends UniqueId
 {

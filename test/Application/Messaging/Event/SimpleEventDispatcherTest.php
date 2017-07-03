@@ -9,7 +9,7 @@ use Novuso\Test\Common\Resources\Domain\Messaging\Event\UserRegisteredSubscriber
 use Novuso\Test\System\TestCase\UnitTestCase;
 
 /**
- * @covers Novuso\Common\Application\Messaging\Event\SimpleEventDispatcher
+ * @covers \Novuso\Common\Application\Messaging\Event\SimpleEventDispatcher
  */
 class SimpleEventDispatcherTest extends UnitTestCase
 {
@@ -29,20 +29,6 @@ class SimpleEventDispatcherTest extends UnitTestCase
         $this->dispatcher->register($subscriber);
         $event = new UserRegisteredEvent('jsmith@example.com', 'James', 'Smith', 'D');
         $this->dispatcher->dispatch($event);
-        $this->assertTrue($subscriber->isUserRegistered('jsmith@example.com'));
-    }
-
-    public function test_that_aggregate_event_is_dispatched_as_expected()
-    {
-        $subscriber = new UserRegisteredSubscriber();
-        $this->dispatcher->register($subscriber);
-        $events = [new UserRegisteredEvent('jsmith@example.com', 'James', 'Smith', 'D')];
-        $aggregate = $this->mock('Novuso\\Common\\Domain\\Model\\Api\\AggregateRoot');
-        $aggregate
-            ->shouldReceive('extractRecordedEvents')
-            ->once()
-            ->andReturn($events);
-        $this->dispatcher->dispatchEvents($aggregate);
         $this->assertTrue($subscriber->isUserRegistered('jsmith@example.com'));
     }
 

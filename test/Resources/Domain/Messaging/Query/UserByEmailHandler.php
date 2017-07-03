@@ -22,6 +22,7 @@ class UserByEmailHandler implements QueryHandler
 
     public function handle(Query $query)
     {
+        /** @var UserByEmailQuery $query */
         $email = $query->email();
         foreach ($this->users as $user) {
             if ($user['email'] === $email) {

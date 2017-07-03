@@ -2,7 +2,7 @@
 
 namespace Novuso\Common\Domain\Messaging;
 
-use Novuso\Common\Domain\Model\DateTime\DateTime;
+use Novuso\Common\Domain\DateTime\DateTime;
 use Novuso\System\Collection\ArrayCollection as Collection;
 use Novuso\System\Type\Type;
 use Novuso\System\Utility\Validate;
@@ -178,7 +178,15 @@ abstract class BaseMessage implements Message
     /**
      * {@inheritdoc}
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function serialize(): array
     {
         return $this->toArray();
     }

@@ -32,7 +32,7 @@ interface MailFactory
         string $body,
         string $fileName,
         string $contentType,
-        string $embedId = null
+        ?string $embedId = null
     ): Attachment;
 
     /**
@@ -49,7 +49,7 @@ interface MailFactory
         string $path,
         string $fileName,
         string $contentType,
-        string $embedId = null
+        ?string $embedId = null
     ): Attachment;
 
     /**

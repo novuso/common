@@ -10,7 +10,7 @@ use Novuso\Test\Common\Resources\Domain\Messaging\Event\UserRegisteredSubscriber
 use Novuso\Test\System\TestCase\UnitTestCase;
 
 /**
- * @covers Novuso\Common\Application\Messaging\Event\ServiceAwareEventDispatcher
+ * @covers \Novuso\Common\Application\Messaging\Event\ServiceAwareEventDispatcher
  */
 class ServiceAwareEventDispatcherTest extends UnitTestCase
 {

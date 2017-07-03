@@ -9,7 +9,7 @@ class RegisterUserHandler implements CommandHandler
 {
     protected $handled = false;
 
-    public function handle(Command $command)
+    public function handle(Command $command): void
     {
         $this->handled = true;
     }
