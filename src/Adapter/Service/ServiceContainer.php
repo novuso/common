@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Novuso\Common\Application\Service;
+namespace Novuso\Common\Adapter\Service;
 
 use ArrayAccess;
-use Novuso\Common\Application\Service\Exception\ServiceNotFoundException;
+use Novuso\Common\Adapter\Service\Exception\ServiceNotFoundException;
 use Psr\Container\ContainerInterface;
 
 /**

@@ -5,6 +5,7 @@ namespace Novuso\Common\Application\Messaging\Command;
 use Novuso\Common\Application\Messaging\Command\Routing\CommandRouter;
 use Novuso\Common\Domain\Messaging\Command\Command;
 use Novuso\Common\Domain\Messaging\Command\CommandBus;
+use Novuso\Common\Domain\Messaging\Command\CommandMessage;
 
 /**
  * RoutingCommandBus routes a command to a single handler
@@ -37,6 +38,17 @@ class RoutingCommandBus implements CommandBus
      */
     public function execute(Command $command): void
     {
-        $this->router->match($command)->handle($command);
+        $this->dispatch(CommandMessage::create($command));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function dispatch(CommandMessage $message): void
+    {
+        /** @var Command $command */
+        $command = $message->payload();
+
+        $this->router->match($command)->handle($message);
     }
 }

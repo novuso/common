@@ -23,9 +23,9 @@ interface MessageQueue
     /**
      * Removes and returns the next message from the queue
      *
-     * @return Message
+     * @return Message|null
      */
-    public function dequeue(): Message;
+    public function dequeue(): ?Message;
 
     /**
      * Acknowledges the message was processed

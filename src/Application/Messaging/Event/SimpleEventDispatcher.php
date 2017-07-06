@@ -34,10 +34,17 @@ class SimpleEventDispatcher implements EventDispatcher
     /**
      * {@inheritdoc}
      */
-    public function dispatch(Event $event): void
+    public function trigger(Event $event): void
     {
-        $message = EventMessage::create($event);
-        $eventType = ClassName::underscore($event);
+        $this->dispatch(EventMessage::create($event));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function dispatch(EventMessage $message): void
+    {
+        $eventType = ClassName::underscore($message->payload());
 
         foreach ($this->getHandlers($eventType) as $handler) {
             call_user_func($handler, $message);

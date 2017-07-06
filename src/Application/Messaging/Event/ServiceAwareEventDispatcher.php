@@ -2,7 +2,7 @@
 
 namespace Novuso\Common\Application\Messaging\Event;
 
-use Novuso\Common\Domain\Messaging\Event\Event;
+use Novuso\Common\Domain\Messaging\Event\EventMessage;
 use Novuso\Common\Domain\Messaging\Event\EventSubscriber;
 use Novuso\System\Utility\ClassName;
 use Novuso\System\Utility\Validate;
@@ -103,11 +103,11 @@ class ServiceAwareEventDispatcher extends SimpleEventDispatcher
     /**
      * {@inheritdoc}
      */
-    public function dispatch(Event $event): void
+    public function dispatch(EventMessage $message): void
     {
-        $this->lazyLoad(ClassName::underscore($event));
+        $this->lazyLoad(ClassName::underscore($message->payload()));
 
-        parent::dispatch($event);
+        parent::dispatch($message);
     }
 
     /**

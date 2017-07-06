@@ -14,7 +14,9 @@ use Exception;
 interface EventDispatcher
 {
     /**
-     * Dispatches an event
+     * Triggers an event
+     *
+     * The dispatcher should wrap the event in an event message, then dispatch
      *
      * @param Event $event The event
      *
@@ -22,7 +24,18 @@ interface EventDispatcher
      *
      * @throws Exception When an error occurs
      */
-    public function dispatch(Event $event): void;
+    public function trigger(Event $event): void;
+
+    /**
+     * Dispatches an event message
+     *
+     * @param EventMessage $message The event message
+     *
+     * @return void
+     *
+     * @throws Exception When an error occurs
+     */
+    public function dispatch(EventMessage $message): void;
 
     /**
      * Registers a subscriber to handle events

@@ -16,11 +16,11 @@ interface CommandHandler
     /**
      * Handles a command
      *
-     * @param Command $command The command
+     * @param CommandMessage $message The command message
      *
      * @return void
      *
      * @throws Exception When an error occurs
      */
-    public function handle(Command $command): void;
+    public function handle(CommandMessage $message): void;
 }
