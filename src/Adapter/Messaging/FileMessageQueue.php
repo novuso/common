@@ -93,6 +93,7 @@ class FileMessageQueue implements MessageQueue
         $files = array_keys(iterator_to_array($iterator));
 
         $message = null;
+
         if ($files) {
             $fileName = array_pop($files);
             $realPath = sprintf('%s%s%s', $directory, DIRECTORY_SEPARATOR, $fileName);
