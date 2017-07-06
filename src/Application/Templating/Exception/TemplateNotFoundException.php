@@ -2,7 +2,7 @@
 
 namespace Novuso\Common\Application\Templating\Exception;
 
-use Exception;
+use Throwable;
 
 /**
  * TemplateNotFoundException is thrown when a template is not found
@@ -17,11 +17,11 @@ class TemplateNotFoundException extends TemplatingException
      * Creates exception for a given template name
      *
      * @param string         $name     The template name
-     * @param Exception|null $previous The previous exception
+     * @param Throwable|null $previous The previous exception
      *
      * @return TemplateNotFoundException
      */
-    public static function fromName(string $name, ?Exception $previous = null): TemplateNotFoundException
+    public static function fromName(string $name, ?Throwable $previous = null): TemplateNotFoundException
     {
         $message = sprintf('Template not found: %s', $name);
 

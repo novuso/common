@@ -1,12 +1,12 @@
 <?php
 
-namespace Novuso\Test\Common\Application\Service\Exception;
+namespace Novuso\Test\Common\Adapter\Service\Exception;
 
-use Novuso\Common\Application\Service\Exception\ServiceContainerException;
+use Novuso\Common\Adapter\Service\Exception\ServiceContainerException;
 use Novuso\Test\System\TestCase\UnitTestCase;
 
 /**
- * @covers \Novuso\Common\Application\Service\Exception\ServiceContainerException
+ * @covers \Novuso\Common\Adapter\Service\Exception\ServiceContainerException
  */
 class ServiceContainerExceptionTest extends UnitTestCase
 {

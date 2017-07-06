@@ -74,8 +74,16 @@ class QueryPipeline implements QueryBus, QueryFilter
      */
     public function fetch(Query $query)
     {
+        return $this->dispatch(QueryMessage::create($query));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function dispatch(QueryMessage $message)
+    {
         $this->stack = clone $this->filters;
-        $this->pipe(QueryMessage::create($query));
+        $this->pipe($message);
 
         $results = $this->results;
         $this->results = null;

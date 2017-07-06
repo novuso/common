@@ -2,14 +2,14 @@
 
 namespace Novuso\Test\Common\Resources\Domain\Messaging\Command;
 
-use Novuso\Common\Domain\Messaging\Command\Command;
 use Novuso\Common\Domain\Messaging\Command\CommandHandler;
+use Novuso\Common\Domain\Messaging\Command\CommandMessage;
 
 class RegisterUserHandler implements CommandHandler
 {
     protected $handled = false;
 
-    public function handle(Command $command): void
+    public function handle(CommandMessage $message): void
     {
         $this->handled = true;
     }

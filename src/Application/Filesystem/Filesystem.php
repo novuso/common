@@ -218,6 +218,17 @@ interface Filesystem
     public function lastModified(string $path): int;
 
     /**
+     * Retrieves the last accessed timestamp of a file
+     *
+     * @param string $path The file path
+     *
+     * @return int
+     *
+     * @throws FilesystemException When an error occurs
+     */
+    public function lastAccessed(string $path): int;
+
+    /**
      * Retrieves the size of a file in bytes
      *
      * @param string $path The file path

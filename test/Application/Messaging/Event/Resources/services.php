@@ -1,7 +1,7 @@
 <?php
 
+use Novuso\Common\Adapter\Service\ServiceContainer;
 use Novuso\Common\Application\Messaging\Event\ServiceAwareEventDispatcher;
-use Novuso\Common\Application\Service\ServiceContainer;
 use Novuso\Test\Common\Resources\Domain\Messaging\Event\UserRegisteredSubscriber;
 
 $container = new ServiceContainer();

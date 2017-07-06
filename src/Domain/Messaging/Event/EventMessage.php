@@ -4,7 +4,6 @@ namespace Novuso\Common\Domain\Messaging\Event;
 
 use Novuso\Common\Domain\DateTime\DateTime;
 use Novuso\Common\Domain\Messaging\BaseMessage;
-use Novuso\Common\Domain\Messaging\Message;
 use Novuso\Common\Domain\Messaging\MessageId;
 use Novuso\Common\Domain\Messaging\MessageType;
 use Novuso\Common\Domain\Messaging\MetaData;

@@ -2,8 +2,8 @@
 
 namespace Novuso\Common\Application\Templating\Exception;
 
-use Exception;
 use Novuso\System\Exception\RuntimeException;
+use Throwable;
 
 /**
  * DuplicateHelperException is thrown when a helper name is duplicated
@@ -26,9 +26,9 @@ class DuplicateHelperException extends RuntimeException
      *
      * @param string         $message  The message
      * @param string|null    $name     The helper name
-     * @param Exception|null $previous The previous exception
+     * @param Throwable|null $previous The previous exception
      */
-    public function __construct(string $message, ?string $name = null, ?Exception $previous = null)
+    public function __construct(string $message, ?string $name = null, ?Throwable $previous = null)
     {
         $this->name = $name;
         parent::__construct($message, 0, $previous);
@@ -38,11 +38,11 @@ class DuplicateHelperException extends RuntimeException
      * Creates exception for a given helper name
      *
      * @param string         $name     The helper name
-     * @param Exception|null $previous The previous exception
+     * @param Throwable|null $previous The previous exception
      *
      * @return DuplicateHelperException
      */
-    public static function fromName(string $name, ?Exception $previous = null): DuplicateHelperException
+    public static function fromName(string $name, ?Throwable $previous = null): DuplicateHelperException
     {
         $message = sprintf('Duplicate helper: %s', $name);
 

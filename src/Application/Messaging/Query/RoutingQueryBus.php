@@ -5,6 +5,7 @@ namespace Novuso\Common\Application\Messaging\Query;
 use Novuso\Common\Application\Messaging\Query\Routing\QueryRouter;
 use Novuso\Common\Domain\Messaging\Query\Query;
 use Novuso\Common\Domain\Messaging\Query\QueryBus;
+use Novuso\Common\Domain\Messaging\Query\QueryMessage;
 
 /**
  * RoutingQueryBus routes a query to a single handler
@@ -37,6 +38,17 @@ class RoutingQueryBus implements QueryBus
      */
     public function fetch(Query $query)
     {
-        return $this->router->match($query)->handle($query);
+        return $this->dispatch(QueryMessage::create($query));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function dispatch(QueryMessage $message)
+    {
+        /** @var Query $query */
+        $query = $message->payload();
+
+        return $this->router->match($query)->handle($message);
     }
 }

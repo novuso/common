@@ -2,8 +2,8 @@
 
 namespace Novuso\Test\Common\Application\Messaging\Event;
 
+use Novuso\Common\Adapter\Service\ServiceContainer;
 use Novuso\Common\Application\Messaging\Event\ServiceAwareEventDispatcher;
-use Novuso\Common\Application\Service\Container;
 use Novuso\System\Utility\ClassName;
 use Novuso\Test\Common\Resources\Domain\Messaging\Event\UserRegisteredEvent;
 use Novuso\Test\Common\Resources\Domain\Messaging\Event\UserRegisteredSubscriber;
@@ -15,7 +15,7 @@ use Novuso\Test\System\TestCase\UnitTestCase;
 class ServiceAwareEventDispatcherTest extends UnitTestCase
 {
     /**
-     * @var Container
+     * @var ServiceContainer
      */
     protected $container;
 
@@ -29,7 +29,7 @@ class ServiceAwareEventDispatcherTest extends UnitTestCase
         /** @var ServiceAwareEventDispatcher $dispatcher */
         $dispatcher = $this->container->get('event.dispatcher');
         $event = new UserRegisteredEvent('jsmith@example.com', 'James', 'Smith', 'D');
-        $dispatcher->dispatch($event);
+        $dispatcher->trigger($event);
         /** @var UserRegisteredSubscriber $subscriber */
         $subscriber = $this->container->get('subscriber.user_registered');
         $this->assertTrue($subscriber->isUserRegistered('jsmith@example.com'));
@@ -89,12 +89,12 @@ class ServiceAwareEventDispatcherTest extends UnitTestCase
         /** @var ServiceAwareEventDispatcher $dispatcher */
         $dispatcher = $this->container->get('event.dispatcher');
         $event = new UserRegisteredEvent('jsmith@example.com', 'James', 'Smith', 'D');
-        $dispatcher->dispatch($event);
+        $dispatcher->trigger($event);
         $this->container->set('subscriber.user_registered', function () {
             return new UserRegisteredSubscriber();
         });
         $subscriber = $this->container->get('subscriber.user_registered');
-        $dispatcher->dispatch($event);
+        $dispatcher->trigger($event);
         $this->assertTrue($subscriber->isUserRegistered('jsmith@example.com'));
     }
 }

@@ -37,7 +37,7 @@ class EventLoggerTest extends UnitTestCase
     public function test_that_event_is_logged_by_subscriber()
     {
         $event = new UserRegisteredEvent('jsmith@example.com', 'James', 'Smith', 'D');
-        $this->dispatcher->dispatch($event);
+        $this->dispatcher->trigger($event);
         $this->assertTrue($this->logHandler->hasInfoThatContains(sprintf(
             'Event dispatched {%s}',
             ClassName::canonical(UserRegisteredEvent::class)

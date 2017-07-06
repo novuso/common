@@ -23,4 +23,15 @@ interface QueryBus
      * @throws Exception When an error occurs
      */
     public function fetch(Query $query);
+
+    /**
+     * Dispatches a command message
+     *
+     * @param QueryMessage $message The query message
+     *
+     * @return mixed
+     *
+     * @throws Exception When an error occurs
+     */
+    public function dispatch(QueryMessage $message);
 }

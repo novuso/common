@@ -1,13 +1,13 @@
 <?php
 
-namespace Novuso\Test\Common\Application\Service;
+namespace Novuso\Test\Common\Adapter\Service;
 
 use DateTime;
-use Novuso\Common\Application\Service\ServiceContainer;
+use Novuso\Common\Adapter\Service\ServiceContainer;
 use Novuso\Test\System\TestCase\UnitTestCase;
 
 /**
- * @covers \Novuso\Common\Application\Service\ServiceContainer
+ * @covers \Novuso\Common\Adapter\Service\ServiceContainer
  */
 class ServiceContainerTest extends UnitTestCase
 {
@@ -83,7 +83,7 @@ class ServiceContainerTest extends UnitTestCase
     }
 
     /**
-     * @expectedException \Novuso\Common\Application\Service\Exception\ServiceNotFoundException
+     * @expectedException \Novuso\Common\Adapter\Service\Exception\ServiceNotFoundException
      */
     public function test_that_get_throws_exception_for_undefined_service()
     {

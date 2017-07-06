@@ -16,11 +16,11 @@ interface QueryHandler
     /**
      * Handles a query
      *
-     * @param Query $query The query
+     * @param QueryMessage $message The query message
      *
      * @return mixed
      *
      * @throws Exception When an error occurs
      */
-    public function handle(Query $query);
+    public function handle(QueryMessage $message);
 }

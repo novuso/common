@@ -28,7 +28,7 @@ class SimpleEventDispatcherTest extends UnitTestCase
         $subscriber = new UserRegisteredSubscriber();
         $this->dispatcher->register($subscriber);
         $event = new UserRegisteredEvent('jsmith@example.com', 'James', 'Smith', 'D');
-        $this->dispatcher->dispatch($event);
+        $this->dispatcher->trigger($event);
         $this->assertTrue($subscriber->isUserRegistered('jsmith@example.com'));
     }
 
@@ -38,7 +38,7 @@ class SimpleEventDispatcherTest extends UnitTestCase
         $this->dispatcher->register($subscriber);
         $this->dispatcher->unregister($subscriber);
         $event = new UserRegisteredEvent('jsmith@example.com', 'James', 'Smith', 'D');
-        $this->dispatcher->dispatch($event);
+        $this->dispatcher->trigger($event);
         $this->assertFalse($subscriber->isUserRegistered('jsmith@example.com'));
     }
 
@@ -60,7 +60,7 @@ class SimpleEventDispatcherTest extends UnitTestCase
         $subscriber = new EventLogSubscriber();
         $this->dispatcher->register($subscriber);
         $event = new UserRegisteredEvent('jsmith@example.com', 'James', 'Smith', 'D');
-        $this->dispatcher->dispatch($event);
+        $this->dispatcher->trigger($event);
         $logs = $subscriber->getLogs();
         $payload = '{prefix:NULL,first_name:James,middle_name:D,last_name:Smith,suffix:NULL,email:jsmith@example.com}';
         $this->assertContains($payload, $logs[0]);

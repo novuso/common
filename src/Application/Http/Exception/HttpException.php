@@ -27,13 +27,13 @@ class HttpException extends RequestException
      * @param string            $message  The message
      * @param RequestInterface  $request  The request
      * @param ResponseInterface $response The response
-     * @param \Exception|null   $previous The previous exception
+     * @param \Throwable|null   $previous The previous exception
      */
     public function __construct(
         string $message,
         RequestInterface $request,
         ResponseInterface $response,
-        \Exception $previous = null
+        \Throwable $previous = null
     ) {
         $this->response = $response;
         parent::__construct($message, $request, $previous);
@@ -45,14 +45,14 @@ class HttpException extends RequestException
      *
      * @param RequestInterface  $request  The request
      * @param ResponseInterface $response The response
-     * @param \Exception|null   $previous The previous exception
+     * @param \Throwable|null   $previous The previous exception
      *
      * @return HttpException
      */
     public static function create(
         RequestInterface $request,
         ResponseInterface $response,
-        \Exception $previous = null
+        \Throwable $previous = null
     ): HttpException {
         $message = sprintf(
             '[url]:%s [http method]:%s [status code]:%s [reason phrase]:%s',

@@ -2,7 +2,7 @@
 
 namespace Novuso\Test\Common\Application\Messaging\Command\Routing;
 
-use Novuso\Common\Application\Service\Container;
+use Novuso\Common\Adapter\Service\ServiceContainer;
 use Novuso\Common\Domain\Messaging\Command\CommandBus;
 use Novuso\Test\Common\Resources\Domain\Messaging\Command\RegisterUserCommand;
 use Novuso\Test\Common\Resources\Domain\Messaging\Command\RegisterUserHandler;
@@ -15,7 +15,7 @@ use Novuso\Test\System\TestCase\UnitTestCase;
 class ServiceAwareCommandRouterTest extends UnitTestCase
 {
     /**
-     * @var Container
+     * @var ServiceContainer
      */
     protected $container;
 

@@ -1,10 +1,12 @@
 <?php
 
-namespace Novuso\Common\Application\Templating;
+namespace Novuso\Common\Adapter\Templating;
 
 use Novuso\Common\Application\Templating\Exception\DuplicateHelperException;
 use Novuso\Common\Application\Templating\Exception\TemplateNotFoundException;
 use Novuso\Common\Application\Templating\Exception\TemplatingException;
+use Novuso\Common\Application\Templating\TemplateEngine;
+use Novuso\Common\Application\Templating\TemplateHelper;
 
 /**
  * PhpEngine is a template engine supporting PHP templates
