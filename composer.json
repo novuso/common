@@ -33,7 +33,8 @@
             "Novuso\\Common\\Adapter\\": "src/Adapter",
             "Novuso\\Common\\Application\\": "src/Application",
             "Novuso\\Common\\Domain\\": "src/Domain"
-        }
+        },
+        "files": ["src/functions.php"]
     },
     "autoload-dev": {
         "psr-4": {
