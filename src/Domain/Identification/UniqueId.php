@@ -4,7 +4,10 @@ namespace Novuso\Common\Domain\Identification;
 
 use Novuso\Common\Domain\Type\ValueObject;
 use Novuso\System\Exception\DomainException;
-use Novuso\System\Utility\Validate;
+use function Novuso\Common\Functions\{
+    same_type,
+    uuid
+};
 
 /**
  * UniqueId is the base class for UUID based identifiers
@@ -37,7 +40,7 @@ abstract class UniqueId extends ValueObject implements Identifier, IdentifierFac
      */
     public static function generate()
     {
-        return new static(Uuid::comb());
+        return new static(uuid());
     }
 
     /**
@@ -72,7 +75,7 @@ abstract class UniqueId extends ValueObject implements Identifier, IdentifierFac
         }
 
         assert(
-            Validate::areSameType($this, $object),
+            same_type($this, $object),
             sprintf('Comparison requires instance of %s', static::class)
         );
 
@@ -88,7 +91,7 @@ abstract class UniqueId extends ValueObject implements Identifier, IdentifierFac
             return true;
         }
 
-        if (!Validate::areSameType($this, $object)) {
+        if (!same_type($this, $object)) {
             return false;
         }
 

@@ -7,7 +7,10 @@ use Novuso\Common\Domain\Type\ValueObject;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Type\Comparable;
 use Novuso\System\Utility\Validate;
-use Novuso\System\Utility\VarPrinter;
+use function Novuso\Common\Functions\{
+    same_type,
+    var_print
+};
 
 /**
  * Timezone represents a time zone
@@ -35,7 +38,7 @@ class Timezone extends ValueObject implements Comparable
     public function __construct($value)
     {
         if (!Validate::isTimezone($value)) {
-            $message = sprintf('Invalid timezone: %s', VarPrinter::toString($value));
+            $message = sprintf('Invalid timezone: %s', var_print($value));
             throw new DomainException($message);
         }
 
@@ -78,7 +81,7 @@ class Timezone extends ValueObject implements Comparable
         }
 
         assert(
-            Validate::areSameType($this, $object),
+            same_type($this, $object),
             sprintf('Comparison requires instance of %s', static::class)
         );
 
@@ -98,10 +101,7 @@ class Timezone extends ValueObject implements Comparable
 
         $strComp = strnatcmp($thisVal, $thatVal);
 
-        /** @var int $comp */
-        $comp = $strComp <=> 0;
-
-        return $comp;
+        return $strComp <=> 0;
     }
 
     /**
@@ -131,10 +131,7 @@ class Timezone extends ValueObject implements Comparable
         if (isset($thisParts[2]) && isset($thatParts[2])) {
             $compSub = strnatcmp($thisParts[2], $thatParts[2]);
 
-            /** @var int $comp */
-            $comp = $compSub <=> 0;
-
-            return $comp;
+            return $compSub <=> 0;
         }
 
         return 0;
