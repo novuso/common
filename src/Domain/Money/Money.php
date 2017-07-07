@@ -8,8 +8,10 @@ use Novuso\System\Exception\DomainException;
 use Novuso\System\Exception\RangeException;
 use Novuso\System\Exception\TypeException;
 use Novuso\System\Type\Comparable;
-use Novuso\System\Utility\Validate;
-use Novuso\System\Utility\VarPrinter;
+use function Novuso\Common\Functions\{
+    same_type,
+    var_print
+};
 
 /**
  * Money represents a monetary value
@@ -364,7 +366,7 @@ class Money extends ValueObject implements Comparable
         }
 
         assert(
-            Validate::areSameType($this, $object),
+            same_type($this, $object),
             sprintf('Comparison requires instance of %s', static::class)
         );
 
@@ -471,7 +473,7 @@ class Money extends ValueObject implements Comparable
             $message = sprintf(
                 'Operand must be an integer or float; received (%s) %s',
                 gettype($operand),
-                VarPrinter::toString($operand)
+                var_print($operand)
             );
             throw new DomainException($message);
         }

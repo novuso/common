@@ -7,12 +7,13 @@ use ArrayIterator;
 use Countable;
 use IteratorAggregate;
 use JsonSerializable;
-use Novuso\System\Collection\ArrayCollection;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Type\Arrayable;
-use Novuso\System\Utility\Validate;
-use Novuso\System\Utility\VarPrinter;
 use Traversable;
+use function Novuso\Common\Functions\{
+    collect,
+    var_print
+};
 
 /**
  * MetaData contains informational data related to a message
@@ -39,7 +40,7 @@ class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggregate, 
      */
     public function __construct(array $data = [])
     {
-        ArrayCollection::create($data)->each(function ($value, $key) {
+        collect($data)->each(function ($value, $key) {
             $this->set($key, $value);
         });
     }
@@ -156,8 +157,8 @@ class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggregate, 
     public function offsetSet($key, $value): void
     {
         assert(
-            Validate::isString($key),
-            sprintf('Invalid metadata key: (%s) %s', gettype($key), VarPrinter::toString($key))
+            is_string($key),
+            sprintf('Invalid metadata key: (%s) %s', gettype($key), var_print($key))
         );
 
         $this->set($key, $value);
@@ -173,8 +174,8 @@ class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggregate, 
     public function offsetGet($key)
     {
         assert(
-            Validate::isString($key),
-            sprintf('Invalid metadata key: (%s) %s', gettype($key), VarPrinter::toString($key))
+            is_string($key),
+            sprintf('Invalid metadata key: (%s) %s', gettype($key), var_print($key))
         );
 
         return $this->get($key);
@@ -190,8 +191,8 @@ class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggregate, 
     public function offsetExists($key): bool
     {
         assert(
-            Validate::isString($key),
-            sprintf('Invalid metadata key: (%s) %s', gettype($key), VarPrinter::toString($key))
+            is_string($key),
+            sprintf('Invalid metadata key: (%s) %s', gettype($key), var_print($key))
         );
 
         return $this->has($key);
@@ -207,8 +208,8 @@ class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggregate, 
     public function offsetUnset($key): void
     {
         assert(
-            Validate::isString($key),
-            sprintf('Invalid metadata key: (%s) %s', gettype($key), VarPrinter::toString($key))
+            is_string($key),
+            sprintf('Invalid metadata key: (%s) %s', gettype($key), var_print($key))
         );
 
         $this->remove($key);
@@ -322,7 +323,7 @@ class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggregate, 
                 return true;
                 break;
             case 'array':
-                return ArrayCollection::create($value)->every(function ($v) {
+                return collect($value)->every(function ($v) {
                     return $this->isValid($v);
                 });
                 break;

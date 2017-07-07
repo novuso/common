@@ -2,8 +2,10 @@
 
 namespace Novuso\Common\Domain\Type;
 
-use Closure;
-use Novuso\System\Utility\Validate;
+use function Novuso\Common\Functions\{
+    bind,
+    same_type
+};
 
 /**
  * ValueObject is the base class for domain value objects
@@ -49,9 +51,9 @@ abstract class ValueObject implements Value
      */
     public function serialize(): string
     {
-        return call_user_func(Closure::bind(function () {
+        return call_user_func(bind(function () {
             return serialize(get_object_vars($this));
-        }, $this, static::class));
+        }, $this));
     }
 
     /**
@@ -59,12 +61,12 @@ abstract class ValueObject implements Value
      */
     public function unserialize($serialized): void
     {
-        call_user_func(Closure::bind(function () use ($serialized) {
+        call_user_func(bind(function () use ($serialized) {
             $properties = unserialize($serialized);
             foreach ($properties as $property => $value) {
                 $this->$property = $value;
             }
-        }, $this, static::class));
+        }, $this));
     }
 
     /**
@@ -76,7 +78,7 @@ abstract class ValueObject implements Value
             return true;
         }
 
-        if (!Validate::areSameType($this, $object)) {
+        if (!same_type($this, $object)) {
             return false;
         }
 

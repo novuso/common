@@ -5,8 +5,10 @@ namespace Novuso\Common\Domain\Resource;
 use Novuso\Common\Domain\Type\ValueObject;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Type\Comparable;
-use Novuso\System\Utility\Validate;
-use Novuso\System\Utility\VarPrinter;
+use function Novuso\Common\Functions\{
+    same_type,
+    var_print
+};
 
 /**
  * Uri represents a uniform resource identifier
@@ -457,7 +459,7 @@ class Uri extends ValueObject implements Comparable
         }
 
         assert(
-            Validate::areSameType($this, $object),
+            same_type($this, $object),
             sprintf('Comparison requires instance of %s', static::class)
         );
 
@@ -585,7 +587,7 @@ class Uri extends ValueObject implements Comparable
     protected static function normalizeScheme(?string $scheme): string
     {
         if (!static::isValidScheme($scheme)) {
-            $message = sprintf('Invalid URI scheme: %s', VarPrinter::toString($scheme));
+            $message = sprintf('Invalid URI scheme: %s', var_print($scheme));
             throw new DomainException($message);
         }
 

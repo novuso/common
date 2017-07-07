@@ -6,8 +6,8 @@ use Novuso\Common\Domain\Messaging\Command\Command;
 use Novuso\Common\Domain\Messaging\Command\CommandHandler;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Exception\LookupException;
-use Novuso\System\Type\Type;
 use Novuso\System\Utility\Validate;
+use function Novuso\Common\Functions\type;
 
 /**
  * InMemoryCommandMap is a command class to handler instance map
@@ -63,7 +63,7 @@ class InMemoryCommandMap
             throw new DomainException($message);
         }
 
-        $type = Type::create($commandClass)->toString();
+        $type = type($commandClass)->toString();
 
         $this->handlers[$type] = $handler;
     }
@@ -79,7 +79,7 @@ class InMemoryCommandMap
      */
     public function getHandler(string $commandClass): CommandHandler
     {
-        $type = Type::create($commandClass)->toString();
+        $type = type($commandClass)->toString();
 
         if (!isset($this->handlers[$type])) {
             $message = sprintf('Handler not defined for command: %s', $commandClass);
@@ -98,7 +98,7 @@ class InMemoryCommandMap
      */
     public function hasHandler(string $commandClass): bool
     {
-        $type = Type::create($commandClass)->toString();
+        $type = type($commandClass)->toString();
 
         return isset($this->handlers[$type]);
     }

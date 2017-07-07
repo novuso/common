@@ -6,9 +6,9 @@ use Novuso\Common\Domain\Messaging\Command\Command;
 use Novuso\Common\Domain\Messaging\Command\CommandHandler;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Exception\LookupException;
-use Novuso\System\Type\Type;
 use Novuso\System\Utility\Validate;
 use Psr\Container\ContainerInterface;
+use function Novuso\Common\Functions\type;
 
 /**
  * ServiceAwareCommandMap is a command class to handler service map
@@ -81,7 +81,7 @@ class ServiceAwareCommandMap
             throw new DomainException($message);
         }
 
-        $type = Type::create($commandClass)->toString();
+        $type = type($commandClass)->toString();
 
         $this->handlers[$type] = $serviceName;
     }
@@ -102,7 +102,7 @@ class ServiceAwareCommandMap
             throw new LookupException($message);
         }
 
-        $type = Type::create($commandClass)->toString();
+        $type = type($commandClass)->toString();
         $service = $this->handlers[$type];
 
         return $this->container->get($service);
@@ -117,7 +117,7 @@ class ServiceAwareCommandMap
      */
     public function hasHandler(string $commandClass): bool
     {
-        $type = Type::create($commandClass)->toString();
+        $type = type($commandClass)->toString();
 
         if (!isset($this->handlers[$type])) {
             return false;

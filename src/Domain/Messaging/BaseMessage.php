@@ -3,10 +3,13 @@
 namespace Novuso\Common\Domain\Messaging;
 
 use Novuso\Common\Domain\DateTime\DateTime;
-use Novuso\System\Collection\ArrayCollection as Collection;
 use Novuso\System\Type\Type;
-use Novuso\System\Utility\Validate;
-use Novuso\System\Utility\VarPrinter;
+use function Novuso\Common\Functions\{
+    collect,
+    same_type,
+    type,
+    var_print
+};
 
 /**
  * BaseMessage is the base class for a domain message
@@ -79,7 +82,7 @@ abstract class BaseMessage implements Message
         $this->type = $type;
         $this->timestamp = $timestamp;
         $this->payload = $payload;
-        $this->payloadType = Type::create($payload);
+        $this->payloadType = type($payload);
         $this->metaData = $metaData;
     }
 
@@ -136,18 +139,18 @@ abstract class BaseMessage implements Message
      */
     public function toString(): string
     {
-        return sprintf('{%s}', Collection::create()
+        return sprintf('{%s}', collect()
             ->push(sprintf('id:%s', $this->id->toString()))
             ->push(sprintf('type:%s', $this->type->value()))
             ->push(sprintf('timestamp:%s', $this->timestamp->toString()))
-            ->push(sprintf('meta_data:{%s}', Collection::create($this->metaData->toArray())
+            ->push(sprintf('meta_data:{%s}', collect($this->metaData->toArray())
                 ->implode(',', function ($value, $key) {
-                    return sprintf('%s:%s', $key, VarPrinter::toString($value));
+                    return sprintf('%s:%s', $key, var_print($value));
                 })))
             ->push(sprintf('payload_type:%s', $this->payloadType->toString()))
-            ->push(sprintf('payload:{%s}', Collection::create($this->payload->toArray())
+            ->push(sprintf('payload:{%s}', collect($this->payload->toArray())
                 ->implode(',', function ($value, $key) {
-                    return sprintf('%s:%s', $key, VarPrinter::toString($value));
+                    return sprintf('%s:%s', $key, var_print($value));
                 })))
             ->implode(','));
     }
@@ -201,7 +204,7 @@ abstract class BaseMessage implements Message
         }
 
         assert(
-            Validate::areSameType($this, $object),
+            same_type($this, $object),
             sprintf('Comparison requires instance of %s', static::class)
         );
 
@@ -222,7 +225,7 @@ abstract class BaseMessage implements Message
             return true;
         }
 
-        if (!Validate::areSameType($this, $object)) {
+        if (!same_type($this, $object)) {
             return false;
         }
 

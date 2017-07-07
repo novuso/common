@@ -1,0 +1,11 @@
+# {{ ansible_managed }}
+
+[program:{{ supervisor_worker_program }}]
+process_name=%(program_name)s_%(process_num)02d
+command={{ supervisor_worker_command }}
+autostart={{ supervisor_worker_autostart }}
+autorestart={{ supervisor_worker_autorestart }}
+user={{ supervisor_worker_user }}
+numprocs={{ supervisor_worker_num_procs }}
+redirect_stderr={{ supervisor_worker_redirect_stderror }}
+stdout_logfile={{ supervisor_worker_stdout_logfile }}

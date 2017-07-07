@@ -128,7 +128,7 @@ class QueueWorkerCommand extends Command
     protected function getOptions(): array
     {
         return [
-            ['persist', 'p', InputOption::VALUE_NONE, 'Whether worker should run continually']
+            ['persist', 'p', InputOption::VALUE_NONE, 'Worker should not exit after each message']
         ];
     }
 }

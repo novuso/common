@@ -6,9 +6,9 @@ use Novuso\Common\Domain\Messaging\Query\Query;
 use Novuso\Common\Domain\Messaging\Query\QueryHandler;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Exception\LookupException;
-use Novuso\System\Type\Type;
 use Novuso\System\Utility\Validate;
 use Psr\Container\ContainerInterface;
+use function Novuso\Common\Functions\type;
 
 /**
  * ServiceAwareQueryMap is a query class to handler service map
@@ -81,7 +81,7 @@ class ServiceAwareQueryMap
             throw new DomainException($message);
         }
 
-        $type = Type::create($queryClass)->toString();
+        $type = type($queryClass)->toString();
 
         $this->handlers[$type] = $serviceName;
     }
@@ -102,7 +102,7 @@ class ServiceAwareQueryMap
             throw new LookupException($message);
         }
 
-        $type = Type::create($queryClass)->toString();
+        $type = type($queryClass)->toString();
         $service = $this->handlers[$type];
 
         return $this->container->get($service);
@@ -117,7 +117,7 @@ class ServiceAwareQueryMap
      */
     public function hasHandler(string $queryClass): bool
     {
-        $type = Type::create($queryClass)->toString();
+        $type = type($queryClass)->toString();
 
         if (!isset($this->handlers[$type])) {
             return false;

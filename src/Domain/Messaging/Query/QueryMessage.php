@@ -10,7 +10,12 @@ use Novuso\Common\Domain\Messaging\MetaData;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Type\Type;
 use Novuso\System\Utility\Validate;
-use Novuso\System\Utility\VarPrinter;
+use function Novuso\Common\Functions\{
+    date_time_now,
+    date_time_from_string,
+    type,
+    var_print
+};
 
 /**
  * QueryMessage is a domain query message
@@ -43,7 +48,7 @@ class QueryMessage extends BaseMessage
      */
     public static function create(Query $query): QueryMessage
     {
-        $timestamp = DateTime::now();
+        $timestamp = date_time_now();
         $id = MessageId::generate();
         $metaData = MetaData::create();
 
@@ -58,7 +63,7 @@ class QueryMessage extends BaseMessage
         $keys = ['id', 'type', 'timestamp', 'meta_data', 'payload_type', 'payload'];
         foreach ($keys as $key) {
             if (!isset($data[$key])) {
-                $message = sprintf('Invalid serialization data: %s', VarPrinter::toString($data));
+                $message = sprintf('Invalid serialization data: %s', var_print($data));
                 throw new DomainException($message);
             }
         }
@@ -71,12 +76,12 @@ class QueryMessage extends BaseMessage
         /** @var MessageId $id */
         $id = MessageId::fromString($data['id']);
         /** @var DateTime $timestamp */
-        $timestamp = DateTime::fromString($data['timestamp']);
+        $timestamp = date_time_from_string($data['timestamp']);
         /** @var MetaData $metaData */
         $metaData = MetaData::create($data['meta_data']);
         /** @var Type $payloadType */
-        $payloadType = Type::create($data['payload_type']);
-        /** @var string $payloadClass */
+        $payloadType = type($data['payload_type']);
+        /** @var Query|string $payloadClass */
         $payloadClass = $payloadType->toClassName();
 
         assert(

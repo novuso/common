@@ -6,8 +6,8 @@ use Novuso\Common\Domain\Messaging\Query\Query;
 use Novuso\Common\Domain\Messaging\Query\QueryHandler;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Exception\LookupException;
-use Novuso\System\Type\Type;
 use Novuso\System\Utility\Validate;
+use function Novuso\Common\Functions\type;
 
 /**
  * InMemoryQueryMap is a query class to handler instance map
@@ -63,7 +63,7 @@ class InMemoryQueryMap
             throw new DomainException($message);
         }
 
-        $type = Type::create($queryClass)->toString();
+        $type = type($queryClass)->toString();
 
         $this->handlers[$type] = $handler;
     }
@@ -79,7 +79,7 @@ class InMemoryQueryMap
      */
     public function getHandler(string $queryClass): QueryHandler
     {
-        $type = Type::create($queryClass)->toString();
+        $type = type($queryClass)->toString();
 
         if (!isset($this->handlers[$type])) {
             $message = sprintf('Handler not defined for query: %s', $queryClass);
@@ -98,7 +98,7 @@ class InMemoryQueryMap
      */
     public function hasHandler(string $queryClass): bool
     {
-        $type = Type::create($queryClass)->toString();
+        $type = type($queryClass)->toString();
 
         return isset($this->handlers[$type]);
     }

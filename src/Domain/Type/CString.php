@@ -4,13 +4,15 @@ namespace Novuso\Common\Domain\Type;
 
 use Novuso\Common\Domain\Type\Traits\StringOffsets;
 use Novuso\System\Collection\Api\IndexedList;
-use Novuso\System\Collection\ArrayList;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Exception\ImmutableException;
 use Novuso\System\Exception\IndexException;
-use Novuso\System\Utility\Validate;
-use Novuso\System\Utility\VarPrinter;
 use Traversable;
+use function Novuso\Common\Functions\{
+    list_of,
+    var_print,
+    same_type
+};
 
 /**
  * CString is a wrapper for a standard ASCII string
@@ -140,8 +142,8 @@ class CString extends ValueObject implements StringLiteral
     public function offsetGet($index): string
     {
         assert(
-            Validate::isInt($index),
-            sprintf('Invalid character index: %s', VarPrinter::toString($index))
+            is_int($index),
+            sprintf('Invalid character index: %s', var_print($index))
         );
 
         return $this->get($index);
@@ -153,8 +155,8 @@ class CString extends ValueObject implements StringLiteral
     public function offsetExists($index): bool
     {
         assert(
-            Validate::isInt($index),
-            sprintf('Invalid character index: %s', VarPrinter::toString($index))
+            is_int($index),
+            sprintf('Invalid character index: %s', var_print($index))
         );
 
         return $this->has($index);
@@ -173,7 +175,7 @@ class CString extends ValueObject implements StringLiteral
      */
     public function chars(): IndexedList
     {
-        $list = ArrayList::of('string');
+        $list = list_of('string');
 
         foreach (str_split($this->value) as $char) {
             $list->add($char);
@@ -573,7 +575,7 @@ class CString extends ValueObject implements StringLiteral
             $parts = explode($delimiter, $this->value, $limit);
         }
 
-        $list = ArrayList::of(static::class);
+        $list = list_of(static::class);
 
         foreach ($parts as $part) {
             $list->add(static::create($part));
@@ -593,7 +595,7 @@ class CString extends ValueObject implements StringLiteral
         }
 
         $parts = str_split($this->value, $size);
-        $list = ArrayList::of(static::class);
+        $list = list_of(static::class);
 
         foreach ($parts as $part) {
             $list->add(static::create($part));
@@ -831,16 +833,13 @@ class CString extends ValueObject implements StringLiteral
         }
 
         assert(
-            Validate::areSameType($this, $object),
+            same_type($this, $object),
             sprintf('Comparison requires instance of %s', static::class)
         );
 
         $strComp = strnatcmp($this->value, $object->value);
 
-        /** @var int $comp */
-        $comp = $strComp <=> 0;
-
-        return $comp;
+        return $strComp <=> 0;
     }
 
     /**
