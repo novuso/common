@@ -100,7 +100,8 @@ class FileMessageQueue implements MessageQueue
             $content = $this->filesystem->get($realPath);
             /** @var Message $message */
             $message = $this->serializer->deserialize($content);
-            $this->filesystem->rename($realPath, sprintf('%s.process', $realPath));
+            $targetPath = sprintf('%s.process', $realPath);
+            $this->filesystem->rename($realPath, $targetPath);
         }
 
         return $message;
@@ -150,7 +151,8 @@ class FileMessageQueue implements MessageQueue
             $aTime = $this->filesystem->lastAccessed($realPath);
             $elapsed = $time - $aTime;
             if ($elapsed > $delay) {
-                $this->filesystem->rename($realPath, str_replace('.process', '', $realPath));
+                $targetPath = str_replace('.message.process', '.message', $realPath);
+                $this->filesystem->rename($realPath, $targetPath);
             }
         }
     }
