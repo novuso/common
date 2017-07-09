@@ -152,7 +152,7 @@ class ServiceAwareEventDispatcher extends SimpleEventDispatcher
         if (isset($this->serviceIds[$eventType])) {
             foreach ($this->serviceIds[$eventType] as $i => $args) {
                 list($serviceId, $method) = $args;
-                $key = $serviceId.'.'.$method;
+                $key = sprintf('%s.%s', $serviceId, $method);
                 if (isset($this->services[$eventType][$key])
                     && $handler === [$this->services[$eventType][$key], $method]) {
                     unset($this->services[$eventType][$key]);
@@ -183,7 +183,7 @@ class ServiceAwareEventDispatcher extends SimpleEventDispatcher
             foreach ($this->serviceIds[$eventType] as $args) {
                 list($serviceId, $method, $priority) = $args;
                 $service = $this->container->get($serviceId);
-                $key = $serviceId.'.'.$method;
+                $key = sprintf('%s.%s', $serviceId, $method);
                 if (!isset($this->services[$eventType][$key])) {
                     $this->addHandler($eventType, [$service, $method], $priority);
                 } elseif ($service !== $this->services[$eventType][$key]) {

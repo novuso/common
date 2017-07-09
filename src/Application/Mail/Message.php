@@ -511,7 +511,7 @@ class Message
         // Each line of characters MUST be no more than 998 characters,
         // and SHOULD be no more than 78 characters, excluding the CRLF.
         // https://tools.ietf.org/html/rfc5322#section-2.1.1
-        $maxLineLength = abs($maxLineLength);
+        $maxLineLength = (int) abs($maxLineLength);
 
         if ($maxLineLength > 998) {
             $maxLineLength = 998;
