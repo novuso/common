@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Novuso\Common\Adapter\Service\Exception;
+namespace Novuso\Common\Application\Service\Exception;
 
 use Exception;
 use Psr\Container\NotFoundExceptionInterface;

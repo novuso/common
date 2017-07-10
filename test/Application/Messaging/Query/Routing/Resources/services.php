@@ -1,6 +1,6 @@
 <?php
 
-use Novuso\Common\Adapter\Service\ServiceContainer;
+use Novuso\Common\Application\Service\ServiceContainer;
 use Novuso\Common\Application\Messaging\Query\Routing\ServiceAwareQueryMap;
 use Novuso\Common\Application\Messaging\Query\Routing\ServiceAwareQueryRouter;
 use Novuso\Common\Application\Messaging\Query\RoutingQueryBus;

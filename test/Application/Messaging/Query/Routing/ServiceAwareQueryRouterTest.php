@@ -2,7 +2,7 @@
 
 namespace Novuso\Test\Common\Application\Messaging\Query\Routing;
 
-use Novuso\Common\Adapter\Service\ServiceContainer;
+use Novuso\Common\Application\Service\ServiceContainer;
 use Novuso\Common\Domain\Messaging\Query\QueryBus;
 use Novuso\Test\Common\Resources\Domain\Messaging\Query\UserByEmailQuery;
 use Novuso\Test\System\TestCase\UnitTestCase;

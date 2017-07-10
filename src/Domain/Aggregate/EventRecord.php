@@ -28,6 +28,20 @@ use function Novuso\Common\Functions\{
 class EventRecord implements Arrayable, Comparable, Equatable, JsonSerializable, Serializable
 {
     /**
+     * Event message
+     *
+     * @var EventMessage
+     */
+    protected $eventMessage;
+
+    /**
+     * Event message type
+     *
+     * @var Type
+     */
+    protected $eventMessageType;
+
+    /**
      * Aggregate ID
      *
      * @var Identifier
@@ -56,39 +70,25 @@ class EventRecord implements Arrayable, Comparable, Equatable, JsonSerializable,
     protected $sequenceNumber;
 
     /**
-     * Event message
-     *
-     * @var EventMessage
-     */
-    protected $eventMessage;
-
-    /**
-     * Event message type
-     *
-     * @var Type
-     */
-    protected $eventMessageType;
-
-    /**
      * Constructs EventRecord
      *
+     * @param EventMessage $eventMessage   The event message
      * @param Identifier   $aggregateId    The aggregate ID
      * @param Type         $aggregateType  The aggregate type
      * @param int          $sequenceNumber The sequence number
-     * @param EventMessage $eventMessage   The event message
      */
     public function __construct(
+        EventMessage $eventMessage,
         Identifier $aggregateId,
         Type $aggregateType,
-        int $sequenceNumber,
-        EventMessage $eventMessage
+        int $sequenceNumber
     ) {
+        $this->eventMessage = $eventMessage;
+        $this->eventMessageType = type($eventMessage);
         $this->aggregateId = $aggregateId;
         $this->aggregateIdType = type($aggregateId);
         $this->aggregateType = $aggregateType;
         $this->sequenceNumber = $sequenceNumber;
-        $this->eventMessage = $eventMessage;
-        $this->eventMessageType = type($eventMessage);
     }
 
     /**
@@ -126,7 +126,37 @@ class EventRecord implements Arrayable, Comparable, Equatable, JsonSerializable,
         $eventMessageType = type($data['event_message_type'])->toClassName();
         $eventMessage = $eventMessageType::deserialize($data['event_message']);
 
-        return new static($aggregateId, $aggregateType, $sequenceNumber, $eventMessage);
+        return new static($eventMessage, $aggregateId, $aggregateType, $sequenceNumber);
+    }
+
+    /**
+     * Retrieves the event message
+     *
+     * @return EventMessage
+     */
+    public function eventMessage(): EventMessage
+    {
+        return $this->eventMessage;
+    }
+
+    /**
+     * Retrieves the aggregate ID
+     *
+     * @return Identifier
+     */
+    public function aggregateId(): Identifier
+    {
+        return $this->aggregateId;
+    }
+
+    /**
+     * Retrieves the aggregate type
+     *
+     * @return Type
+     */
+    public function aggregateType(): Type
+    {
+        return $this->aggregateType;
     }
 
     /**
@@ -145,12 +175,12 @@ class EventRecord implements Arrayable, Comparable, Equatable, JsonSerializable,
     public function toArray(): array
     {
         return [
+            'event_message'      => $this->eventMessage->serialize(),
+            'event_message_type' => $this->eventMessageType->toString(),
             'aggregate_id'       => $this->aggregateId->toString(),
             'aggregate_id_type'  => $this->aggregateIdType->toString(),
             'aggregate_type'     => $this->aggregateType->toString(),
-            'sequence_number'    => $this->sequenceNumber(),
-            'event_message'      => $this->eventMessage->serialize(),
-            'event_message_type' => $this->eventMessageType->toString()
+            'sequence_number'    => $this->sequenceNumber()
         ];
     }
 

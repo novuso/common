@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Novuso\Common\Adapter\Service\Exception;
+namespace Novuso\Common\Application\Service\Exception;
 
 use Exception;
-use Novuso\System\Exception\RuntimeException;
+use Novuso\System\Exception\SystemException;
 use Psr\Container\ContainerExceptionInterface;
 
 /**
@@ -13,7 +13,7 @@ use Psr\Container\ContainerExceptionInterface;
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class ServiceContainerException extends RuntimeException implements ContainerExceptionInterface
+class ServiceContainerException extends SystemException implements ContainerExceptionInterface
 {
     /**
      * Service name

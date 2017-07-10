@@ -2,7 +2,7 @@
 
 namespace Novuso\Common\Application\Templating\Exception;
 
-use Novuso\System\Exception\RuntimeException;
+use Novuso\System\Exception\SystemException;
 use Throwable;
 
 /**
@@ -12,7 +12,7 @@ use Throwable;
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class DuplicateHelperException extends RuntimeException
+class DuplicateHelperException extends SystemException
 {
     /**
      * Helper name

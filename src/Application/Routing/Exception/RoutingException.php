@@ -2,7 +2,7 @@
 
 namespace Novuso\Common\Application\Routing\Exception;
 
-use Novuso\System\Exception\RuntimeException;
+use Novuso\System\Exception\SystemException;
 
 /**
  * RoutingException is thrown for routing errors
@@ -11,6 +11,6 @@ use Novuso\System\Exception\RuntimeException;
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class RoutingException extends RuntimeException
+class RoutingException extends SystemException
 {
 }

@@ -2,8 +2,8 @@
 
 namespace Novuso\Common\Adapter\Service;
 
-use Novuso\Common\Adapter\Service\Exception\ServiceContainerException;
-use Novuso\Common\Adapter\Service\Exception\ServiceNotFoundException;
+use Novuso\Common\Application\Service\Exception\ServiceContainerException;
+use Novuso\Common\Application\Service\Exception\ServiceNotFoundException;
 use Pimple\Container;
 use Psr\Container\ContainerInterface;
 use Throwable;

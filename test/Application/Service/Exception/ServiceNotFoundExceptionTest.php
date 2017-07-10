@@ -1,12 +1,12 @@
 <?php
 
-namespace Novuso\Test\Common\Adapter\Service\Exception;
+namespace Novuso\Test\Common\Application\Service\Exception;
 
-use Novuso\Common\Adapter\Service\Exception\ServiceNotFoundException;
+use Novuso\Common\Application\Service\Exception\ServiceNotFoundException;
 use Novuso\Test\System\TestCase\UnitTestCase;
 
 /**
- * @covers \Novuso\Common\Adapter\Service\Exception\ServiceNotFoundException
+ * @covers \Novuso\Common\Application\Service\Exception\ServiceNotFoundException
  */
 class ServiceNotFoundExceptionTest extends UnitTestCase
 {

@@ -1,6 +1,6 @@
 <?php
 
-use Novuso\Common\Adapter\Service\ServiceContainer;
+use Novuso\Common\Application\Service\ServiceContainer;
 use Novuso\Common\Application\Messaging\Command\Routing\ServiceAwareCommandMap;
 use Novuso\Common\Application\Messaging\Command\Routing\ServiceAwareCommandRouter;
 use Novuso\Common\Application\Messaging\Command\RoutingCommandBus;

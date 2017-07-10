@@ -2,7 +2,7 @@
 
 namespace Novuso\Test\Common\Application\Messaging\Event;
 
-use Novuso\Common\Adapter\Service\ServiceContainer;
+use Novuso\Common\Application\Service\ServiceContainer;
 use Novuso\Common\Application\Messaging\Event\ServiceAwareEventDispatcher;
 use Novuso\System\Utility\ClassName;
 use Novuso\Test\Common\Resources\Domain\Messaging\Event\UserRegisteredEvent;

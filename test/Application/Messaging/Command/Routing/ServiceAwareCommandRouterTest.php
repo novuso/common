@@ -2,7 +2,7 @@
 
 namespace Novuso\Test\Common\Application\Messaging\Command\Routing;
 
-use Novuso\Common\Adapter\Service\ServiceContainer;
+use Novuso\Common\Application\Service\ServiceContainer;
 use Novuso\Common\Domain\Messaging\Command\CommandBus;
 use Novuso\Test\Common\Resources\Domain\Messaging\Command\RegisterUserCommand;
 use Novuso\Test\Common\Resources\Domain\Messaging\Command\RegisterUserHandler;

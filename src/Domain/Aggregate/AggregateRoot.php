@@ -2,41 +2,125 @@
 
 namespace Novuso\Common\Domain\Aggregate;
 
-use Novuso\Common\Domain\Identification\Identifier;
+use Novuso\Common\Domain\Messaging\Event\Event;
+use Novuso\Common\Domain\Messaging\Event\EventMessage;
+use Novuso\System\Exception\OperationException;
+use function Novuso\Common\Functions\type;
 
 /**
- * AggregateRoot is the base class for an aggregate root
+ * AggregateRoot is the base class for an aggregate root entity
  *
  * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-abstract class AggregateRoot
+abstract class AggregateRoot extends Entity
 {
     /**
-     * Aggregate ID
+     * Event collection
      *
-     * @var Identifier
+     * @var EventCollection|null
      */
-    protected $id;
+    protected $eventCollection;
 
     /**
-     * Constructs AggregateRoot
+     * Committed version
      *
-     * @param Identifier $id The aggregate ID
+     * @var int|null
      */
-    protected function __construct(Identifier $id)
+    protected $committedVersion;
+
+    /**
+     * Record a domain event
+     *
+     * @param Event $event The domain event
+     *
+     * @return void
+     */
+    public function recordEvent(Event $event): void
     {
-        $this->id = $id;
+        $this->eventCollection()->record(EventMessage::create($event));
     }
 
     /**
-     * Retrieves the ID
+     * Checks if there are recorded events
      *
-     * @return Identifier
+     * @return bool
      */
-    public function id()
+    public function hasRecordedEvents(): bool
     {
-        return $this->id;
+        return !$this->eventCollection()->isEmpty();
+    }
+
+    /**
+     * Retrieves recorded events without removal
+     *
+     * @return EventStream
+     */
+    public function peekAtRecordedEvents(): EventStream
+    {
+        return $this->eventCollection()->stream();
+    }
+
+    /**
+     * Removes and returns recorded events
+     *
+     * @return EventStream
+     */
+    public function extractRecordedEvents(): EventStream
+    {
+        $eventCollection = $this->eventCollection();
+        $eventStream = $eventCollection->stream();
+        $eventCollection->commit();
+        $this->committedVersion = $eventCollection->committedSequence();
+
+        return $eventStream;
+    }
+
+    /**
+     * Retrieves the committed version
+     *
+     * @return int|null
+     */
+    public function committedVersion(): ?int
+    {
+        if ($this->committedVersion === null) {
+            $this->committedVersion = $this->eventCollection()->committedSequence();
+        }
+
+        return $this->committedVersion;
+    }
+
+    /**
+     * Initializes the committed version
+     *
+     * @param int $committedVersion the initial version
+     *
+     * @return void
+     *
+     * @throws OperationException When called with recorded events
+     */
+    protected function initializeCommittedVersion(int $committedVersion): void
+    {
+        if (!$this->eventCollection()->isEmpty()) {
+            $message = 'Cannot initialize version after recording events';
+            throw new OperationException($message);
+        }
+
+        $this->eventCollection()->initializeSequence($committedVersion);
+    }
+
+    /**
+     * Retrieves the event collection
+     *
+     * @return EventCollection
+     */
+    protected function eventCollection(): EventCollection
+    {
+        if ($this->eventCollection === null) {
+            $this->eventCollection = new EventCollection($this->id(), type($this));
+        }
+
+        return $this->eventCollection;
     }
 }
