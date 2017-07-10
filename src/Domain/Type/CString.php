@@ -51,6 +51,14 @@ class CString extends ValueObject implements StringLiteral
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public static function fromString(string $value): CString
+    {
+        return new static($value);
+    }
+
+    /**
      * Creates instance
      *
      * @param string $value The string value

@@ -36,6 +36,19 @@ abstract class IntegerId extends ValueObject implements Identifier
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public static function fromString(string $value)
+    {
+        if (!is_numeric($value)) {
+            $message = sprintf('Invalid integer value: %s', $value);
+            throw new DomainException($message);
+        }
+
+        return new static((int) $value);
+    }
+
+    /**
      * Creates instance from integer
      *
      * @param int $id The ID integer

@@ -50,6 +50,14 @@ class Timezone extends ValueObject implements Comparable
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public static function fromString(string $value): Timezone
+    {
+        return new static($value);
+    }
+
+    /**
      * Creates instance from a timezone value
      *
      * @param mixed $value The timezone value

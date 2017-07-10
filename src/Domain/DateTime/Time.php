@@ -176,14 +176,7 @@ class Time extends ValueObject implements Comparable
     }
 
     /**
-     * Creates instance from time string
-     *
-     * @param string $value The time string
-     *
-     * @return Time
-     *
-     * @throws DomainException When the time is not formatted correctly
-     * @throws DomainException When the time is not valid
+     * {@inheritdoc}
      */
     public static function fromString(string $value): Time
     {

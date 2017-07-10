@@ -307,6 +307,14 @@ class Uuid extends ValueObject implements Comparable
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public static function fromString(string $value): Uuid
+    {
+        return static::parse($value);
+    }
+
+    /**
      * Creates instance from a UUID string
      *
      * @param string $uuid The UUID string

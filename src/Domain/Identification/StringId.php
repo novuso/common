@@ -36,15 +36,11 @@ abstract class StringId extends ValueObject implements Identifier
     }
 
     /**
-     * Creates instance from string
-     *
-     * @param string $id The ID string
-     *
-     * @return StringId
+     * {@inheritdoc}
      */
-    public static function fromString(string $id)
+    public static function fromString(string $value)
     {
-        return new static($id);
+        return new static($value);
     }
 
     /**

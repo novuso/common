@@ -182,6 +182,14 @@ class Uri extends ValueObject implements Comparable
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public static function fromString(string $value): Uri
+    {
+        return static::parse($value);
+    }
+
+    /**
      * Creates instance from a URI string
      *
      * @param string $uri A URI string

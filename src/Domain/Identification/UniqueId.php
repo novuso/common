@@ -44,13 +44,7 @@ abstract class UniqueId extends ValueObject implements Identifier, IdentifierFac
     }
 
     /**
-     * Creates instance from a string representation
-     *
-     * @param string $value The UUID string
-     *
-     * @return UniqueId
-     *
-     * @throws DomainException When the UUID is not valid
+     * {@inheritdoc}
      */
     public static function fromString(string $value)
     {

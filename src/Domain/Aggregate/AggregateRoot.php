@@ -2,21 +2,41 @@
 
 namespace Novuso\Common\Domain\Aggregate;
 
-use Novuso\Common\Domain\Messaging\Event\Event;
+use Novuso\Common\Domain\Identification\Identifier;
 
 /**
- * AggregateRoot is the interface for a root entity
+ * AggregateRoot is the base class for an aggregate root
  *
  * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-interface AggregateRoot
+abstract class AggregateRoot
 {
     /**
-     * Removes and returns recorded events
+     * Aggregate ID
      *
-     * @return Event[]
+     * @var Identifier
      */
-    public function extractRecordedEvents(): array;
+    protected $id;
+
+    /**
+     * Constructs AggregateRoot
+     *
+     * @param Identifier $id The aggregate ID
+     */
+    protected function __construct(Identifier $id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * Retrieves the ID
+     *
+     * @return Identifier
+     */
+    public function id()
+    {
+        return $this->id;
+    }
 }

@@ -3,6 +3,7 @@
 namespace Novuso\Common\Domain\Type;
 
 use JsonSerializable;
+use Novuso\System\Exception\DomainException;
 use Novuso\System\Type\Equatable;
 use Serializable;
 
@@ -24,6 +25,17 @@ use Serializable;
  */
 interface Value extends Equatable, JsonSerializable, Serializable
 {
+    /**
+     * Creates instance from a string representation
+     *
+     * @param string $value The string representation
+     *
+     * @return Value
+     *
+     * @throws DomainException When value is not valid
+     */
+    public static function fromString(string $value);
+
     /**
      * Retrieves a string representation
      *

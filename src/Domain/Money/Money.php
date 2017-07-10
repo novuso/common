@@ -84,13 +84,7 @@ class Money extends ValueObject implements Comparable
     }
 
     /**
-     * Creates instance from a string representation
-     *
-     * @param string $value The money string
-     *
-     * @return Money
-     *
-     * @throws DomainException When the money string is not valid
+     * {@inheritdoc}
      */
     public static function fromString(string $value): Money
     {

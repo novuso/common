@@ -210,10 +210,7 @@ abstract class BaseMessage implements Message
 
         $strComp = strnatcmp($this->toString(), $object->toString());
 
-        /** @var int $comp */
-        $comp = $strComp <=> 0;
-
-        return $comp;
+        return $strComp <=> 0;
     }
 
     /**

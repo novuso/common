@@ -186,14 +186,7 @@ class DateTime extends ValueObject implements Comparable
     }
 
     /**
-     * Creates instance from a date/time string
-     *
-     * @param string $value The date/time string
-     *
-     * @return DateTime
-     *
-     * @throws DomainException When the date/time is not formatted correctly
-     * @throws DomainException When the date/time is invalid
+     * {@inheritdoc}
      */
     public static function fromString(string $value): DateTime
     {

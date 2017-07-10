@@ -134,14 +134,7 @@ class Date extends ValueObject implements Comparable
     }
 
     /**
-     * Creates instance from date string
-     *
-     * @param string $value The date string
-     *
-     * @return Date
-     *
-     * @throws DomainException When the date is not formatted correctly
-     * @throws DomainException When the date is not valid
+     * {@inheritdoc}
      */
     public static function fromString(string $value): Date
     {
