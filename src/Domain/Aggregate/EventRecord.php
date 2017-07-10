@@ -14,6 +14,7 @@ use Novuso\System\Type\Type;
 use Novuso\System\Utility\Validate;
 use function Novuso\Common\Functions\{
     same_type,
+    type,
     var_print
 };
 
@@ -83,11 +84,11 @@ class EventRecord implements Arrayable, Comparable, Equatable, JsonSerializable,
         EventMessage $eventMessage
     ) {
         $this->aggregateId = $aggregateId;
-        $this->aggregateIdType = Type::create($aggregateId);
+        $this->aggregateIdType = type($aggregateId);
         $this->aggregateType = $aggregateType;
         $this->sequenceNumber = $sequenceNumber;
         $this->eventMessage = $eventMessage;
-        $this->eventMessageType = Type::create($eventMessage);
+        $this->eventMessageType = type($eventMessage);
     }
 
     /**
@@ -116,13 +117,13 @@ class EventRecord implements Arrayable, Comparable, Equatable, JsonSerializable,
         }
 
         /** @var Identifier|string $aggregateIdClass */
-        $aggregateIdClass = Type::create($data['aggregate_id_type'])->toClassName();
+        $aggregateIdClass = type($data['aggregate_id_type'])->toClassName();
         /** @var Identifier $aggregateId */
         $aggregateId = $aggregateIdClass::fromString($data['aggregate_id']);
-        $aggregateType = Type::create($data['aggregate_type']);
+        $aggregateType = type($data['aggregate_type']);
         $sequenceNumber = (int) $data['sequence_number'];
         /** @var EventMessage|string $eventMessageType */
-        $eventMessageType = Type::create($data['event_message_type']);
+        $eventMessageType = type($data['event_message_type'])->toClassName();
         $eventMessage = $eventMessageType::deserialize($data['event_message']);
 
         return new static($aggregateId, $aggregateType, $sequenceNumber, $eventMessage);
