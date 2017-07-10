@@ -48,6 +48,8 @@ interface EventStore
      * @param int|null   $last  The last version or null for the remaining
      *
      * @return EventStream
+     *
+     * @throws EventStoreException When an error occurs during processing
      */
     public function readStream(Type $type, Identifier $id, ?int $first = null, ?int $last = null): EventStream;
 
@@ -58,6 +60,8 @@ interface EventStore
      * @param Identifier $id   The aggregate ID
      *
      * @return bool
+     *
+     * @throws EventStoreException When an error occurs during processing
      */
     public function hasStream(Type $type, Identifier $id): bool;
 }
