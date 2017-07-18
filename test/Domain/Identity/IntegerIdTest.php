@@ -10,6 +10,12 @@ use Novuso\Test\System\TestCase\UnitTestCase;
  */
 class IntegerIdTest extends UnitTestCase
 {
+    public function test_that_from_string_returns_expected_instance()
+    {
+        $numericId = NumericId::fromString('20');
+        $this->assertSame(20, $numericId->toInt());
+    }
+
     public function test_that_from_int_returns_expected_instance()
     {
         $numericId = NumericId::fromInt(20);
@@ -79,6 +85,14 @@ class IntegerIdTest extends UnitTestCase
     {
         $numericId = NumericId::fromInt(20);
         $this->assertSame('20', $numericId->hashValue());
+    }
+
+    /**
+     * @expectedException \Novuso\System\Exception\DomainException
+     */
+    public function test_that_from_string_throws_exception_for_invalid_value()
+    {
+        NumericId::fromString('@42');
     }
 
     /**
