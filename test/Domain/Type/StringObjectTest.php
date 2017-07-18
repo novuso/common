@@ -18,6 +18,12 @@ class StringObjectTest extends UnitTestCase
         $this->assertSame('hello', $string->value());
     }
 
+    public function test_that_from_string_returns_expected_instance()
+    {
+        $string = StringObject::fromString('hello');
+        $this->assertSame('hello', $string->value());
+    }
+
     public function test_that_create_returns_expected_instance()
     {
         $string = StringObject::create('hello');

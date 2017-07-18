@@ -17,6 +17,12 @@ class MbStringObjectTest extends UnitTestCase
         $this->assertSame('hello', $string->value());
     }
 
+    public function test_that_from_string_returns_expected_instance()
+    {
+        $string = MbStringObject::fromString('hello');
+        $this->assertSame('hello', $string->value());
+    }
+
     public function test_that_create_returns_expected_instance()
     {
         $string = MbStringObject::create('hello');
