@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Novuso\Common\Domain\Model;
+namespace Novuso\Common\Domain\EventSourcing;
 
 use JsonSerializable;
 use Novuso\Common\Domain\Identity\IdentifierInterface;
