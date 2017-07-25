@@ -13,6 +13,7 @@
         "fzaninotto/faker": "1.6.*",
         "mikey179/vfsStream": "1.6.*",
         "mockery/mockery": "0.9.*",
+        "monolog/monolog": "1.*",
         "phpunit/phpunit": "6.2.*",
         "squizlabs/php_codesniffer": "3.0.*"
     },

@@ -24,7 +24,7 @@ class ConfigContainer implements Arrayable, ArrayAccess, Countable, IteratorAggr
      *
      * @var array
      */
-    protected $data;
+    protected $data = [];
 
     /**
      * Frozen status

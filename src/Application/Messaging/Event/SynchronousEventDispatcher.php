@@ -45,12 +45,13 @@ class SynchronousEventDispatcher implements EventDispatcherInterface
     public function dispatch(EventMessage $message): void
     {
         $eventType = ClassName::underscore($message->payload());
+        $allEvents = ClassName::underscore(EventSubscriberInterface::ALL_EVENTS);
 
         foreach ($this->getHandlers($eventType) as $handler) {
             call_user_func($handler, $message);
         }
 
-        foreach ($this->getHandlers(EventSubscriberInterface::ALL_EVENTS) as $handler) {
+        foreach ($this->getHandlers($allEvents) as $handler) {
             call_user_func($handler, $message);
         }
     }
