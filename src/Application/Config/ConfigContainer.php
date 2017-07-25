@@ -105,7 +105,7 @@ class ConfigContainer implements Arrayable, ArrayAccess, Countable, IteratorAggr
      *
      * @throws FrozenContainerException When container is frozen
      */
-    public function set(?string $name = null, $value): void
+    public function set(?string $name, $value): void
     {
         if ($this->isFrozen()) {
             throw new FrozenContainerException('Container is frozen');
