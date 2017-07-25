@@ -3,7 +3,6 @@
 namespace Novuso\Common\Application\Filesystem;
 
 use Novuso\Common\Application\Filesystem\Exception\FilesystemException;
-use Traversable;
 
 /**
  * FilesystemInterface is the interface for the server filesystem
@@ -17,8 +16,8 @@ interface FilesystemInterface
     /**
      * Creates directories recursively
      *
-     * @param string|array|Traversable $dirs The directory path(s)
-     * @param int                      $mode The directory mode (octal)
+     * @param string|iterable $dirs The directory path(s)
+     * @param int             $mode The directory mode (octal)
      *
      * @return void
      *
@@ -29,9 +28,9 @@ interface FilesystemInterface
     /**
      * Sets access and modification times
      *
-     * @param string|array|Traversable   $files The file path(s)
-     * @param int|null $time  The touch time as a Unix timestamp
-     * @param int|null $atime The access time as a Unix timestamp
+     * @param string|iterable $files The file path(s)
+     * @param int|null        $time  The touch time as a Unix timestamp
+     * @param int|null        $atime The access time as a Unix timestamp
      *
      * @return void
      *
@@ -103,7 +102,7 @@ interface FilesystemInterface
     /**
      * Checks for the existence of files or directories
      *
-     * @param string|array|Traversable $paths File or directory path(s)
+     * @param string|iterable $paths File or directory path(s)
      *
      * @return bool
      */
@@ -112,7 +111,7 @@ interface FilesystemInterface
     /**
      * Removes files or directories
      *
-     * @param string|array|Traversable $paths File or directory path(s)
+     * @param string|iterable $paths File or directory path(s)
      *
      * @return void
      *
@@ -331,11 +330,11 @@ interface FilesystemInterface
     /**
      * Changes mode of files or directories
      *
-     * @param string|array|Traversable $paths     The file or directory path(s)
-     * @param int                      $mode      The new mode (octal)
-     * @param int                      $umask     The mode mask (octal)
-     * @param bool                     $recursive Whether to change the mode
-     *                                            recursively
+     * @param string|iterable $paths     The file or directory path(s)
+     * @param int             $mode      The new mode (octal)
+     * @param int             $umask     The mode mask (octal)
+     * @param bool            $recursive Whether to change the mode
+     *                                   recursively
      *
      * @return void
      *
@@ -346,10 +345,10 @@ interface FilesystemInterface
     /**
      * Changes the owner of files or directories
      *
-     * @param string|array|Traversable $paths     The file or directory path(s)
-     * @param string                   $user      The new owner username
-     * @param bool                     $recursive Whether to change the owner
-     *                                            recursively
+     * @param string|iterable $paths     The file or directory path(s)
+     * @param string          $user      The new owner username
+     * @param bool            $recursive Whether to change the owner
+     *                                   recursively
      *
      * @return void
      *
@@ -360,10 +359,10 @@ interface FilesystemInterface
     /**
      * Changes the group of files or directories
      *
-     * @param string|array|Traversable $paths     The file or directory path(s)
-     * @param string                   $group     The new group name
-     * @param bool                     $recursive Whether to change the group
-     *                                            recursively
+     * @param string|iterable $paths     The file or directory path(s)
+     * @param string          $group     The new group name
+     * @param bool            $recursive Whether to change the group
+     *                                   recursively
      *
      * @return void
      *

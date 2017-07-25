@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Novuso\Common\Application\Http\Client;
+namespace Novuso\Common\Application\Http;
 
 use Exception;
 use Novuso\Common\Application\Http\Message\PromiseInterface;
