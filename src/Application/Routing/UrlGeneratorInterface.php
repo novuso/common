@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Novuso\Common\Application\UrlGeneration;
+namespace Novuso\Common\Application\Routing;
 
-use Novuso\Common\Application\UrlGeneration\Exception\UrlGenerationException;
+use Novuso\Common\Application\Routing\Exception\UrlGenerationException;
 use Novuso\Common\Domain\Value\Identifier\Url;
 
 /**

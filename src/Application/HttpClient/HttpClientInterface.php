@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Novuso\Common\Application\Http;
+namespace Novuso\Common\Application\HttpClient;
 
 use Exception;
-use Novuso\Common\Application\Http\Message\PromiseInterface;
+use Novuso\Common\Application\HttpClient\Message\PromiseInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 

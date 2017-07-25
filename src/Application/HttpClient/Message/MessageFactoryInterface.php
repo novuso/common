@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Novuso\Common\Application\Http\Message;
+namespace Novuso\Common\Application\HttpClient\Message;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;

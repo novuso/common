@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Novuso\Common\Application\Http\Exception;
+namespace Novuso\Common\Application\HttpClient\Exception;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;

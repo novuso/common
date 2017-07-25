@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace Novuso\Common\Application\Http\Exception;
+namespace Novuso\Common\Application\Routing\Exception;
 
 /**
- * NetworkException is thrown when a request fails due to network issues
+ * InvalidParameterException is thrown when a parameter is not valid
  *
  * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class NetworkException extends RequestException
+class InvalidParameterException extends UrlGenerationException
 {
 }

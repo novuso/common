@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace Novuso\Common\Application\Http\Exception;
+namespace Novuso\Common\Application\Routing\Exception;
 
 /**
- * Exception is the interface for HTTP exceptions
+ * RouteNotFoundException is thrown when a route is not defined
  *
  * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-interface Exception
+class RouteNotFoundException extends UrlGenerationException
 {
 }
