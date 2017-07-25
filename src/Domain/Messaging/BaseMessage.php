@@ -229,6 +229,6 @@ abstract class BaseMessage implements MessageInterface
      */
     public function hashValue(): string
     {
-        return $this->toString();
+        return $this->id->hashValue();
     }
 }
