@@ -11,7 +11,10 @@ $iterator = Finder::create()
     ->name('*.php')
     ->in([
         $paths['src'],
-        sprintf('%s/novuso/system/src', $paths['vendor'])
+        sprintf('%s/novuso/system/src', $paths['vendor']),
+        sprintf('%s/psr/container/src', $paths['vendor']),
+        sprintf('%s/psr/http-message/src', $paths['vendor']),
+        sprintf('%s/psr/log/Psr/Log', $paths['vendor'])
     ]);
 
 $options = [
