@@ -98,14 +98,14 @@ class ConfigContainer implements Arrayable, ArrayAccess, Countable, IteratorAggr
     /**
      * Sets a value
      *
-     * @param null|string $name  The config name
-     * @param mixed       $value The config value
+     * @param string|int|null $name  The config name
+     * @param mixed           $value The config value
      *
      * @return void
      *
      * @throws FrozenContainerException When container is frozen
      */
-    public function set(?string $name, $value): void
+    public function set($name, $value): void
     {
         if ($this->isFrozen()) {
             throw new FrozenContainerException('Container is frozen');
@@ -125,12 +125,12 @@ class ConfigContainer implements Arrayable, ArrayAccess, Countable, IteratorAggr
     /**
      * Retrieves a value
      *
-     * @param string $name    The config name
-     * @param mixed  $default The default value
+     * @param string|int $name    The config name
+     * @param mixed      $default The default value
      *
      * @return mixed
      */
-    public function get(string $name, $default = null)
+    public function get($name, $default = null)
     {
         if (!array_key_exists($name, $this->data)) {
             return $default;
@@ -142,11 +142,11 @@ class ConfigContainer implements Arrayable, ArrayAccess, Countable, IteratorAggr
     /**
      * Checks if a value exists
      *
-     * @param string $name The config name
+     * @param string|int $name The config name
      *
      * @return bool
      */
-    public function has(string $name): bool
+    public function has($name): bool
     {
         return array_key_exists($name, $this->data);
     }
@@ -154,13 +154,13 @@ class ConfigContainer implements Arrayable, ArrayAccess, Countable, IteratorAggr
     /**
      * Removes a value
      *
-     * @param string $name The config name
+     * @param string|int $name The config name
      *
      * @return void
      *
      * @throws FrozenContainerException When container is frozen
      */
-    public function remove(string $name): void
+    public function remove($name): void
     {
         if ($this->isFrozen()) {
             throw new FrozenContainerException('Container is frozen');
@@ -172,8 +172,8 @@ class ConfigContainer implements Arrayable, ArrayAccess, Countable, IteratorAggr
     /**
      * Sets a value
      *
-     * @param null|string $name  The config name
-     * @param mixed       $value The config value
+     * @param string|int|null $name  The config name
+     * @param mixed           $value The config value
      *
      * @return void
      *
@@ -187,7 +187,7 @@ class ConfigContainer implements Arrayable, ArrayAccess, Countable, IteratorAggr
     /**
      * Retrieves a value
      *
-     * @param string $name The config name
+     * @param string|int $name The config name
      *
      * @return mixed
      */
@@ -199,7 +199,7 @@ class ConfigContainer implements Arrayable, ArrayAccess, Countable, IteratorAggr
     /**
      * Checks if a value exists
      *
-     * @param string $name The config name
+     * @param string|int $name The config name
      *
      * @return bool
      */
@@ -211,7 +211,7 @@ class ConfigContainer implements Arrayable, ArrayAccess, Countable, IteratorAggr
     /**
      * Removes a value
      *
-     * @param string $name The config name
+     * @param string|int $name The config name
      *
      * @return void
      *
