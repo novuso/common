@@ -12,13 +12,6 @@ namespace Novuso\Common\Domain\Messaging\Event;
 interface EventSubscriberInterface
 {
     /**
-     * Special event type for all events
-     *
-     * @var string
-     */
-    public const ALL_EVENTS = AllEvents::class;
-
-    /**
      * Retrieves event registration
      *
      * The returned array keys are event types. The event type string is the

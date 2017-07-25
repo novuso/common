@@ -2,6 +2,7 @@
 
 namespace Novuso\Common\Application\Messaging\Event\Subscriber;
 
+use Novuso\Common\Domain\Messaging\Event\AllEvents;
 use Novuso\Common\Domain\Messaging\Event\EventMessage;
 use Novuso\Common\Domain\Messaging\Event\EventSubscriberInterface;
 use Psr\Log\LoggerInterface;
@@ -37,7 +38,7 @@ class EventLogger implements EventSubscriberInterface
      */
     public static function eventRegistration(): array
     {
-        return [EventSubscriberInterface::ALL_EVENTS => 'logEvent'];
+        return [AllEvents::class => 'logEvent'];
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace Novuso\Common\Application\Messaging\Event;
 
+use Novuso\Common\Domain\Messaging\Event\AllEvents;
 use Novuso\Common\Domain\Messaging\Event\EventDispatcherInterface;
 use Novuso\Common\Domain\Messaging\Event\EventInterface;
 use Novuso\Common\Domain\Messaging\Event\EventMessage;
@@ -45,7 +46,7 @@ class SynchronousEventDispatcher implements EventDispatcherInterface
     public function dispatch(EventMessage $message): void
     {
         $eventType = ClassName::underscore($message->payload());
-        $allEvents = ClassName::underscore(EventSubscriberInterface::ALL_EVENTS);
+        $allEvents = ClassName::underscore(AllEvents::class);
 
         foreach ($this->getHandlers($eventType) as $handler) {
             call_user_func($handler, $message);
