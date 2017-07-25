@@ -8,4 +8,5 @@
   - php
   - composer
   - rabbitmq
+  - couscous
   - app
