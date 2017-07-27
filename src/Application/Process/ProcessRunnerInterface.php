@@ -32,7 +32,10 @@ interface ProcessRunnerInterface
     /**
      * Runs attached processes
      *
-     * @param ProcessError|null $error
+     * Process error behavior defaults to throwing an exception when a child
+     * process fails. To ignore process errors, pass ProcessError::IGNORE()
+     *
+     * @param ProcessError|null $error The process error behavior
      *
      * @return void
      *
