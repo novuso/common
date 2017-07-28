@@ -63,15 +63,16 @@ class SynchronousEventDispatcher implements EventDispatcherInterface
     public function register(EventSubscriberInterface $subscriber): void
     {
         foreach ($subscriber->eventRegistration() as $eventType => $params) {
+            $eventType = ClassName::underscore($eventType);
             if (is_string($params)) {
-                $this->addHandler(ClassName::underscore($eventType), [$subscriber, $params]);
+                $this->addHandler($eventType, [$subscriber, $params]);
             } elseif (is_string($params[0])) {
                 $priority = isset($params[1]) ? (int) $params[1] : 0;
-                $this->addHandler(ClassName::underscore($eventType), [$subscriber, $params[0]], $priority);
+                $this->addHandler($eventType, [$subscriber, $params[0]], $priority);
             } else {
                 foreach ($params as $handler) {
                     $priority = isset($handler[1]) ? (int) $handler[1] : 0;
-                    $this->addHandler(ClassName::underscore($eventType), [$subscriber, $handler[0]], $priority);
+                    $this->addHandler($eventType, [$subscriber, $handler[0]], $priority);
                 }
             }
         }
@@ -83,13 +84,14 @@ class SynchronousEventDispatcher implements EventDispatcherInterface
     public function unregister(EventSubscriberInterface $subscriber): void
     {
         foreach ($subscriber->eventRegistration() as $eventType => $params) {
+            $eventType = ClassName::underscore($eventType);
             if (is_array($params) && is_array($params[0])) {
                 foreach ($params as $handler) {
-                    $this->removeHandler(ClassName::underscore($eventType), [$subscriber, $handler[0]]);
+                    $this->removeHandler($eventType, [$subscriber, $handler[0]]);
                 }
             } else {
                 $handler = is_string($params) ? $params : $params[0];
-                $this->removeHandler(ClassName::underscore($eventType), [$subscriber, $handler]);
+                $this->removeHandler($eventType, [$subscriber, $handler]);
             }
         }
     }

@@ -2,10 +2,10 @@
 
 namespace Novuso\Common\Application\HttpClient;
 
-use Exception;
 use Novuso\Common\Application\HttpClient\Message\PromiseInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Throwable;
 
 /**
  * HttpClientInterface is the interface for an HTTP client
@@ -24,7 +24,7 @@ interface HttpClientInterface
      *
      * @return ResponseInterface
      *
-     * @throws Exception When an error occurs
+     * @throws Throwable When an error occurs
      */
     public function send(RequestInterface $request, array $options = []): ResponseInterface;
 

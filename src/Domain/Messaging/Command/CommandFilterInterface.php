@@ -2,7 +2,7 @@
 
 namespace Novuso\Common\Domain\Messaging\Command;
 
-use Exception;
+use Throwable;
 
 /**
  * CommandFilterInterface is the interface for a command filter
@@ -27,7 +27,7 @@ interface CommandFilterInterface
      *
      * @return void
      *
-     * @throws Exception When an error occurs
+     * @throws Throwable When an error occurs
      */
     public function process(CommandMessage $message, callable $next): void;
 }

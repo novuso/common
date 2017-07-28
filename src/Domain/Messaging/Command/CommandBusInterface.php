@@ -2,7 +2,7 @@
 
 namespace Novuso\Common\Domain\Messaging\Command;
 
-use Exception;
+use Throwable;
 
 /**
  * CommandBusInterface is the interface for a command bus
@@ -22,7 +22,7 @@ interface CommandBusInterface
      *
      * @return void
      *
-     * @throws Exception When an error occurs
+     * @throws Throwable When an error occurs
      */
     public function execute(CommandInterface $command): void;
 
@@ -33,7 +33,7 @@ interface CommandBusInterface
      *
      * @return void
      *
-     * @throws Exception When an error occurs
+     * @throws Throwable When an error occurs
      */
     public function dispatch(CommandMessage $message): void;
 }

@@ -2,7 +2,7 @@
 
 namespace Novuso\Common\Domain\Messaging\Query;
 
-use Exception;
+use Throwable;
 
 /**
  * QueryBusInterface is the interface for a query bus
@@ -20,7 +20,7 @@ interface QueryBusInterface
      *
      * @return mixed
      *
-     * @throws Exception When an error occurs
+     * @throws Throwable When an error occurs
      */
     public function fetch(QueryInterface $query);
 
@@ -31,7 +31,7 @@ interface QueryBusInterface
      *
      * @return mixed
      *
-     * @throws Exception When an error occurs
+     * @throws Throwable When an error occurs
      */
     public function dispatch(QueryMessage $message);
 }

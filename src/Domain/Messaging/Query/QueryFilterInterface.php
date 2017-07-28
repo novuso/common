@@ -2,7 +2,7 @@
 
 namespace Novuso\Common\Domain\Messaging\Query;
 
-use Exception;
+use Throwable;
 
 /**
  * QueryFilterInterface is the interface for a query filter
@@ -27,7 +27,7 @@ interface QueryFilterInterface
      *
      * @return void
      *
-     * @throws Exception When an error occurs
+     * @throws Throwable When an error occurs
      */
     public function process(QueryMessage $message, callable $next): void;
 }

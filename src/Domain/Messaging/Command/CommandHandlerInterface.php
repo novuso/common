@@ -2,7 +2,7 @@
 
 namespace Novuso\Common\Domain\Messaging\Command;
 
-use Exception;
+use Throwable;
 
 /**
  * CommandHandler is the interface for a command handler
@@ -20,7 +20,7 @@ interface CommandHandlerInterface
      *
      * @return void
      *
-     * @throws Exception When an error occurs
+     * @throws Throwable When an error occurs
      */
     public function handle(CommandMessage $message): void;
 }

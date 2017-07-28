@@ -2,9 +2,9 @@
 
 namespace Novuso\Common\Application\HttpClient\Message;
 
-use Exception;
 use Novuso\System\Exception\MethodCallException;
 use Psr\Http\Message\ResponseInterface;
+use Throwable;
 
 /**
  * PromiseInterface is an extension of the promises/a+ specification
@@ -66,11 +66,11 @@ interface PromiseInterface
     /**
      * Retrieves the reason when rejected
      *
-     * @return Exception
+     * @return Throwable
      *
      * @throws MethodCallException When the promise is not rejected
      */
-    public function getException(): Exception;
+    public function getException(): Throwable;
 
     /**
      * Waits for the promise to be fulfilled or rejected

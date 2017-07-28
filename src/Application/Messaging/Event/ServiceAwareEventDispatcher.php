@@ -67,15 +67,16 @@ class ServiceAwareEventDispatcher extends SynchronousEventDispatcher
         );
         /** @var EventSubscriberInterface $className The subscriber class name */
         foreach ($className::eventRegistration() as $eventType => $params) {
+            $eventType = ClassName::underscore($eventType);
             if (is_string($params)) {
-                $this->addHandlerService(ClassName::underscore($eventType), $serviceId, $params);
+                $this->addHandlerService($eventType, $serviceId, $params);
             } elseif (is_string($params[0])) {
                 $priority = isset($params[1]) ? (int) $params[1] : 0;
-                $this->addHandlerService(ClassName::underscore($eventType), $serviceId, $params[0], $priority);
+                $this->addHandlerService($eventType, $serviceId, $params[0], $priority);
             } else {
                 foreach ($params as $handler) {
                     $priority = isset($handler[1]) ? (int) $handler[1] : 0;
-                    $this->addHandlerService(ClassName::underscore($eventType), $serviceId, $handler[0], $priority);
+                    $this->addHandlerService($eventType, $serviceId, $handler[0], $priority);
                 }
             }
         }

@@ -2,7 +2,7 @@
 
 namespace Novuso\Common\Domain\Messaging\Event;
 
-use Exception;
+use Throwable;
 
 /**
  * EventDispatcherInterface is the interface for an event dispatcher
@@ -22,7 +22,7 @@ interface EventDispatcherInterface
      *
      * @return void
      *
-     * @throws Exception When an error occurs
+     * @throws Throwable When an error occurs
      */
     public function trigger(EventInterface $event): void;
 
@@ -33,7 +33,7 @@ interface EventDispatcherInterface
      *
      * @return void
      *
-     * @throws Exception When an error occurs
+     * @throws Throwable When an error occurs
      */
     public function dispatch(EventMessage $message): void;
 

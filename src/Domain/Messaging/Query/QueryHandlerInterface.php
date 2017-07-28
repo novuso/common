@@ -2,7 +2,7 @@
 
 namespace Novuso\Common\Domain\Messaging\Query;
 
-use Exception;
+use Throwable;
 
 /**
  * QueryHandlerInterface is the interface for a query handler
@@ -20,7 +20,7 @@ interface QueryHandlerInterface
      *
      * @return mixed
      *
-     * @throws Exception When an error occurs
+     * @throws Throwable When an error occurs
      */
     public function handle(QueryMessage $message);
 }
