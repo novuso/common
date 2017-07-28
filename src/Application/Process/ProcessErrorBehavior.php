@@ -26,4 +26,11 @@ class ProcessErrorBehavior extends Enum
      * @var int
      */
     public const IGNORE = 2;
+
+    /**
+     * Retry failed processes
+     *
+     * @var int
+     */
+    public const RETRY = 3;
 }
