@@ -1,9 +1,0 @@
----
-supervisor_worker_program: "queue-worker"
-supervisor_worker_command: "php /vagrant/bin/console queue:worker"
-supervisor_worker_autostart: "true"
-supervisor_worker_autorestart: "true"
-supervisor_worker_user: "{{ ansible_user_id }}"
-supervisor_worker_num_procs: "1"
-supervisor_worker_redirect_stderror: "true"
-supervisor_worker_stdout_logfile: "/vagrant/var/logs/worker.log"

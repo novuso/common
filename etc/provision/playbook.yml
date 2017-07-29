@@ -7,6 +7,5 @@
   - base
   - php
   - composer
-  - rabbitmq
   - couscous
   - app
