@@ -1,5 +1,8 @@
 /.vagrant/
-/app/build/phpunit.xml
+/.couscous/
+/etc/build/phpunit.xml
+/etc/provision/playbook.retry
+/etc/provision/group_vars/*/parameters.yml
 /composer.phar
 /composer.lock
 /vendor/

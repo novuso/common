@@ -6,7 +6,7 @@ use Novuso\Common\Domain\Messaging\BaseMessage;
 use Novuso\Common\Domain\Messaging\MessageId;
 use Novuso\Common\Domain\Messaging\MessageType;
 use Novuso\Common\Domain\Messaging\MetaData;
-use Novuso\Common\Domain\Model\DateTime\DateTime;
+use Novuso\Common\Domain\Value\DateTime\DateTime;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Type\Type;
 use Novuso\System\Utility\Validate;
@@ -26,10 +26,10 @@ class CommandMessage extends BaseMessage
      *
      * @param MessageId $id        The message ID
      * @param DateTime  $timestamp The timestamp
-     * @param Command   $payload   The payload
+     * @param CommandInterface   $payload   The payload
      * @param MetaData  $metaData  The meta data
      */
-    public function __construct(MessageId $id, DateTime $timestamp, Command $payload, MetaData $metaData)
+    public function __construct(MessageId $id, DateTime $timestamp, CommandInterface $payload, MetaData $metaData)
     {
         parent::__construct($id, MessageType::COMMAND(), $timestamp, $payload, $metaData);
     }
@@ -37,11 +37,11 @@ class CommandMessage extends BaseMessage
     /**
      * Creates instance for a command
      *
-     * @param Command $command The command
+     * @param CommandInterface $command The command
      *
      * @return CommandMessage
      */
-    public static function create(Command $command): CommandMessage
+    public static function create(CommandInterface $command): CommandMessage
     {
         $timestamp = DateTime::now();
         $id = MessageId::generate();
@@ -76,15 +76,15 @@ class CommandMessage extends BaseMessage
         $metaData = MetaData::create($data['meta_data']);
         /** @var Type $payloadType */
         $payloadType = Type::create($data['payload_type']);
-        /** @var string $payloadClass */
+        /** @var CommandInterface|string $payloadClass */
         $payloadClass = $payloadType->toClassName();
 
         assert(
-            Validate::implementsInterface($payloadClass, Command::class),
+            Validate::implementsInterface($payloadClass, CommandInterface::class),
             sprintf('Unable to deserialize: %s', $payloadClass)
         );
 
-        /** @var Command $payload */
+        /** @var CommandInterface $payload */
         $payload = $payloadClass::fromArray($data['payload']);
 
         return new static($id, $timestamp, $payload, $metaData);
@@ -93,17 +93,9 @@ class CommandMessage extends BaseMessage
     /**
      * {@inheritdoc}
      */
-    public function serialize(): array
+    public function withMetaData(MetaData $metaData): CommandMessage
     {
-        return $this->toArray();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function withMetaData(MetaData $metaData)
-    {
-        /** @var Command $command */
+        /** @var CommandInterface $command */
         $command = $this->payload;
 
         return new static(
@@ -117,12 +109,12 @@ class CommandMessage extends BaseMessage
     /**
      * {@inheritdoc}
      */
-    public function mergeMetaData(MetaData $metaData)
+    public function mergeMetaData(MetaData $metaData): CommandMessage
     {
         $meta = clone $this->metaData;
         $meta->merge($metaData);
 
-        /** @var Command $command */
+        /** @var CommandInterface $command */
         $command = $this->payload;
 
         return new static(

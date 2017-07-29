@@ -2,8 +2,7 @@
 
 namespace Novuso\Common\Application\Templating\Exception;
 
-use Exception;
-use Novuso\System\Exception\RuntimeException;
+use Novuso\System\Exception\SystemException;
 
 /**
  * TemplatingException is thrown for template engine errors
@@ -12,35 +11,6 @@ use Novuso\System\Exception\RuntimeException;
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class TemplatingException extends RuntimeException
+class TemplatingException extends SystemException
 {
-    /**
-     * Template name
-     *
-     * @var string|null
-     */
-    protected $template;
-
-    /**
-     * Constructs ServiceContainerException
-     *
-     * @param string         $message  The message
-     * @param string|null    $template The template name
-     * @param Exception|null $previous The previous exception
-     */
-    public function __construct(string $message, string $template = null, Exception $previous = null)
-    {
-        $this->template = $template;
-        parent::__construct($message, 0, $previous);
-    }
-
-    /**
-     * Returns the template name
-     *
-     * @return string|null
-     */
-    public function getTemplate()
-    {
-        return $this->template;
-    }
 }

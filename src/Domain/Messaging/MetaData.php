@@ -10,7 +10,6 @@ use JsonSerializable;
 use Novuso\System\Collection\ArrayCollection;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Type\Arrayable;
-use Novuso\System\Utility\Validate;
 use Novuso\System\Utility\VarPrinter;
 use Traversable;
 
@@ -92,7 +91,7 @@ class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggregate, 
      *
      * @throws DomainException When value is not valid
      */
-    public function set(string $key, $value)
+    public function set(string $key, $value): void
     {
         $this->guardValue($value);
         $this->data[$key] = $value;
@@ -134,7 +133,7 @@ class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggregate, 
      *
      * @return void
      */
-    public function remove(string $key)
+    public function remove(string $key): void
     {
         unset($this->data[$key]);
     }
@@ -153,10 +152,10 @@ class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggregate, 
      *
      * @throws DomainException When value is not valid
      */
-    public function offsetSet($key, $value)
+    public function offsetSet($key, $value): void
     {
         assert(
-            Validate::isString($key),
+            is_string($key),
             sprintf('Invalid metadata key: (%s) %s', gettype($key), VarPrinter::toString($key))
         );
 
@@ -173,7 +172,7 @@ class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggregate, 
     public function offsetGet($key)
     {
         assert(
-            Validate::isString($key),
+            is_string($key),
             sprintf('Invalid metadata key: (%s) %s', gettype($key), VarPrinter::toString($key))
         );
 
@@ -190,7 +189,7 @@ class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggregate, 
     public function offsetExists($key): bool
     {
         assert(
-            Validate::isString($key),
+            is_string($key),
             sprintf('Invalid metadata key: (%s) %s', gettype($key), VarPrinter::toString($key))
         );
 
@@ -204,10 +203,10 @@ class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggregate, 
      *
      * @return void
      */
-    public function offsetUnset($key)
+    public function offsetUnset($key): void
     {
         assert(
-            Validate::isString($key),
+            is_string($key),
             sprintf('Invalid metadata key: (%s) %s', gettype($key), VarPrinter::toString($key))
         );
 
@@ -231,7 +230,7 @@ class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggregate, 
      *
      * @return void
      */
-    public function merge(MetaData $data)
+    public function merge(MetaData $data): void
     {
         foreach ($data->toArray() as $key => $value) {
             $this->set($key, $value);
@@ -295,7 +294,7 @@ class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggregate, 
      *
      * @throws DomainException When value is not valid
      */
-    protected function guardValue($value)
+    protected function guardValue($value): void
     {
         if (!$this->isValid($value)) {
             $message = 'Value must be scalar or an array of scalars';

@@ -6,7 +6,7 @@ use Novuso\Common\Application\Service\Exception\ServiceContainerException;
 use Novuso\Test\System\TestCase\UnitTestCase;
 
 /**
- * @covers Novuso\Common\Application\Service\Exception\ServiceContainerException
+ * @covers \Novuso\Common\Application\Service\Exception\ServiceContainerException
  */
 class ServiceContainerExceptionTest extends UnitTestCase
 {

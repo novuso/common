@@ -8,10 +8,10 @@ use Novuso\Test\Common\Resources\Domain\Specification\UsernameIsUnique;
 use Novuso\Test\System\TestCase\UnitTestCase;
 
 /**
- * @covers Novuso\Common\Domain\Specification\AndSpecification
- * @covers Novuso\Common\Domain\Specification\CompositeSpecification
- * @covers Novuso\Common\Domain\Specification\NotSpecification
- * @covers Novuso\Common\Domain\Specification\OrSpecification
+ * @covers \Novuso\Common\Domain\Specification\AndSpecification
+ * @covers \Novuso\Common\Domain\Specification\CompositeSpecification
+ * @covers \Novuso\Common\Domain\Specification\NotSpecification
+ * @covers \Novuso\Common\Domain\Specification\OrSpecification
  */
 class SpecificationTest extends UnitTestCase
 {

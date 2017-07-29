@@ -2,7 +2,7 @@
 
 namespace Novuso\Common\Application\Messaging\Command\Filter;
 
-use Novuso\Common\Domain\Messaging\Command\CommandFilter;
+use Novuso\Common\Domain\Messaging\Command\CommandFilterInterface;
 use Novuso\Common\Domain\Messaging\Command\CommandMessage;
 use Psr\Log\LoggerInterface;
 
@@ -13,7 +13,7 @@ use Psr\Log\LoggerInterface;
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class CommandLogger implements CommandFilter
+class CommandLogger implements CommandFilterInterface
 {
     /**
      * Logger
@@ -35,7 +35,7 @@ class CommandLogger implements CommandFilter
     /**
      * {@inheritdoc}
      */
-    public function process(CommandMessage $message, callable $next)
+    public function process(CommandMessage $message, callable $next): void
     {
         $name = $message->payloadType()->toString();
 

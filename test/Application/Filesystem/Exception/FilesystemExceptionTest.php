@@ -6,7 +6,7 @@ use Novuso\Common\Application\Filesystem\Exception\FilesystemException;
 use Novuso\Test\System\TestCase\UnitTestCase;
 
 /**
- * @covers Novuso\Common\Application\Filesystem\Exception\FilesystemException
+ * @covers \Novuso\Common\Application\Filesystem\Exception\FilesystemException
  */
 class FilesystemExceptionTest extends UnitTestCase
 {

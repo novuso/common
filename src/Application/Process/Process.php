@@ -80,12 +80,12 @@ class Process
      */
     public function __construct(
         string $command,
-        string $directory = null,
-        array $environment = null,
+        ?string $directory = null,
+        ?array $environment = null,
         $input = null,
-        float $timeout = null,
-        callable $stdout = null,
-        callable $stderr = null
+        ?float $timeout = null,
+        ?callable $stdout = null,
+        ?callable $stderr = null
     ) {
         $this->command = $command;
         $this->directory = $directory;
@@ -117,7 +117,7 @@ class Process
      *
      * @return string|null
      */
-    public function directory()
+    public function directory(): ?string
     {
         return $this->directory;
     }
@@ -127,7 +127,7 @@ class Process
      *
      * @return array|null
      */
-    public function environment()
+    public function environment(): ?array
     {
         return $this->environment;
     }
@@ -147,7 +147,7 @@ class Process
      *
      * @return float|null
      */
-    public function timeout()
+    public function timeout(): ?float
     {
         return $this->timeout;
     }
@@ -157,7 +157,7 @@ class Process
      *
      * @return callable|null
      */
-    public function stdout()
+    public function stdout(): ?callable
     {
         return $this->stdout;
     }
@@ -167,7 +167,7 @@ class Process
      *
      * @return callable|null
      */
-    public function stderr()
+    public function stderr(): ?callable
     {
         return $this->stderr;
     }

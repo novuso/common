@@ -7,27 +7,27 @@ use Monolog\Logger;
 use Novuso\Common\Application\Messaging\Query\Filter\QueryLogger;
 use Novuso\Common\Application\Messaging\Query\QueryPipeline;
 use Novuso\Common\Application\Messaging\Query\Routing\InMemoryQueryMap;
-use Novuso\Common\Application\Messaging\Query\Routing\InMemoryQueryRouter;
-use Novuso\Common\Application\Messaging\Query\RoutingQueryBus;
+use Novuso\Common\Application\Messaging\Query\Routing\QueryRouter;
+use Novuso\Common\Application\Messaging\Query\SynchronousQueryBus;
 use Novuso\System\Utility\ClassName;
 use Novuso\Test\Common\Resources\Domain\Messaging\Query\UserByEmailHandler;
 use Novuso\Test\Common\Resources\Domain\Messaging\Query\UserByEmailQuery;
 use Novuso\Test\System\TestCase\UnitTestCase;
 
 /**
- * @covers Novuso\Common\Application\Messaging\Query\Filter\QueryLogger
- * @covers Novuso\Common\Application\Messaging\Query\Routing\InMemoryQueryMap
- * @covers Novuso\Common\Application\Messaging\Query\Routing\InMemoryQueryRouter
- * @covers Novuso\Common\Application\Messaging\Query\QueryPipeline
- * @covers Novuso\Common\Application\Messaging\Query\RoutingQueryBus
+ * @covers \Novuso\Common\Application\Messaging\Query\Filter\QueryLogger
+ * @covers \Novuso\Common\Application\Messaging\Query\Routing\InMemoryQueryMap
+ * @covers \Novuso\Common\Application\Messaging\Query\Routing\QueryRouter
+ * @covers \Novuso\Common\Application\Messaging\Query\QueryPipeline
+ * @covers \Novuso\Common\Application\Messaging\Query\SynchronousQueryBus
  */
 class QueryPipelineTest extends UnitTestCase
 {
     /** @var QueryPipeline */
     protected $pipeline;
-    /** @var RoutingQueryBus */
+    /** @var SynchronousQueryBus */
     protected $queryBus;
-    /** @var InMemoryQueryRouter */
+    /** @var QueryRouter */
     protected $queryRouter;
     /** @var InMemoryQueryMap */
     protected $queryMap;
@@ -45,8 +45,8 @@ class QueryPipelineTest extends UnitTestCase
         $this->logger->pushHandler($this->logHandler);
         $this->queryLogger = new QueryLogger($this->logger);
         $this->queryMap = new InMemoryQueryMap();
-        $this->queryRouter = new InMemoryQueryRouter($this->queryMap);
-        $this->queryBus = new RoutingQueryBus($this->queryRouter);
+        $this->queryRouter = new QueryRouter($this->queryMap);
+        $this->queryBus = new SynchronousQueryBus($this->queryRouter);
         $this->pipeline = new QueryPipeline($this->queryBus);
         $this->pipeline->addFilter($this->queryLogger);
     }

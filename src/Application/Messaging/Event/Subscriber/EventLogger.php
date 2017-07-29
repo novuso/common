@@ -2,8 +2,9 @@
 
 namespace Novuso\Common\Application\Messaging\Event\Subscriber;
 
+use Novuso\Common\Domain\Messaging\Event\AllEvents;
 use Novuso\Common\Domain\Messaging\Event\EventMessage;
-use Novuso\Common\Domain\Messaging\Event\EventSubscriber;
+use Novuso\Common\Domain\Messaging\Event\EventSubscriberInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -13,7 +14,7 @@ use Psr\Log\LoggerInterface;
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class EventLogger implements EventSubscriber
+class EventLogger implements EventSubscriberInterface
 {
     /**
      * Logger
@@ -37,7 +38,7 @@ class EventLogger implements EventSubscriber
      */
     public static function eventRegistration(): array
     {
-        return [EventSubscriber::ALL_EVENTS => 'logEvent'];
+        return [AllEvents::class => 'logEvent'];
     }
 
     /**
@@ -47,7 +48,7 @@ class EventLogger implements EventSubscriber
      *
      * @return void
      */
-    public function logEvent(EventMessage $message)
+    public function logEvent(EventMessage $message): void
     {
         $name = $message->payloadType()->toString();
 

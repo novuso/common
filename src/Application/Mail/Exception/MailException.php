@@ -2,7 +2,7 @@
 
 namespace Novuso\Common\Application\Mail\Exception;
 
-use Novuso\System\Exception\RuntimeException;
+use Novuso\System\Exception\SystemException;
 
 /**
  * MailException is thrown when a mail error occurs
@@ -11,6 +11,6 @@ use Novuso\System\Exception\RuntimeException;
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class MailException extends RuntimeException
+class MailException extends SystemException
 {
 }

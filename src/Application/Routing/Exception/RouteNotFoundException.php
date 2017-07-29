@@ -9,6 +9,6 @@ namespace Novuso\Common\Application\Routing\Exception;
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class RouteNotFoundException extends RoutingException
+class RouteNotFoundException extends UrlGenerationException
 {
 }

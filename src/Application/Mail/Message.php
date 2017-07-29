@@ -16,7 +16,7 @@ class Message
      *
      * @var string
      */
-    const DEFAULT_CHARSET = 'utf-8';
+    public const DEFAULT_CHARSET = 'utf-8';
 
     /**
      * Subject
@@ -112,7 +112,7 @@ class Message
     /**
      * Attachments
      *
-     * @var Attachment[]
+     * @var AttachmentInterface[]
      */
     protected $attachments = [];
 
@@ -140,7 +140,7 @@ class Message
      *
      * @param string $subject The subject
      *
-     * @return $this
+     * @return Message
      */
     public function setSubject(string $subject): Message
     {
@@ -154,7 +154,7 @@ class Message
      *
      * @return string|null
      */
-    public function getSubject()
+    public function getSubject(): ?string
     {
         return $this->subject;
     }
@@ -165,9 +165,9 @@ class Message
      * @param string      $address The address
      * @param string|null $name    The name
      *
-     * @return $this
+     * @return Message
      */
-    public function addFrom(string $address, string $name = null): Message
+    public function addFrom(string $address, ?string $name = null): Message
     {
         $this->from[] = [
             'address' => $address,
@@ -198,9 +198,9 @@ class Message
      * @param string      $address The address
      * @param string|null $name    The name
      *
-     * @return $this
+     * @return Message
      */
-    public function addTo(string $address, string $name = null): Message
+    public function addTo(string $address, ?string $name = null): Message
     {
         $this->to[] = [
             'address' => $address,
@@ -231,9 +231,9 @@ class Message
      * @param string      $address The address
      * @param string|null $name    The name
      *
-     * @return $this
+     * @return Message
      */
-    public function addReplyTo(string $address, string $name = null): Message
+    public function addReplyTo(string $address, ?string $name = null): Message
     {
         $this->replyTo[] = [
             'address' => $address,
@@ -264,9 +264,9 @@ class Message
      * @param string      $address The address
      * @param string|null $name    The name
      *
-     * @return $this
+     * @return Message
      */
-    public function addCc(string $address, string $name = null): Message
+    public function addCc(string $address, ?string $name = null): Message
     {
         $this->cc[] = [
             'address' => $address,
@@ -297,9 +297,9 @@ class Message
      * @param string      $address The address
      * @param string|null $name    The name
      *
-     * @return $this
+     * @return Message
      */
-    public function addBcc(string $address, string $name = null): Message
+    public function addBcc(string $address, ?string $name = null): Message
     {
         $this->bcc[] = [
             'address' => $address,
@@ -333,9 +333,9 @@ class Message
      * @param string      $contentType The content type
      * @param string|null $charset     The character set
      *
-     * @return $this
+     * @return Message
      */
-    public function addContent(string $content, string $contentType, string $charset = null): Message
+    public function addContent(string $content, string $contentType, ?string $charset = null): Message
     {
         $charset = $charset ?: $this->getCharset();
 
@@ -372,9 +372,9 @@ class Message
      * @param string      $address The address
      * @param string|null $name    The name
      *
-     * @return $this
+     * @return Message
      */
-    public function setSender(string $address, string $name = null): Message
+    public function setSender(string $address, ?string $name = null): Message
     {
         $this->sender = [
             'address' => $address,
@@ -394,7 +394,7 @@ class Message
      *
      * @return array|null
      */
-    public function getSender()
+    public function getSender(): ?array
     {
         return $this->sender;
     }
@@ -406,7 +406,7 @@ class Message
      *
      * @param string $returnPath The email address
      *
-     * @return $this
+     * @return Message
      */
     public function setReturnPath(string $returnPath): Message
     {
@@ -420,7 +420,7 @@ class Message
      *
      * @return string|null
      */
-    public function getReturnPath()
+    public function getReturnPath(): ?string
     {
         return $this->returnPath;
     }
@@ -430,7 +430,7 @@ class Message
      *
      * @param string $charset The character set
      *
-     * @return $this
+     * @return Message
      */
     public function setCharset(string $charset): Message
     {
@@ -454,7 +454,7 @@ class Message
      *
      * @param Priority $priority The priority
      *
-     * @return $this
+     * @return Message
      */
     public function setPriority(Priority $priority): Message
     {
@@ -478,7 +478,7 @@ class Message
      *
      * @param int $timestamp The timestamp
      *
-     * @return $this
+     * @return Message
      */
     public function setTimestamp(int $timestamp): Message
     {
@@ -492,7 +492,7 @@ class Message
      *
      * @return int|null
      */
-    public function getTimestamp()
+    public function getTimestamp(): ?int
     {
         return $this->timestamp;
     }
@@ -504,14 +504,14 @@ class Message
      *
      * @param int $maxLineLength The max line length
      *
-     * @return $this
+     * @return Message
      */
     public function setMaxLineLength(int $maxLineLength): Message
     {
         // Each line of characters MUST be no more than 998 characters,
         // and SHOULD be no more than 78 characters, excluding the CRLF.
         // https://tools.ietf.org/html/rfc5322#section-2.1.1
-        $maxLineLength = abs($maxLineLength);
+        $maxLineLength = (int) abs($maxLineLength);
 
         if ($maxLineLength > 998) {
             $maxLineLength = 998;
@@ -527,7 +527,7 @@ class Message
      *
      * @return int|null
      */
-    public function getMaxLineLength()
+    public function getMaxLineLength(): ?int
     {
         return $this->maxLineLength;
     }
@@ -535,11 +535,11 @@ class Message
     /**
      * Adds an attachment
      *
-     * @param Attachment $attachment The attachment
+     * @param AttachmentInterface $attachment The attachment
      *
-     * @return $this
+     * @return Message
      */
-    public function addAttachment(Attachment $attachment): Message
+    public function addAttachment(AttachmentInterface $attachment): Message
     {
         $this->attachments[] = $attachment;
 
@@ -549,7 +549,7 @@ class Message
     /**
      * Retrieves the file attachments
      *
-     * @return Attachment[]
+     * @return AttachmentInterface[]
      */
     public function getAttachments(): array
     {

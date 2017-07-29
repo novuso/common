@@ -6,7 +6,7 @@ use Novuso\Common\Application\Filesystem\Exception\FileNotFoundException;
 use Novuso\Test\System\TestCase\UnitTestCase;
 
 /**
- * @covers Novuso\Common\Application\Filesystem\Exception\FileNotFoundException
+ * @covers \Novuso\Common\Application\Filesystem\Exception\FileNotFoundException
  */
 class FileNotFoundExceptionTest extends UnitTestCase
 {
