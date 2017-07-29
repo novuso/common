@@ -2,13 +2,13 @@
 
 namespace Novuso\Common\Application\Messaging\Query\Routing;
 
-use Novuso\Common\Application\Service\Container;
-use Novuso\Common\Domain\Messaging\Query\Query;
-use Novuso\Common\Domain\Messaging\Query\QueryHandler;
+use Novuso\Common\Domain\Messaging\Query\QueryHandlerInterface;
+use Novuso\Common\Domain\Messaging\Query\QueryInterface;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Exception\LookupException;
 use Novuso\System\Type\Type;
 use Novuso\System\Utility\Validate;
+use Psr\Container\ContainerInterface;
 
 /**
  * ServiceAwareQueryMap is a query class to handler service map
@@ -17,12 +17,12 @@ use Novuso\System\Utility\Validate;
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class ServiceAwareQueryMap
+class ServiceAwareQueryMap implements QueryMapInterface
 {
     /**
      * Service container
      *
-     * @var Container
+     * @var ContainerInterface
      */
     protected $container;
 
@@ -36,9 +36,9 @@ class ServiceAwareQueryMap
     /**
      * Constructs ServiceAwareQueryMap
      *
-     * @param Container $container The service container
+     * @param ContainerInterface $container The service container
      */
-    public function __construct(Container $container)
+    public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
@@ -57,7 +57,7 @@ class ServiceAwareQueryMap
      *
      * @throws DomainException When a query class is not valid
      */
-    public function registerHandlers(array $queryToHandlerMap)
+    public function registerHandlers(array $queryToHandlerMap): void
     {
         foreach ($queryToHandlerMap as $queryClass => $serviceName) {
             $this->registerHandler($queryClass, $serviceName);
@@ -74,9 +74,9 @@ class ServiceAwareQueryMap
      *
      * @throws DomainException When the query class is not valid
      */
-    public function registerHandler(string $queryClass, string $serviceName)
+    public function registerHandler(string $queryClass, string $serviceName): void
     {
-        if (!Validate::implementsInterface($queryClass, Query::class)) {
+        if (!Validate::implementsInterface($queryClass, QueryInterface::class)) {
             $message = sprintf('Invalid query class: %s', $queryClass);
             throw new DomainException($message);
         }
@@ -87,15 +87,9 @@ class ServiceAwareQueryMap
     }
 
     /**
-     * Retrieves handler by query class name
-     *
-     * @param string $queryClass The full query class name
-     *
-     * @return QueryHandler
-     *
-     * @throws LookupException When a handler is not registered
+     * {@inheritdoc}
      */
-    public function getHandler(string $queryClass): QueryHandler
+    public function getHandler(string $queryClass): QueryHandlerInterface
     {
         if (!$this->hasHandler($queryClass)) {
             $message = sprintf('Handler not defined for query: %s', $queryClass);
@@ -109,11 +103,7 @@ class ServiceAwareQueryMap
     }
 
     /**
-     * Checks if a handler is defined for a query
-     *
-     * @param string $queryClass The full query class name
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function hasHandler(string $queryClass): bool
     {

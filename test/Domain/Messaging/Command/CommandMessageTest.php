@@ -5,14 +5,14 @@ namespace Novuso\Test\Common\Domain\Messaging\Command;
 use Novuso\Common\Domain\Messaging\Command\CommandMessage;
 use Novuso\Common\Domain\Messaging\MessageId;
 use Novuso\Common\Domain\Messaging\MetaData;
-use Novuso\Common\Domain\Model\DateTime\DateTime;
+use Novuso\Common\Domain\Value\DateTime\DateTime;
 use Novuso\System\Serialization\JsonSerializer;
 use Novuso\Test\Common\Resources\Domain\Messaging\Command\RegisterUserCommand;
 use Novuso\Test\System\TestCase\UnitTestCase;
 
 /**
- * @covers Novuso\Common\Domain\Messaging\BaseMessage
- * @covers Novuso\Common\Domain\Messaging\Command\CommandMessage
+ * @covers \Novuso\Common\Domain\Messaging\BaseMessage
+ * @covers \Novuso\Common\Domain\Messaging\Command\CommandMessage
  */
 class CommandMessageTest extends UnitTestCase
 {
@@ -113,11 +113,11 @@ class CommandMessageTest extends UnitTestCase
         $expected = '{id:0150deae-68df-40ca-aea1-6b4b06aadfc3,'
             .'type:command,'
             .'timestamp:2015-11-06T15:23:03[America/Chicago],'
-            .'meta_data:{foo:bar},'
             .'payload_type:Novuso.Test.Common.Resources.Domain.Messaging.Command.RegisterUserCommand,'
             .'payload:{prefix:NULL,first_name:James,middle_name:D,last_name:Smith,'
             .'suffix:NULL,email:jsmith@example.com,'
-            .'password:$2y$10$NXQfVDFu3.Tyd97bnm4TPO/jdrbgL918xeXM5USqfB.qIHFB6mgjC}}';
+            .'password:$2y$10$NXQfVDFu3.Tyd97bnm4TPO/jdrbgL918xeXM5USqfB.qIHFB6mgjC},'
+            .'meta_data:{foo:bar}}';
         $this->assertSame($expected, $this->message->toString());
     }
 
@@ -126,11 +126,11 @@ class CommandMessageTest extends UnitTestCase
         $expected = '{id:0150deae-68df-40ca-aea1-6b4b06aadfc3,'
             .'type:command,'
             .'timestamp:2015-11-06T15:23:03[America/Chicago],'
-            .'meta_data:{foo:bar},'
             .'payload_type:Novuso.Test.Common.Resources.Domain.Messaging.Command.RegisterUserCommand,'
             .'payload:{prefix:NULL,first_name:James,middle_name:D,last_name:Smith,'
             .'suffix:NULL,email:jsmith@example.com,'
-            .'password:$2y$10$NXQfVDFu3.Tyd97bnm4TPO/jdrbgL918xeXM5USqfB.qIHFB6mgjC}}';
+            .'password:$2y$10$NXQfVDFu3.Tyd97bnm4TPO/jdrbgL918xeXM5USqfB.qIHFB6mgjC},'
+            .'meta_data:{foo:bar}}';
         $this->assertSame($expected, (string) $this->message);
     }
 
@@ -139,11 +139,11 @@ class CommandMessageTest extends UnitTestCase
         $expected = '{"id":"0150deae-68df-40ca-aea1-6b4b06aadfc3",'
             .'"type":"command",'
             .'"timestamp":"2015-11-06T15:23:03[America/Chicago]",'
-            .'"meta_data":{"foo":"bar"},'
             .'"payload_type":"Novuso.Test.Common.Resources.Domain.Messaging.Command.RegisterUserCommand",'
             .'"payload":{"prefix":null,"first_name":"James","middle_name":"D","last_name":"Smith",'
             .'"suffix":null,"email":"jsmith@example.com",'
-            .'"password":"$2y$10$NXQfVDFu3.Tyd97bnm4TPO/jdrbgL918xeXM5USqfB.qIHFB6mgjC"}}';
+            .'"password":"$2y$10$NXQfVDFu3.Tyd97bnm4TPO/jdrbgL918xeXM5USqfB.qIHFB6mgjC"},'
+            .'"meta_data":{"foo":"bar"}}';
         $this->assertSame($expected, json_encode($this->message, JSON_UNESCAPED_SLASHES));
     }
 
@@ -163,19 +163,19 @@ class CommandMessageTest extends UnitTestCase
 
     public function test_that_compare_to_returns_zero_for_same_value()
     {
-        $message = $this->message->mergeMetaData(MetaData::create());
+        $message = CommandMessage::deserialize($this->getMessageData());
         $this->assertSame(0, $this->message->compareTo($message));
     }
 
     public function test_that_compare_to_returns_one_for_greater_instance()
     {
-        $message = $this->message->withMetaData(MetaData::create(['ip_address' => '127.0.0.1']));
+        $message = CommandMessage::deserialize($this->getAltMessageData());
         $this->assertSame(1, $message->compareTo($this->message));
     }
 
     public function test_that_compare_to_returns_neg_one_for_lesser_instance()
     {
-        $message = $this->message->withMetaData(MetaData::create(['ip_address' => '127.0.0.1']));
+        $message = CommandMessage::deserialize($this->getAltMessageData());
         $this->assertSame(-1, $this->message->compareTo($message));
     }
 
@@ -186,7 +186,7 @@ class CommandMessageTest extends UnitTestCase
 
     public function test_that_equals_returns_true_for_same_value()
     {
-        $message = $this->message->mergeMetaData(MetaData::create());
+        $message = CommandMessage::deserialize($this->getMessageData());
         $this->assertTrue($this->message->equals($message));
     }
 
@@ -197,13 +197,13 @@ class CommandMessageTest extends UnitTestCase
 
     public function test_that_equals_returns_false_for_different_value()
     {
-        $message = $this->message->mergeMetaData(MetaData::create(['ip_address' => '127.0.0.1']));
+        $message = CommandMessage::deserialize($this->getAltMessageData());
         $this->assertFalse($this->message->equals($message));
     }
 
     public function test_that_hash_value_returns_expected_value()
     {
-        $this->assertSame($this->message->toString(), $this->message->hashValue());
+        $this->assertSame('0150deae68df40caaea16b4b06aadfc3', $this->message->hashValue());
     }
 
     /**
@@ -238,7 +238,6 @@ class CommandMessageTest extends UnitTestCase
             'id'           => '0150deae-68df-40ca-aea1-6b4b06aadfc3',
             'type'         => 'command',
             'timestamp'    => '2015-11-06T15:23:03[America/Chicago]',
-            'meta_data'    => ['foo' => 'bar'],
             'payload_type' => 'Novuso.Test.Common.Resources.Domain.Messaging.Command.RegisterUserCommand',
             'payload'      => [
                 'prefix'      => null,
@@ -248,7 +247,28 @@ class CommandMessageTest extends UnitTestCase
                 'suffix'      => null,
                 'email'       => 'jsmith@example.com',
                 'password'    => '$2y$10$NXQfVDFu3.Tyd97bnm4TPO/jdrbgL918xeXM5USqfB.qIHFB6mgjC'
-            ]
+            ],
+            'meta_data'    => ['foo' => 'bar']
+        ];
+    }
+
+    protected function getAltMessageData()
+    {
+        return [
+            'id'           => '015d7af5-4e30-4ec6-afa8-6be1114f5b69',
+            'type'         => 'command',
+            'timestamp'    => '2017-07-25T18:14:42[America/Chicago]',
+            'payload_type' => 'Novuso.Test.Common.Resources.Domain.Messaging.Command.RegisterUserCommand',
+            'payload'      => [
+                'prefix'      => null,
+                'first_name'  => 'James',
+                'middle_name' => 'D',
+                'last_name'   => 'Smith',
+                'suffix'      => null,
+                'email'       => 'jsmith@example.com',
+                'password'    => '$2y$10$kGo6Qs37vLJqhtIJ2sb0YudwHDQTvG77ZE.AMxxp8Fu.4uXYAu/q2'
+            ],
+            'meta_data'    => ['foo' => 'bar']
         ];
     }
 }

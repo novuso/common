@@ -2,7 +2,7 @@
 
 namespace Novuso\Common\Application\Filesystem\Exception;
 
-use Exception;
+use Throwable;
 
 /**
  * FileNotFoundException is thrown when a file cannot be found
@@ -17,11 +17,11 @@ class FileNotFoundException extends FilesystemException
      * Creates exception for a given path
      *
      * @param string         $path     The file path
-     * @param Exception|null $previous The previous exception
+     * @param Throwable|null $previous The previous exception
      *
      * @return FileNotFoundException
      */
-    public static function fromPath(string $path, Exception $previous = null): FileNotFoundException
+    public static function fromPath(string $path, ?Throwable $previous = null): FileNotFoundException
     {
         $message = sprintf('File not found: %s', $path);
 

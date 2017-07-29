@@ -2,8 +2,8 @@
 
 namespace Novuso\Common\Application\Filesystem\Exception;
 
-use Exception;
-use Novuso\System\Exception\RuntimeException;
+use Novuso\System\Exception\SystemException;
+use Throwable;
 
 /**
  * FilesystemException is thrown when a filesystem error occurs
@@ -12,7 +12,7 @@ use Novuso\System\Exception\RuntimeException;
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class FilesystemException extends RuntimeException
+class FilesystemException extends SystemException
 {
     /**
      * File path
@@ -26,9 +26,9 @@ class FilesystemException extends RuntimeException
      *
      * @param string         $message  The message
      * @param string|null    $path     The file path
-     * @param Exception|null $previous The previous exception
+     * @param Throwable|null $previous The previous exception
      */
-    public function __construct(string $message, string $path = null, Exception $previous = null)
+    public function __construct(string $message, ?string $path = null, ?Throwable $previous = null)
     {
         $this->path = $path;
         parent::__construct($message, 0, $previous);

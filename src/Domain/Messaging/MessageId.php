@@ -2,7 +2,7 @@
 
 namespace Novuso\Common\Domain\Messaging;
 
-use Novuso\Common\Domain\Model\UniqueId;
+use Novuso\Common\Domain\Identity\UniqueId;
 
 /**
  * MessageId is a unique identifier for a message
@@ -13,4 +13,25 @@ use Novuso\Common\Domain\Model\UniqueId;
  */
 class MessageId extends UniqueId
 {
+    /**
+     * {@inheritdoc}
+     */
+    public static function generate(): MessageId
+    {
+        /** @var MessageId $messageId */
+        $messageId = parent::generate();
+
+        return $messageId;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function fromString(string $value): MessageId
+    {
+        /** @var MessageId $messageId */
+        $messageId = parent::fromString($value);
+
+        return $messageId;
+    }
 }

@@ -14,24 +14,24 @@ class AndSpecification extends CompositeSpecification
     /**
      * First specification
      *
-     * @var Specification
+     * @var SpecificationInterface
      */
     protected $firstSpec;
 
     /**
      * Second specification
      *
-     * @var Specification
+     * @var SpecificationInterface
      */
     protected $secondSpec;
 
     /**
      * Constructs AndSpecification
      *
-     * @param Specification $firstSpec  The first specification
-     * @param Specification $secondSpec The second specification
+     * @param SpecificationInterface $firstSpec  The first specification
+     * @param SpecificationInterface $secondSpec The second specification
      */
-    public function __construct(Specification $firstSpec, Specification $secondSpec)
+    public function __construct(SpecificationInterface $firstSpec, SpecificationInterface $secondSpec)
     {
         $this->firstSpec = $firstSpec;
         $this->secondSpec = $secondSpec;

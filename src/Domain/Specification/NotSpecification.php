@@ -14,16 +14,16 @@ class NotSpecification extends CompositeSpecification
     /**
      * Specification
      *
-     * @var Specification
+     * @var SpecificationInterface
      */
     protected $spec;
 
     /**
      * Constructs NotSpecification
      *
-     * @param Specification $spec The specification
+     * @param SpecificationInterface $spec The specification
      */
-    public function __construct(Specification $spec)
+    public function __construct(SpecificationInterface $spec)
     {
         $this->spec = $spec;
     }

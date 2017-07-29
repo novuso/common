@@ -154,7 +154,7 @@ class ProcessBuilder
      *
      * @return ProcessBuilder
      */
-    public function option(string $option, string $value = null): ProcessBuilder
+    public function option(string $option, ?string $value = null): ProcessBuilder
     {
         if ($option === '') {
             return $this;
@@ -181,7 +181,7 @@ class ProcessBuilder
      *
      * @return ProcessBuilder
      */
-    public function short(string $option, string $value = null): ProcessBuilder
+    public function short(string $option, ?string $value = null): ProcessBuilder
     {
         if ($option === '') {
             return $this;
@@ -219,7 +219,7 @@ class ProcessBuilder
      *
      * @return ProcessBuilder
      */
-    public function directory(string $directory = null): ProcessBuilder
+    public function directory(?string $directory = null): ProcessBuilder
     {
         $this->directory = $directory;
 
@@ -304,7 +304,7 @@ class ProcessBuilder
      *
      * @return ProcessBuilder
      */
-    public function setEnv(string $name, string $value = null): ProcessBuilder
+    public function setEnv(string $name, ?string $value = null): ProcessBuilder
     {
         $this->environment[$name] = $value;
 
@@ -318,7 +318,7 @@ class ProcessBuilder
      *
      * @return ProcessBuilder
      */
-    public function stdout(callable $stdout = null): ProcessBuilder
+    public function stdout(?callable $stdout = null): ProcessBuilder
     {
         $this->stdout = $stdout;
 
@@ -332,7 +332,7 @@ class ProcessBuilder
      *
      * @return ProcessBuilder
      */
-    public function stderr(callable $stderr = null): ProcessBuilder
+    public function stderr(?callable $stderr = null): ProcessBuilder
     {
         $this->stderr = $stderr;
 

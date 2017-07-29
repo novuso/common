@@ -3,10 +3,10 @@
 namespace Novuso\Test\Common\Resources\Domain\Messaging\Query;
 
 use Exception;
-use Novuso\Common\Domain\Messaging\Query\Query;
-use Novuso\Common\Domain\Messaging\Query\QueryHandler;
+use Novuso\Common\Domain\Messaging\Query\QueryHandlerInterface;
+use Novuso\Common\Domain\Messaging\Query\QueryMessage;
 
-class UserByEmailHandler implements QueryHandler
+class UserByEmailHandler implements QueryHandlerInterface
 {
     protected $users = [
         [
@@ -20,8 +20,10 @@ class UserByEmailHandler implements QueryHandler
         ]
     ];
 
-    public function handle(Query $query)
+    public function handle(QueryMessage $message)
     {
+        /** @var UserByEmailQuery $query */
+        $query = $message->payload();
         $email = $query->email();
         foreach ($this->users as $user) {
             if ($user['email'] === $email) {

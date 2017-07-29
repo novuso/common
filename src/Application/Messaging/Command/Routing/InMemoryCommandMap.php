@@ -2,8 +2,8 @@
 
 namespace Novuso\Common\Application\Messaging\Command\Routing;
 
-use Novuso\Common\Domain\Messaging\Command\Command;
-use Novuso\Common\Domain\Messaging\Command\CommandHandler;
+use Novuso\Common\Domain\Messaging\Command\CommandHandlerInterface;
+use Novuso\Common\Domain\Messaging\Command\CommandInterface;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Exception\LookupException;
 use Novuso\System\Type\Type;
@@ -16,7 +16,7 @@ use Novuso\System\Utility\Validate;
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class InMemoryCommandMap
+class InMemoryCommandMap implements CommandMapInterface
 {
     /**
      * Command handlers
@@ -39,7 +39,7 @@ class InMemoryCommandMap
      *
      * @throws DomainException When a command class is not valid
      */
-    public function registerHandlers(array $commandToHandlerMap)
+    public function registerHandlers(array $commandToHandlerMap): void
     {
         foreach ($commandToHandlerMap as $commandClass => $handler) {
             $this->registerHandler($commandClass, $handler);
@@ -49,16 +49,16 @@ class InMemoryCommandMap
     /**
      * Registers a command handler
      *
-     * @param string         $commandClass The full command class name
-     * @param CommandHandler $handler      The command handler
+     * @param string                  $commandClass The full command class name
+     * @param CommandHandlerInterface $handler      The command handler
      *
      * @return void
      *
      * @throws DomainException When the command class is not valid
      */
-    public function registerHandler(string $commandClass, CommandHandler $handler)
+    public function registerHandler(string $commandClass, CommandHandlerInterface $handler): void
     {
-        if (!Validate::implementsInterface($commandClass, Command::class)) {
+        if (!Validate::implementsInterface($commandClass, CommandInterface::class)) {
             $message = sprintf('Invalid command class: %s', $commandClass);
             throw new DomainException($message);
         }
@@ -69,15 +69,9 @@ class InMemoryCommandMap
     }
 
     /**
-     * Retrieves handler by command class name
-     *
-     * @param string $commandClass The full command class name
-     *
-     * @return CommandHandler
-     *
-     * @throws LookupException When a handler is not registered
+     * {@inheritdoc}
      */
-    public function getHandler(string $commandClass): CommandHandler
+    public function getHandler(string $commandClass): CommandHandlerInterface
     {
         $type = Type::create($commandClass)->toString();
 
@@ -90,11 +84,7 @@ class InMemoryCommandMap
     }
 
     /**
-     * Checks if a handler is defined for a command
-     *
-     * @param string $commandClass The full command class name
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function hasHandler(string $commandClass): bool
     {

@@ -6,7 +6,7 @@ use Novuso\Common\Domain\Messaging\BaseMessage;
 use Novuso\Common\Domain\Messaging\MessageId;
 use Novuso\Common\Domain\Messaging\MessageType;
 use Novuso\Common\Domain\Messaging\MetaData;
-use Novuso\Common\Domain\Model\DateTime\DateTime;
+use Novuso\Common\Domain\Value\DateTime\DateTime;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Type\Type;
 use Novuso\System\Utility\Validate;
@@ -24,12 +24,12 @@ class EventMessage extends BaseMessage
     /**
      * Constructs EventMessage
      *
-     * @param MessageId $id        The message ID
-     * @param DateTime  $timestamp The timestamp
-     * @param Event     $payload   The payload
-     * @param MetaData  $metaData  The meta data
+     * @param MessageId      $id        The message ID
+     * @param DateTime       $timestamp The timestamp
+     * @param EventInterface $payload   The payload
+     * @param MetaData       $metaData  The meta data
      */
-    public function __construct(MessageId $id, DateTime $timestamp, Event $payload, MetaData $metaData)
+    public function __construct(MessageId $id, DateTime $timestamp, EventInterface $payload, MetaData $metaData)
     {
         parent::__construct($id, MessageType::EVENT(), $timestamp, $payload, $metaData);
     }
@@ -37,11 +37,11 @@ class EventMessage extends BaseMessage
     /**
      * Creates instance for an event
      *
-     * @param Event $event The event
+     * @param EventInterface $event The event
      *
      * @return EventMessage
      */
-    public static function create(Event $event): EventMessage
+    public static function create(EventInterface $event): EventMessage
     {
         $timestamp = DateTime::now();
         $id = MessageId::generate();
@@ -76,15 +76,15 @@ class EventMessage extends BaseMessage
         $metaData = MetaData::create($data['meta_data']);
         /** @var Type $payloadType */
         $payloadType = Type::create($data['payload_type']);
-        /** @var string $payloadClass */
+        /** @var EventInterface|string $payloadClass */
         $payloadClass = $payloadType->toClassName();
 
         assert(
-            Validate::implementsInterface($payloadClass, Event::class),
+            Validate::implementsInterface($payloadClass, EventInterface::class),
             sprintf('Unable to deserialize: %s', $payloadClass)
         );
 
-        /** @var Event $payload */
+        /** @var EventInterface $payload */
         $payload = $payloadClass::fromArray($data['payload']);
 
         return new static($id, $timestamp, $payload, $metaData);
@@ -93,17 +93,9 @@ class EventMessage extends BaseMessage
     /**
      * {@inheritdoc}
      */
-    public function serialize(): array
+    public function withMetaData(MetaData $metaData): EventMessage
     {
-        return $this->toArray();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function withMetaData(MetaData $metaData)
-    {
-        /** @var Event $event */
+        /** @var EventInterface $event */
         $event = $this->payload;
 
         return new static(
@@ -117,12 +109,12 @@ class EventMessage extends BaseMessage
     /**
      * {@inheritdoc}
      */
-    public function mergeMetaData(MetaData $metaData)
+    public function mergeMetaData(MetaData $metaData): EventMessage
     {
         $meta = clone $this->metaData;
         $meta->merge($metaData);
 
-        /** @var Event $event */
+        /** @var EventInterface $event */
         $event = $this->payload;
 
         return new static(

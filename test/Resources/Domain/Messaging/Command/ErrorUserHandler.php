@@ -3,12 +3,12 @@
 namespace Novuso\Test\Common\Resources\Domain\Messaging\Command;
 
 use Exception;
-use Novuso\Common\Domain\Messaging\Command\Command;
-use Novuso\Common\Domain\Messaging\Command\CommandHandler;
+use Novuso\Common\Domain\Messaging\Command\CommandHandlerInterface;
+use Novuso\Common\Domain\Messaging\Command\CommandMessage;
 
-class ErrorUserHandler implements CommandHandler
+class ErrorUserHandler implements CommandHandlerInterface
 {
-    public function handle(Command $command)
+    public function handle(CommandMessage $message): void
     {
         throw new Exception('Something went wrong');
     }

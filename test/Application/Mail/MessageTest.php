@@ -2,13 +2,13 @@
 
 namespace Novuso\Test\Common\Application\Mail;
 
-use Novuso\Common\Application\Mail\Attachment;
+use Novuso\Common\Application\Mail\AttachmentInterface;
 use Novuso\Common\Application\Mail\Message;
 use Novuso\Common\Application\Mail\Priority;
 use Novuso\Test\System\TestCase\UnitTestCase;
 
 /**
- * @covers Novuso\Common\Application\Mail\Message
+ * @covers \Novuso\Common\Application\Mail\Message
  */
 class MessageTest extends UnitTestCase
 {
@@ -150,7 +150,8 @@ class MessageTest extends UnitTestCase
 
     public function test_that_it_can_set_and_get_attachments()
     {
-        $attachment = $this->mock(Attachment::class);
+        /** @var AttachmentInterface $attachment */
+        $attachment = $this->mock(AttachmentInterface::class);
         $this->message->addAttachment($attachment);
         $attachments = $this->message->getAttachments();
         $this->assertSame($attachment, $attachments[0]);

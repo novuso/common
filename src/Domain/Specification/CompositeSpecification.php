@@ -9,7 +9,7 @@ namespace Novuso\Common\Domain\Specification;
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-abstract class CompositeSpecification implements Specification
+abstract class CompositeSpecification implements SpecificationInterface
 {
     /**
      * {@inheritdoc}
@@ -19,7 +19,7 @@ abstract class CompositeSpecification implements Specification
     /**
      * {@inheritdoc}
      */
-    public function and(Specification $other): Specification
+    public function and(SpecificationInterface $other): SpecificationInterface
     {
         return new AndSpecification($this, $other);
     }
@@ -27,7 +27,7 @@ abstract class CompositeSpecification implements Specification
     /**
      * {@inheritdoc}
      */
-    public function or(Specification $other): Specification
+    public function or(SpecificationInterface $other): SpecificationInterface
     {
         return new OrSpecification($this, $other);
     }
@@ -35,7 +35,7 @@ abstract class CompositeSpecification implements Specification
     /**
      * {@inheritdoc}
      */
-    public function not(): Specification
+    public function not(): SpecificationInterface
     {
         return new NotSpecification($this);
     }

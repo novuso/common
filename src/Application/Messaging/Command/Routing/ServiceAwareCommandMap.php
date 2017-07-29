@@ -2,13 +2,13 @@
 
 namespace Novuso\Common\Application\Messaging\Command\Routing;
 
-use Novuso\Common\Application\Service\Container;
-use Novuso\Common\Domain\Messaging\Command\Command;
-use Novuso\Common\Domain\Messaging\Command\CommandHandler;
+use Novuso\Common\Domain\Messaging\Command\CommandHandlerInterface;
+use Novuso\Common\Domain\Messaging\Command\CommandInterface;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Exception\LookupException;
 use Novuso\System\Type\Type;
 use Novuso\System\Utility\Validate;
+use Psr\Container\ContainerInterface;
 
 /**
  * ServiceAwareCommandMap is a command class to handler service map
@@ -17,12 +17,12 @@ use Novuso\System\Utility\Validate;
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class ServiceAwareCommandMap
+class ServiceAwareCommandMap implements CommandMapInterface
 {
     /**
      * Service container
      *
-     * @var Container
+     * @var ContainerInterface
      */
     protected $container;
 
@@ -36,9 +36,9 @@ class ServiceAwareCommandMap
     /**
      * Constructs ServiceAwareCommandMap
      *
-     * @param Container $container The service container
+     * @param ContainerInterface $container The service container
      */
-    public function __construct(Container $container)
+    public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
@@ -57,7 +57,7 @@ class ServiceAwareCommandMap
      *
      * @throws DomainException When a command class is not valid
      */
-    public function registerHandlers(array $commandToHandlerMap)
+    public function registerHandlers(array $commandToHandlerMap): void
     {
         foreach ($commandToHandlerMap as $commandClass => $serviceName) {
             $this->registerHandler($commandClass, $serviceName);
@@ -74,9 +74,9 @@ class ServiceAwareCommandMap
      *
      * @throws DomainException When the command class is not valid
      */
-    public function registerHandler(string $commandClass, string $serviceName)
+    public function registerHandler(string $commandClass, string $serviceName): void
     {
-        if (!Validate::implementsInterface($commandClass, Command::class)) {
+        if (!Validate::implementsInterface($commandClass, CommandInterface::class)) {
             $message = sprintf('Invalid command class: %s', $commandClass);
             throw new DomainException($message);
         }
@@ -87,15 +87,9 @@ class ServiceAwareCommandMap
     }
 
     /**
-     * Retrieves handler by command class name
-     *
-     * @param string $commandClass The full command class name
-     *
-     * @return CommandHandler
-     *
-     * @throws LookupException When a handler is not registered
+     * {@inheritdoc}
      */
-    public function getHandler(string $commandClass): CommandHandler
+    public function getHandler(string $commandClass): CommandHandlerInterface
     {
         if (!$this->hasHandler($commandClass)) {
             $message = sprintf('Handler not defined for command: %s', $commandClass);
@@ -109,11 +103,7 @@ class ServiceAwareCommandMap
     }
 
     /**
-     * Checks if a handler is defined for a command
-     *
-     * @param string $commandClass The full command class name
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function hasHandler(string $commandClass): bool
     {

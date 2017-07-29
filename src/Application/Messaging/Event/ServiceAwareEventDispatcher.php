@@ -2,11 +2,11 @@
 
 namespace Novuso\Common\Application\Messaging\Event;
 
-use Novuso\Common\Application\Service\Container;
-use Novuso\Common\Domain\Messaging\Event\Event;
-use Novuso\Common\Domain\Messaging\Event\EventSubscriber;
+use Novuso\Common\Domain\Messaging\Event\EventMessage;
+use Novuso\Common\Domain\Messaging\Event\EventSubscriberInterface;
 use Novuso\System\Utility\ClassName;
 use Novuso\System\Utility\Validate;
+use Psr\Container\ContainerInterface;
 
 /**
  * ServiceAwareEventDispatcher dispatches events to subscriber services
@@ -15,12 +15,12 @@ use Novuso\System\Utility\Validate;
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class ServiceAwareEventDispatcher extends SimpleEventDispatcher
+class ServiceAwareEventDispatcher extends SynchronousEventDispatcher
 {
     /**
      * Service container
      *
-     * @var Container
+     * @var ContainerInterface
      */
     protected $container;
 
@@ -41,9 +41,9 @@ class ServiceAwareEventDispatcher extends SimpleEventDispatcher
     /**
      * Constructs ServiceAwareEventDispatcher
      *
-     * @param Container $container The service container
+     * @param ContainerInterface $container The service container
      */
-    public function __construct(Container $container)
+    public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
@@ -52,21 +52,22 @@ class ServiceAwareEventDispatcher extends SimpleEventDispatcher
      * Registers a subscriber service to handle events
      *
      * The subscriber class must implement:
-     * Novuso\Common\Domain\Messaging\Event\EventSubscriber
+     * Novuso\Common\Domain\Messaging\Event\EventSubscriberInterface
      *
      * @param string $className The subscriber class name
      * @param string $serviceId The subscriber service ID
      *
      * @return void
      */
-    public function registerService(string $className, string $serviceId)
+    public function registerService(string $className, string $serviceId): void
     {
         assert(
-            Validate::implementsInterface($className, EventSubscriber::class),
+            Validate::implementsInterface($className, EventSubscriberInterface::class),
             sprintf('Invalid subscriber class: %s', $className)
         );
-        /** @var EventSubscriber $className The subscriber class name */
+        /** @var EventSubscriberInterface $className The subscriber class name */
         foreach ($className::eventRegistration() as $eventType => $params) {
+            $eventType = ClassName::underscore($eventType);
             if (is_string($params)) {
                 $this->addHandlerService($eventType, $serviceId, $params);
             } elseif (is_string($params[0])) {
@@ -91,7 +92,7 @@ class ServiceAwareEventDispatcher extends SimpleEventDispatcher
      *
      * @return void
      */
-    public function addHandlerService(string $eventType, string $serviceId, string $method, int $priority = 0)
+    public function addHandlerService(string $eventType, string $serviceId, string $method, int $priority = 0): void
     {
         if (!isset($this->serviceIds[$eventType])) {
             $this->serviceIds[$eventType] = [];
@@ -103,17 +104,17 @@ class ServiceAwareEventDispatcher extends SimpleEventDispatcher
     /**
      * {@inheritdoc}
      */
-    public function dispatch(Event $event)
+    public function dispatch(EventMessage $message): void
     {
-        $this->lazyLoad(ClassName::underscore($event));
+        $this->lazyLoad(ClassName::underscore($message->payload()));
 
-        parent::dispatch($event);
+        parent::dispatch($message);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getHandlers(string $eventType = null): array
+    public function getHandlers(?string $eventType = null): array
     {
         if ($eventType === null) {
             foreach (array_keys($this->serviceIds) as $type) {
@@ -129,7 +130,7 @@ class ServiceAwareEventDispatcher extends SimpleEventDispatcher
     /**
      * {@inheritdoc}
      */
-    public function hasHandlers(string $eventType = null): bool
+    public function hasHandlers(?string $eventType = null): bool
     {
         if ($eventType === null) {
             return (bool) count($this->serviceIds) || (bool) count($this->handlers);
@@ -145,14 +146,14 @@ class ServiceAwareEventDispatcher extends SimpleEventDispatcher
     /**
      * {@inheritdoc}
      */
-    public function removeHandler(string $eventType, callable $handler)
+    public function removeHandler(string $eventType, callable $handler): void
     {
         $this->lazyLoad($eventType);
 
         if (isset($this->serviceIds[$eventType])) {
             foreach ($this->serviceIds[$eventType] as $i => $args) {
                 list($serviceId, $method) = $args;
-                $key = $serviceId.'.'.$method;
+                $key = sprintf('%s.%s', $serviceId, $method);
                 if (isset($this->services[$eventType][$key])
                     && $handler === [$this->services[$eventType][$key], $method]) {
                     unset($this->services[$eventType][$key]);
@@ -177,13 +178,13 @@ class ServiceAwareEventDispatcher extends SimpleEventDispatcher
      *
      * @return void
      */
-    protected function lazyLoad(string $eventType)
+    protected function lazyLoad(string $eventType): void
     {
         if (isset($this->serviceIds[$eventType])) {
             foreach ($this->serviceIds[$eventType] as $args) {
                 list($serviceId, $method, $priority) = $args;
                 $service = $this->container->get($serviceId);
-                $key = $serviceId.'.'.$method;
+                $key = sprintf('%s.%s', $serviceId, $method);
                 if (!isset($this->services[$eventType][$key])) {
                     $this->addHandler($eventType, [$service, $method], $priority);
                 } elseif ($service !== $this->services[$eventType][$key]) {

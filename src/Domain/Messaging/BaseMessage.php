@@ -2,8 +2,8 @@
 
 namespace Novuso\Common\Domain\Messaging;
 
-use Novuso\Common\Domain\Model\DateTime\DateTime;
-use Novuso\System\Collection\ArrayCollection as Collection;
+use Novuso\Common\Domain\Value\DateTime\DateTime;
+use Novuso\System\Collection\ArrayCollection;
 use Novuso\System\Type\Type;
 use Novuso\System\Utility\Validate;
 use Novuso\System\Utility\VarPrinter;
@@ -15,7 +15,7 @@ use Novuso\System\Utility\VarPrinter;
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-abstract class BaseMessage implements Message
+abstract class BaseMessage implements MessageInterface
 {
     /**
      * Message ID
@@ -41,7 +41,7 @@ abstract class BaseMessage implements Message
     /**
      * Payload
      *
-     * @var Payload
+     * @var PayloadInterface
      */
     protected $payload;
 
@@ -62,17 +62,17 @@ abstract class BaseMessage implements Message
     /**
      * Constructs BaseMessage
      *
-     * @param MessageId   $id        The message ID
-     * @param MessageType $type      The message type
-     * @param DateTime    $timestamp The timestamp
-     * @param Payload     $payload   The payload
-     * @param MetaData    $metaData  The meta data
+     * @param MessageId        $id        The message ID
+     * @param MessageType      $type      The message type
+     * @param DateTime         $timestamp The timestamp
+     * @param PayloadInterface $payload   The payload
+     * @param MetaData         $metaData  The meta data
      */
     protected function __construct(
         MessageId $id,
         MessageType $type,
         DateTime $timestamp,
-        Payload $payload,
+        PayloadInterface $payload,
         MetaData $metaData
     ) {
         $this->id = $id;
@@ -110,7 +110,7 @@ abstract class BaseMessage implements Message
     /**
      * {@inheritdoc}
      */
-    public function payload(): Payload
+    public function payload(): PayloadInterface
     {
         return $this->payload;
     }
@@ -136,16 +136,16 @@ abstract class BaseMessage implements Message
      */
     public function toString(): string
     {
-        return sprintf('{%s}', Collection::create()
+        return sprintf('{%s}', ArrayCollection::create()
             ->push(sprintf('id:%s', $this->id->toString()))
             ->push(sprintf('type:%s', $this->type->value()))
             ->push(sprintf('timestamp:%s', $this->timestamp->toString()))
-            ->push(sprintf('meta_data:{%s}', Collection::create($this->metaData->toArray())
+            ->push(sprintf('payload_type:%s', $this->payloadType->toString()))
+            ->push(sprintf('payload:{%s}', ArrayCollection::create($this->payload->toArray())
                 ->implode(',', function ($value, $key) {
                     return sprintf('%s:%s', $key, VarPrinter::toString($value));
                 })))
-            ->push(sprintf('payload_type:%s', $this->payloadType->toString()))
-            ->push(sprintf('payload:{%s}', Collection::create($this->payload->toArray())
+            ->push(sprintf('meta_data:{%s}', ArrayCollection::create($this->metaData->toArray())
                 ->implode(',', function ($value, $key) {
                     return sprintf('%s:%s', $key, VarPrinter::toString($value));
                 })))
@@ -169,16 +169,24 @@ abstract class BaseMessage implements Message
             'id'           => $this->id->toString(),
             'type'         => $this->type->value(),
             'timestamp'    => $this->timestamp->toString(),
-            'meta_data'    => $this->metaData->toArray(),
             'payload_type' => $this->payloadType->toString(),
-            'payload'      => $this->payload->toArray()
+            'payload'      => $this->payload->toArray(),
+            'meta_data'    => $this->metaData->toArray()
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function serialize(): array
     {
         return $this->toArray();
     }
@@ -197,12 +205,7 @@ abstract class BaseMessage implements Message
             sprintf('Comparison requires instance of %s', static::class)
         );
 
-        $strComp = strnatcmp($this->toString(), $object->toString());
-
-        /** @var int $comp */
-        $comp = $strComp <=> 0;
-
-        return $comp;
+        return $this->id->compareTo($object->id);
     }
 
     /**
@@ -218,7 +221,7 @@ abstract class BaseMessage implements Message
             return false;
         }
 
-        return $this->toString() === $object->toString();
+        return $this->id->equals($object->id);
     }
 
     /**
@@ -226,6 +229,6 @@ abstract class BaseMessage implements Message
      */
     public function hashValue(): string
     {
-        return $this->toString();
+        return $this->id->hashValue();
     }
 }

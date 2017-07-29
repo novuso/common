@@ -2,10 +2,11 @@
 
 namespace Novuso\Common\Application\Messaging\Command;
 
-use Novuso\Common\Domain\Messaging\Command\Command;
-use Novuso\Common\Domain\Messaging\Command\CommandBus;
-use Novuso\Common\Domain\Messaging\Command\CommandFilter;
+use Novuso\Common\Domain\Messaging\Command\CommandBusInterface;
+use Novuso\Common\Domain\Messaging\Command\CommandFilterInterface;
+use Novuso\Common\Domain\Messaging\Command\CommandInterface;
 use Novuso\Common\Domain\Messaging\Command\CommandMessage;
+use Novuso\System\Collection\Api\StackInterface;
 use Novuso\System\Collection\LinkedStack;
 
 /**
@@ -15,49 +16,49 @@ use Novuso\System\Collection\LinkedStack;
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class CommandPipeline implements CommandBus, CommandFilter
+class CommandPipeline implements CommandBusInterface, CommandFilterInterface
 {
     /**
      * Command bus
      *
-     * @var CommandBus
+     * @var CommandBusInterface
      */
     protected $commandBus;
 
     /**
      * Command filters
      *
-     * @var LinkedStack
+     * @var StackInterface
      */
     protected $filters;
 
     /**
      * Filter stack
      *
-     * @var LinkedStack|null
+     * @var StackInterface|null
      */
     protected $stack;
 
     /**
      * Constructs CommandPipeline
      *
-     * @param CommandBus $commandBus The command bus
+     * @param CommandBusInterface $commandBus The command bus
      */
-    public function __construct(CommandBus $commandBus)
+    public function __construct(CommandBusInterface $commandBus)
     {
         $this->commandBus = $commandBus;
-        $this->filters = LinkedStack::of(CommandFilter::class);
+        $this->filters = LinkedStack::of(CommandFilterInterface::class);
         $this->filters->push($this);
     }
 
     /**
      * Adds a command filter to the pipeline
      *
-     * @param CommandFilter $filter The filter
+     * @param CommandFilterInterface $filter The filter
      *
      * @return void
      */
-    public function addFilter(CommandFilter $filter)
+    public function addFilter(CommandFilterInterface $filter): void
     {
         $this->filters->push($filter);
     }
@@ -65,20 +66,26 @@ class CommandPipeline implements CommandBus, CommandFilter
     /**
      * {@inheritdoc}
      */
-    public function execute(Command $command)
+    public function execute(CommandInterface $command): void
     {
-        $this->stack = clone $this->filters;
-        $this->pipe(CommandMessage::create($command));
+        $this->dispatch(CommandMessage::create($command));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function process(CommandMessage $message, callable $next)
+    public function dispatch(CommandMessage $message): void
     {
-        /** @var Command $command */
-        $command = $message->payload();
-        $this->commandBus->execute($command);
+        $this->stack = clone $this->filters;
+        $this->pipe($message);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function process(CommandMessage $message, callable $next): void
+    {
+        $this->commandBus->dispatch($message);
     }
 
     /**
@@ -88,9 +95,9 @@ class CommandPipeline implements CommandBus, CommandFilter
      *
      * @return void
      */
-    public function pipe(CommandMessage $message)
+    public function pipe(CommandMessage $message): void
     {
-        /** @var CommandFilter $filter */
+        /** @var CommandFilterInterface $filter */
         $filter = $this->stack->pop();
         $filter->process($message, [$this, 'pipe']);
     }

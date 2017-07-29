@@ -2,16 +2,17 @@
 
 namespace Novuso\Test\Common\Resources\Domain\Messaging\Event;
 
+use Novuso\Common\Domain\Messaging\Event\AllEvents;
 use Novuso\Common\Domain\Messaging\Event\EventMessage;
-use Novuso\Common\Domain\Messaging\Event\EventSubscriber;
+use Novuso\Common\Domain\Messaging\Event\EventSubscriberInterface;
 
-class EventLogSubscriber implements EventSubscriber
+class EventLogSubscriber implements EventSubscriberInterface
 {
     protected $logs = [];
 
     public static function eventRegistration(): array
     {
-        return [EventSubscriber::ALL_EVENTS => 'onAllEvents'];
+        return [AllEvents::class => 'onAllEvents'];
     }
 
     public function onAllEvents(EventMessage $message)
