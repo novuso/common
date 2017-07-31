@@ -2,6 +2,8 @@
 
 namespace Novuso\Common\Application\Config;
 
+use Novuso\Common\Application\Config\Exception\ConfigLoaderException;
+
 /**
  * ConfigLoaderInterface is the interface for a configuration loader
  *
@@ -18,6 +20,8 @@ interface ConfigLoaderInterface
      * @param null|string $type     The resource type
      *
      * @return ConfigContainer
+     *
+     * @throws ConfigLoaderException When an error occurs
      */
     public function load($resource, ?string $type = null): ConfigContainer;
 
