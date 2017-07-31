@@ -223,6 +223,16 @@ class ConfigContainer implements Arrayable, ArrayAccess, Countable, IteratorAggr
     }
 
     /**
+     * Retrieves a list of keys
+     *
+     * @return array
+     */
+    public function keys(): array
+    {
+        return array_keys($this->data);
+    }
+
+    /**
      * Merges another config container
      *
      * Behavior for duplicate keys:
