@@ -3,7 +3,7 @@
 namespace Novuso\Common\Application\EventStore;
 
 use Novuso\Common\Application\EventStore\Exception\EventStoreException;
-use Novuso\Common\Domain\EventSourcing\EventRecord;
+use Novuso\Common\Domain\Model\EventRecord;
 use Novuso\Common\Domain\Identity\IdentifierInterface;
 use Novuso\System\Type\Type;
 use Traversable;

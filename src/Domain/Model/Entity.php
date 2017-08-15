@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Novuso\Common\Domain\EventSourcing;
+namespace Novuso\Common\Domain\Model;
 
 use Novuso\Common\Domain\Identity\IdentifierInterface;
 use Novuso\System\Type\Comparable;
