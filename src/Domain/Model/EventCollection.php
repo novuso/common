@@ -113,9 +113,7 @@ class EventCollection implements Countable
      */
     public function stream()
     {
-        foreach ($this->eventRecords as $eventRecord) {
-            yield $eventRecord;
-        }
+        return $this->eventRecords;
     }
 
     /**
