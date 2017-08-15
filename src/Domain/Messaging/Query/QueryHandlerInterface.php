@@ -14,6 +14,16 @@ use Throwable;
 interface QueryHandlerInterface
 {
     /**
+     * Retrieves query registration
+     *
+     * Returns the fully qualified class name for the query that this service
+     * is meant to handle.
+     *
+     * @return string
+     */
+    public static function queryRegistration(): string;
+
+    /**
      * Handles a query
      *
      * @param QueryMessage $message The query message

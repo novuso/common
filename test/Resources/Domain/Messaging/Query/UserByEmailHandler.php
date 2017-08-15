@@ -20,6 +20,11 @@ class UserByEmailHandler implements QueryHandlerInterface
         ]
     ];
 
+    public static function queryRegistration(): string
+    {
+        return UserByEmailQuery::class;
+    }
+
     public function handle(QueryMessage $message)
     {
         /** @var UserByEmailQuery $query */
