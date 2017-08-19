@@ -19,6 +19,20 @@ class Message
     public const DEFAULT_CHARSET = 'utf-8';
 
     /**
+     * HTML content type
+     *
+     * @var string
+     */
+    public const CONTENT_TYPE_HTML = 'text/html';
+
+    /**
+     * Plain content type
+     *
+     * @var string
+     */
+    public const CONTENT_TYPE_PLAIN = 'text/plain';
+
+    /**
      * Subject
      *
      * @var string|null
