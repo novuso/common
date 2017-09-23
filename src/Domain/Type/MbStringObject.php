@@ -3,7 +3,7 @@
 namespace Novuso\Common\Domain\Type;
 
 use Novuso\Common\Domain\Type\Traits\StringOffsets;
-use Novuso\System\Collection\Api\ListInterface;
+use Novuso\System\Collection\Api\IndexedList;
 use Novuso\System\Collection\ArrayList;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Exception\ImmutableException;
@@ -13,13 +13,13 @@ use Novuso\System\Utility\VarPrinter;
 use Traversable;
 
 /**
- * MbStringObject is a wrapper for a multibyte string
+ * MbStringObject is a wrapper for a multi-byte string
  *
  * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class MbStringObject extends ValueObject implements StringInterface
+class MbStringObject extends ValueObject implements StringLiteral
 {
     use StringOffsets;
 
@@ -68,9 +68,9 @@ class MbStringObject extends ValueObject implements StringInterface
      *
      * @param string $value The string value
      *
-     * @return StringInterface
+     * @return StringLiteral
      */
-    public static function create(string $value): StringInterface
+    public static function create(string $value): StringLiteral
     {
         return new static($value);
     }
@@ -185,7 +185,7 @@ class MbStringObject extends ValueObject implements StringInterface
     /**
      * {@inheritdoc}
      */
-    public function chars(): ListInterface
+    public function chars(): IndexedList
     {
         $list = ArrayList::of('string');
         $value = $this->value;
@@ -324,7 +324,7 @@ class MbStringObject extends ValueObject implements StringInterface
     /**
      * {@inheritdoc}
      */
-    public function append(string $string): StringInterface
+    public function append(string $string): StringLiteral
     {
         return static::create($this->value.$string);
     }
@@ -332,7 +332,7 @@ class MbStringObject extends ValueObject implements StringInterface
     /**
      * {@inheritdoc}
      */
-    public function prepend(string $string): StringInterface
+    public function prepend(string $string): StringLiteral
     {
         return static::create($string.$this->value);
     }
@@ -340,7 +340,7 @@ class MbStringObject extends ValueObject implements StringInterface
     /**
      * {@inheritdoc}
      */
-    public function insert(int $index, string $string): StringInterface
+    public function insert(int $index, string $string): StringLiteral
     {
         $length = $this->length;
 
@@ -354,7 +354,7 @@ class MbStringObject extends ValueObject implements StringInterface
     /**
      * {@inheritdoc}
      */
-    public function surround(string $string): StringInterface
+    public function surround(string $string): StringLiteral
     {
         return static::create($string.$this->value.$string);
     }
@@ -362,7 +362,7 @@ class MbStringObject extends ValueObject implements StringInterface
     /**
      * {@inheritdoc}
      */
-    public function pad(int $strlen, ?string $char = null): StringInterface
+    public function pad(int $strlen, ?string $char = null): StringLiteral
     {
         $length = $this->length;
 
@@ -392,7 +392,7 @@ class MbStringObject extends ValueObject implements StringInterface
     /**
      * {@inheritdoc}
      */
-    public function padLeft(int $strlen, ?string $char = null): StringInterface
+    public function padLeft(int $strlen, ?string $char = null): StringLiteral
     {
         $length = $this->length;
 
@@ -422,7 +422,7 @@ class MbStringObject extends ValueObject implements StringInterface
     /**
      * {@inheritdoc}
      */
-    public function padRight(int $strlen, ?string $char = null): StringInterface
+    public function padRight(int $strlen, ?string $char = null): StringLiteral
     {
         $length = $this->length;
 
@@ -452,7 +452,7 @@ class MbStringObject extends ValueObject implements StringInterface
     /**
      * {@inheritdoc}
      */
-    public function truncate(int $strlen, string $append = ''): StringInterface
+    public function truncate(int $strlen, string $append = ''): StringLiteral
     {
         if ($strlen < 1) {
             $message = sprintf('Invalid length for truncated string: %d', $strlen);
@@ -478,7 +478,7 @@ class MbStringObject extends ValueObject implements StringInterface
     /**
      * {@inheritdoc}
      */
-    public function truncateWords(int $strlen, string $append = ''): StringInterface
+    public function truncateWords(int $strlen, string $append = ''): StringLiteral
     {
         if ($strlen < 1) {
             $message = sprintf('Invalid length for truncated string: %d', $strlen);
@@ -515,7 +515,7 @@ class MbStringObject extends ValueObject implements StringInterface
     /**
      * {@inheritdoc}
      */
-    public function repeat(int $multiplier): StringInterface
+    public function repeat(int $multiplier): StringLiteral
     {
         if ($multiplier < 1) {
             $message = sprintf('Invalid multiplier: %d', $multiplier);
@@ -528,7 +528,7 @@ class MbStringObject extends ValueObject implements StringInterface
     /**
      * {@inheritdoc}
      */
-    public function slice(int $start, ?int $stop = null): StringInterface
+    public function slice(int $start, ?int $stop = null): StringLiteral
     {
         if ($stop === null) {
             $stop = 0;
@@ -543,7 +543,7 @@ class MbStringObject extends ValueObject implements StringInterface
     /**
      * {@inheritdoc}
      */
-    public function substr(int $start, ?int $strlen = null): StringInterface
+    public function substr(int $start, ?int $strlen = null): StringLiteral
     {
         if ($strlen === null) {
             $strlen = 0;
@@ -558,7 +558,7 @@ class MbStringObject extends ValueObject implements StringInterface
     /**
      * {@inheritdoc}
      */
-    public function split(string $delimiter = ' ', ?int $limit = null): ListInterface
+    public function split(string $delimiter = ' ', ?int $limit = null): IndexedList
     {
         if (empty($delimiter)) {
             throw new DomainException('Delimiter cannot be empty');
@@ -584,7 +584,7 @@ class MbStringObject extends ValueObject implements StringInterface
     /**
      * {@inheritdoc}
      */
-    public function chunk(int $size = 1): ListInterface
+    public function chunk(int $size = 1): IndexedList
     {
         $value = $this->value();
 
@@ -610,7 +610,7 @@ class MbStringObject extends ValueObject implements StringInterface
     /**
      * {@inheritdoc}
      */
-    public function replace($search, $replace): StringInterface
+    public function replace($search, $replace): StringLiteral
     {
         return static::create(str_replace($search, $replace, $this->value));
     }
@@ -618,7 +618,7 @@ class MbStringObject extends ValueObject implements StringInterface
     /**
      * {@inheritdoc}
      */
-    public function trim(?string $mask = null): StringInterface
+    public function trim(?string $mask = null): StringLiteral
     {
         if ($mask === null) {
             return static::create(trim($this->value));
@@ -630,7 +630,7 @@ class MbStringObject extends ValueObject implements StringInterface
     /**
      * {@inheritdoc}
      */
-    public function trimLeft(?string $mask = null): StringInterface
+    public function trimLeft(?string $mask = null): StringLiteral
     {
         if ($mask === null) {
             return static::create(ltrim($this->value));
@@ -642,7 +642,7 @@ class MbStringObject extends ValueObject implements StringInterface
     /**
      * {@inheritdoc}
      */
-    public function trimRight(?string $mask = null): StringInterface
+    public function trimRight(?string $mask = null): StringLiteral
     {
         if ($mask === null) {
             return static::create(rtrim($this->value));
@@ -654,7 +654,7 @@ class MbStringObject extends ValueObject implements StringInterface
     /**
      * {@inheritdoc}
      */
-    public function expandTabs(int $tabsize = 4): StringInterface
+    public function expandTabs(int $tabsize = 4): StringLiteral
     {
         if ($tabsize < 0) {
             $message = sprintf('Invalid tabsize: %d', $tabsize);
@@ -669,7 +669,7 @@ class MbStringObject extends ValueObject implements StringInterface
     /**
      * {@inheritdoc}
      */
-    public function toLowerCase(): StringInterface
+    public function toLowerCase(): StringLiteral
     {
         return static::create(mb_strtolower($this->value, static::ENCODING));
     }
@@ -677,7 +677,7 @@ class MbStringObject extends ValueObject implements StringInterface
     /**
      * {@inheritdoc}
      */
-    public function toUpperCase(): StringInterface
+    public function toUpperCase(): StringLiteral
     {
         return static::create(mb_strtoupper($this->value, static::ENCODING));
     }
@@ -685,7 +685,7 @@ class MbStringObject extends ValueObject implements StringInterface
     /**
      * {@inheritdoc}
      */
-    public function toFirstLowerCase(): StringInterface
+    public function toFirstLowerCase(): StringLiteral
     {
         $length = $this->length;
 
@@ -707,7 +707,7 @@ class MbStringObject extends ValueObject implements StringInterface
     /**
      * {@inheritdoc}
      */
-    public function toFirstUpperCase(): StringInterface
+    public function toFirstUpperCase(): StringLiteral
     {
         $length = $this->length;
 
@@ -729,7 +729,7 @@ class MbStringObject extends ValueObject implements StringInterface
     /**
      * {@inheritdoc}
      */
-    public function toCamelCase(): StringInterface
+    public function toCamelCase(): StringLiteral
     {
         return $this->toPascalCase()->toFirstLowerCase();
     }
@@ -737,7 +737,7 @@ class MbStringObject extends ValueObject implements StringInterface
     /**
      * {@inheritdoc}
      */
-    public function toPascalCase(): StringInterface
+    public function toPascalCase(): StringLiteral
     {
         $value = trim($this->value);
         $length = mb_strlen($value, static::ENCODING);
@@ -752,7 +752,7 @@ class MbStringObject extends ValueObject implements StringInterface
     /**
      * {@inheritdoc}
      */
-    public function toSnakeCase(): StringInterface
+    public function toSnakeCase(): StringLiteral
     {
         $value = trim($this->value);
         $length = mb_strlen($value, static::ENCODING);
@@ -767,7 +767,7 @@ class MbStringObject extends ValueObject implements StringInterface
     /**
      * {@inheritdoc}
      */
-    public function toLowerHyphenated(): StringInterface
+    public function toLowerHyphenated(): StringLiteral
     {
         $value = trim($this->value);
         $length = mb_strlen($value, static::ENCODING);
@@ -782,7 +782,7 @@ class MbStringObject extends ValueObject implements StringInterface
     /**
      * {@inheritdoc}
      */
-    public function toUpperHyphenated(): StringInterface
+    public function toUpperHyphenated(): StringLiteral
     {
         $value = trim($this->value);
         $length = mb_strlen($value, static::ENCODING);
@@ -797,7 +797,7 @@ class MbStringObject extends ValueObject implements StringInterface
     /**
      * {@inheritdoc}
      */
-    public function toLowerUnderscored(): StringInterface
+    public function toLowerUnderscored(): StringLiteral
     {
         $value = trim($this->value);
         $length = mb_strlen($value, static::ENCODING);
@@ -812,7 +812,7 @@ class MbStringObject extends ValueObject implements StringInterface
     /**
      * {@inheritdoc}
      */
-    public function toUpperUnderscored(): StringInterface
+    public function toUpperUnderscored(): StringLiteral
     {
         $value = trim($this->value);
         $length = mb_strlen($value, static::ENCODING);
@@ -827,7 +827,7 @@ class MbStringObject extends ValueObject implements StringInterface
     /**
      * {@inheritdoc}
      */
-    public function toSlug(): StringInterface
+    public function toSlug(): StringLiteral
     {
         $slug = trim($this->value);
         $slug = iconv(static::ENCODING, 'ASCII//TRANSLIT', $slug);

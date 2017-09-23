@@ -2,7 +2,7 @@
 
 namespace Novuso\Common\Application\Messaging\Command\Filter;
 
-use Novuso\Common\Domain\Messaging\Command\CommandFilterInterface;
+use Novuso\Common\Domain\Messaging\Command\CommandFilter;
 use Novuso\Common\Domain\Messaging\Command\CommandMessage;
 use Psr\Log\LoggerInterface;
 
@@ -13,7 +13,7 @@ use Psr\Log\LoggerInterface;
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class CommandLogger implements CommandFilterInterface
+class CommandLogger implements CommandFilter
 {
     /**
      * Logger

@@ -2,8 +2,8 @@
 
 namespace Novuso\Common\Application\Messaging\Query\Routing;
 
-use Novuso\Common\Domain\Messaging\Query\QueryHandlerInterface;
-use Novuso\Common\Domain\Messaging\Query\QueryInterface;
+use Novuso\Common\Domain\Messaging\Query\QueryHandler;
+use Novuso\Common\Domain\Messaging\Query\Query;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Exception\LookupException;
 use Novuso\System\Type\Type;
@@ -16,7 +16,7 @@ use Novuso\System\Utility\Validate;
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class InMemoryQueryMap implements QueryMapInterface
+class InMemoryQueryMap implements QueryMap
 {
     /**
      * Query handlers
@@ -50,15 +50,15 @@ class InMemoryQueryMap implements QueryMapInterface
      * Registers a query handler
      *
      * @param string       $queryClass The full query class name
-     * @param QueryHandlerInterface $handler    The query handler
+     * @param QueryHandler $handler    The query handler
      *
      * @return void
      *
      * @throws DomainException When the query class is not valid
      */
-    public function registerHandler(string $queryClass, QueryHandlerInterface $handler): void
+    public function registerHandler(string $queryClass, QueryHandler $handler): void
     {
-        if (!Validate::implementsInterface($queryClass, QueryInterface::class)) {
+        if (!Validate::implementsInterface($queryClass, Query::class)) {
             $message = sprintf('Invalid query class: %s', $queryClass);
             throw new DomainException($message);
         }
@@ -71,7 +71,7 @@ class InMemoryQueryMap implements QueryMapInterface
     /**
      * {@inheritdoc}
      */
-    public function getHandler(string $queryClass): QueryHandlerInterface
+    public function getHandler(string $queryClass): QueryHandler
     {
         $type = Type::create($queryClass)->toString();
 

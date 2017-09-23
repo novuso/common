@@ -2,11 +2,11 @@
 
 namespace Novuso\Test\Common\Application\Messaging\Command\Routing;
 
-use Novuso\Common\Application\Messaging\Command\Routing\CommandRouter;
+use Novuso\Common\Application\Messaging\Command\Routing\SimpleCommandRouter;
 use Novuso\Common\Application\Messaging\Command\Routing\ServiceAwareCommandMap;
-use Novuso\Common\Application\Messaging\Command\SynchronousCommandBus;
+use Novuso\Common\Application\Messaging\Command\RoutingCommandBus;
 use Novuso\Common\Application\Service\ServiceContainer;
-use Novuso\Common\Domain\Messaging\Command\CommandBusInterface;
+use Novuso\Common\Domain\Messaging\Command\CommandBus;
 use Novuso\Test\Common\Resources\Domain\Messaging\Command\RegisterUserCommand;
 use Novuso\Test\Common\Resources\Domain\Messaging\Command\RegisterUserHandler;
 use Novuso\Test\System\TestCase\UnitTestCase;
@@ -27,10 +27,10 @@ class ServiceAwareCommandMapTest extends UnitTestCase
             RegisterUserCommand::class => 'command.handler.register_user'
         ];
         $this->container->set('command.bus', function (ServiceContainer $container) {
-            return new SynchronousCommandBus($container->get('command.router'));
+            return new RoutingCommandBus($container->get('command.router'));
         });
         $this->container->set('command.router', function (ServiceContainer $container) {
-            return new CommandRouter($container->get('command.service_map'));
+            return new SimpleCommandRouter($container->get('command.service_map'));
         });
         $this->container->set('command.service_map', function (ServiceContainer $container) {
             $serviceMap = new ServiceAwareCommandMap($container);
@@ -52,7 +52,7 @@ class ServiceAwareCommandMapTest extends UnitTestCase
             ->setLastName('Smith')
             ->setEmail('jsmith@example.com')
             ->setPassword('secret');
-        /** @var CommandBusInterface $commandBus */
+        /** @var CommandBus $commandBus */
         $commandBus = $this->container->get('command.bus');
         $commandBus->execute($command);
         /** @var RegisterUserHandler $handler */

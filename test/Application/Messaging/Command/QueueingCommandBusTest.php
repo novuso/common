@@ -3,7 +3,7 @@
 namespace Novuso\Test\Common\Application\Messaging\Command;
 
 use Novuso\Common\Application\Messaging\Command\QueueingCommandBus;
-use Novuso\Common\Application\Messaging\MessageQueueInterface;
+use Novuso\Common\Application\Messaging\MessageQueue;
 use Novuso\Common\Domain\Messaging\Command\CommandMessage;
 use Novuso\Test\Common\Resources\Domain\Messaging\Command\RegisterUserCommand;
 use Novuso\Test\System\TestCase\UnitTestCase;
@@ -24,8 +24,8 @@ class QueueingCommandBusTest extends UnitTestCase
             ->setPassword('secret');
         $topic = 'command_queue';
 
-        /** @var MessageQueueInterface $messageQueue */
-        $messageQueue = $this->mock(MessageQueueInterface::class);
+        /** @var MessageQueue $messageQueue */
+        $messageQueue = $this->mock(MessageQueue::class);
         $commandBus = new QueueingCommandBus($messageQueue, $topic);
 
         $messageQueue
@@ -48,8 +48,8 @@ class QueueingCommandBusTest extends UnitTestCase
         $message = CommandMessage::create($command);
         $topic = 'command_queue';
 
-        /** @var MessageQueueInterface $messageQueue */
-        $messageQueue = $this->mock(MessageQueueInterface::class);
+        /** @var MessageQueue $messageQueue */
+        $messageQueue = $this->mock(MessageQueue::class);
         $commandBus = new QueueingCommandBus($messageQueue, $topic);
 
         $messageQueue

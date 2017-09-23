@@ -3,7 +3,7 @@
 namespace Novuso\Common\Application\Messaging\Event;
 
 use Novuso\Common\Domain\Messaging\Event\EventMessage;
-use Novuso\Common\Domain\Messaging\Event\EventSubscriberInterface;
+use Novuso\Common\Domain\Messaging\Event\EventSubscriber;
 use Novuso\System\Utility\ClassName;
 use Novuso\System\Utility\Validate;
 use Psr\Container\ContainerInterface;
@@ -15,7 +15,7 @@ use Psr\Container\ContainerInterface;
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class ServiceAwareEventDispatcher extends SynchronousEventDispatcher
+class ServiceAwareEventDispatcher extends SimpleEventDispatcher
 {
     /**
      * Service container
@@ -52,7 +52,7 @@ class ServiceAwareEventDispatcher extends SynchronousEventDispatcher
      * Registers a subscriber service to handle events
      *
      * The subscriber class must implement:
-     * Novuso\Common\Domain\Messaging\Event\EventSubscriberInterface
+     * Novuso\Common\Domain\Messaging\Event\EventSubscriber
      *
      * @param string $className The subscriber class name
      * @param string $serviceId The subscriber service ID
@@ -62,10 +62,10 @@ class ServiceAwareEventDispatcher extends SynchronousEventDispatcher
     public function registerService(string $className, string $serviceId): void
     {
         assert(
-            Validate::implementsInterface($className, EventSubscriberInterface::class),
+            Validate::implementsInterface($className, EventSubscriber::class),
             sprintf('Invalid subscriber class: %s', $className)
         );
-        /** @var EventSubscriberInterface $className The subscriber class name */
+        /** @var EventSubscriber $className The subscriber class name */
         foreach ($className::eventRegistration() as $eventType => $params) {
             $eventType = ClassName::underscore($eventType);
             if (is_string($params)) {

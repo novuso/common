@@ -2,11 +2,11 @@
 
 namespace Novuso\Test\Common\Resources\Domain\Messaging\Query;
 
-use Novuso\Common\Domain\Messaging\Query\QueryInterface;
+use Novuso\Common\Domain\Messaging\Query\Query;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Utility\VarPrinter;
 
-class UserByEmailQuery implements QueryInterface
+class UserByEmailQuery implements Query
 {
     private $email;
 

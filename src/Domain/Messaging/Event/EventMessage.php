@@ -24,12 +24,12 @@ class EventMessage extends BaseMessage
     /**
      * Constructs EventMessage
      *
-     * @param MessageId      $id        The message ID
-     * @param DateTime       $timestamp The timestamp
-     * @param EventInterface $payload   The payload
-     * @param MetaData       $metaData  The meta data
+     * @param MessageId $id        The message ID
+     * @param DateTime  $timestamp The timestamp
+     * @param Event     $payload   The payload
+     * @param MetaData  $metaData  The meta data
      */
-    public function __construct(MessageId $id, DateTime $timestamp, EventInterface $payload, MetaData $metaData)
+    public function __construct(MessageId $id, DateTime $timestamp, Event $payload, MetaData $metaData)
     {
         parent::__construct($id, MessageType::EVENT(), $timestamp, $payload, $metaData);
     }
@@ -37,11 +37,11 @@ class EventMessage extends BaseMessage
     /**
      * Creates instance for an event
      *
-     * @param EventInterface $event The event
+     * @param Event $event The event
      *
      * @return EventMessage
      */
-    public static function create(EventInterface $event): EventMessage
+    public static function create(Event $event): EventMessage
     {
         $timestamp = DateTime::now();
         $id = MessageId::generate();
@@ -53,7 +53,7 @@ class EventMessage extends BaseMessage
     /**
      * {@inheritdoc}
      */
-    public static function deserialize(array $data): EventMessage
+    public static function arrayDeserialize(array $data): EventMessage
     {
         $keys = ['id', 'type', 'timestamp', 'meta_data', 'payload_type', 'payload'];
         foreach ($keys as $key) {
@@ -76,15 +76,15 @@ class EventMessage extends BaseMessage
         $metaData = MetaData::create($data['meta_data']);
         /** @var Type $payloadType */
         $payloadType = Type::create($data['payload_type']);
-        /** @var EventInterface|string $payloadClass */
+        /** @var Event|string $payloadClass */
         $payloadClass = $payloadType->toClassName();
 
         assert(
-            Validate::implementsInterface($payloadClass, EventInterface::class),
+            Validate::implementsInterface($payloadClass, Event::class),
             sprintf('Unable to deserialize: %s', $payloadClass)
         );
 
-        /** @var EventInterface $payload */
+        /** @var Event $payload */
         $payload = $payloadClass::fromArray($data['payload']);
 
         return new static($id, $timestamp, $payload, $metaData);
@@ -95,7 +95,7 @@ class EventMessage extends BaseMessage
      */
     public function withMetaData(MetaData $metaData): EventMessage
     {
-        /** @var EventInterface $event */
+        /** @var Event $event */
         $event = $this->payload;
 
         return new static(
@@ -114,7 +114,7 @@ class EventMessage extends BaseMessage
         $meta = clone $this->metaData;
         $meta->merge($metaData);
 
-        /** @var EventInterface $event */
+        /** @var Event $event */
         $event = $this->payload;
 
         return new static(

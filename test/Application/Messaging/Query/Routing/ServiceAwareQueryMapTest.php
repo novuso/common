@@ -2,11 +2,11 @@
 
 namespace Novuso\Test\Common\Application\Messaging\Query\Routing;
 
-use Novuso\Common\Application\Messaging\Query\Routing\QueryRouter;
+use Novuso\Common\Application\Messaging\Query\Routing\SimpleQueryRouter;
 use Novuso\Common\Application\Messaging\Query\Routing\ServiceAwareQueryMap;
-use Novuso\Common\Application\Messaging\Query\SynchronousQueryBus;
+use Novuso\Common\Application\Messaging\Query\RoutingQueryBus;
 use Novuso\Common\Application\Service\ServiceContainer;
-use Novuso\Common\Domain\Messaging\Query\QueryBusInterface;
+use Novuso\Common\Domain\Messaging\Query\QueryBus;
 use Novuso\Test\Common\Resources\Domain\Messaging\Query\UserByEmailHandler;
 use Novuso\Test\Common\Resources\Domain\Messaging\Query\UserByEmailQuery;
 use Novuso\Test\System\TestCase\UnitTestCase;
@@ -27,10 +27,10 @@ class ServiceAwareQueryMapTest extends UnitTestCase
             UserByEmailQuery::class => 'query.handler.user_by_email'
         ];
         $this->container->set('query.bus', function (ServiceContainer $container) {
-            return new SynchronousQueryBus($container->get('query.router'));
+            return new RoutingQueryBus($container->get('query.router'));
         });
         $this->container->set('query.router', function (ServiceContainer $container) {
-            return new QueryRouter($container->get('query.service_map'));
+            return new SimpleQueryRouter($container->get('query.service_map'));
         });
         $this->container->set('query.service_map', function (ServiceContainer $container) {
             $serviceMap = new ServiceAwareQueryMap($container);
@@ -46,7 +46,7 @@ class ServiceAwareQueryMapTest extends UnitTestCase
     public function test_that_it_matches_the_correct_handler_instance()
     {
         $query = new UserByEmailQuery('jsmith@example.com');
-        /** @var QueryBusInterface $queryBus */
+        /** @var QueryBus $queryBus */
         $queryBus = $this->container->get('query.bus');
         $user = $queryBus->fetch($query);
         $this->assertSame('jsmith@example.com', $user['email']);

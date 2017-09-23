@@ -4,9 +4,9 @@ namespace Novuso\Test\Common\Resources\Domain\Messaging\Event;
 
 use Novuso\Common\Domain\Messaging\Event\AllEvents;
 use Novuso\Common\Domain\Messaging\Event\EventMessage;
-use Novuso\Common\Domain\Messaging\Event\EventSubscriberInterface;
+use Novuso\Common\Domain\Messaging\Event\EventSubscriber;
 
-class EventLogSubscriber implements EventSubscriberInterface
+class EventLogSubscriber implements EventSubscriber
 {
     protected $logs = [];
 

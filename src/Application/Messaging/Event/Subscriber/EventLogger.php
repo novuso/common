@@ -4,7 +4,7 @@ namespace Novuso\Common\Application\Messaging\Event\Subscriber;
 
 use Novuso\Common\Domain\Messaging\Event\AllEvents;
 use Novuso\Common\Domain\Messaging\Event\EventMessage;
-use Novuso\Common\Domain\Messaging\Event\EventSubscriberInterface;
+use Novuso\Common\Domain\Messaging\Event\EventSubscriber;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -14,7 +14,7 @@ use Psr\Log\LoggerInterface;
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class EventLogger implements EventSubscriberInterface
+class EventLogger implements EventSubscriber
 {
     /**
      * Logger

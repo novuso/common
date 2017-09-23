@@ -5,7 +5,7 @@ namespace Novuso\Test\Common\Application\Messaging\Event\Subscriber;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use Novuso\Common\Application\Messaging\Event\Subscriber\EventLogger;
-use Novuso\Common\Application\Messaging\Event\SynchronousEventDispatcher;
+use Novuso\Common\Application\Messaging\Event\SimpleEventDispatcher;
 use Novuso\System\Utility\ClassName;
 use Novuso\Test\Common\Resources\Domain\Messaging\Event\UserRegisteredEvent;
 use Novuso\Test\System\TestCase\UnitTestCase;
@@ -15,7 +15,7 @@ use Novuso\Test\System\TestCase\UnitTestCase;
  */
 class EventLoggerTest extends UnitTestCase
 {
-    /** @var SynchronousEventDispatcher */
+    /** @var SimpleEventDispatcher */
     protected $dispatcher;
     /** @var EventLogger */
     protected $subscriber;
@@ -30,7 +30,7 @@ class EventLoggerTest extends UnitTestCase
         $this->logHandler = new TestHandler();
         $this->logger = new Logger('test');
         $this->logger->pushHandler($this->logHandler);
-        $this->dispatcher = new SynchronousEventDispatcher();
+        $this->dispatcher = new SimpleEventDispatcher();
         $this->subscriber = new EventLogger($this->logger);
         $this->dispatcher->register($this->subscriber);
     }

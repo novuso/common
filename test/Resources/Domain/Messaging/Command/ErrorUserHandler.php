@@ -3,10 +3,10 @@
 namespace Novuso\Test\Common\Resources\Domain\Messaging\Command;
 
 use Exception;
-use Novuso\Common\Domain\Messaging\Command\CommandHandlerInterface;
+use Novuso\Common\Domain\Messaging\Command\CommandHandler;
 use Novuso\Common\Domain\Messaging\Command\CommandMessage;
 
-class ErrorUserHandler implements CommandHandlerInterface
+class ErrorUserHandler implements CommandHandler
 {
     public static function commandRegistration(): string
     {

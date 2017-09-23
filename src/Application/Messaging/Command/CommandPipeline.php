@@ -2,11 +2,11 @@
 
 namespace Novuso\Common\Application\Messaging\Command;
 
-use Novuso\Common\Domain\Messaging\Command\CommandBusInterface;
-use Novuso\Common\Domain\Messaging\Command\CommandFilterInterface;
-use Novuso\Common\Domain\Messaging\Command\CommandInterface;
+use Novuso\Common\Domain\Messaging\Command\CommandBus;
+use Novuso\Common\Domain\Messaging\Command\CommandFilter;
+use Novuso\Common\Domain\Messaging\Command\Command;
 use Novuso\Common\Domain\Messaging\Command\CommandMessage;
-use Novuso\System\Collection\Api\StackInterface;
+use Novuso\System\Collection\Api\Stack;
 use Novuso\System\Collection\LinkedStack;
 
 /**
@@ -16,49 +16,49 @@ use Novuso\System\Collection\LinkedStack;
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class CommandPipeline implements CommandBusInterface, CommandFilterInterface
+class CommandPipeline implements CommandBus, CommandFilter
 {
     /**
      * Command bus
      *
-     * @var CommandBusInterface
+     * @var CommandBus
      */
     protected $commandBus;
 
     /**
      * Command filters
      *
-     * @var StackInterface
+     * @var Stack
      */
     protected $filters;
 
     /**
      * Filter stack
      *
-     * @var StackInterface|null
+     * @var Stack|null
      */
     protected $stack;
 
     /**
      * Constructs CommandPipeline
      *
-     * @param CommandBusInterface $commandBus The command bus
+     * @param CommandBus $commandBus The command bus
      */
-    public function __construct(CommandBusInterface $commandBus)
+    public function __construct(CommandBus $commandBus)
     {
         $this->commandBus = $commandBus;
-        $this->filters = LinkedStack::of(CommandFilterInterface::class);
+        $this->filters = LinkedStack::of(CommandFilter::class);
         $this->filters->push($this);
     }
 
     /**
      * Adds a command filter to the pipeline
      *
-     * @param CommandFilterInterface $filter The filter
+     * @param CommandFilter $filter The filter
      *
      * @return void
      */
-    public function addFilter(CommandFilterInterface $filter): void
+    public function addFilter(CommandFilter $filter): void
     {
         $this->filters->push($filter);
     }
@@ -66,7 +66,7 @@ class CommandPipeline implements CommandBusInterface, CommandFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function execute(CommandInterface $command): void
+    public function execute(Command $command): void
     {
         $this->dispatch(CommandMessage::create($command));
     }
@@ -97,7 +97,7 @@ class CommandPipeline implements CommandBusInterface, CommandFilterInterface
      */
     public function pipe(CommandMessage $message): void
     {
-        /** @var CommandFilterInterface $filter */
+        /** @var CommandFilter $filter */
         $filter = $this->stack->pop();
         $filter->process($message, [$this, 'pipe']);
     }
