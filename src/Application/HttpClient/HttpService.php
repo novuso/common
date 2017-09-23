@@ -490,8 +490,6 @@ class HttpService implements HttpClient, MessageFactory, StreamFactory, UriFacto
             $contentType = ContentType::fromValue(ContentType::FORM);
         }
 
-        $uri = $this->createUri($uri);
-
         $body = null;
         if (!empty($parameters)) {
             switch ($contentType->value()) {
@@ -510,6 +508,7 @@ class HttpService implements HttpClient, MessageFactory, StreamFactory, UriFacto
             $headers = array_merge(['Content-Type' => $contentType->value()], $headers);
         }
 
+        $uri = $this->createUri($uri);
         $body = $this->createStream($body);
 
         return $this->createRequest($method, $uri, $headers, $body, $protocol);
