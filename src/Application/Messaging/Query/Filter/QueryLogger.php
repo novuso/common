@@ -2,7 +2,7 @@
 
 namespace Novuso\Common\Application\Messaging\Query\Filter;
 
-use Novuso\Common\Domain\Messaging\Query\QueryFilterInterface;
+use Novuso\Common\Domain\Messaging\Query\QueryFilter;
 use Novuso\Common\Domain\Messaging\Query\QueryMessage;
 use Psr\Log\LoggerInterface;
 
@@ -13,7 +13,7 @@ use Psr\Log\LoggerInterface;
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class QueryLogger implements QueryFilterInterface
+class QueryLogger implements QueryFilter
 {
     /**
      * Logger

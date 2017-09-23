@@ -3,7 +3,7 @@
 namespace Novuso\Test\Common\Application\Messaging\Event;
 
 use Novuso\Common\Application\Messaging\Event\QueueingEventDispatcher;
-use Novuso\Common\Application\Messaging\MessageQueueInterface;
+use Novuso\Common\Application\Messaging\MessageQueue;
 use Novuso\Common\Domain\Messaging\Event\EventMessage;
 use Novuso\Test\Common\Resources\Domain\Messaging\Event\UserRegisteredEvent;
 use Novuso\Test\Common\Resources\Domain\Messaging\Event\UserRegisteredSubscriber;
@@ -19,8 +19,8 @@ class QueueingEventDispatcherTest extends UnitTestCase
         $event = new UserRegisteredEvent('jsmith@example.com', 'James', 'Smith', 'D');
         $topic = 'event_queue';
 
-        /** @var MessageQueueInterface $messageQueue */
-        $messageQueue = $this->mock(MessageQueueInterface::class);
+        /** @var MessageQueue $messageQueue */
+        $messageQueue = $this->mock(MessageQueue::class);
         $eventDispatcher = new QueueingEventDispatcher($messageQueue, $topic);
 
         $messageQueue
@@ -37,8 +37,8 @@ class QueueingEventDispatcherTest extends UnitTestCase
         $message = EventMessage::create($event);
         $topic = 'event_queue';
 
-        /** @var MessageQueueInterface $messageQueue */
-        $messageQueue = $this->mock(MessageQueueInterface::class);
+        /** @var MessageQueue $messageQueue */
+        $messageQueue = $this->mock(MessageQueue::class);
         $eventDispatcher = new QueueingEventDispatcher($messageQueue, $topic);
 
         $messageQueue
@@ -53,8 +53,8 @@ class QueueingEventDispatcherTest extends UnitTestCase
     public function test_that_register_is_no_op()
     {
         $topic = 'event_queue';
-        /** @var MessageQueueInterface $messageQueue */
-        $messageQueue = $this->mock(MessageQueueInterface::class);
+        /** @var MessageQueue $messageQueue */
+        $messageQueue = $this->mock(MessageQueue::class);
         $eventDispatcher = new QueueingEventDispatcher($messageQueue, $topic);
 
         $eventDispatcher->register(new UserRegisteredSubscriber());
@@ -65,8 +65,8 @@ class QueueingEventDispatcherTest extends UnitTestCase
     public function test_that_unregister_is_no_op()
     {
         $topic = 'event_queue';
-        /** @var MessageQueueInterface $messageQueue */
-        $messageQueue = $this->mock(MessageQueueInterface::class);
+        /** @var MessageQueue $messageQueue */
+        $messageQueue = $this->mock(MessageQueue::class);
         $eventDispatcher = new QueueingEventDispatcher($messageQueue, $topic);
 
         $eventDispatcher->unregister(new UserRegisteredSubscriber());
@@ -77,11 +77,12 @@ class QueueingEventDispatcherTest extends UnitTestCase
     public function test_that_add_handler_is_no_op()
     {
         $topic = 'event_queue';
-        /** @var MessageQueueInterface $messageQueue */
-        $messageQueue = $this->mock(MessageQueueInterface::class);
+        /** @var MessageQueue $messageQueue */
+        $messageQueue = $this->mock(MessageQueue::class);
         $eventDispatcher = new QueueingEventDispatcher($messageQueue, $topic);
 
-        $eventDispatcher->addHandler('foo', function () {});
+        $eventDispatcher->addHandler('foo', function () {
+        });
 
         $this->assertTrue(true);
     }
@@ -89,8 +90,8 @@ class QueueingEventDispatcherTest extends UnitTestCase
     public function test_that_get_handlers_returns_empty_array()
     {
         $topic = 'event_queue';
-        /** @var MessageQueueInterface $messageQueue */
-        $messageQueue = $this->mock(MessageQueueInterface::class);
+        /** @var MessageQueue $messageQueue */
+        $messageQueue = $this->mock(MessageQueue::class);
         $eventDispatcher = new QueueingEventDispatcher($messageQueue, $topic);
 
         $this->assertTrue(empty($eventDispatcher->getHandlers()));
@@ -99,8 +100,8 @@ class QueueingEventDispatcherTest extends UnitTestCase
     public function test_that_has_handlers_returns_false()
     {
         $topic = 'event_queue';
-        /** @var MessageQueueInterface $messageQueue */
-        $messageQueue = $this->mock(MessageQueueInterface::class);
+        /** @var MessageQueue $messageQueue */
+        $messageQueue = $this->mock(MessageQueue::class);
         $eventDispatcher = new QueueingEventDispatcher($messageQueue, $topic);
 
         $this->assertFalse($eventDispatcher->hasHandlers());
@@ -109,11 +110,12 @@ class QueueingEventDispatcherTest extends UnitTestCase
     public function test_that_remove_handler_is_no_op()
     {
         $topic = 'event_queue';
-        /** @var MessageQueueInterface $messageQueue */
-        $messageQueue = $this->mock(MessageQueueInterface::class);
+        /** @var MessageQueue $messageQueue */
+        $messageQueue = $this->mock(MessageQueue::class);
         $eventDispatcher = new QueueingEventDispatcher($messageQueue, $topic);
 
-        $eventDispatcher->removeHandler('foo', function () {});
+        $eventDispatcher->removeHandler('foo', function () {
+        });
 
         $this->assertTrue(true);
     }

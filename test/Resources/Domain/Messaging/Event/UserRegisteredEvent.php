@@ -2,11 +2,11 @@
 
 namespace Novuso\Test\Common\Resources\Domain\Messaging\Event;
 
-use Novuso\Common\Domain\Messaging\Event\EventInterface;
+use Novuso\Common\Domain\Messaging\Event\Event;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Utility\VarPrinter;
 
-class UserRegisteredEvent implements EventInterface
+class UserRegisteredEvent implements Event
 {
     private $prefix;
     private $firstName;

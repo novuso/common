@@ -3,10 +3,10 @@
 namespace Novuso\Test\Common\Resources\Domain\Messaging\Query;
 
 use Exception;
-use Novuso\Common\Domain\Messaging\Query\QueryHandlerInterface;
+use Novuso\Common\Domain\Messaging\Query\QueryHandler;
 use Novuso\Common\Domain\Messaging\Query\QueryMessage;
 
-class UserByEmailHandler implements QueryHandlerInterface
+class UserByEmailHandler implements QueryHandler
 {
     protected $users = [
         [

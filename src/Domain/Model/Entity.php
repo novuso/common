@@ -2,7 +2,7 @@
 
 namespace Novuso\Common\Domain\Model;
 
-use Novuso\Common\Domain\Identity\IdentifierInterface;
+use Novuso\Common\Domain\Identity\Identifier;
 use Novuso\System\Type\Comparable;
 use Novuso\System\Type\Equatable;
 use Novuso\System\Utility\Validate;
@@ -19,7 +19,7 @@ abstract class Entity implements Comparable, Equatable
     /**
      * Retrieves the ID
      *
-     * @return IdentifierInterface
+     * @return Identifier
      */
     abstract public function id();
 

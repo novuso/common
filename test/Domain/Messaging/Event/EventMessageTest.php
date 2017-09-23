@@ -152,19 +152,19 @@ class EventMessageTest extends UnitTestCase
 
     public function test_that_compare_to_returns_zero_for_same_value()
     {
-        $message = EventMessage::deserialize($this->getMessageData());
+        $message = EventMessage::arrayDeserialize($this->getMessageData());
         $this->assertSame(0, $this->message->compareTo($message));
     }
 
     public function test_that_compare_to_returns_one_for_greater_instance()
     {
-        $message = EventMessage::deserialize($this->getAltMessageData());
+        $message = EventMessage::arrayDeserialize($this->getAltMessageData());
         $this->assertSame(1, $message->compareTo($this->message));
     }
 
     public function test_that_compare_to_returns_neg_one_for_lesser_instance()
     {
-        $message = EventMessage::deserialize($this->getAltMessageData());
+        $message = EventMessage::arrayDeserialize($this->getAltMessageData());
         $this->assertSame(-1, $this->message->compareTo($message));
     }
 
@@ -175,7 +175,7 @@ class EventMessageTest extends UnitTestCase
 
     public function test_that_equals_returns_true_for_same_value()
     {
-        $message = EventMessage::deserialize($this->getMessageData());
+        $message = EventMessage::arrayDeserialize($this->getMessageData());
         $this->assertTrue($this->message->equals($message));
     }
 
@@ -186,7 +186,7 @@ class EventMessageTest extends UnitTestCase
 
     public function test_that_equals_returns_false_for_different_value()
     {
-        $message = EventMessage::deserialize($this->getAltMessageData());
+        $message = EventMessage::arrayDeserialize($this->getAltMessageData());
         $this->assertFalse($this->message->equals($message));
     }
 
@@ -200,7 +200,7 @@ class EventMessageTest extends UnitTestCase
      */
     public function test_that_deserialize_throws_exception_for_invalid_data()
     {
-        EventMessage::deserialize([]);
+        EventMessage::arrayDeserialize([]);
     }
 
     /**
@@ -210,7 +210,7 @@ class EventMessageTest extends UnitTestCase
     {
         $data = $this->getMessageData();
         $data['type'] = 'command';
-        EventMessage::deserialize($data);
+        EventMessage::arrayDeserialize($data);
     }
 
     /**

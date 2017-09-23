@@ -2,7 +2,7 @@
 
 namespace Novuso\Common\Domain\Model;
 
-use Novuso\Common\Domain\Messaging\Event\EventInterface;
+use Novuso\Common\Domain\Messaging\Event\Event;
 use Novuso\Common\Domain\Messaging\Event\EventMessage;
 use Novuso\System\Exception\OperationException;
 use Novuso\System\Type\Type;
@@ -34,11 +34,11 @@ abstract class AggregateRoot extends Entity
     /**
      * Records a domain event
      *
-     * @param EventInterface $event The domain event
+     * @param Event $event The domain event
      *
      * @return void
      */
-    public function recordThat(EventInterface $event): void
+    public function recordThat(Event $event): void
     {
         $this->eventCollection()->record(EventMessage::create($event));
     }

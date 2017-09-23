@@ -2,8 +2,8 @@
 
 namespace Novuso\Common\Application\Messaging\Command\Routing;
 
-use Novuso\Common\Domain\Messaging\Command\CommandHandlerInterface;
-use Novuso\Common\Domain\Messaging\Command\CommandInterface;
+use Novuso\Common\Domain\Messaging\Command\CommandHandler;
+use Novuso\Common\Domain\Messaging\Command\Command;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Exception\LookupException;
 use Novuso\System\Type\Type;
@@ -16,7 +16,7 @@ use Novuso\System\Utility\Validate;
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class InMemoryCommandMap implements CommandMapInterface
+class InMemoryCommandMap implements CommandMap
 {
     /**
      * Command handlers
@@ -49,16 +49,16 @@ class InMemoryCommandMap implements CommandMapInterface
     /**
      * Registers a command handler
      *
-     * @param string                  $commandClass The full command class name
-     * @param CommandHandlerInterface $handler      The command handler
+     * @param string         $commandClass The full command class name
+     * @param CommandHandler $handler      The command handler
      *
      * @return void
      *
      * @throws DomainException When the command class is not valid
      */
-    public function registerHandler(string $commandClass, CommandHandlerInterface $handler): void
+    public function registerHandler(string $commandClass, CommandHandler $handler): void
     {
-        if (!Validate::implementsInterface($commandClass, CommandInterface::class)) {
+        if (!Validate::implementsInterface($commandClass, Command::class)) {
             $message = sprintf('Invalid command class: %s', $commandClass);
             throw new DomainException($message);
         }
@@ -71,7 +71,7 @@ class InMemoryCommandMap implements CommandMapInterface
     /**
      * {@inheritdoc}
      */
-    public function getHandler(string $commandClass): CommandHandlerInterface
+    public function getHandler(string $commandClass): CommandHandler
     {
         $type = Type::create($commandClass)->toString();
 

@@ -135,19 +135,19 @@ class QueryMessageTest extends UnitTestCase
 
     public function test_that_compare_to_returns_zero_for_same_value()
     {
-        $message = QueryMessage::deserialize($this->getMessageData());
+        $message = QueryMessage::arrayDeserialize($this->getMessageData());
         $this->assertSame(0, $this->message->compareTo($message));
     }
 
     public function test_that_compare_to_returns_one_for_greater_instance()
     {
-        $message = QueryMessage::deserialize($this->getAltMessageData());
+        $message = QueryMessage::arrayDeserialize($this->getAltMessageData());
         $this->assertSame(1, $message->compareTo($this->message));
     }
 
     public function test_that_compare_to_returns_neg_one_for_lesser_instance()
     {
-        $message = QueryMessage::deserialize($this->getAltMessageData());
+        $message = QueryMessage::arrayDeserialize($this->getAltMessageData());
         $this->assertSame(-1, $this->message->compareTo($message));
     }
 
@@ -158,7 +158,7 @@ class QueryMessageTest extends UnitTestCase
 
     public function test_that_equals_returns_true_for_same_value()
     {
-        $message = QueryMessage::deserialize($this->getMessageData());
+        $message = QueryMessage::arrayDeserialize($this->getMessageData());
         $this->assertTrue($this->message->equals($message));
     }
 
@@ -169,7 +169,7 @@ class QueryMessageTest extends UnitTestCase
 
     public function test_that_equals_returns_false_for_different_value()
     {
-        $message = QueryMessage::deserialize($this->getAltMessageData());
+        $message = QueryMessage::arrayDeserialize($this->getAltMessageData());
         $this->assertFalse($this->message->equals($message));
     }
 
@@ -183,7 +183,7 @@ class QueryMessageTest extends UnitTestCase
      */
     public function test_that_deserialize_throws_exception_for_invalid_data()
     {
-        QueryMessage::deserialize([]);
+        QueryMessage::arrayDeserialize([]);
     }
 
     /**
@@ -193,7 +193,7 @@ class QueryMessageTest extends UnitTestCase
     {
         $data = $this->getMessageData();
         $data['type'] = 'event';
-        QueryMessage::deserialize($data);
+        QueryMessage::arrayDeserialize($data);
     }
 
     /**

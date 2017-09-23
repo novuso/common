@@ -7,7 +7,7 @@
         "psr/container": "1.*",
         "psr/http-message": "1.*",
         "psr/log": "1.*",
-        "novuso/system": "0.6.*"
+        "novuso/system": "0.7.*"
     },
     "require-dev": {
         "fzaninotto/faker": "1.*",

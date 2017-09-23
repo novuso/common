@@ -11,7 +11,7 @@ use NumberFormatter;
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class LocaleFormatter implements FormatterInterface
+class LocaleFormatter implements MoneyFormatter
 {
     /**
      * Formatter

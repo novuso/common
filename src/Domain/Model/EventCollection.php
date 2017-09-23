@@ -3,9 +3,9 @@
 namespace Novuso\Common\Domain\Model;
 
 use Countable;
-use Novuso\Common\Domain\Identity\IdentifierInterface;
+use Novuso\Common\Domain\Identity\Identifier;
 use Novuso\Common\Domain\Messaging\Event\EventMessage;
-use Novuso\System\Collection\Api\SortedSetInterface;
+use Novuso\System\Collection\Api\OrderedSet;
 use Novuso\System\Collection\SortedSet;
 use Novuso\System\Type\Type;
 use Traversable;
@@ -22,7 +22,7 @@ class EventCollection implements Countable
     /**
      * Aggregate ID
      *
-     * @var IdentifierInterface
+     * @var Identifier
      */
     protected $aggregateId;
 
@@ -50,17 +50,17 @@ class EventCollection implements Countable
     /**
      * Event records
      *
-     * @var SortedSetInterface
+     * @var OrderedSet
      */
     protected $eventRecords;
 
     /**
      * Constructs EventCollection
      *
-     * @param IdentifierInterface $aggregateId   The aggregate ID
-     * @param Type                $aggregateType The aggregate type
+     * @param Identifier $aggregateId   The aggregate ID
+     * @param Type       $aggregateType The aggregate type
      */
-    public function __construct(IdentifierInterface $aggregateId, Type $aggregateType)
+    public function __construct(Identifier $aggregateId, Type $aggregateType)
     {
         $this->aggregateId = $aggregateId;
         $this->aggregateType = $aggregateType;

@@ -3,7 +3,7 @@
 namespace Novuso\Test\Common\Domain\Type;
 
 use Novuso\Common\Domain\Type\MbStringObject;
-use Novuso\System\Collection\Api\ListInterface;
+use Novuso\System\Collection\Api\IndexedList;
 use Novuso\Test\System\TestCase\UnitTestCase;
 
 /**
@@ -104,7 +104,7 @@ class MbStringObjectTest extends UnitTestCase
     public function test_that_chars_returns_indexed_list_instance()
     {
         $string = MbStringObject::create('hello');;
-        $this->assertInstanceOf(ListInterface::class, $string->chars());
+        $this->assertInstanceOf(IndexedList::class, $string->chars());
     }
 
     public function test_that_contains_returns_true_for_valid_search()

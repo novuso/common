@@ -2,7 +2,7 @@
 
 namespace Novuso\Common\Domain\EventSourcing;
 
-use Novuso\Common\Domain\Messaging\Event\EventInterface;
+use Novuso\Common\Domain\Messaging\Event\Event;
 use Novuso\Common\Domain\Model\Entity;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Utility\ClassName;
@@ -49,11 +49,11 @@ abstract class EventSourcedEntity extends Entity
      *
      * @internal
      *
-     * @param EventInterface $event The domain event
+     * @param Event $event The domain event
      *
      * @return void
      */
-    public function handleRecursively(EventInterface $event): void
+    public function handleRecursively(Event $event): void
     {
         $this->handle($event);
 
@@ -69,11 +69,11 @@ abstract class EventSourcedEntity extends Entity
      * This method delegates to a protected method based on the domain event
      * class name: 'apply'.$className
      *
-     * @param EventInterface $event The domain event
+     * @param Event $event The domain event
      *
      * @return void
      */
-    protected function handle(EventInterface $event): void
+    protected function handle(Event $event): void
     {
         $method = 'apply'.ClassName::short($event);
 

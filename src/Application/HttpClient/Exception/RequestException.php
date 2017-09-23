@@ -3,6 +3,7 @@
 namespace Novuso\Common\Application\HttpClient\Exception;
 
 use Psr\Http\Message\RequestInterface;
+use Throwable;
 
 /**
  * RequestException is thrown for failed requests
@@ -25,12 +26,12 @@ class RequestException extends TransferException
      *
      * @param string           $message  The message
      * @param RequestInterface $request  The request
-     * @param \Throwable|null  $previous The previous exception
+     * @param Throwable|null  $previous The previous exception
      */
-    public function __construct(string $message, RequestInterface $request, \Throwable $previous = null)
+    public function __construct(string $message, RequestInterface $request, Throwable $previous = null)
     {
-        $this->request = $request;
         parent::__construct($message, 0, $previous);
+        $this->request = $request;
     }
 
     /**

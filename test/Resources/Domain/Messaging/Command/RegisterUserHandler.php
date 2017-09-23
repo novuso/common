@@ -2,10 +2,10 @@
 
 namespace Novuso\Test\Common\Resources\Domain\Messaging\Command;
 
-use Novuso\Common\Domain\Messaging\Command\CommandHandlerInterface;
+use Novuso\Common\Domain\Messaging\Command\CommandHandler;
 use Novuso\Common\Domain\Messaging\Command\CommandMessage;
 
-class RegisterUserHandler implements CommandHandlerInterface
+class RegisterUserHandler implements CommandHandler
 {
     protected $handled = false;
 

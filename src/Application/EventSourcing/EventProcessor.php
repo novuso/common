@@ -2,9 +2,9 @@
 
 namespace Novuso\Common\Application\EventSourcing;
 
-use Novuso\Common\Application\EventStore\EventStoreInterface;
+use Novuso\Common\Application\EventStore\EventStore;
 use Novuso\Common\Domain\Model\EventRecord;
-use Novuso\Common\Domain\Messaging\Event\EventDispatcherInterface;
+use Novuso\Common\Domain\Messaging\Event\EventDispatcher;
 use Throwable;
 
 /**
@@ -19,24 +19,24 @@ class EventProcessor
     /**
      * Event store
      *
-     * @var EventStoreInterface
+     * @var EventStore
      */
     protected $eventStore;
 
     /**
      * Event dispatcher
      *
-     * @var EventDispatcherInterface
+     * @var EventDispatcher
      */
     protected $eventDispatcher;
 
     /**
      * Constructs EventProcessor
      *
-     * @param EventStoreInterface      $eventStore      The event store
-     * @param EventDispatcherInterface $eventDispatcher The event dispatcher
+     * @param EventStore      $eventStore      The event store
+     * @param EventDispatcher $eventDispatcher The event dispatcher
      */
-    public function __construct(EventStoreInterface $eventStore, EventDispatcherInterface $eventDispatcher)
+    public function __construct(EventStore $eventStore, EventDispatcher $eventDispatcher)
     {
         $this->eventStore = $eventStore;
         $this->eventDispatcher = $eventDispatcher;

@@ -26,10 +26,10 @@ class QueryMessage extends BaseMessage
      *
      * @param MessageId $id        The message ID
      * @param DateTime  $timestamp The timestamp
-     * @param QueryInterface     $payload   The payload
+     * @param Query     $payload   The payload
      * @param MetaData  $metaData  The meta data
      */
-    public function __construct(MessageId $id, DateTime $timestamp, QueryInterface $payload, MetaData $metaData)
+    public function __construct(MessageId $id, DateTime $timestamp, Query $payload, MetaData $metaData)
     {
         parent::__construct($id, MessageType::QUERY(), $timestamp, $payload, $metaData);
     }
@@ -37,11 +37,11 @@ class QueryMessage extends BaseMessage
     /**
      * Creates instance for a query
      *
-     * @param QueryInterface $query The query
+     * @param Query $query The query
      *
      * @return QueryMessage
      */
-    public static function create(QueryInterface $query): QueryMessage
+    public static function create(Query $query): QueryMessage
     {
         $timestamp = DateTime::now();
         $id = MessageId::generate();
@@ -53,7 +53,7 @@ class QueryMessage extends BaseMessage
     /**
      * {@inheritdoc}
      */
-    public static function deserialize(array $data): QueryMessage
+    public static function arrayDeserialize(array $data): QueryMessage
     {
         $keys = ['id', 'type', 'timestamp', 'meta_data', 'payload_type', 'payload'];
         foreach ($keys as $key) {
@@ -76,15 +76,15 @@ class QueryMessage extends BaseMessage
         $metaData = MetaData::create($data['meta_data']);
         /** @var Type $payloadType */
         $payloadType = Type::create($data['payload_type']);
-        /** @var QueryInterface|string $payloadClass */
+        /** @var Query|string $payloadClass */
         $payloadClass = $payloadType->toClassName();
 
         assert(
-            Validate::implementsInterface($payloadClass, QueryInterface::class),
+            Validate::implementsInterface($payloadClass, Query::class),
             sprintf('Unable to deserialize: %s', $payloadClass)
         );
 
-        /** @var QueryInterface $payload */
+        /** @var Query $payload */
         $payload = $payloadClass::fromArray($data['payload']);
 
         return new static($id, $timestamp, $payload, $metaData);
@@ -95,7 +95,7 @@ class QueryMessage extends BaseMessage
      */
     public function withMetaData(MetaData $metaData): QueryMessage
     {
-        /** @var QueryInterface $query */
+        /** @var Query $query */
         $query = $this->payload;
 
         return new static(
@@ -114,7 +114,7 @@ class QueryMessage extends BaseMessage
         $meta = clone $this->metaData;
         $meta->merge($metaData);
 
-        /** @var QueryInterface $query */
+        /** @var Query $query */
         $query = $this->payload;
 
         return new static(

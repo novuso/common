@@ -2,11 +2,11 @@
 
 namespace Novuso\Common\Application\Messaging\Event;
 
-use Novuso\Common\Application\Messaging\MessageQueueInterface;
-use Novuso\Common\Domain\Messaging\Event\EventDispatcherInterface;
-use Novuso\Common\Domain\Messaging\Event\EventInterface;
+use Novuso\Common\Application\Messaging\MessageQueue;
+use Novuso\Common\Domain\Messaging\Event\EventDispatcher;
+use Novuso\Common\Domain\Messaging\Event\Event;
 use Novuso\Common\Domain\Messaging\Event\EventMessage;
-use Novuso\Common\Domain\Messaging\Event\EventSubscriberInterface;
+use Novuso\Common\Domain\Messaging\Event\EventSubscriber;
 
 /**
  * QueueingEventDispatcher dispatches events to a message queue
@@ -15,12 +15,12 @@ use Novuso\Common\Domain\Messaging\Event\EventSubscriberInterface;
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class QueueingEventDispatcher implements EventDispatcherInterface
+class QueueingEventDispatcher implements EventDispatcher
 {
     /**
      * Message queue
      *
-     * @var MessageQueueInterface
+     * @var MessageQueue
      */
     protected $messageQueue;
 
@@ -34,10 +34,10 @@ class QueueingEventDispatcher implements EventDispatcherInterface
     /**
      * Constructs QueueingEventDispatcher
      *
-     * @param MessageQueueInterface $messageQueue The message queue
-     * @param string                $topicName    The topic name
+     * @param MessageQueue $messageQueue The message queue
+     * @param string       $topicName    The topic name
      */
-    public function __construct(MessageQueueInterface $messageQueue, string $topicName)
+    public function __construct(MessageQueue $messageQueue, string $topicName)
     {
         $this->messageQueue = $messageQueue;
         $this->topicName = $topicName;
@@ -46,7 +46,7 @@ class QueueingEventDispatcher implements EventDispatcherInterface
     /**
      * {@inheritdoc}
      */
-    public function trigger(EventInterface $event): void
+    public function trigger(Event $event): void
     {
         $this->dispatch(EventMessage::create($event));
     }
@@ -62,7 +62,7 @@ class QueueingEventDispatcher implements EventDispatcherInterface
     /**
      * {@inheritdoc}
      */
-    public function register(EventSubscriberInterface $subscriber): void
+    public function register(EventSubscriber $subscriber): void
     {
         // no operation
     }
@@ -70,7 +70,7 @@ class QueueingEventDispatcher implements EventDispatcherInterface
     /**
      * {@inheritdoc}
      */
-    public function unregister(EventSubscriberInterface $subscriber): void
+    public function unregister(EventSubscriber $subscriber): void
     {
         // no operation
     }

@@ -2,40 +2,27 @@
 
 namespace Novuso\Common\Application\Messaging\Command\Routing;
 
-use Novuso\Common\Domain\Messaging\Command\CommandHandlerInterface;
-use Novuso\Common\Domain\Messaging\Command\CommandInterface;
+use Novuso\Common\Domain\Messaging\Command\CommandHandler;
+use Novuso\Common\Domain\Messaging\Command\Command;
+use Novuso\System\Exception\LookupException;
 
 /**
- * CommandRouter matches commands from a command map
+ * CommandRouter matches a command to a handler
  *
  * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class CommandRouter implements CommandRouterInterface
+interface CommandRouter
 {
     /**
-     * Command map
+     * Matches a command to a handler
      *
-     * @var CommandMapInterface
-     */
-    protected $commandMap;
-
-    /**
-     * Constructs CommandRouter
+     * @param Command $command The command
      *
-     * @param CommandMapInterface $commandMap The command map
+     * @return CommandHandler
+     *
+     * @throws LookupException When the handler is not found
      */
-    public function __construct(CommandMapInterface $commandMap)
-    {
-        $this->commandMap = $commandMap;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function match(CommandInterface $command): CommandHandlerInterface
-    {
-        return $this->commandMap->getHandler(get_class($command));
-    }
+    public function match(Command $command): CommandHandler;
 }

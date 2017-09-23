@@ -14,24 +14,24 @@ class OrSpecification extends CompositeSpecification
     /**
      * First specification
      *
-     * @var SpecificationInterface
+     * @var Specification
      */
     protected $firstSpec;
 
     /**
      * Second specification
      *
-     * @var SpecificationInterface
+     * @var Specification
      */
     protected $secondSpec;
 
     /**
      * Constructs OrSpecification
      *
-     * @param SpecificationInterface $firstSpec  The first specification
-     * @param SpecificationInterface $secondSpec The second specification
+     * @param Specification $firstSpec  The first specification
+     * @param Specification $secondSpec The second specification
      */
-    public function __construct(SpecificationInterface $firstSpec, SpecificationInterface $secondSpec)
+    public function __construct(Specification $firstSpec, Specification $secondSpec)
     {
         $this->firstSpec = $firstSpec;
         $this->secondSpec = $secondSpec;

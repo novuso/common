@@ -2,11 +2,11 @@
 
 namespace Novuso\Common\Application\Messaging\Query;
 
-use Novuso\Common\Domain\Messaging\Query\QueryBusInterface;
-use Novuso\Common\Domain\Messaging\Query\QueryFilterInterface;
-use Novuso\Common\Domain\Messaging\Query\QueryInterface;
+use Novuso\Common\Domain\Messaging\Query\QueryBus;
+use Novuso\Common\Domain\Messaging\Query\QueryFilter;
+use Novuso\Common\Domain\Messaging\Query\Query;
 use Novuso\Common\Domain\Messaging\Query\QueryMessage;
-use Novuso\System\Collection\Api\StackInterface;
+use Novuso\System\Collection\Api\Stack;
 use Novuso\System\Collection\LinkedStack;
 
 /**
@@ -16,26 +16,26 @@ use Novuso\System\Collection\LinkedStack;
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class QueryPipeline implements QueryBusInterface, QueryFilterInterface
+class QueryPipeline implements QueryBus, QueryFilter
 {
     /**
      * Query bus
      *
-     * @var QueryBusInterface
+     * @var QueryBus
      */
     protected $queryBus;
 
     /**
      * Query filters
      *
-     * @var StackInterface
+     * @var Stack
      */
     protected $filters;
 
     /**
      * Filter stack
      *
-     * @var StackInterface|null
+     * @var Stack|null
      */
     protected $stack;
 
@@ -49,23 +49,23 @@ class QueryPipeline implements QueryBusInterface, QueryFilterInterface
     /**
      * Constructs QueryPipeline
      *
-     * @param QueryBusInterface $queryBus The query bus
+     * @param QueryBus $queryBus The query bus
      */
-    public function __construct(QueryBusInterface $queryBus)
+    public function __construct(QueryBus $queryBus)
     {
         $this->queryBus = $queryBus;
-        $this->filters = LinkedStack::of(QueryFilterInterface::class);
+        $this->filters = LinkedStack::of(QueryFilter::class);
         $this->filters->push($this);
     }
 
     /**
      * Adds a query filter to the pipeline
      *
-     * @param QueryFilterInterface $filter The filter
+     * @param QueryFilter $filter The filter
      *
      * @return void
      */
-    public function addFilter(QueryFilterInterface $filter): void
+    public function addFilter(QueryFilter $filter): void
     {
         $this->filters->push($filter);
     }
@@ -73,7 +73,7 @@ class QueryPipeline implements QueryBusInterface, QueryFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function fetch(QueryInterface $query)
+    public function fetch(Query $query)
     {
         return $this->dispatch(QueryMessage::create($query));
     }
@@ -97,7 +97,7 @@ class QueryPipeline implements QueryBusInterface, QueryFilterInterface
      */
     public function process(QueryMessage $message, callable $next): void
     {
-        /** @var QueryInterface $query */
+        /** @var Query $query */
         $query = $message->payload();
         $this->results = $this->queryBus->fetch($query);
     }
@@ -111,7 +111,7 @@ class QueryPipeline implements QueryBusInterface, QueryFilterInterface
      */
     public function pipe(QueryMessage $message): void
     {
-        /** @var QueryFilterInterface $filter */
+        /** @var QueryFilter $filter */
         $filter = $this->stack->pop();
         $filter->process($message, [$this, 'pipe']);
     }

@@ -15,7 +15,7 @@ use Novuso\System\Utility\VarPrinter;
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-abstract class BaseMessage implements MessageInterface
+abstract class BaseMessage implements Message
 {
     /**
      * Message ID
@@ -41,7 +41,7 @@ abstract class BaseMessage implements MessageInterface
     /**
      * Payload
      *
-     * @var PayloadInterface
+     * @var Payload
      */
     protected $payload;
 
@@ -62,17 +62,17 @@ abstract class BaseMessage implements MessageInterface
     /**
      * Constructs BaseMessage
      *
-     * @param MessageId        $id        The message ID
-     * @param MessageType      $type      The message type
-     * @param DateTime         $timestamp The timestamp
-     * @param PayloadInterface $payload   The payload
-     * @param MetaData         $metaData  The meta data
+     * @param MessageId   $id        The message ID
+     * @param MessageType $type      The message type
+     * @param DateTime    $timestamp The timestamp
+     * @param Payload     $payload   The payload
+     * @param MetaData    $metaData  The meta data
      */
     protected function __construct(
         MessageId $id,
         MessageType $type,
         DateTime $timestamp,
-        PayloadInterface $payload,
+        Payload $payload,
         MetaData $metaData
     ) {
         $this->id = $id;
@@ -110,7 +110,7 @@ abstract class BaseMessage implements MessageInterface
     /**
      * {@inheritdoc}
      */
-    public function payload(): PayloadInterface
+    public function payload(): Payload
     {
         return $this->payload;
     }
@@ -186,9 +186,40 @@ abstract class BaseMessage implements MessageInterface
     /**
      * {@inheritdoc}
      */
-    public function serialize(): array
+    public function arraySerialize(): array
     {
         return $this->toArray();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function serialize(): string
+    {
+        return serialize([
+            'id'           => $this->id->toString(),
+            'type'         => $this->type->value(),
+            'timestamp'    => $this->timestamp->toString(),
+            'payload_type' => $this->payloadType->toString(),
+            'payload'      => $this->payload->toArray(),
+            'meta_data'    => $this->metaData->toArray()
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unserialize($serialized): void
+    {
+        $data = unserialize($serialized);
+        $this->id = MessageId::fromString($data['id']);
+        $this->type = MessageType::fromValue($data['type']);
+        $this->timestamp = DateTime::fromString($data['timestamp']);
+        $this->payloadType = Type::create($data['payload_type']);
+        /** @var Payload|string $payloadClass */
+        $payloadClass = $this->payloadType->toClassName();
+        $this->payload = $payloadClass::fromArray($data['payload']);
+        $this->metaData = new MetaData($data['meta_data']);
     }
 
     /**

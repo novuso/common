@@ -2,7 +2,7 @@
 
 namespace Novuso\Common\Domain\EventSourcing;
 
-use Novuso\Common\Domain\Messaging\Event\EventInterface;
+use Novuso\Common\Domain\Messaging\Event\Event;
 use Novuso\Common\Domain\Model\AggregateRoot;
 use Novuso\Common\Domain\Model\EventRecord;
 use Novuso\System\Utility\ClassName;
@@ -38,7 +38,7 @@ abstract class EventSourcedAggregateRoot extends AggregateRoot
         /** @var EventRecord $eventRecord */
         foreach ($eventRecords as $eventRecord) {
             $lastSequence = $eventRecord->sequenceNumber();
-            /** @var EventInterface $event */
+            /** @var Event $event */
             $event = $eventRecord->eventMessage()->payload();
             $aggregate->handleRecursively($event);
         }
@@ -51,11 +51,11 @@ abstract class EventSourcedAggregateRoot extends AggregateRoot
     /**
      * Records a domain event
      *
-     * @param EventInterface $event The domain event
+     * @param Event $event The domain event
      *
      * @return void
      */
-    public function recordThat(EventInterface $event): void
+    public function recordThat(Event $event): void
     {
         $this->handleRecursively($event);
         parent::recordThat($event);
@@ -64,11 +64,11 @@ abstract class EventSourcedAggregateRoot extends AggregateRoot
     /**
      * Handles the domain event recursively
      *
-     * @param EventInterface $event The domain event
+     * @param Event $event The domain event
      *
      * @return void
      */
-    protected function handleRecursively(EventInterface $event): void
+    protected function handleRecursively(Event $event): void
     {
         $this->handle($event);
 
@@ -84,11 +84,11 @@ abstract class EventSourcedAggregateRoot extends AggregateRoot
      * This method delegates to a protected method based on the domain event
      * class name: 'apply'.$className
      *
-     * @param EventInterface $event The domain event
+     * @param Event $event The domain event
      *
      * @return void
      */
-    protected function handle(EventInterface $event): void
+    protected function handle(Event $event): void
     {
         $method = 'apply'.ClassName::short($event);
 

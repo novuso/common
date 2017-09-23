@@ -21,7 +21,7 @@ use Novuso\System\Utility\Validate;
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-abstract class ValueObject implements ValueInterface
+abstract class ValueObject implements Value
 {
     /**
      * {@inheritdoc}

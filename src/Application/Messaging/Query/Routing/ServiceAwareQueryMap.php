@@ -2,8 +2,8 @@
 
 namespace Novuso\Common\Application\Messaging\Query\Routing;
 
-use Novuso\Common\Domain\Messaging\Query\QueryHandlerInterface;
-use Novuso\Common\Domain\Messaging\Query\QueryInterface;
+use Novuso\Common\Domain\Messaging\Query\QueryHandler;
+use Novuso\Common\Domain\Messaging\Query\Query;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Exception\LookupException;
 use Novuso\System\Type\Type;
@@ -17,7 +17,7 @@ use Psr\Container\ContainerInterface;
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class ServiceAwareQueryMap implements QueryMapInterface
+class ServiceAwareQueryMap implements QueryMap
 {
     /**
      * Service container
@@ -76,7 +76,7 @@ class ServiceAwareQueryMap implements QueryMapInterface
      */
     public function registerHandler(string $queryClass, string $serviceName): void
     {
-        if (!Validate::implementsInterface($queryClass, QueryInterface::class)) {
+        if (!Validate::implementsInterface($queryClass, Query::class)) {
             $message = sprintf('Invalid query class: %s', $queryClass);
             throw new DomainException($message);
         }
@@ -89,7 +89,7 @@ class ServiceAwareQueryMap implements QueryMapInterface
     /**
      * {@inheritdoc}
      */
-    public function getHandler(string $queryClass): QueryHandlerInterface
+    public function getHandler(string $queryClass): QueryHandler
     {
         if (!$this->hasHandler($queryClass)) {
             $message = sprintf('Handler not defined for query: %s', $queryClass);

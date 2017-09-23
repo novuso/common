@@ -13,7 +13,7 @@ use Novuso\System\Utility\Validate;
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-abstract class UniqueId extends ValueObject implements IdentifierInterface, IdentifierFactoryInterface
+abstract class UniqueId extends ValueObject implements Identifier, IdentifierFactory
 {
     /**
      * UUID

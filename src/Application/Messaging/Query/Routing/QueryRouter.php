@@ -2,40 +2,27 @@
 
 namespace Novuso\Common\Application\Messaging\Query\Routing;
 
-use Novuso\Common\Domain\Messaging\Query\QueryHandlerInterface;
-use Novuso\Common\Domain\Messaging\Query\QueryInterface;
+use Novuso\Common\Domain\Messaging\Query\QueryHandler;
+use Novuso\Common\Domain\Messaging\Query\Query;
+use Novuso\System\Exception\LookupException;
 
 /**
- * QueryRouter matches queries from a query map
+ * QueryRouter matches a query to a handler
  *
  * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class QueryRouter implements QueryRouterInterface
+interface QueryRouter
 {
     /**
-     * Query map
+     * Matches a query to a handler
      *
-     * @var QueryMapInterface
-     */
-    protected $queryMap;
-
-    /**
-     * Constructs QueryRouter
+     * @param Query $query The query
      *
-     * @param QueryMapInterface $queryMap The query map
+     * @return QueryHandler
+     *
+     * @throws LookupException When the handler is not found
      */
-    public function __construct(QueryMapInterface $queryMap)
-    {
-        $this->queryMap = $queryMap;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function match(QueryInterface $query): QueryHandlerInterface
-    {
-        return $this->queryMap->getHandler(get_class($query));
-    }
+    public function match(Query $query): QueryHandler;
 }

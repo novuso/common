@@ -12,7 +12,7 @@ use Closure;
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class DomainCollection implements DomainCollectionInterface
+class DomainCollection implements ElementCollection
 {
     /**
      * Elements

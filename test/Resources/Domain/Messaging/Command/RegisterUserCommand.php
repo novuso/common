@@ -2,10 +2,10 @@
 
 namespace Novuso\Test\Common\Resources\Domain\Messaging\Command;
 
-use Novuso\Common\Domain\Messaging\Command\CommandInterface;
+use Novuso\Common\Domain\Messaging\Command\Command;
 use Novuso\System\Exception\DomainException;
 
-class RegisterUserCommand implements CommandInterface
+class RegisterUserCommand implements Command
 {
     private $prefix;
     private $firstName;

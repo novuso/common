@@ -26,10 +26,10 @@ class CommandMessage extends BaseMessage
      *
      * @param MessageId $id        The message ID
      * @param DateTime  $timestamp The timestamp
-     * @param CommandInterface   $payload   The payload
+     * @param Command   $payload   The payload
      * @param MetaData  $metaData  The meta data
      */
-    public function __construct(MessageId $id, DateTime $timestamp, CommandInterface $payload, MetaData $metaData)
+    public function __construct(MessageId $id, DateTime $timestamp, Command $payload, MetaData $metaData)
     {
         parent::__construct($id, MessageType::COMMAND(), $timestamp, $payload, $metaData);
     }
@@ -37,11 +37,11 @@ class CommandMessage extends BaseMessage
     /**
      * Creates instance for a command
      *
-     * @param CommandInterface $command The command
+     * @param Command $command The command
      *
      * @return CommandMessage
      */
-    public static function create(CommandInterface $command): CommandMessage
+    public static function create(Command $command): CommandMessage
     {
         $timestamp = DateTime::now();
         $id = MessageId::generate();
@@ -53,7 +53,7 @@ class CommandMessage extends BaseMessage
     /**
      * {@inheritdoc}
      */
-    public static function deserialize(array $data): CommandMessage
+    public static function arrayDeserialize(array $data): CommandMessage
     {
         $keys = ['id', 'type', 'timestamp', 'meta_data', 'payload_type', 'payload'];
         foreach ($keys as $key) {
@@ -76,15 +76,15 @@ class CommandMessage extends BaseMessage
         $metaData = MetaData::create($data['meta_data']);
         /** @var Type $payloadType */
         $payloadType = Type::create($data['payload_type']);
-        /** @var CommandInterface|string $payloadClass */
+        /** @var Command|string $payloadClass */
         $payloadClass = $payloadType->toClassName();
 
         assert(
-            Validate::implementsInterface($payloadClass, CommandInterface::class),
+            Validate::implementsInterface($payloadClass, Command::class),
             sprintf('Unable to deserialize: %s', $payloadClass)
         );
 
-        /** @var CommandInterface $payload */
+        /** @var Command $payload */
         $payload = $payloadClass::fromArray($data['payload']);
 
         return new static($id, $timestamp, $payload, $metaData);
@@ -95,7 +95,7 @@ class CommandMessage extends BaseMessage
      */
     public function withMetaData(MetaData $metaData): CommandMessage
     {
-        /** @var CommandInterface $command */
+        /** @var Command $command */
         $command = $this->payload;
 
         return new static(
@@ -114,7 +114,7 @@ class CommandMessage extends BaseMessage
         $meta = clone $this->metaData;
         $meta->merge($metaData);
 
-        /** @var CommandInterface $command */
+        /** @var Command $command */
         $command = $this->payload;
 
         return new static(

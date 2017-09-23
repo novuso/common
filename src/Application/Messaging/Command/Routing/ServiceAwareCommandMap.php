@@ -2,8 +2,8 @@
 
 namespace Novuso\Common\Application\Messaging\Command\Routing;
 
-use Novuso\Common\Domain\Messaging\Command\CommandHandlerInterface;
-use Novuso\Common\Domain\Messaging\Command\CommandInterface;
+use Novuso\Common\Domain\Messaging\Command\CommandHandler;
+use Novuso\Common\Domain\Messaging\Command\Command;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Exception\LookupException;
 use Novuso\System\Type\Type;
@@ -17,7 +17,7 @@ use Psr\Container\ContainerInterface;
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-class ServiceAwareCommandMap implements CommandMapInterface
+class ServiceAwareCommandMap implements CommandMap
 {
     /**
      * Service container
@@ -76,7 +76,7 @@ class ServiceAwareCommandMap implements CommandMapInterface
      */
     public function registerHandler(string $commandClass, string $serviceName): void
     {
-        if (!Validate::implementsInterface($commandClass, CommandInterface::class)) {
+        if (!Validate::implementsInterface($commandClass, Command::class)) {
             $message = sprintf('Invalid command class: %s', $commandClass);
             throw new DomainException($message);
         }
@@ -89,7 +89,7 @@ class ServiceAwareCommandMap implements CommandMapInterface
     /**
      * {@inheritdoc}
      */
-    public function getHandler(string $commandClass): CommandHandlerInterface
+    public function getHandler(string $commandClass): CommandHandler
     {
         if (!$this->hasHandler($commandClass)) {
             $message = sprintf('Handler not defined for command: %s', $commandClass);
