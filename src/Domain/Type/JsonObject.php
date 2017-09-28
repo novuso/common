@@ -39,9 +39,7 @@ class JsonObject extends ValueObject
      */
     public function __construct($data, ?int $encOptions = null)
     {
-        $json = json_encode($data);
-
-        if ($json === false) {
+        if (json_encode($data) === false) {
             $message = sprintf('Unable to JSON encode: %s', VarPrinter::toString($data));
             throw new DomainException($message);
         }
