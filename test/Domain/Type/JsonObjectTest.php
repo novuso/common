@@ -28,10 +28,46 @@ class JsonObjectTest extends UnitTestCase
         $this->assertSame('{"foo":"bar"}', $json->toString());
     }
 
-    public function test_that_to_data_returns_expected_value()
+    public function test_that_to_data_returns_expected_object_value()
+    {
+        $json = JsonObject::fromString('{"foo":"bar"}');
+        $this->assertSame(['foo' => 'bar'], $json->toData());
+    }
+
+    public function test_that_to_data_returns_expected_array_value()
     {
         $json = JsonObject::fromString('["foo","bar"]');
         $this->assertSame(['foo', 'bar'], $json->toData());
+    }
+
+    public function test_that_to_data_returns_expected_null_value()
+    {
+        $json = JsonObject::fromString('null');
+        $this->assertSame(null, $json->toData());
+    }
+
+    public function test_that_to_data_returns_expected_bool_value()
+    {
+        $json = JsonObject::fromString('true');
+        $this->assertSame(true, $json->toData());
+    }
+
+    public function test_that_to_data_returns_expected_int_value()
+    {
+        $json = JsonObject::fromString('42');
+        $this->assertSame(42, $json->toData());
+    }
+
+    public function test_that_to_data_returns_expected_float_value()
+    {
+        $json = JsonObject::fromString('3.14');
+        $this->assertSame(3.14, $json->toData());
+    }
+
+    public function test_that_to_data_returns_expected_string_value()
+    {
+        $json = JsonObject::fromString('"Hello"');
+        $this->assertSame('Hello', $json->toData());
     }
 
     public function test_that_it_is_json_encodable()
