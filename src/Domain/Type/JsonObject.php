@@ -16,29 +16,42 @@ use Novuso\System\Utility\VarPrinter;
 class JsonObject extends ValueObject
 {
     /**
-     * JSON encoded data
+     * Data
      *
-     * @var string
+     * @var mixed
      */
-    protected $json;
+    protected $data;
+
+    /**
+     * Encoding options
+     *
+     * @var int
+     */
+    protected $encOptions;
 
     /**
      * Constructs JsonObject
      *
-     * @param mixed $data The data to convert to JSON
+     * @param mixed    $data       The data to convert to JSON
+     * @param int|null $encOptions Options bitmap for encoding
      *
      * @throws DomainException When the data is not json encodable
      */
-    public function __construct($data)
+    public function __construct($data, ?int $encOptions = null)
     {
-        $json = json_encode($data, JSON_UNESCAPED_SLASHES);
+        $json = json_encode($data);
 
         if ($json === false) {
             $message = sprintf('Unable to JSON encode: %s', VarPrinter::toString($data));
             throw new DomainException($message);
         }
 
-        $this->json = $json;
+        if ($encOptions === null) {
+            $encOptions = JSON_UNESCAPED_SLASHES;
+        }
+
+        $this->data = $data;
+        $this->encOptions = $encOptions;
     }
 
     /**
@@ -75,7 +88,7 @@ class JsonObject extends ValueObject
      */
     public function toData()
     {
-        return json_decode($this->json, true);
+        return $this->data;
     }
 
     /**
@@ -83,7 +96,7 @@ class JsonObject extends ValueObject
      */
     public function toString(): string
     {
-        return $this->json;
+        return json_encode($this->data, $this->encOptions);
     }
 
     /**
@@ -91,6 +104,6 @@ class JsonObject extends ValueObject
      */
     public function jsonSerialize()
     {
-        return json_decode($this->json, true);
+        return $this->data;
     }
 }
