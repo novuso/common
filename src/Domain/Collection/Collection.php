@@ -9,13 +9,13 @@ use IteratorAggregate;
 use Traversable;
 
 /**
- * ElementCollection is the interface for a domain collection
+ * Collection is the interface for a domain collection
  *
  * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
  * @license   http://opensource.org/licenses/MIT The MIT License
  * @author    John Nickell <email@johnnickell.com>
  */
-interface ElementCollection extends ArrayAccess, Countable, IteratorAggregate
+interface Collection extends ArrayAccess, Countable, IteratorAggregate
 {
     /**
      * Checks if empty
@@ -218,7 +218,7 @@ interface ElementCollection extends ArrayAccess, Countable, IteratorAggregate
      *
      * @param Closure $callback The callback function
      *
-     * @return ElementCollection
+     * @return Collection
      */
     public function map(Closure $callback);
 
@@ -227,7 +227,7 @@ interface ElementCollection extends ArrayAccess, Countable, IteratorAggregate
      *
      * @param Closure $predicate The predicate function
      *
-     * @return ElementCollection
+     * @return Collection
      */
     public function filter(Closure $predicate);
 
