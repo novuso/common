@@ -22,15 +22,74 @@ use Throwable;
  */
 class HttpService implements HttpClient, MessageFactory, StreamFactory, UriFactory
 {
+    /**
+     * HEAD method
+     *
+     * @var string
+     */
     public const METHOD_HEAD = 'HEAD';
+
+    /**
+     * GET method
+     *
+     * @var string
+     */
     public const METHOD_GET = 'GET';
+
+    /**
+     * POST method
+     *
+     * @var string
+     */
     public const METHOD_POST = 'POST';
+
+    /**
+     * PUT method
+     *
+     * @var string
+     */
     public const METHOD_PUT = 'PUT';
+
+    /**
+     * PATCH method
+     *
+     * @var string
+     */
     public const METHOD_PATCH = 'PATCH';
+
+    /**
+     * DELETE method
+     *
+     * @var string
+     */
     public const METHOD_DELETE = 'DELETE';
+
+    /**
+     * PURGE method
+     *
+     * @var string
+     */
     public const METHOD_PURGE = 'PURGE';
+
+    /**
+     * OPTIONS method
+     *
+     * @var string
+     */
     public const METHOD_OPTIONS = 'OPTIONS';
+
+    /**
+     * TRACE method
+     *
+     * @var string
+     */
     public const METHOD_TRACE = 'TRACE';
+
+    /**
+     * CONNECT method
+     *
+     * @var string
+     */
     public const METHOD_CONNECT = 'CONNECT';
 
     /**
@@ -455,7 +514,7 @@ class HttpService implements HttpClient, MessageFactory, StreamFactory, UriFacto
         $uri = $this->createUri($uri);
 
         if (!empty($parameters)) {
-            $queryString = http_build_query($parameters);
+            $queryString = http_build_query($parameters, null, '&', PHP_QUERY_RFC3986);
             if ($uri->getQuery() === '') {
                 $uri = $uri->withQuery($queryString);
             } else {
@@ -494,10 +553,16 @@ class HttpService implements HttpClient, MessageFactory, StreamFactory, UriFacto
         if (!empty($parameters)) {
             switch ($contentType->value()) {
                 case ContentType::FORM:
-                    $body = http_build_query($parameters);
+                    if ($body === null) {
+                        $body = '';
+                    }
+                    foreach ($parameters as $key => $value) {
+                        $body .= sprintf('%s=%s&', $key, $value);
+                    }
+                    $body = rtrim($body, '&');
                     break;
                 case ContentType::JSON:
-                    $body = json_encode($parameters);
+                    $body = json_encode($parameters, JSON_UNESCAPED_SLASHES);
                     break;
                 default:
                     break;
