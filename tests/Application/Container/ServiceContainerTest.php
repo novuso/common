@@ -5,7 +5,7 @@ namespace Novuso\Common\Test\Application\Container;
 use DateTime;
 use Novuso\Common\Application\Container\Exception\ServiceNotFoundException;
 use Novuso\Common\Application\Container\ServiceContainer;
-use Novuso\Common\Test\UnitTestCase;
+use Novuso\System\Test\TestCase\UnitTestCase;
 
 /**
  * @covers \Novuso\Common\Application\Container\ServiceContainer

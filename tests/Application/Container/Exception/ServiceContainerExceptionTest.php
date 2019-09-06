@@ -3,7 +3,7 @@
 namespace Novuso\Common\Test\Application\Container\Exception;
 
 use Novuso\Common\Application\Container\Exception\ServiceContainerException;
-use Novuso\Common\Test\UnitTestCase;
+use Novuso\System\Test\TestCase\UnitTestCase;
 
 /**
  * @covers \Novuso\Common\Application\Container\Exception\ServiceContainerException
