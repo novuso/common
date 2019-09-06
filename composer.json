@@ -1,33 +1,33 @@
 {
     "name": "novuso/common",
-    "description": "Common library for the Novuso Framework",
+    "description": "Novuso Common library",
     "license": "MIT",
     "require": {
-        "php": ">=7.1",
+        "php": ">=7.3",
         "psr/container": "1.*",
         "psr/http-message": "1.*",
         "psr/log": "1.*",
-        "novuso/system": "0.7.*"
+        "novuso/system": "1.*"
     },
     "require-dev": {
-        "fzaninotto/faker": "1.*",
-        "mikey179/vfsStream": "1.*",
-        "mockery/mockery": "0.9.*",
-        "monolog/monolog": "1.*",
-        "phpunit/phpunit": "6.*",
-        "squizlabs/php_codesniffer": "3.*"
+        "fzaninotto/faker": "^1.0",
+        "codedungeon/phpunit-result-printer": "0.*",
+        "consolidation/robo": "^1.0",
+        "mikey179/vfsstream": "^1.0",
+        "mockery/mockery": "^1.1",
+        "monolog/monolog": "^1.0",
+        "phploc/phploc": "^5.0",
+        "phpunit/phpunit": "^8.0",
+        "squizlabs/php_codesniffer": "^3.0"
     },
     "autoload": {
         "psr-4": {
-            "Novuso\\Common\\Application\\": "src/Application",
-            "Novuso\\Common\\Domain\\": "src/Domain"
+            "Novuso\\Common\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Novuso\\Test\\Common\\Application\\": "test/Application",
-            "Novuso\\Test\\Common\\Domain\\": "test/Domain",
-            "Novuso\\Test\\Common\\Resources\\": "test/Resources"
+            "Novuso\\Common\\Test\\": "tests"
         }
     },
     "config": {
