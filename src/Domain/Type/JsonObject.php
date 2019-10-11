@@ -9,7 +9,7 @@ use Novuso\System\Utility\VarPrinter;
 /**
  * Class JsonObject
  */
-class JsonObject extends ValueObject
+final class JsonObject extends ValueObject
 {
     /**
      * Data
@@ -64,16 +64,16 @@ class JsonObject extends ValueObject
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public static function fromString(string $value)
+    public static function fromString(string $value): JsonObject
     {
         if (!Validate::isJson($value)) {
             $message = sprintf('Invalid JSON string: %s', $value);
             throw new DomainException($message);
         }
 
-        return new static(json_decode($value, true));
+        return new static(json_decode($value, $assoc = true));
     }
 
     /**

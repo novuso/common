@@ -5,7 +5,7 @@ namespace Novuso\Common\Domain\Specification;
 /**
  * Class AndSpecification
  */
-class AndSpecification extends CompositeSpecification
+final class AndSpecification extends CompositeSpecification
 {
     /**
      * First specification

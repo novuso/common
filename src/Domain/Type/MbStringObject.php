@@ -14,7 +14,7 @@ use Traversable;
 /**
  * Class MbStringObject
  */
-class MbStringObject extends ValueObject implements StringLiteral
+final class MbStringObject extends ValueObject implements StringLiteral
 {
     use StringOffsets;
 

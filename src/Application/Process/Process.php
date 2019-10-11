@@ -1,0 +1,204 @@
+<?php declare(strict_types=1);
+
+namespace Novuso\Common\Application\Process;
+
+/**
+ * Class Process
+ */
+final class Process
+{
+    /**
+     * Command
+     *
+     * @var string
+     */
+    protected $command;
+
+    /**
+     * Working directory
+     *
+     * @var string|null
+     */
+    protected $directory;
+
+    /**
+     * Environment variables
+     *
+     * @var array|null
+     */
+    protected $environment;
+
+    /**
+     * Input
+     *
+     * @var resource|string|null
+     */
+    protected $input;
+
+    /**
+     * Timeout
+     *
+     * @var float|null
+     */
+    protected $timeout;
+
+    /**
+     * Callback for STDOUT
+     *
+     * @var callable|null
+     */
+    protected $stdout;
+
+    /**
+     * Callback for STDERR
+     *
+     * @var callable|null
+     */
+    protected $stderr;
+
+    /**
+     * Output disabled status
+     *
+     * @var bool
+     */
+    protected $outputDisabled = false;
+
+    /**
+     * Constructs Process
+     *
+     * @param string               $command     The command
+     * @param string|null          $directory   The working directory
+     * @param array|null           $environment The environment variables
+     * @param resource|string|null $input       The input
+     * @param float|null           $timeout     The timeout
+     * @param callable|null        $stdout      The callback for STDOUT
+     * @param callable|null        $stderr      The callback for STDERR
+     */
+    public function __construct(
+        string $command,
+        ?string $directory = null,
+        ?array $environment = null,
+        $input = null,
+        ?float $timeout = null,
+        ?callable $stdout = null,
+        ?callable $stderr = null
+    ) {
+        $this->command = $command;
+        $this->directory = $directory;
+        $this->environment = $environment;
+        $this->timeout = $timeout;
+        $this->stdout = $stdout;
+        $this->stderr = $stderr;
+        if ($input !== null) {
+            if (is_resource($input)) {
+                $this->input = $input;
+            } else {
+                $this->input = (string) $input;
+            }
+        }
+    }
+
+    /**
+     * Retrieves the command
+     *
+     * @return string
+     */
+    public function command(): string
+    {
+        return $this->command;
+    }
+
+    /**
+     * Retrieves the directory
+     *
+     * @return string|null
+     */
+    public function directory(): ?string
+    {
+        return $this->directory;
+    }
+
+    /**
+     * Retrieves the environment
+     *
+     * @return array|null
+     */
+    public function environment(): ?array
+    {
+        return $this->environment;
+    }
+
+    /**
+     * Retrieves the input
+     *
+     * @return resource|string|null
+     */
+    public function input()
+    {
+        return $this->input;
+    }
+
+    /**
+     * Retrieves the timeout
+     *
+     * @return float|null
+     */
+    public function timeout(): ?float
+    {
+        return $this->timeout;
+    }
+
+    /**
+     * Retrieves STDOUT callback
+     *
+     * @return callable|null
+     */
+    public function stdout(): ?callable
+    {
+        return $this->stdout;
+    }
+
+    /**
+     * Retrieves STDERR callback
+     *
+     * @return callable|null
+     */
+    public function stderr(): ?callable
+    {
+        return $this->stderr;
+    }
+
+    /**
+     * Disables output fetching
+     *
+     * @return Process
+     */
+    public function disableOutput(): Process
+    {
+        $this->outputDisabled = true;
+
+        return $this;
+    }
+
+    /**
+     * Enables output fetching
+     *
+     * @return Process
+     */
+    public function enableOutput(): Process
+    {
+        $this->outputDisabled = false;
+
+        return $this;
+    }
+
+    /**
+     * Checks if output is disabled
+     *
+     * @return bool
+     */
+    public function isOutputDisabled(): bool
+    {
+        return $this->outputDisabled;
+    }
+}

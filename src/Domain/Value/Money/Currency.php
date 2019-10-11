@@ -188,7 +188,7 @@ use Novuso\System\Type\Enum;
  * @method static ZMW
  * @method static ZWL
  */
-class Currency extends Enum
+final class Currency extends Enum
 {
     /**
      * UAE Dirham

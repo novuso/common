@@ -12,7 +12,7 @@ use Novuso\System\Type\Enum;
  * @method static HALF_EVEN
  * @method static HALF_ODD
  */
-class RoundingMode extends Enum
+final class RoundingMode extends Enum
 {
     /**
      * Round up when half way

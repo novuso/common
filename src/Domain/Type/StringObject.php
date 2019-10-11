@@ -14,7 +14,7 @@ use Traversable;
 /**
  * Class StringObject
  */
-class StringObject extends ValueObject implements StringLiteral
+final class StringObject extends ValueObject implements StringLiteral
 {
     use StringOffsets;
 

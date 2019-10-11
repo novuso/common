@@ -5,7 +5,7 @@ namespace Novuso\Common\Domain\Specification;
 /**
  * Class NotSpecification
  */
-class NotSpecification extends CompositeSpecification
+final class NotSpecification extends CompositeSpecification
 {
     /**
      * Specification

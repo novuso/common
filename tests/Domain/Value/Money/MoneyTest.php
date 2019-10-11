@@ -113,14 +113,6 @@ class MoneyTest extends UnitTestCase
         $this->assertSame('€76.75', $money->format());
     }
 
-    public function test_that_divide_returns_expected_instance()
-    {
-        /** @var Money $money */
-        $money = Money::EUR(1535);
-        $money = $money->divide(5);
-        $this->assertSame('€3.07', $money->format());
-    }
-
     public function test_that_allocate_correctly_allocates_money()
     {
         /** @var Money $money */
@@ -284,15 +276,6 @@ class MoneyTest extends UnitTestCase
         $this->expectException(DomainException::class);
 
         Money::fromString('$17.25');
-    }
-
-    public function test_that_divide_throws_exception_for_division_by_zero()
-    {
-        $this->expectException(DomainException::class);
-
-        /** @var Money $money */
-        $money = Money::USD(100);
-        $money->divide(0);
     }
 
     public function test_that_multiply_throws_exception_for_invalid_type()

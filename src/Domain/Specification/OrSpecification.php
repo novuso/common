@@ -5,7 +5,7 @@ namespace Novuso\Common\Domain\Specification;
 /**
  * Class OrSpecification
  */
-class OrSpecification extends CompositeSpecification
+final class OrSpecification extends CompositeSpecification
 {
     /**
      * First specification

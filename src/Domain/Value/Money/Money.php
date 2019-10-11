@@ -15,7 +15,7 @@ use Novuso\System\Utility\VarPrinter;
 /**
  * Class Money
  */
-class Money extends ValueObject implements Comparable
+final class Money extends ValueObject implements Comparable
 {
     /**
      * Monetary amount
@@ -221,36 +221,6 @@ class Money extends ValueObject implements Comparable
         $this->guardOperand($multiplier);
 
         $amount = round($this->amount * $multiplier, 0, $mode->value());
-        $amount = $this->castToInteger($amount);
-
-        return $this->withAmount($amount);
-    }
-
-    /**
-     * Creates instance that divides this value by the given value
-     *
-     * @param int|float         $divisor The divisor
-     * @param RoundingMode|null $mode    The rounding mode; null for HALF_UP
-     *
-     * @return Money
-     *
-     * @throws DomainException When divisor is not an int or float
-     * @throws DomainException When the divisor is zero
-     * @throws RangeException When integer overflow occurs
-     */
-    public function divide($divisor, ?RoundingMode $mode = null): Money
-    {
-        if ($mode === null) {
-            $mode = RoundingMode::HALF_UP();
-        }
-
-        $this->guardOperand($divisor);
-
-        if ($divisor === 0 || $divisor === 0.0) {
-            throw new DomainException('Division by zero');
-        }
-
-        $amount = round($this->amount / $divisor, 0, $mode->value());
         $amount = $this->castToInteger($amount);
 
         return $this->withAmount($amount);

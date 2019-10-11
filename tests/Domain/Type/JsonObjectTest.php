@@ -65,6 +65,45 @@ EOF;
         $this->assertSame($expected, $json->prettyPrint());
     }
 
+    public function test_that_string_cast_returns_expected_string()
+    {
+        $json = JsonObject::fromData(['foo' => 'bar']);
+        $this->assertSame('{"foo":"bar"}', (string) $json);
+    }
+
+    public function test_that_equals_returns_true_for_same_instance()
+    {
+        $json = JsonObject::fromData(['foo' => 'bar']);
+        $this->assertTrue($json->equals($json));
+    }
+
+    public function test_that_equals_returns_true_for_same_value()
+    {
+        $json1 = JsonObject::fromData(['foo' => 'bar']);
+        $json2 = JsonObject::fromData(['foo' => 'bar']);
+        $this->assertTrue($json1->equals($json2));
+    }
+
+    public function test_that_equals_returns_false_for_different_value()
+    {
+        $json1 = JsonObject::fromData(['foo' => 'bar']);
+        $json2 = JsonObject::fromData(['foo' => 'BAR']);
+        $this->assertFalse($json1->equals($json2));
+    }
+
+    public function test_that_equals_returns_false_for_invalid_type()
+    {
+        $json = JsonObject::fromData(['foo' => 'bar']);
+        $this->assertFalse($json->equals('{"foo":"bar"}'));
+    }
+
+    public function test_that_hash_value_returns_expected_string()
+    {
+        $value = '{"foo":"bar"}';
+        $json = JsonObject::fromData(['foo' => 'bar']);
+        $this->assertSame($value, $json->hashValue());
+    }
+
     public function test_that_constructor_throws_exception_for_invalid_data()
     {
         $this->expectException(DomainException::class);

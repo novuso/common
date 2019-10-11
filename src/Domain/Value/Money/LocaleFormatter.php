@@ -7,7 +7,7 @@ use NumberFormatter;
 /**
  * Class LocaleFormatter
  */
-class LocaleFormatter implements MoneyFormatter
+final class LocaleFormatter implements MoneyFormatter
 {
     /**
      * Formatter

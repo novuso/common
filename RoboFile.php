@@ -1,5 +1,6 @@
 <?php declare(strict_types=1);
 
+use Novuso\Common\CommonLibrary;
 use Robo\Tasks;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -29,7 +30,7 @@ class RoboFile extends Tasks
         $this->phpTestComplete();
         $this->phpCodeCoverage(['percentage' => 100]);
         $this->phpCodeStyle();
-        $this->yell('Build complete');
+        $this->yell(sprintf('Build complete for version %s', CommonLibrary::VERSION));
     }
 
     //===================================================//
