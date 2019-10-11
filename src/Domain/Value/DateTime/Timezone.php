@@ -6,17 +6,14 @@ use DateTimeZone;
 use Novuso\Common\Domain\Type\ValueObject;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Type\Comparable;
+use Novuso\System\Utility\Assert;
 use Novuso\System\Utility\Validate;
 use Novuso\System\Utility\VarPrinter;
 
 /**
- * Timezone represents a time zone
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class Timezone
  */
-class Timezone extends ValueObject implements Comparable
+final class Timezone extends ValueObject implements Comparable
 {
     /**
      * Timezone value
@@ -34,13 +31,13 @@ class Timezone extends ValueObject implements Comparable
      */
     public function __construct($value)
     {
+        if ($value instanceof DateTimeZone) {
+            $value = $value->getName();
+        }
+
         if (!Validate::isTimezone($value)) {
             $message = sprintf('Invalid timezone: %s', VarPrinter::toString($value));
             throw new DomainException($message);
-        }
-
-        if ($value instanceof DateTimeZone) {
-            $value = $value->getName();
         }
 
         $this->value = (string) $value;
@@ -85,10 +82,7 @@ class Timezone extends ValueObject implements Comparable
             return 0;
         }
 
-        assert(
-            Validate::areSameType($this, $object),
-            sprintf('Comparison requires instance of %s', static::class)
-        );
+        Assert::areSameType($this, $object);
 
         $thisVal = $this->value;
         $thatVal = $object->value;

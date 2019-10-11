@@ -6,15 +6,12 @@ use Novuso\Common\Domain\Messaging\Event\AllEvents;
 use Novuso\Common\Domain\Messaging\Event\EventMessage;
 use Novuso\Common\Domain\Messaging\Event\EventSubscriber;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 
 /**
- * EventLogger is a subscriber that logs event messages
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class EventLogger
  */
-class EventLogger implements EventSubscriber
+final class EventLogger implements EventSubscriber
 {
     /**
      * Logger
@@ -24,13 +21,22 @@ class EventLogger implements EventSubscriber
     protected $logger;
 
     /**
+     * Log level
+     *
+     * @var string
+     */
+    protected $logLevel;
+
+    /**
      * Constructs EventLogger
      *
-     * @param LoggerInterface $logger The logger
+     * @param LoggerInterface $logger   The logger
+     * @param string          $logLevel The log level
      */
-    public function __construct(LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger, string $logLevel = LogLevel::INFO)
     {
         $this->logger = $logger;
+        $this->logLevel = $logLevel;
     }
 
     /**
@@ -52,9 +58,10 @@ class EventLogger implements EventSubscriber
     {
         $name = $message->payloadType()->toString();
 
-        $this->logger->info(
+        $this->logger->log(
+            $this->logLevel,
             sprintf('Event dispatched {%s}', $name),
-            ['message' => $message->toString()]
+            ['message' => $message->toArray()]
         );
     }
 }

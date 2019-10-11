@@ -3,13 +3,9 @@
 namespace Novuso\Common\Application\Process;
 
 /**
- * Process represents a command sub-process
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class Process
  */
-class Process
+final class Process
 {
     /**
      * Command

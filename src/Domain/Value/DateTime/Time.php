@@ -6,18 +6,15 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use DateTimeZone;
 use Novuso\Common\Domain\Type\ValueObject;
+use Novuso\System\Exception\AssertionException;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Type\Comparable;
-use Novuso\System\Utility\Validate;
+use Novuso\System\Utility\Assert;
 
 /**
- * Time represents a time of day
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class Time
  */
-class Time extends ValueObject implements Comparable
+final class Time extends ValueObject implements Comparable
 {
     /**
      * Minimum hour
@@ -62,6 +59,20 @@ class Time extends ValueObject implements Comparable
     protected const MAX_SECOND = 59;
 
     /**
+     * Minimum microsecond
+     *
+     * @var int
+     */
+    protected const MIN_MICROSECOND = 0;
+
+    /**
+     * Maximum microsecond
+     *
+     * @var int
+     */
+    protected const MAX_MICROSECOND = 999999;
+
+    /**
      * Hour
      *
      * @var int
@@ -83,36 +94,46 @@ class Time extends ValueObject implements Comparable
     protected $second;
 
     /**
+     * Microsecond
+     *
+     * @var int
+     */
+    protected $microsecond;
+
+    /**
      * Constructs Time
      *
-     * @param int $hour   The hour
-     * @param int $minute The minute
-     * @param int $second The second
+     * @param int $hour        The hour
+     * @param int $minute      The minute
+     * @param int $second      The second
+     * @param int $microsecond The microsecond
      *
      * @throws DomainException When the time is not valid
      */
-    public function __construct(int $hour, int $minute, int $second)
+    public function __construct(int $hour, int $minute, int $second, int $microsecond = 0)
     {
-        $this->guardTime($hour, $minute, $second);
+        $this->guardTime($hour, $minute, $second, $microsecond);
         $this->hour = $hour;
         $this->minute = $minute;
         $this->second = $second;
+        $this->microsecond = $microsecond;
     }
 
     /**
      * Creates instance from time values
      *
-     * @param int $hour   The hour
-     * @param int $minute The minute
-     * @param int $second The second
+     * @param int $hour        The hour
+     * @param int $minute      The minute
+     * @param int $second      The second
+     * @param int $microsecond The microsecond
      *
      * @return Time
      *
      * @throws DomainException When the time is not valid
      */
-    public static function create(int $hour, int $minute, int $second): Time
+    public static function create(int $hour, int $minute, int $second, int $microsecond = 0): Time
     {
-        return new static($hour, $minute, $second);
+        return new static($hour, $minute, $second, $microsecond);
     }
 
     /**
@@ -121,18 +142,21 @@ class Time extends ValueObject implements Comparable
      * @param string|null $timezone The timezone string or null for default
      *
      * @return Time
+     *
+     * @throws AssertionException When the timezone is not valid
      */
     public static function now(?string $timezone = null): Time
     {
         $timezone = $timezone ?: date_default_timezone_get();
-        assert(Validate::isTimezone($timezone), sprintf('Invalid timezone: %s', $timezone));
+        Assert::isTimezone($timezone);
 
         $dateTime = new DateTimeImmutable('now', new DateTimeZone($timezone));
         $hour = (int) $dateTime->format('G');
         $minute = (int) $dateTime->format('i');
         $second = (int) $dateTime->format('s');
+        $microsecond = (int) $dateTime->format('u');
 
-        return new static($hour, $minute, $second);
+        return new static($hour, $minute, $second, $microsecond);
     }
 
     /**
@@ -147,8 +171,9 @@ class Time extends ValueObject implements Comparable
         $hour = (int) $dateTime->format('G');
         $minute = (int) $dateTime->format('i');
         $second = (int) $dateTime->format('s');
+        $microsecond = (int) $dateTime->format('u');
 
-        return new static($hour, $minute, $second);
+        return new static($hour, $minute, $second, $microsecond);
     }
 
     /**
@@ -158,11 +183,13 @@ class Time extends ValueObject implements Comparable
      * @param string|null $timezone  The timezone string or null for default
      *
      * @return Time
+     *
+     * @throws AssertionException When the timezone is not valid
      */
     public static function fromTimestamp(int $timestamp, ?string $timezone = null): Time
     {
         $timezone = $timezone ?: date_default_timezone_get();
-        assert(Validate::isTimezone($timezone), sprintf('Invalid timezone: %s', $timezone));
+        Assert::isTimezone($timezone);
 
         $time = sprintf('%d', $timestamp);
         $dateTime = DateTimeImmutable::createFromFormat('U', $time, new DateTimeZone('UTC'));
@@ -170,8 +197,9 @@ class Time extends ValueObject implements Comparable
         $hour = (int) $dateTime->format('G');
         $minute = (int) $dateTime->format('i');
         $second = (int) $dateTime->format('s');
+        $microsecond = (int) $dateTime->format('u');
 
-        return new static($hour, $minute, $second);
+        return new static($hour, $minute, $second, $microsecond);
     }
 
     /**
@@ -179,17 +207,18 @@ class Time extends ValueObject implements Comparable
      */
     public static function fromString(string $value): Time
     {
-        $pattern = '/\A(?P<hour>[\d]{2}):(?P<minute>[\d]{2}):(?P<second>[\d]{2})\z/';
+        $pattern = '/\A(?P<hour>[\d]{2}):(?P<minute>[\d]{2}):(?P<second>[\d]{2})\.(?P<microsecond>[\d]{6})\z/';
         if (!preg_match($pattern, $value, $matches)) {
-            $message = sprintf('%s expects $value in "H:i:s" format', __METHOD__);
+            $message = sprintf('%s expects $value in "H:i:s.u" format', __METHOD__);
             throw new DomainException($message);
         }
 
         $hour = (int) $matches['hour'];
         $minute = (int) $matches['minute'];
         $second = (int) $matches['second'];
+        $microsecond = (int) $matches['microsecond'];
 
-        return new static($hour, $minute, $second);
+        return new static($hour, $minute, $second, $microsecond);
     }
 
     /**
@@ -223,11 +252,21 @@ class Time extends ValueObject implements Comparable
     }
 
     /**
+     * Retrieves the microsecond
+     *
+     * @return int
+     */
+    public function microsecond(): int
+    {
+        return $this->microsecond;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function toString(): string
     {
-        return sprintf('%02d:%02d:%02d', $this->hour, $this->minute, $this->second);
+        return sprintf('%02d:%02d:%02d.%06d', $this->hour, $this->minute, $this->second, $this->microsecond);
     }
 
     /**
@@ -239,10 +278,7 @@ class Time extends ValueObject implements Comparable
             return 0;
         }
 
-        assert(
-            Validate::areSameType($this, $object),
-            sprintf('Comparison requires instance of %s', static::class)
-        );
+        Assert::areSameType($this, $object);
 
         if ($this->hour > $object->hour) {
             return 1;
@@ -265,21 +301,29 @@ class Time extends ValueObject implements Comparable
             return -1;
         }
 
+        if ($this->microsecond > $object->microsecond) {
+            return 1;
+        }
+        if ($this->microsecond < $object->microsecond) {
+            return -1;
+        }
+
         return 0;
     }
 
     /**
      * Validates the time
      *
-     * @param int $hour   The hour
-     * @param int $minute The minute
-     * @param int $second The second
+     * @param int $hour        The hour
+     * @param int $minute      The minute
+     * @param int $second      The second
+     * @param int $microsecond The microsecond
      *
      * @return void
      *
      * @throws DomainException When the time is not valid
      */
-    protected function guardTime(int $hour, int $minute, int $second): void
+    protected function guardTime(int $hour, int $minute, int $second, int $microsecond): void
     {
         if ($hour < static::MIN_HOUR || $hour > static::MAX_HOUR) {
             $message = sprintf('Hour (%d) out of range[%d, %d]', $hour, static::MIN_HOUR, static::MAX_HOUR);
@@ -293,6 +337,16 @@ class Time extends ValueObject implements Comparable
 
         if ($second < static::MIN_SECOND || $second > static::MAX_SECOND) {
             $message = sprintf('Second (%d) out of range[%d, %d]', $second, static::MIN_SECOND, static::MAX_SECOND);
+            throw new DomainException($message);
+        }
+
+        if ($microsecond < static::MIN_MICROSECOND || $microsecond > static::MAX_MICROSECOND) {
+            $message = sprintf(
+                'Microsecond (%d) out of range[%d, %d]',
+                $microsecond,
+                static::MIN_MICROSECOND,
+                static::MAX_MICROSECOND
+            );
             throw new DomainException($message);
         }
     }

@@ -4,24 +4,20 @@ namespace Novuso\Common\Application\Mail;
 
 use Novuso\Common\Application\Mail\Message\Attachment;
 use Novuso\Common\Application\Mail\Message\MailFactory;
-use Novuso\Common\Application\Mail\Message\Message;
-use Novuso\Common\Application\Mail\Transport\Mailer;
+use Novuso\Common\Application\Mail\Message\MailMessage;
+use Novuso\Common\Application\Mail\Transport\MailTransport;
 
 /**
- * MailService is an application mail service
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class MailService
  */
-class MailService implements Mailer, MailFactory
+final class MailService implements MailTransport, MailFactory
 {
     /**
-     * Mailer
+     * Mail transport
      *
-     * @var Mailer
+     * @var MailTransport
      */
-    protected $mailer;
+    protected $transport;
 
     /**
      * Mail factory
@@ -33,27 +29,27 @@ class MailService implements Mailer, MailFactory
     /**
      * Constructs MailService
      *
-     * @param Mailer      $mailer  The mailer
-     * @param MailFactory $factory The mail factory
+     * @param MailTransport $transport The mail transport
+     * @param MailFactory   $factory   The mail factory
      */
-    public function __construct(Mailer $mailer, MailFactory $factory)
+    public function __construct(MailTransport $transport, MailFactory $factory)
     {
-        $this->mailer = $mailer;
+        $this->transport = $transport;
         $this->factory = $factory;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function send(Message $message): void
+    public function send(MailMessage $message): void
     {
-        $this->mailer->send($message);
+        $this->transport->send($message);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function createMessage(): Message
+    public function createMessage(): MailMessage
     {
         return $this->factory->createMessage();
     }

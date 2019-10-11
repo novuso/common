@@ -2,22 +2,18 @@
 
 namespace Novuso\Common\Application\Messaging\Command\Routing;
 
-use Novuso\Common\Domain\Messaging\Command\CommandHandler;
 use Novuso\Common\Domain\Messaging\Command\Command;
-use Novuso\System\Exception\DomainException;
+use Novuso\Common\Domain\Messaging\Command\CommandHandler;
+use Novuso\System\Exception\AssertionException;
 use Novuso\System\Exception\LookupException;
 use Novuso\System\Type\Type;
-use Novuso\System\Utility\Validate;
+use Novuso\System\Utility\Assert;
 use Psr\Container\ContainerInterface;
 
 /**
- * ServiceAwareCommandMap is a command class to handler service map
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class ServiceAwareCommandMap
  */
-class ServiceAwareCommandMap implements CommandMap
+final class ServiceAwareCommandMap implements CommandMap
 {
     /**
      * Service container
@@ -55,7 +51,7 @@ class ServiceAwareCommandMap implements CommandMap
      *
      * @return void
      *
-     * @throws DomainException When a command class is not valid
+     * @throws AssertionException When a command class is not valid
      */
     public function registerHandlers(array $commandToHandlerMap): void
     {
@@ -72,14 +68,11 @@ class ServiceAwareCommandMap implements CommandMap
      *
      * @return void
      *
-     * @throws DomainException When the command class is not valid
+     * @throws AssertionException When the command class is not valid
      */
     public function registerHandler(string $commandClass, string $serviceName): void
     {
-        if (!Validate::implementsInterface($commandClass, Command::class)) {
-            $message = sprintf('Invalid command class: %s', $commandClass);
-            throw new DomainException($message);
-        }
+        Assert::implementsInterface($commandClass, Command::class);
 
         $type = Type::create($commandClass)->toString();
 

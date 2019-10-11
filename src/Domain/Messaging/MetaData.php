@@ -7,20 +7,16 @@ use ArrayIterator;
 use Countable;
 use IteratorAggregate;
 use JsonSerializable;
-use Novuso\System\Collection\ArrayCollection;
+use Novuso\System\Exception\AssertionException;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Type\Arrayable;
-use Novuso\System\Utility\VarPrinter;
+use Novuso\System\Utility\Assert;
 use Traversable;
 
 /**
- * MetaData contains informational data related to a message
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class MetaData
  */
-class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggregate, JsonSerializable
+final class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggregate, JsonSerializable
 {
     /**
      * Meta data
@@ -38,9 +34,9 @@ class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggregate, 
      */
     public function __construct(array $data = [])
     {
-        ArrayCollection::create($data)->each(function ($value, $key) {
+        foreach ($data as $key => $value) {
             $this->set($key, $value);
-        });
+        }
     }
 
     /**
@@ -151,13 +147,11 @@ class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggregate, 
      * @return void
      *
      * @throws DomainException When value is not valid
+     * @throws AssertionException When the key is not a string
      */
     public function offsetSet($key, $value): void
     {
-        assert(
-            is_string($key),
-            sprintf('Invalid metadata key: (%s) %s', gettype($key), VarPrinter::toString($key))
-        );
+        Assert::isString($key);
 
         $this->set($key, $value);
     }
@@ -168,13 +162,12 @@ class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggregate, 
      * @param string $key The key
      *
      * @return mixed
+     *
+     * @throws AssertionException When the key is not a string
      */
     public function offsetGet($key)
     {
-        assert(
-            is_string($key),
-            sprintf('Invalid metadata key: (%s) %s', gettype($key), VarPrinter::toString($key))
-        );
+        Assert::isString($key);
 
         return $this->get($key);
     }
@@ -185,13 +178,12 @@ class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggregate, 
      * @param string $key The key
      *
      * @return bool
+     *
+     * @throws AssertionException When the key is not a string
      */
     public function offsetExists($key): bool
     {
-        assert(
-            is_string($key),
-            sprintf('Invalid metadata key: (%s) %s', gettype($key), VarPrinter::toString($key))
-        );
+        Assert::isString($key);
 
         return $this->has($key);
     }
@@ -202,13 +194,12 @@ class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggregate, 
      * @param string $key The key
      *
      * @return void
+     *
+     * @throws AssertionException When the key is not a string
      */
     public function offsetUnset($key): void
     {
-        assert(
-            is_string($key),
-            sprintf('Invalid metadata key: (%s) %s', gettype($key), VarPrinter::toString($key))
-        );
+        Assert::isString($key);
 
         $this->remove($key);
     }
@@ -229,6 +220,8 @@ class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggregate, 
      * @param MetaData $data The meta data
      *
      * @return void
+     *
+     * @throws DomainException When value is not valid
      */
     public function merge(MetaData $data): void
     {
@@ -260,7 +253,7 @@ class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggregate, 
      *
      * @return string
      */
-    public function __toString(): string
+    public function __toString()
     {
         return $this->toString();
     }
@@ -321,9 +314,13 @@ class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggregate, 
                 return true;
                 break;
             case 'array':
-                return ArrayCollection::create($value)->every(function ($v) {
-                    return $this->isValid($v);
-                });
+                foreach ($value as $val) {
+                    if (!$this->isValid($val)) {
+                        return false;
+                    }
+                }
+
+                return true;
                 break;
             default:
                 break;

@@ -4,18 +4,17 @@ namespace Novuso\Common\Application\Messaging\Event;
 
 use Novuso\Common\Domain\Messaging\Event\EventMessage;
 use Novuso\Common\Domain\Messaging\Event\EventSubscriber;
+use Novuso\System\Exception\AssertionException;
+use Novuso\System\Exception\TypeException;
+use Novuso\System\Utility\Assert;
 use Novuso\System\Utility\ClassName;
-use Novuso\System\Utility\Validate;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 
 /**
- * ServiceAwareEventDispatcher dispatches events to subscriber services
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class ServiceAwareEventDispatcher
  */
-class ServiceAwareEventDispatcher extends SimpleEventDispatcher
+final class ServiceAwareEventDispatcher extends SimpleEventDispatcher
 {
     /**
      * Service container
@@ -52,19 +51,19 @@ class ServiceAwareEventDispatcher extends SimpleEventDispatcher
      * Registers a subscriber service to handle events
      *
      * The subscriber class must implement:
-     * Novuso\Common\Domain\Messaging\Event\EventSubscriber
+     * RateGenius\Common\Domain\Messaging\Event\EventSubscriber
      *
      * @param string $className The subscriber class name
      * @param string $serviceId The subscriber service ID
      *
      * @return void
+     *
+     * @throws AssertionException When a subscriber class is not valid
+     * @throws TypeException When the event type is not valid
      */
     public function registerService(string $className, string $serviceId): void
     {
-        assert(
-            Validate::implementsInterface($className, EventSubscriber::class),
-            sprintf('Invalid subscriber class: %s', $className)
-        );
+        Assert::implementsInterface($className, EventSubscriber::class);
         /** @var EventSubscriber $className The subscriber class name */
         foreach ($className::eventRegistration() as $eventType => $params) {
             $eventType = ClassName::underscore($eventType);
@@ -177,6 +176,8 @@ class ServiceAwareEventDispatcher extends SimpleEventDispatcher
      * @param string $eventType The event type
      *
      * @return void
+     *
+     * @throws ContainerExceptionInterface When an error occurs
      */
     protected function lazyLoad(string $eventType): void
     {

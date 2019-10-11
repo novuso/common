@@ -6,16 +6,12 @@ use Novuso\System\Exception\SystemException;
 use Throwable;
 
 /**
- * FilesystemException is thrown when a filesystem error occurs
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class FilesystemException
  */
 class FilesystemException extends SystemException
 {
     /**
-     * File path
+     * Filesystem path
      *
      * @var string|null
      */
@@ -25,21 +21,21 @@ class FilesystemException extends SystemException
      * Constructs FilesystemException
      *
      * @param string         $message  The message
-     * @param string|null    $path     The file path
+     * @param string|null    $path     The filesystem path
      * @param Throwable|null $previous The previous exception
      */
-    public function __construct(string $message, ?string $path = null, ?Throwable $previous = null)
+    public function __construct($message = "", ?string $path = null, ?Throwable $previous = null)
     {
         $this->path = $path;
         parent::__construct($message, 0, $previous);
     }
 
     /**
-     * Returns the file path
+     * Retrieves the filesystem path
      *
      * @return string|null
      */
-    public function getPath()
+    public function getPath(): ?string
     {
         return $this->path;
     }

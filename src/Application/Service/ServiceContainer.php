@@ -7,13 +7,9 @@ use Novuso\Common\Application\Service\Exception\ServiceNotFoundException;
 use Psr\Container\ContainerInterface;
 
 /**
- * ServiceContainer is an application service container
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class ServiceContainer
  */
-class ServiceContainer implements ArrayAccess, ContainerInterface
+final class ServiceContainer implements ArrayAccess, ContainerInterface
 {
     /**
      * Service factories
@@ -43,10 +39,10 @@ class ServiceContainer implements ArrayAccess, ContainerInterface
     }
 
     /**
-     * Defines a shared service
+     * Defines a shared service factory
      *
      * @param string   $name     The service name
-     * @param callable $callback The service factory callback
+     * @param callable $callback The object factory callback
      *
      * @return void
      */

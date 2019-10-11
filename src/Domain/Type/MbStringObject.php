@@ -2,24 +2,19 @@
 
 namespace Novuso\Common\Domain\Type;
 
-use Novuso\Common\Domain\Type\Traits\StringOffsets;
-use Novuso\System\Collection\Api\IndexedList;
+use Novuso\Common\Domain\Type\Mixin\StringOffsets;
 use Novuso\System\Collection\ArrayList;
+use Novuso\System\Collection\Type\Sequence;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Exception\ImmutableException;
 use Novuso\System\Exception\IndexException;
-use Novuso\System\Utility\Validate;
-use Novuso\System\Utility\VarPrinter;
+use Novuso\System\Utility\Assert;
 use Traversable;
 
 /**
- * MbStringObject is a wrapper for a multi-byte string
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class MbStringObject
  */
-class MbStringObject extends ValueObject implements StringLiteral
+final class MbStringObject extends ValueObject implements StringLiteral
 {
     use StringOffsets;
 
@@ -68,9 +63,9 @@ class MbStringObject extends ValueObject implements StringLiteral
      *
      * @param string $value The string value
      *
-     * @return StringLiteral
+     * @return MbStringObject
      */
-    public static function create(string $value): StringLiteral
+    public static function create(string $value): MbStringObject
     {
         return new static($value);
     }
@@ -143,7 +138,7 @@ class MbStringObject extends ValueObject implements StringLiteral
     /**
      * {@inheritdoc}
      */
-    public function offsetSet($index, $char): void
+    public function offsetSet($index, $character): void
     {
         throw new ImmutableException('Cannot modify immutable string');
     }
@@ -153,10 +148,7 @@ class MbStringObject extends ValueObject implements StringLiteral
      */
     public function offsetGet($index): string
     {
-        assert(
-            is_int($index),
-            sprintf('Invalid character index: %s', VarPrinter::toString($index))
-        );
+        Assert::isInt($index);
 
         return $this->get($index);
     }
@@ -166,10 +158,7 @@ class MbStringObject extends ValueObject implements StringLiteral
      */
     public function offsetExists($index): bool
     {
-        assert(
-            is_int($index),
-            sprintf('Invalid character index: %s', VarPrinter::toString($index))
-        );
+        Assert::isInt($index);
 
         return $this->has($index);
     }
@@ -185,7 +174,7 @@ class MbStringObject extends ValueObject implements StringLiteral
     /**
      * {@inheritdoc}
      */
-    public function chars(): IndexedList
+    public function chars(): Sequence
     {
         $list = ArrayList::of('string');
         $value = $this->value;
@@ -218,8 +207,8 @@ class MbStringObject extends ValueObject implements StringLiteral
             return true;
         }
 
-        $searchlen = mb_strlen($search, static::ENCODING);
-        $start = mb_substr($this->value, 0, $searchlen, static::ENCODING);
+        $searchLength = mb_strlen($search, static::ENCODING);
+        $start = mb_substr($this->value, 0, $searchLength, static::ENCODING);
 
         if ($caseSensitive === false) {
             $search = mb_strtolower($search, static::ENCODING);
@@ -244,8 +233,8 @@ class MbStringObject extends ValueObject implements StringLiteral
             return true;
         }
 
-        $searchlen = mb_strlen($search, static::ENCODING);
-        $end = mb_substr($this->value, $length - $searchlen, $searchlen, static::ENCODING);
+        $searchLength = mb_strlen($search, static::ENCODING);
+        $end = mb_substr($this->value, $length - $searchLength, $searchLength, static::ENCODING);
 
         if ($caseSensitive === false) {
             $search = mb_strtolower($search, static::ENCODING);
@@ -362,12 +351,12 @@ class MbStringObject extends ValueObject implements StringLiteral
     /**
      * {@inheritdoc}
      */
-    public function pad(int $strlen, ?string $char = null): StringLiteral
+    public function pad(int $length, ?string $char = null): StringLiteral
     {
-        $length = $this->length;
+        $totalLength = $this->length;
 
-        if ($strlen < 1) {
-            $message = sprintf('Invalid length for padded string: %d', $strlen);
+        if ($length < 1) {
+            $message = sprintf('Invalid length for padded string: %d', $length);
             throw new DomainException($message);
         }
 
@@ -380,11 +369,11 @@ class MbStringObject extends ValueObject implements StringLiteral
             throw new DomainException($message);
         }
 
-        if ($strlen < $length) {
+        if ($length < $totalLength) {
             return static::create($this->value);
         }
 
-        $padlen = (float) ($strlen - $length);
+        $padlen = (float) ($length - $totalLength);
 
         return static::create(self::padString($this->value, (int) floor($padlen / 2), (int) ceil($padlen / 2), $char));
     }
@@ -392,12 +381,12 @@ class MbStringObject extends ValueObject implements StringLiteral
     /**
      * {@inheritdoc}
      */
-    public function padLeft(int $strlen, ?string $char = null): StringLiteral
+    public function padLeft(int $length, ?string $char = null): StringLiteral
     {
-        $length = $this->length;
+        $totalLength = $this->length;
 
-        if ($strlen < 1) {
-            $message = sprintf('Invalid length for padded string: %d', $strlen);
+        if ($length < 1) {
+            $message = sprintf('Invalid length for padded string: %d', $length);
             throw new DomainException($message);
         }
 
@@ -410,11 +399,11 @@ class MbStringObject extends ValueObject implements StringLiteral
             throw new DomainException($message);
         }
 
-        if ($strlen < $length) {
+        if ($length < $totalLength) {
             return static::create($this->value);
         }
 
-        $padlen = $strlen - $length;
+        $padlen = $length - $totalLength;
 
         return static::create(self::padString($this->value, $padlen, 0, $char));
     }
@@ -422,12 +411,12 @@ class MbStringObject extends ValueObject implements StringLiteral
     /**
      * {@inheritdoc}
      */
-    public function padRight(int $strlen, ?string $char = null): StringLiteral
+    public function padRight(int $length, ?string $char = null): StringLiteral
     {
-        $length = $this->length;
+        $totalLength = $this->length;
 
-        if ($strlen < 1) {
-            $message = sprintf('Invalid length for padded string: %d', $strlen);
+        if ($length < 1) {
+            $message = sprintf('Invalid length for padded string: %d', $length);
             throw new DomainException($message);
         }
 
@@ -440,11 +429,11 @@ class MbStringObject extends ValueObject implements StringLiteral
             throw new DomainException($message);
         }
 
-        if ($strlen < $length) {
+        if ($length < $totalLength) {
             return static::create($this->value);
         }
 
-        $padlen = $strlen - $length;
+        $padlen = $length - $totalLength;
 
         return static::create(self::padString($this->value, 0, $padlen, $char));
     }
@@ -452,56 +441,56 @@ class MbStringObject extends ValueObject implements StringLiteral
     /**
      * {@inheritdoc}
      */
-    public function truncate(int $strlen, string $append = ''): StringLiteral
+    public function truncate(int $length, string $append = ''): StringLiteral
     {
-        if ($strlen < 1) {
-            $message = sprintf('Invalid length for truncated string: %d', $strlen);
+        if ($length < 1) {
+            $message = sprintf('Invalid length for truncated string: %d', $length);
             throw new DomainException($message);
         }
 
         $extra = mb_strlen($append, static::ENCODING);
 
-        if ($extra > $strlen - 1) {
-            $message = sprintf('Append string length (%d) must be less than truncated length (%d)', $extra, $strlen);
+        if ($extra > $length - 1) {
+            $message = sprintf('Append string length (%d) must be less than truncated length (%d)', $extra, $length);
             throw new DomainException($message);
         }
 
-        $strlen -= $extra;
+        $length -= $extra;
 
-        if ($this->length <= $strlen) {
+        if ($this->length <= $length) {
             return static::create($this->value.$append);
         }
 
-        return static::create(mb_substr($this->value, 0, $strlen, static::ENCODING).$append);
+        return static::create(mb_substr($this->value, 0, $length, static::ENCODING).$append);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function truncateWords(int $strlen, string $append = ''): StringLiteral
+    public function truncateWords(int $length, string $append = ''): StringLiteral
     {
-        if ($strlen < 1) {
-            $message = sprintf('Invalid length for truncated string: %d', $strlen);
+        if ($length < 1) {
+            $message = sprintf('Invalid length for truncated string: %d', $length);
             throw new DomainException($message);
         }
 
         $extra = mb_strlen($append, static::ENCODING);
 
-        if ($extra > $strlen - 1) {
-            $message = sprintf('Append string length (%d) must be less than truncated length (%d)', $extra, $strlen);
+        if ($extra > $length - 1) {
+            $message = sprintf('Append string length (%d) must be less than truncated length (%d)', $extra, $length);
             throw new DomainException($message);
         }
 
-        $strlen -= $extra;
+        $length -= $extra;
 
-        if ($this->length <= $strlen) {
+        if ($this->length <= $length) {
             return static::create($this->value.$append);
         }
 
-        $truncated = mb_substr($this->value, 0, $strlen, static::ENCODING);
-        $last = mb_strpos($this->value, ' ', $strlen - 1, static::ENCODING);
+        $truncated = mb_substr($this->value, 0, $length, static::ENCODING);
+        $last = mb_strpos($this->value, ' ', $length - 1, static::ENCODING);
 
-        if ($last !== $strlen) {
+        if ($last !== $length) {
             $last = mb_strrpos($truncated, ' ', 0, static::ENCODING);
             if ($last === false) {
                 return static::create($truncated.$append);
@@ -535,30 +524,30 @@ class MbStringObject extends ValueObject implements StringLiteral
         }
 
         $start = $this->prepareOffset($start, $this->length);
-        $strlen = $this->prepareLengthFromStop($stop, $start, $this->length);
+        $length = $this->prepareLengthFromStop($stop, $start, $this->length);
 
-        return static::create(mb_substr($this->value, $start, $strlen, static::ENCODING));
+        return static::create(mb_substr($this->value, $start, $length, static::ENCODING));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function substr(int $start, ?int $strlen = null): StringLiteral
+    public function substr(int $start, ?int $length = null): StringLiteral
     {
-        if ($strlen === null) {
-            $strlen = 0;
+        if ($length === null) {
+            $length = 0;
         }
 
         $start = $this->prepareOffset($start, $this->length);
-        $strlen = $this->prepareLength($strlen, $start, $this->length);
+        $length = $this->prepareLength($length, $start, $this->length);
 
-        return static::create(mb_substr($this->value, $start, $strlen, static::ENCODING));
+        return static::create(mb_substr($this->value, $start, $length, static::ENCODING));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function split(string $delimiter = ' ', ?int $limit = null): IndexedList
+    public function split(string $delimiter = ' ', ?int $limit = null): Sequence
     {
         if (empty($delimiter)) {
             throw new DomainException('Delimiter cannot be empty');
@@ -584,7 +573,7 @@ class MbStringObject extends ValueObject implements StringLiteral
     /**
      * {@inheritdoc}
      */
-    public function chunk(int $size = 1): IndexedList
+    public function chunk(int $size = 1): Sequence
     {
         $value = $this->value();
 
@@ -856,10 +845,7 @@ class MbStringObject extends ValueObject implements StringLiteral
             return 0;
         }
 
-        assert(
-            Validate::areSameType($this, $object),
-            sprintf('Comparison requires instance of %s', static::class)
-        );
+        Assert::areSameType($this, $object);
 
         $strComp = strnatcmp($this->value, $object->value);
 
@@ -884,7 +870,7 @@ class MbStringObject extends ValueObject implements StringLiteral
      *
      * @return string
      */
-    private static function padString(string $string, int $left, int $right, string $char): string
+    protected static function padString(string $string, int $left, int $right, string $char): string
     {
         $leftPadding = str_repeat($char, $left);
         $rightPadding = str_repeat($char, $right);
@@ -899,14 +885,14 @@ class MbStringObject extends ValueObject implements StringLiteral
      *
      * @return string
      */
-    private static function capsCase(string $string): string
+    protected static function capsCase(string $string): string
     {
         $output = [];
 
         if (preg_match('/\A[a-z0-9]+\z/ui', $string) && mb_strtoupper($string, static::ENCODING) !== $string) {
             $parts = self::explodeOnCaps($string);
         } else {
-            $parts = self::explodeOnDelims($string);
+            $parts = self::explodeOnDelimiters($string);
         }
 
         foreach ($parts as $part) {
@@ -931,14 +917,14 @@ class MbStringObject extends ValueObject implements StringLiteral
      *
      * @return string
      */
-    private static function delimitString(string $string, string $delimiter): string
+    protected static function delimitString(string $string, string $delimiter): string
     {
         $output = [];
 
         if (preg_match('/\A[a-z0-9]+\z/ui', $string) && mb_strtoupper($string, static::ENCODING) !== $string) {
             $parts = self::explodeOnCaps($string);
         } else {
-            $parts = self::explodeOnDelims($string);
+            $parts = self::explodeOnDelimiters($string);
         }
 
         foreach ($parts as $part) {
@@ -955,7 +941,7 @@ class MbStringObject extends ValueObject implements StringLiteral
      *
      * @return array
      */
-    private static function explodeOnCaps(string $string): array
+    protected static function explodeOnCaps(string $string): array
     {
         $string = preg_replace('/\B([A-Z])/u', '_\1', $string);
         $string = preg_replace('/([0-9]+)/u', '_\1', $string);
@@ -972,7 +958,7 @@ class MbStringObject extends ValueObject implements StringLiteral
      *
      * @return array
      */
-    private static function explodeOnDelims(string $string): array
+    protected static function explodeOnDelimiters(string $string): array
     {
         $string = preg_replace('/[^a-z0-9]+/ui', '_', $string);
         $string = trim($string, '_');

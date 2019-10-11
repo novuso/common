@@ -7,11 +7,7 @@ use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
 /**
- * HttpException thrown when a response is received but the request failed
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class HttpException
  */
 class HttpException extends RequestException
 {
@@ -28,7 +24,7 @@ class HttpException extends RequestException
      * @param string            $message  The message
      * @param RequestInterface  $request  The request
      * @param ResponseInterface $response The response
-     * @param Throwable|null   $previous The previous exception
+     * @param Throwable|null    $previous The previous exception
      */
     public function __construct(
         string $message,
@@ -36,8 +32,8 @@ class HttpException extends RequestException
         ResponseInterface $response,
         Throwable $previous = null
     ) {
-        parent::__construct($message, $request, $previous);
         $this->response = $response;
+        parent::__construct($message, $request, $previous);
         $this->code = $response->getStatusCode();
     }
 
@@ -46,7 +42,7 @@ class HttpException extends RequestException
      *
      * @param RequestInterface  $request  The request
      * @param ResponseInterface $response The response
-     * @param Throwable|null   $previous The previous exception
+     * @param Throwable|null    $previous The previous exception
      *
      * @return HttpException
      */

@@ -3,18 +3,14 @@
 namespace Novuso\Common\Application\Messaging\Command;
 
 use Novuso\Common\Application\Messaging\Command\Routing\CommandRouter;
-use Novuso\Common\Domain\Messaging\Command\CommandBus;
 use Novuso\Common\Domain\Messaging\Command\Command;
 use Novuso\Common\Domain\Messaging\Command\CommandMessage;
+use Novuso\Common\Domain\Messaging\Command\SynchronousCommandBus;
 
 /**
- * RoutingCommandBus routes a command to a single handler
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class RoutingCommandBus
  */
-class RoutingCommandBus implements CommandBus
+final class RoutingCommandBus implements SynchronousCommandBus
 {
     /**
      * Command router

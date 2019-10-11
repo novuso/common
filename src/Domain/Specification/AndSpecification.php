@@ -3,13 +3,9 @@
 namespace Novuso\Common\Domain\Specification;
 
 /**
- * AndSpecification is a logical 'AND' composed of two specifications
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class AndSpecification
  */
-class AndSpecification extends CompositeSpecification
+final class AndSpecification extends CompositeSpecification
 {
     /**
      * First specification

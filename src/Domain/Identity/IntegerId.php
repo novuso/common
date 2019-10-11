@@ -4,14 +4,10 @@ namespace Novuso\Common\Domain\Identity;
 
 use Novuso\Common\Domain\Type\ValueObject;
 use Novuso\System\Exception\DomainException;
-use Novuso\System\Utility\Validate;
+use Novuso\System\Utility\Assert;
 
 /**
- * IntegerId is the base class for integer identifiers
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class IntegerId
  */
 abstract class IntegerId extends ValueObject implements Identifier
 {
@@ -54,6 +50,8 @@ abstract class IntegerId extends ValueObject implements Identifier
      * @param int $id The ID integer
      *
      * @return IntegerId
+     *
+     * @throws DomainException When the ID is not valid
      */
     public static function fromInt(int $id)
     {
@@ -87,15 +85,9 @@ abstract class IntegerId extends ValueObject implements Identifier
             return 0;
         }
 
-        assert(
-            Validate::areSameType($this, $object),
-            sprintf('Comparison requires instance of %s', static::class)
-        );
+        Assert::areSameType($this, $object);
 
-        /** @var int $comp */
-        $comp = $this->id <=> $object->id;
-
-        return $comp;
+        return $this->id <=> $object->id;
     }
 
     /**

@@ -7,11 +7,7 @@ use Psr\Container\ContainerExceptionInterface;
 use Throwable;
 
 /**
- * ServiceContainerException is thrown for service container errors
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class ServiceContainerException
  */
 class ServiceContainerException extends SystemException implements ContainerExceptionInterface
 {
@@ -40,7 +36,7 @@ class ServiceContainerException extends SystemException implements ContainerExce
      *
      * @return string|null
      */
-    public function getService()
+    public function getService(): ?string
     {
         return $this->service;
     }

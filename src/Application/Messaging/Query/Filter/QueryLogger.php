@@ -5,15 +5,12 @@ namespace Novuso\Common\Application\Messaging\Query\Filter;
 use Novuso\Common\Domain\Messaging\Query\QueryFilter;
 use Novuso\Common\Domain\Messaging\Query\QueryMessage;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 
 /**
- * QueryLogger is a filter that logs query messages
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class QueryLogger
  */
-class QueryLogger implements QueryFilter
+final class QueryLogger implements QueryFilter
 {
     /**
      * Logger
@@ -23,13 +20,22 @@ class QueryLogger implements QueryFilter
     protected $logger;
 
     /**
+     * Log level
+     *
+     * @var string
+     */
+    protected $logLevel;
+
+    /**
      * Constructs QueryLogger
      *
-     * @param LoggerInterface $logger The logger
+     * @param LoggerInterface $logger   The logger
+     * @param string          $logLevel The log level
      */
-    public function __construct(LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger, string $logLevel = LogLevel::INFO)
     {
         $this->logger = $logger;
+        $this->logLevel = $logLevel;
     }
 
     /**
@@ -39,16 +45,18 @@ class QueryLogger implements QueryFilter
     {
         $name = $message->payloadType()->toString();
 
-        $this->logger->info(
+        $this->logger->log(
+            $this->logLevel,
             sprintf('Query received {%s}', $name),
-            ['message' => $message->toString()]
+            ['message' => $message->toArray()]
         );
 
         $next($message);
 
-        $this->logger->info(
+        $this->logger->log(
+            $this->logLevel,
             sprintf('Query handled {%s}', $name),
-            ['message' => $message->toString()]
+            ['message' => $message->toArray()]
         );
     }
 }

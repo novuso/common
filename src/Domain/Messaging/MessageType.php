@@ -5,13 +5,13 @@ namespace Novuso\Common\Domain\Messaging;
 use Novuso\System\Type\Enum;
 
 /**
- * MessageType represents a type of message
+ * Class MessageType
  *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * @method static EVENT
+ * @method static COMMAND
+ * @method static QUERY
  */
-class MessageType extends Enum
+final class MessageType extends Enum
 {
     /**
      * Event type

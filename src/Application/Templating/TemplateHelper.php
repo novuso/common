@@ -3,11 +3,7 @@
 namespace Novuso\Common\Application\Templating;
 
 /**
- * TemplateHelper is the interface for a template helper
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Interface TemplateHelper
  */
 interface TemplateHelper
 {

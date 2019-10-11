@@ -6,13 +6,9 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
 /**
- * SqlLogger is an SQL debug logging service
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class SqlLogger
  */
-class SqlLogger
+final class SqlLogger
 {
     /**
      * Logger
@@ -34,7 +30,7 @@ class SqlLogger
      * @param LoggerInterface $logger   The logger service
      * @param string          $logLevel The log level
      */
-    public function __construct(LoggerInterface $logger, $logLevel = LogLevel::DEBUG)
+    public function __construct(LoggerInterface $logger, string $logLevel = LogLevel::DEBUG)
     {
         $this->logger = $logger;
         $this->logLevel = $logLevel;
@@ -61,7 +57,7 @@ class SqlLogger
      *
      * @return string
      */
-    private function removeWhitespace($sql): string
+    protected function removeWhitespace(string $sql): string
     {
         return preg_replace('/[\s\t\n\r]+/', ' ', trim($sql));
     }

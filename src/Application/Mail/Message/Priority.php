@@ -5,13 +5,15 @@ namespace Novuso\Common\Application\Mail\Message;
 use Novuso\System\Type\Enum;
 
 /**
- * Priority represents a message priority level
+ * Class Priority
  *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * @method static HIGHEST
+ * @method static HIGH
+ * @method static NORMAL
+ * @method static LOW
+ * @method static LOWEST
  */
-class Priority extends Enum
+final class Priority extends Enum
 {
     /**
      * Highest priority

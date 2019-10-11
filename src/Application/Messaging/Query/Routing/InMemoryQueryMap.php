@@ -2,21 +2,17 @@
 
 namespace Novuso\Common\Application\Messaging\Query\Routing;
 
-use Novuso\Common\Domain\Messaging\Query\QueryHandler;
 use Novuso\Common\Domain\Messaging\Query\Query;
-use Novuso\System\Exception\DomainException;
+use Novuso\Common\Domain\Messaging\Query\QueryHandler;
+use Novuso\System\Exception\AssertionException;
 use Novuso\System\Exception\LookupException;
 use Novuso\System\Type\Type;
-use Novuso\System\Utility\Validate;
+use Novuso\System\Utility\Assert;
 
 /**
- * InMemoryQueryMap is a query class to handler instance map
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class InMemoryQueryMap
  */
-class InMemoryQueryMap implements QueryMap
+final class InMemoryQueryMap implements QueryMap
 {
     /**
      * Query handlers
@@ -37,7 +33,7 @@ class InMemoryQueryMap implements QueryMap
      *
      * @return void
      *
-     * @throws DomainException When a query class is not valid
+     * @throws AssertionException When a query class is not valid
      */
     public function registerHandlers(array $queryToHandlerMap): void
     {
@@ -54,14 +50,11 @@ class InMemoryQueryMap implements QueryMap
      *
      * @return void
      *
-     * @throws DomainException When the query class is not valid
+     * @throws AssertionException When the query class is not valid
      */
     public function registerHandler(string $queryClass, QueryHandler $handler): void
     {
-        if (!Validate::implementsInterface($queryClass, Query::class)) {
-            $message = sprintf('Invalid query class: %s', $queryClass);
-            throw new DomainException($message);
-        }
+        Assert::implementsInterface($queryClass, Query::class);
 
         $type = Type::create($queryClass)->toString();
 

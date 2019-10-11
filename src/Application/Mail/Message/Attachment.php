@@ -3,11 +3,7 @@
 namespace Novuso\Common\Application\Mail\Message;
 
 /**
- * Attachment is the interface for a message attachment
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Interface Attachment
  */
 interface Attachment
 {
@@ -21,9 +17,9 @@ interface Attachment
     /**
      * Retrieves the attachment body
      *
-     * @return string
+     * @return string|resource
      */
-    public function getBody(): string;
+    public function getBody();
 
     /**
      * Retrieves the file name

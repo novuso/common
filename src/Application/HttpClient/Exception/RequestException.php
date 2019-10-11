@@ -2,17 +2,14 @@
 
 namespace Novuso\Common\Application\HttpClient\Exception;
 
+use Psr\Http\Client\RequestExceptionInterface;
 use Psr\Http\Message\RequestInterface;
 use Throwable;
 
 /**
- * RequestException is thrown for failed requests
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class RequestException
  */
-class RequestException extends TransferException
+class RequestException extends TransferException implements RequestExceptionInterface
 {
     /**
      * Request
@@ -30,8 +27,8 @@ class RequestException extends TransferException
      */
     public function __construct(string $message, RequestInterface $request, Throwable $previous = null)
     {
-        parent::__construct($message, 0, $previous);
         $this->request = $request;
+        parent::__construct($message, 0, $previous);
     }
 
     /**

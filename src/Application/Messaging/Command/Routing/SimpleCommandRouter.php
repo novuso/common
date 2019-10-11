@@ -2,17 +2,13 @@
 
 namespace Novuso\Common\Application\Messaging\Command\Routing;
 
-use Novuso\Common\Domain\Messaging\Command\CommandHandler;
 use Novuso\Common\Domain\Messaging\Command\Command;
+use Novuso\Common\Domain\Messaging\Command\CommandHandler;
 
 /**
- * SimpleCommandRouter matches commands from a command map
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class SimpleCommandRouter
  */
-class SimpleCommandRouter implements CommandRouter
+final class SimpleCommandRouter implements CommandRouter
 {
     /**
      * Command map

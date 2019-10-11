@@ -5,11 +5,7 @@ namespace Novuso\Common\Application\Process;
 use Novuso\Common\Application\Process\Exception\ProcessException;
 
 /**
- * ProcessRunner is the interface for a process runner
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Interface ProcessRunner
  */
 interface ProcessRunner
 {

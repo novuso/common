@@ -5,13 +5,9 @@ namespace Novuso\Common\Domain\Value\Money;
 use NumberFormatter;
 
 /**
- * LocaleFormatter is a locale-aware money formatter
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class LocaleFormatter
  */
-class LocaleFormatter implements MoneyFormatter
+final class LocaleFormatter implements MoneyFormatter
 {
     /**
      * Formatter

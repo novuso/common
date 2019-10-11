@@ -4,22 +4,18 @@ namespace Novuso\Common\Domain\Messaging;
 
 use JsonSerializable;
 use Novuso\Common\Domain\Value\DateTime\DateTime;
+use Novuso\System\Exception\AssertionException;
 use Novuso\System\Exception\DomainException;
-use Novuso\System\Serialization\Serializable as Storable;
+use Novuso\System\Serialization\Serializable;
 use Novuso\System\Type\Arrayable;
 use Novuso\System\Type\Comparable;
 use Novuso\System\Type\Equatable;
 use Novuso\System\Type\Type;
-use Serializable;
 
 /**
- * Message is the interface for a domain message
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Interface Message
  */
-interface Message extends Arrayable, Comparable, Equatable, JsonSerializable, Storable, Serializable
+interface Message extends Arrayable, Comparable, Equatable, JsonSerializable, Serializable
 {
     /**
      * Creates instance from a serialized representation
@@ -104,7 +100,7 @@ interface Message extends Arrayable, Comparable, Equatable, JsonSerializable, St
      *
      * @return string
      */
-    public function __toString(): string;
+    public function __toString();
 
     /**
      * Retrieves an array representation
@@ -128,22 +124,6 @@ interface Message extends Arrayable, Comparable, Equatable, JsonSerializable, St
     public function arraySerialize(): array;
 
     /**
-     * Retrieves a serialized representation
-     *
-     * @return string
-     */
-    public function serialize(): string;
-
-    /**
-     * Handles construction from a serialized representation
-     *
-     * @param string $serialized The serialized representation
-     *
-     * @return void
-     */
-    public function unserialize($serialized): void;
-
-    /**
      * Compares to another object
      *
      * The passed object must be an instance of the same type.
@@ -155,6 +135,8 @@ interface Message extends Arrayable, Comparable, Equatable, JsonSerializable, St
      * @param mixed $object The object
      *
      * @return int
+     *
+     * @throws AssertionException When the object types are not compatible
      */
     public function compareTo($object): int;
 

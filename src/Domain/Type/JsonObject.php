@@ -7,13 +7,9 @@ use Novuso\System\Utility\Validate;
 use Novuso\System\Utility\VarPrinter;
 
 /**
- * JsonObject is a wrapper for JSON encoded data
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class JsonObject
  */
-class JsonObject extends ValueObject
+final class JsonObject extends ValueObject
 {
     /**
      * Data
@@ -27,47 +23,48 @@ class JsonObject extends ValueObject
      *
      * @var int
      */
-    protected $encOptions;
+    protected $encodingOptions;
 
     /**
      * Constructs JsonObject
      *
-     * @param mixed    $data       The data to convert to JSON
-     * @param int|null $encOptions Options bitmap for encoding
+     * @param mixed    $data            The data to convert to JSON
+     * @param int|null $encodingOptions Options bitmask for encoding
      *
-     * @throws DomainException When the data is not json encodable
+     * @throws DomainException When the data is not JSON encodable
      */
-    public function __construct($data, ?int $encOptions = null)
+    public function __construct($data, ?int $encodingOptions = null)
     {
-        if (json_encode($data) === false) {
+        if (!Validate::isJsonEncodable($data)) {
             $message = sprintf('Unable to JSON encode: %s', VarPrinter::toString($data));
             throw new DomainException($message);
         }
 
-        if ($encOptions === null) {
-            $encOptions = JSON_UNESCAPED_SLASHES;
+        if ($encodingOptions === null) {
+            $encodingOptions = JSON_UNESCAPED_SLASHES;
         }
 
         $this->data = $data;
-        $this->encOptions = $encOptions;
+        $this->encodingOptions = $encodingOptions;
     }
 
     /**
      * Creates instance from data
      *
-     * @param mixed $data The data to convert to JSON
+     * @param mixed    $data            The data to convert to JSON
+     * @param int|null $encodingOptions Options bitmask for encoding
      *
      * @return JsonObject
      *
-     * @throws DomainException When the data is not json encodable
+     * @throws DomainException When the data is not JSON encodable
      */
-    public static function fromData($data): JsonObject
+    public static function fromData($data, ?int $encodingOptions = null): JsonObject
     {
-        return new static($data);
+        return new static($data, $encodingOptions);
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public static function fromString(string $value): JsonObject
     {
@@ -76,7 +73,7 @@ class JsonObject extends ValueObject
             throw new DomainException($message);
         }
 
-        return new static(json_decode($value, true));
+        return new static(json_decode($value, $assoc = true));
     }
 
     /**
@@ -94,7 +91,17 @@ class JsonObject extends ValueObject
      */
     public function toString(): string
     {
-        return json_encode($this->data, $this->encOptions);
+        return json_encode($this->data, $this->encodingOptions);
+    }
+
+    /**
+     * Retrieves a pretty print representation
+     *
+     * @return string
+     */
+    public function prettyPrint(): string
+    {
+        return json_encode($this->data, $this->encodingOptions | JSON_PRETTY_PRINT);
     }
 
     /**

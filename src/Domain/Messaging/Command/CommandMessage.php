@@ -9,17 +9,13 @@ use Novuso\Common\Domain\Messaging\MetaData;
 use Novuso\Common\Domain\Value\DateTime\DateTime;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Type\Type;
-use Novuso\System\Utility\Validate;
+use Novuso\System\Utility\Assert;
 use Novuso\System\Utility\VarPrinter;
 
 /**
- * CommandMessage is a domain command message
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class CommandMessage
  */
-class CommandMessage extends BaseMessage
+final class CommandMessage extends BaseMessage
 {
     /**
      * Constructs CommandMessage
@@ -79,10 +75,7 @@ class CommandMessage extends BaseMessage
         /** @var Command|string $payloadClass */
         $payloadClass = $payloadType->toClassName();
 
-        assert(
-            Validate::implementsInterface($payloadClass, Command::class),
-            sprintf('Unable to deserialize: %s', $payloadClass)
-        );
+        Assert::implementsInterface($payloadClass, Command::class);
 
         /** @var Command $payload */
         $payload = $payloadClass::fromArray($data['payload']);

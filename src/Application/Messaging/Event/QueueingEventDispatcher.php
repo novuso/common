@@ -3,19 +3,15 @@
 namespace Novuso\Common\Application\Messaging\Event;
 
 use Novuso\Common\Application\Messaging\MessageQueue;
-use Novuso\Common\Domain\Messaging\Event\EventDispatcher;
+use Novuso\Common\Domain\Messaging\Event\AsynchronousEventDispatcher;
 use Novuso\Common\Domain\Messaging\Event\Event;
 use Novuso\Common\Domain\Messaging\Event\EventMessage;
 use Novuso\Common\Domain\Messaging\Event\EventSubscriber;
 
 /**
- * QueueingEventDispatcher dispatches events to a message queue
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class QueueingEventDispatcher
  */
-class QueueingEventDispatcher implements EventDispatcher
+final class QueueingEventDispatcher implements AsynchronousEventDispatcher
 {
     /**
      * Message queue
@@ -25,22 +21,22 @@ class QueueingEventDispatcher implements EventDispatcher
     protected $messageQueue;
 
     /**
-     * Topic name
+     * Queue name
      *
      * @var string
      */
-    protected $topicName;
+    protected $queueName;
 
     /**
      * Constructs QueueingEventDispatcher
      *
      * @param MessageQueue $messageQueue The message queue
-     * @param string       $topicName    The topic name
+     * @param string       $queueName    The queue name
      */
-    public function __construct(MessageQueue $messageQueue, string $topicName)
+    public function __construct(MessageQueue $messageQueue, string $queueName)
     {
         $this->messageQueue = $messageQueue;
-        $this->topicName = $topicName;
+        $this->queueName = $queueName;
     }
 
     /**
@@ -56,7 +52,7 @@ class QueueingEventDispatcher implements EventDispatcher
      */
     public function dispatch(EventMessage $message): void
     {
-        $this->messageQueue->enqueue($this->topicName, $message);
+        $this->messageQueue->enqueue($this->queueName, $message);
     }
 
     /**

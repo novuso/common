@@ -2,21 +2,19 @@
 
 namespace Novuso\Common\Application\Messaging\Command;
 
+use Novuso\Common\Domain\Messaging\Command\Command;
 use Novuso\Common\Domain\Messaging\Command\CommandBus;
 use Novuso\Common\Domain\Messaging\Command\CommandFilter;
-use Novuso\Common\Domain\Messaging\Command\Command;
 use Novuso\Common\Domain\Messaging\Command\CommandMessage;
-use Novuso\System\Collection\Api\Stack;
+use Novuso\Common\Domain\Messaging\Command\SynchronousCommandBus;
 use Novuso\System\Collection\LinkedStack;
+use Novuso\System\Collection\Type\Stack;
+use Throwable;
 
 /**
- * CommandPipeline is the entry point for commands to the application
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class CommandPipeline
  */
-class CommandPipeline implements CommandBus, CommandFilter
+final class CommandPipeline implements SynchronousCommandBus, CommandFilter
 {
     /**
      * Command bus
@@ -37,7 +35,7 @@ class CommandPipeline implements CommandBus, CommandFilter
      *
      * @var Stack|null
      */
-    protected $stack;
+    protected $executionStack;
 
     /**
      * Constructs CommandPipeline
@@ -76,7 +74,7 @@ class CommandPipeline implements CommandBus, CommandFilter
      */
     public function dispatch(CommandMessage $message): void
     {
-        $this->stack = clone $this->filters;
+        $this->executionStack = clone $this->filters;
         $this->pipe($message);
     }
 
@@ -94,11 +92,13 @@ class CommandPipeline implements CommandBus, CommandFilter
      * @param CommandMessage $message The command message
      *
      * @return void
+     *
+     * @throws Throwable
      */
     public function pipe(CommandMessage $message): void
     {
         /** @var CommandFilter $filter */
-        $filter = $this->stack->pop();
+        $filter = $this->executionStack->pop();
         $filter->process($message, [$this, 'pipe']);
     }
 }

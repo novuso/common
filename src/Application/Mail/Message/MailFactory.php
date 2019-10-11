@@ -3,23 +3,19 @@
 namespace Novuso\Common\Application\Mail\Message;
 
 /**
- * MailFactory is the interface for an mail factory
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Interface MailFactory
  */
 interface MailFactory
 {
     /**
      * Creates a mail message
      *
-     * @return Message
+     * @return MailMessage
      */
-    public function createMessage(): Message;
+    public function createMessage(): MailMessage;
 
     /**
-     * Creates an attachment from a data string
+     * Creates an attachment from a content string
      *
      * @param string      $body        The file contents
      * @param string      $fileName    The file name
@@ -53,7 +49,7 @@ interface MailFactory
     ): Attachment;
 
     /**
-     * Generates a random embed ID
+     * Generates an embed ID for inline attachments
      *
      * @return string
      */

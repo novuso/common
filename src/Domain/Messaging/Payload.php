@@ -6,11 +6,7 @@ use Novuso\System\Exception\DomainException;
 use Novuso\System\Type\Arrayable;
 
 /**
- * Payload is the interface for a message payload
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Interface Payload
  */
 interface Payload extends Arrayable
 {

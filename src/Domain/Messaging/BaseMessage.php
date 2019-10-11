@@ -3,17 +3,12 @@
 namespace Novuso\Common\Domain\Messaging;
 
 use Novuso\Common\Domain\Value\DateTime\DateTime;
-use Novuso\System\Collection\ArrayCollection;
 use Novuso\System\Type\Type;
+use Novuso\System\Utility\Assert;
 use Novuso\System\Utility\Validate;
-use Novuso\System\Utility\VarPrinter;
 
 /**
- * BaseMessage is the base class for a domain message
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class BaseMessage
  */
 abstract class BaseMessage implements Message
 {
@@ -136,26 +131,13 @@ abstract class BaseMessage implements Message
      */
     public function toString(): string
     {
-        return sprintf('{%s}', ArrayCollection::create()
-            ->push(sprintf('id:%s', $this->id->toString()))
-            ->push(sprintf('type:%s', $this->type->value()))
-            ->push(sprintf('timestamp:%s', $this->timestamp->toString()))
-            ->push(sprintf('payload_type:%s', $this->payloadType->toString()))
-            ->push(sprintf('payload:{%s}', ArrayCollection::create($this->payload->toArray())
-                ->implode(',', function ($value, $key) {
-                    return sprintf('%s:%s', $key, VarPrinter::toString($value));
-                })))
-            ->push(sprintf('meta_data:{%s}', ArrayCollection::create($this->metaData->toArray())
-                ->implode(',', function ($value, $key) {
-                    return sprintf('%s:%s', $key, VarPrinter::toString($value));
-                })))
-            ->implode(','));
+        return json_encode($this->toArray(), JSON_UNESCAPED_SLASHES);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function __toString(): string
+    public function __toString()
     {
         return $this->toString();
     }
@@ -194,47 +176,13 @@ abstract class BaseMessage implements Message
     /**
      * {@inheritdoc}
      */
-    public function serialize(): string
-    {
-        return serialize([
-            'id'           => $this->id->toString(),
-            'type'         => $this->type->value(),
-            'timestamp'    => $this->timestamp->toString(),
-            'payload_type' => $this->payloadType->toString(),
-            'payload'      => $this->payload->toArray(),
-            'meta_data'    => $this->metaData->toArray()
-        ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function unserialize($serialized): void
-    {
-        $data = unserialize($serialized);
-        $this->id = MessageId::fromString($data['id']);
-        $this->type = MessageType::fromValue($data['type']);
-        $this->timestamp = DateTime::fromString($data['timestamp']);
-        $this->payloadType = Type::create($data['payload_type']);
-        /** @var Payload|string $payloadClass */
-        $payloadClass = $this->payloadType->toClassName();
-        $this->payload = $payloadClass::fromArray($data['payload']);
-        $this->metaData = new MetaData($data['meta_data']);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function compareTo($object): int
     {
         if ($this === $object) {
             return 0;
         }
 
-        assert(
-            Validate::areSameType($this, $object),
-            sprintf('Comparison requires instance of %s', static::class)
-        );
+        Assert::areSameType($this, $object);
 
         return $this->id->compareTo($object->id);
     }

@@ -2,13 +2,11 @@
 
 namespace Novuso\Common\Application\HttpClient\Exception;
 
+use Psr\Http\Client\NetworkExceptionInterface;
+
 /**
- * NetworkException is thrown when a request fails due to network issues
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class NetworkException
  */
-class NetworkException extends RequestException
+class NetworkException extends RequestException implements NetworkExceptionInterface
 {
 }

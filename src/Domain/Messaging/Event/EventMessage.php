@@ -9,17 +9,13 @@ use Novuso\Common\Domain\Messaging\MetaData;
 use Novuso\Common\Domain\Value\DateTime\DateTime;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Type\Type;
-use Novuso\System\Utility\Validate;
+use Novuso\System\Utility\Assert;
 use Novuso\System\Utility\VarPrinter;
 
 /**
- * EventMessage is a domain event message
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class EventMessage
  */
-class EventMessage extends BaseMessage
+final class EventMessage extends BaseMessage
 {
     /**
      * Constructs EventMessage
@@ -79,10 +75,7 @@ class EventMessage extends BaseMessage
         /** @var Event|string $payloadClass */
         $payloadClass = $payloadType->toClassName();
 
-        assert(
-            Validate::implementsInterface($payloadClass, Event::class),
-            sprintf('Unable to deserialize: %s', $payloadClass)
-        );
+        Assert::implementsInterface($payloadClass, Event::class);
 
         /** @var Event $payload */
         $payload = $payloadClass::fromArray($data['payload']);

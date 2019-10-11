@@ -5,39 +5,40 @@ namespace Novuso\Common\Domain\Type;
 use Novuso\System\Type\Enum;
 
 /**
- * RoundingMode represents a numeric rounding mode
+ * Class RoundingMode
  *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * @method static HALF_UP
+ * @method static HALF_DOWN
+ * @method static HALF_EVEN
+ * @method static HALF_ODD
  */
-class RoundingMode extends Enum
+final class RoundingMode extends Enum
 {
     /**
      * Round up when half way
      *
      * @var int
      */
-    const HALF_UP = PHP_ROUND_HALF_UP;
+    public const HALF_UP = PHP_ROUND_HALF_UP;
 
     /**
      * Round down when half way
      *
      * @var int
      */
-    const HALF_DOWN = PHP_ROUND_HALF_DOWN;
+    public const HALF_DOWN = PHP_ROUND_HALF_DOWN;
 
     /**
      * Round towards the next even value
      *
      * @var int
      */
-    const HALF_EVEN = PHP_ROUND_HALF_EVEN;
+    public const HALF_EVEN = PHP_ROUND_HALF_EVEN;
 
     /**
      * Round towards the next odd value
      *
      * @var int
      */
-    const HALF_ODD = PHP_ROUND_HALF_ODD;
+    public const HALF_ODD = PHP_ROUND_HALF_ODD;
 }

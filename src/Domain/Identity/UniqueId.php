@@ -4,14 +4,11 @@ namespace Novuso\Common\Domain\Identity;
 
 use Novuso\Common\Domain\Type\ValueObject;
 use Novuso\Common\Domain\Value\Identifier\Uuid;
+use Novuso\System\Utility\Assert;
 use Novuso\System\Utility\Validate;
 
 /**
- * UniqueId is the base class for UUID based identifiers
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class UniqueId
  */
 abstract class UniqueId extends ValueObject implements Identifier, IdentifierFactory
 {
@@ -33,7 +30,9 @@ abstract class UniqueId extends ValueObject implements Identifier, IdentifierFac
     }
 
     /**
-     * {@inheritdoc}
+     * Generates a unique identifier
+     *
+     * @return static
      */
     public static function generate()
     {
@@ -65,10 +64,7 @@ abstract class UniqueId extends ValueObject implements Identifier, IdentifierFac
             return 0;
         }
 
-        assert(
-            Validate::areSameType($this, $object),
-            sprintf('Comparison requires instance of %s', static::class)
-        );
+        Assert::areSameType($this, $object);
 
         return $this->uuid->compareTo($object->uuid);
     }

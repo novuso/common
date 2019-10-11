@@ -6,18 +6,15 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use DateTimeZone;
 use Novuso\Common\Domain\Type\ValueObject;
+use Novuso\System\Exception\AssertionException;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Type\Comparable;
-use Novuso\System\Utility\Validate;
+use Novuso\System\Utility\Assert;
 
 /**
- * Date represents a calendar date
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class Date
  */
-class Date extends ValueObject implements Comparable
+final class Date extends ValueObject implements Comparable
 {
     /**
      * Year
@@ -79,11 +76,13 @@ class Date extends ValueObject implements Comparable
      * @param string|null $timezone The timezone string or null for default
      *
      * @return Date
+     *
+     * @throws AssertionException When the timezone is not valid
      */
     public static function now(?string $timezone = null): Date
     {
         $timezone = $timezone ?: date_default_timezone_get();
-        assert(Validate::isTimezone($timezone), sprintf('Invalid timezone: %s', $timezone));
+        Assert::isTimezone($timezone);
 
         $dateTime = new DateTimeImmutable('now', new DateTimeZone($timezone));
         $year = (int) $dateTime->format('Y');
@@ -116,11 +115,13 @@ class Date extends ValueObject implements Comparable
      * @param string|null $timezone  The timezone string or null for default
      *
      * @return Date
+     *
+     * @throws AssertionException When the timezone is not valid
      */
     public static function fromTimestamp(int $timestamp, ?string $timezone = null): Date
     {
         $timezone = $timezone ?: date_default_timezone_get();
-        assert(Validate::isTimezone($timezone), sprintf('Invalid timezone: %s', $timezone));
+        Assert::isTimezone($timezone);
 
         $time = sprintf('%d', $timestamp);
         $dateTime = DateTimeImmutable::createFromFormat('U', $time, new DateTimeZone('UTC'));
@@ -181,6 +182,42 @@ class Date extends ValueObject implements Comparable
     }
 
     /**
+     * Retrieves the week day
+     *
+     * From 0 for Sunday to 6 for Saturday.
+     *
+     * @return WeekDay
+     */
+    public function weekDay(): WeekDay
+    {
+        return WeekDay::fromValue((int) date('w', strtotime(sprintf(
+            '%s-%s-%s',
+            $this->year,
+            $this->month,
+            $this->day
+        ))));
+    }
+
+    /**
+     * Retrieves the week day name
+     *
+     * Set the current locale using the setlocale() function.
+     *
+     * @link http://php.net/setlocale PHP setlocale function
+     *
+     * @return string
+     */
+    public function weekDayName(): string
+    {
+        return strftime('%A', strtotime(sprintf(
+            '%s-%s-%s',
+            $this->year,
+            $this->month,
+            $this->day
+        )));
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function toString(): string
@@ -197,10 +234,7 @@ class Date extends ValueObject implements Comparable
             return 0;
         }
 
-        assert(
-            Validate::areSameType($this, $object),
-            sprintf('Comparison requires instance of %s', static::class)
-        );
+        Assert::areSameType($this, $object);
 
         if ($this->year > $object->year) {
             return 1;

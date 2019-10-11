@@ -3,20 +3,19 @@
 namespace Novuso\Common\Domain\Value\Money;
 
 use Novuso\Common\Domain\Type\RoundingMode;
+use Novuso\Common\Domain\Type\ValueObject;
+use Novuso\System\Exception\AssertionException;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Exception\RangeException;
 use Novuso\System\Exception\TypeException;
-use Novuso\System\Utility\Validate;
+use Novuso\System\Type\Comparable;
+use Novuso\System\Utility\Assert;
 use Novuso\System\Utility\VarPrinter;
 
 /**
- * Money represents a monetary value
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class Money
  */
-class Money
+final class Money extends ValueObject implements Comparable
 {
     /**
      * Monetary amount
@@ -228,41 +227,13 @@ class Money
     }
 
     /**
-     * Creates instance that divides this value by the given value
-     *
-     * @param int|float         $divisor The divisor
-     * @param RoundingMode|null $mode    The rounding mode; null for HALF_UP
-     *
-     * @return Money
-     *
-     * @throws DomainException When divisor is not an int or float
-     * @throws DomainException When the divisor is zero
-     * @throws RangeException When integer overflow occurs
-     */
-    public function divide($divisor, ?RoundingMode $mode = null): Money
-    {
-        if ($mode === null) {
-            $mode = RoundingMode::HALF_UP();
-        }
-
-        $this->guardOperand($divisor);
-
-        if ($divisor === 0 || $divisor === 0.0) {
-            throw new DomainException('Division by zero');
-        }
-
-        $amount = round($this->amount / $divisor, 0, $mode->value());
-        $amount = $this->castToInteger($amount);
-
-        return $this->withAmount($amount);
-    }
-
-    /**
      * Allocates the money according to a list of ratios
      *
      * @param array $ratios The list of ratios
      *
      * @return Money[]
+     *
+     * @throws RangeException When integer overflow occurs
      */
     public function allocate(array $ratios): array
     {
@@ -291,6 +262,7 @@ class Money
      * @return Money[]
      *
      * @throws DomainException When num is not greater than zero
+     * @throws RangeException When integer overflow occurs
      */
     public function split(int $num): array
     {
@@ -355,10 +327,7 @@ class Money
             return 0;
         }
 
-        assert(
-            Validate::areSameType($this, $object),
-            sprintf('Comparison requires instance of %s', static::class)
-        );
+        Assert::areSameType($this, $object);
 
         $this->guardCurrency($object);
 
@@ -374,6 +343,8 @@ class Money
      * @param Money $other The other monetary value
      *
      * @return bool
+     *
+     * @throws AssertionException When the currencies do not match
      */
     public function greaterThan(Money $other): bool
     {
@@ -386,6 +357,8 @@ class Money
      * @param Money $other The other monetary value
      *
      * @return bool
+     *
+     * @throws AssertionException When the currencies do not match
      */
     public function greaterThanOrEqual(Money $other): bool
     {
@@ -398,6 +371,8 @@ class Money
      * @param Money $other The other monetary value
      *
      * @return bool
+     *
+     * @throws AssertionException When the currencies do not match
      */
     public function lessThan(Money $other): bool
     {
@@ -410,6 +385,8 @@ class Money
      * @param Money $other The other monetary value
      *
      * @return bool
+     *
+     * @throws AssertionException When the currencies do not match
      */
     public function lessThanOrEqual(Money $other): bool
     {
@@ -455,7 +432,7 @@ class Money
      *
      * @return void
      *
-     * @throws DomainException When operand is not an int or float
+     * @throws AssertionException When operand is not an int or float
      */
     protected function guardOperand($operand): void
     {
@@ -465,7 +442,7 @@ class Money
                 gettype($operand),
                 VarPrinter::toString($operand)
             );
-            throw new DomainException($message);
+            throw new AssertionException($message);
         }
     }
 
@@ -476,12 +453,12 @@ class Money
      *
      * @return void
      *
-     * @throws DomainException When other has different currency
+     * @throws AssertionException When other has different currency
      */
     protected function guardCurrency(Money $other): void
     {
         if (!$this->isSameCurrency($other)) {
-            throw new DomainException('Math and comparison operations require the same currency');
+            throw new AssertionException('Math and comparison operations require the same currency');
         }
     }
 }

@@ -5,11 +5,7 @@ namespace Novuso\Common\Application\Config;
 use Novuso\Common\Application\Config\Exception\ConfigLoaderException;
 
 /**
- * ConfigLoader is the interface for a configuration loader
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Interface ConfigLoader
  */
 interface ConfigLoader
 {
@@ -17,7 +13,7 @@ interface ConfigLoader
      * Loads a resource
      *
      * @param mixed       $resource The config resource
-     * @param null|string $type     The resource type
+     * @param string|null $type     The resource type
      *
      * @return ConfigContainer
      *
@@ -29,7 +25,7 @@ interface ConfigLoader
      * Checks if a resource is supported
      *
      * @param mixed       $resource The config resource
-     * @param null|string $type     The resource type
+     * @param string|null $type     The resource type
      *
      * @return bool
      */

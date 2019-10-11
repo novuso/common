@@ -3,13 +3,9 @@
 namespace Novuso\Common\Domain\Specification;
 
 /**
- * NotSpecification is a logical 'NOT' for a specification
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class NotSpecification
  */
-class NotSpecification extends CompositeSpecification
+final class NotSpecification extends CompositeSpecification
 {
     /**
      * Specification

@@ -4,14 +4,10 @@ namespace Novuso\Common\Domain\Identity;
 
 use Novuso\Common\Domain\Type\ValueObject;
 use Novuso\System\Exception\DomainException;
-use Novuso\System\Utility\Validate;
+use Novuso\System\Utility\Assert;
 
 /**
- * StringId is the base class for string identifiers
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class StringId
  */
 abstract class StringId extends ValueObject implements Identifier
 {
@@ -60,10 +56,7 @@ abstract class StringId extends ValueObject implements Identifier
             return 0;
         }
 
-        assert(
-            Validate::areSameType($this, $object),
-            sprintf('Comparison requires instance of %s', static::class)
-        );
+        Assert::areSameType($this, $object);
 
         $strComp = strnatcmp($this->id, $object->id);
 

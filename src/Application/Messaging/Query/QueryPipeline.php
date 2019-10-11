@@ -2,21 +2,18 @@
 
 namespace Novuso\Common\Application\Messaging\Query;
 
+use Novuso\Common\Domain\Messaging\Query\Query;
 use Novuso\Common\Domain\Messaging\Query\QueryBus;
 use Novuso\Common\Domain\Messaging\Query\QueryFilter;
-use Novuso\Common\Domain\Messaging\Query\Query;
 use Novuso\Common\Domain\Messaging\Query\QueryMessage;
-use Novuso\System\Collection\Api\Stack;
 use Novuso\System\Collection\LinkedStack;
+use Novuso\System\Collection\Type\Stack;
+use Throwable;
 
 /**
- * QueryPipeline is the entry point for queries to the application
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class QueryPipeline
  */
-class QueryPipeline implements QueryBus, QueryFilter
+final class QueryPipeline implements QueryBus, QueryFilter
 {
     /**
      * Query bus
@@ -37,7 +34,7 @@ class QueryPipeline implements QueryBus, QueryFilter
      *
      * @var Stack|null
      */
-    protected $stack;
+    protected $executionStack;
 
     /**
      * Query results
@@ -83,7 +80,7 @@ class QueryPipeline implements QueryBus, QueryFilter
      */
     public function dispatch(QueryMessage $message)
     {
-        $this->stack = clone $this->filters;
+        $this->executionStack = clone $this->filters;
         $this->pipe($message);
 
         $results = $this->results;
@@ -108,11 +105,13 @@ class QueryPipeline implements QueryBus, QueryFilter
      * @param QueryMessage $message The query message
      *
      * @return void
+     *
+     * @throws Throwable
      */
     public function pipe(QueryMessage $message): void
     {
         /** @var QueryFilter $filter */
-        $filter = $this->stack->pop();
+        $filter = $this->executionStack->pop();
         $filter->process($message, [$this, 'pipe']);
     }
 }

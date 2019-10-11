@@ -6,11 +6,7 @@ use Novuso\Common\Domain\Messaging\Payload;
 use Novuso\System\Exception\DomainException;
 
 /**
- * Query is the interface for a domain query
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Interface Query
  */
 interface Query extends Payload
 {

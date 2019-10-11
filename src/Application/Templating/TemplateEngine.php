@@ -6,11 +6,7 @@ use Novuso\Common\Application\Templating\Exception\DuplicateHelperException;
 use Novuso\Common\Application\Templating\Exception\TemplatingException;
 
 /**
- * TemplateEngine is the interface for a template engine
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Interface TemplateEngine
  */
 interface TemplateEngine
 {

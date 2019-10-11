@@ -3,11 +3,7 @@
 namespace Novuso\Common\Domain\Identity;
 
 /**
- * IdentifierFactory is the interface for an identifier factory
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Interface IdentifierFactory
  */
 interface IdentifierFactory
 {

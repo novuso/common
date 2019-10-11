@@ -5,17 +5,15 @@ namespace Novuso\Common\Domain\Value\Identifier;
 use Novuso\Common\Domain\Type\ValueObject;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Type\Comparable;
+use Novuso\System\Utility\Assert;
 use Novuso\System\Utility\Validate;
 
 /**
- * Uuid represents a universally unique identifier
+ * Class Uuid
  *
- * @link      http://tools.ietf.org/html/rfc4122 RFC 4122
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * @link http://tools.ietf.org/html/rfc4122 RFC 4122
  */
-class Uuid extends ValueObject implements Comparable
+final class Uuid extends ValueObject implements Comparable
 {
     /**
      * Variant reserved, NCS backward compatibility
@@ -415,9 +413,9 @@ class Uuid extends ValueObject implements Comparable
         // 122192928000000000 is the number of 100-nanosecond intervals between
         // the UUID epoch 1582-10-15 00:00:00 and the Unix epoch 1970-01-01 00:00:00
         $offset = 122192928000000000;
-        $timeofday = gettimeofday();
+        $timeOfDay = gettimeofday();
 
-        $time = ($timeofday['sec'] * 10000000) + ($timeofday['usec'] * 10) + $offset;
+        $time = ($timeOfDay['sec'] * 10000000) + ($timeOfDay['usec'] * 10) + $offset;
         $hi = intval($time / 0xffffffff);
 
         $timestamp = [];
@@ -694,10 +692,7 @@ class Uuid extends ValueObject implements Comparable
             return 0;
         }
 
-        assert(
-            Validate::areSameType($this, $object),
-            sprintf('Comparison requires instance of %s', static::class)
-        );
+        Assert::areSameType($this, $object);
 
         $thisMsb = $this->mostSignificantBits();
         $thatMsb = $object->mostSignificantBits();

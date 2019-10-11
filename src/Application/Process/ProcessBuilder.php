@@ -6,13 +6,9 @@ use Novuso\System\Exception\DomainException;
 use Novuso\System\Exception\MethodCallException;
 
 /**
- * ProcessBuilder is a Process instance builder
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class ProcessBuilder
  */
-class ProcessBuilder
+final class ProcessBuilder
 {
     /**
      * Command prefix

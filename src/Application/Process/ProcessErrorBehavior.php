@@ -5,13 +5,13 @@ namespace Novuso\Common\Application\Process;
 use Novuso\System\Type\Enum;
 
 /**
- * ProcessErrorBehavior represents the process runner error behavior
+ * Class ProcessErrorBehavior
  *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * @method static EXCEPTION
+ * @method static IGNORE
+ * @method static RETRY
  */
-class ProcessErrorBehavior extends Enum
+final class ProcessErrorBehavior extends Enum
 {
     /**
      * Throw exception on error

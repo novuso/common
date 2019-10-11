@@ -3,20 +3,16 @@
 namespace Novuso\Common\Application\Messaging\Event;
 
 use Novuso\Common\Domain\Messaging\Event\AllEvents;
-use Novuso\Common\Domain\Messaging\Event\EventDispatcher;
 use Novuso\Common\Domain\Messaging\Event\Event;
 use Novuso\Common\Domain\Messaging\Event\EventMessage;
 use Novuso\Common\Domain\Messaging\Event\EventSubscriber;
+use Novuso\Common\Domain\Messaging\Event\SynchronousEventDispatcher;
 use Novuso\System\Utility\ClassName;
 
 /**
- * SimpleEventDispatcher is a synchronous event dispatcher
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class SimpleEventDispatcher
  */
-class SimpleEventDispatcher implements EventDispatcher
+class SimpleEventDispatcher implements SynchronousEventDispatcher
 {
     /**
      * Event handlers

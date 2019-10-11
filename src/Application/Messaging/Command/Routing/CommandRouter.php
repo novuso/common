@@ -2,16 +2,12 @@
 
 namespace Novuso\Common\Application\Messaging\Command\Routing;
 
-use Novuso\Common\Domain\Messaging\Command\CommandHandler;
 use Novuso\Common\Domain\Messaging\Command\Command;
+use Novuso\Common\Domain\Messaging\Command\CommandHandler;
 use Novuso\System\Exception\LookupException;
 
 /**
- * CommandRouter matches a command to a handler
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Interface CommandRouter
  */
 interface CommandRouter
 {

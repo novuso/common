@@ -3,11 +3,10 @@
 namespace Novuso\Common\Domain\Messaging\Event;
 
 /**
- * AllEvents is an event type for subscribing to all events
+ * Class AllEvents
  *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * This class exists so an event subscriber can register listeners for "all events".
+ * Simply use this class name in an event subscriber in place of an event class.
  */
 final class AllEvents
 {

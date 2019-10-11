@@ -2,17 +2,13 @@
 
 namespace Novuso\Common\Application\Messaging\Query\Routing;
 
-use Novuso\Common\Domain\Messaging\Query\QueryHandler;
 use Novuso\Common\Domain\Messaging\Query\Query;
+use Novuso\Common\Domain\Messaging\Query\QueryHandler;
 
 /**
- * SimpleQueryRouter matches queries from a query map
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class SimpleQueryRouter
  */
-class SimpleQueryRouter implements QueryRouter
+final class SimpleQueryRouter implements QueryRouter
 {
     /**
      * Query map

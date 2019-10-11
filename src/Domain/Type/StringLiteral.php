@@ -5,7 +5,8 @@ namespace Novuso\Common\Domain\Type;
 use ArrayAccess;
 use Countable;
 use IteratorAggregate;
-use Novuso\System\Collection\Api\IndexedList;
+use Novuso\System\Collection\Type\Sequence;
+use Novuso\System\Exception\AssertionException;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Exception\ImmutableException;
 use Novuso\System\Exception\IndexException;
@@ -13,11 +14,7 @@ use Novuso\System\Type\Comparable;
 use Traversable;
 
 /**
- * StringLiteral is the interface for a string wrapper
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Interface StringLiteral
  */
 interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggregate, Value
 {
@@ -72,14 +69,14 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
     /**
      * Not implemented
      *
-     * @param int    $index The index
-     * @param string $char  The character
+     * @param int    $index     The index
+     * @param string $character The character
      *
      * @return void
      *
      * @throws ImmutableException When called
      */
-    public function offsetSet($index, $char): void;
+    public function offsetSet($index, $character): void;
 
     /**
      * Retrieves the character at an index
@@ -89,6 +86,7 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
      * @return string
      *
      * @throws IndexException When the index is invalid
+     * @throws AssertionException When index is not an integer
      */
     public function offsetGet($index): string;
 
@@ -98,6 +96,8 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
      * @param int $index The index
      *
      * @return bool
+     *
+     * @throws AssertionException When index is not an integer
      */
     public function offsetExists($index): bool;
 
@@ -115,9 +115,9 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
     /**
      * Retrieves a list of characters
      *
-     * @return IndexedList
+     * @return Sequence
      */
-    public function chars(): IndexedList;
+    public function chars(): Sequence;
 
     /**
      * Checks if this string contains a search string
@@ -204,6 +204,8 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
      * @param string $string The string
      *
      * @return StringLiteral
+     *
+     * @throws DomainException When the index is out of bounds
      */
     public function insert(int $index, string $string): StringLiteral;
 
@@ -221,7 +223,7 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
      *
      * The pad is a single character string used to pad the string.
      *
-     * @param int         $strlen The desired string length
+     * @param int         $length The desired string length
      * @param string|null $char   The padding character or null for a space
      *
      * @return StringLiteral
@@ -229,14 +231,14 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
      * @throws DomainException When the string length is invalid
      * @throws DomainException When the padding character is invalid
      */
-    public function pad(int $strlen, ?string $char = null): StringLiteral;
+    public function pad(int $length, ?string $char = null): StringLiteral;
 
     /**
      * Creates a string padded on the left to a given length
      *
      * The pad is a single character string used to pad the string.
      *
-     * @param int         $strlen The desired string length
+     * @param int         $length The desired string length
      * @param string|null $char   The padding character or null for a space
      *
      * @return StringLiteral
@@ -244,14 +246,14 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
      * @throws DomainException When the string length is invalid
      * @throws DomainException When the padding character is invalid
      */
-    public function padLeft(int $strlen, ?string $char = null): StringLiteral;
+    public function padLeft(int $length, ?string $char = null): StringLiteral;
 
     /**
      * Creates a string padded on the right to a given length
      *
      * The pad is a single character string used to pad the string.
      *
-     * @param int         $strlen The desired string length
+     * @param int         $length The desired string length
      * @param string|null $char   The padding character or null for a space
      *
      * @return StringLiteral
@@ -259,7 +261,7 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
      * @throws DomainException When the string length is invalid
      * @throws DomainException When the padding character is invalid
      */
-    public function padRight(int $strlen, ?string $char = null): StringLiteral;
+    public function padRight(int $length, ?string $char = null): StringLiteral;
 
     /**
      * Creates a string truncated to a given length
@@ -269,7 +271,7 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
      * If truncating occurs, the string is further truncated and the substring
      * is appended without exceeding the desired length.
      *
-     * @param int    $strlen The desired string length
+     * @param int    $length The desired string length
      * @param string $append A string to append
      *
      * @return StringLiteral
@@ -277,7 +279,7 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
      * @throws DomainException When the string length is invalid
      * @throws DomainException When the append string is invalid
      */
-    public function truncate(int $strlen, string $append = ''): StringLiteral;
+    public function truncate(int $length, string $append = ''): StringLiteral;
 
     /**
      * Creates a string truncated to a given length without splitting words
@@ -287,7 +289,7 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
      * If truncating occurs, the string is further truncated and the substring
      * is appended without exceeding the desired length.
      *
-     * @param int    $strlen The desired string length
+     * @param int    $length The desired string length
      * @param string $append A string to append
      *
      * @return StringLiteral
@@ -295,7 +297,7 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
      * @throws DomainException When the string length is invalid
      * @throws DomainException When the append string is invalid
      */
-    public function truncateWords(int $strlen, string $append = ''): StringLiteral;
+    public function truncateWords(int $length, string $append = ''): StringLiteral;
 
     /**
      * Creates a string that repeats the original string
@@ -325,14 +327,14 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
      * Creates a substring starting at an index
      *
      * @param int      $start  The start index
-     * @param int|null $strlen The length or null for the remainder
+     * @param int|null $length The length or null for the remainder
      *
      * @return StringLiteral
      *
      * @throws DomainException When the start index is invalid
      * @throws DomainException When the string length is invalid
      */
-    public function substr(int $start, ?int $strlen = null): StringLiteral;
+    public function substr(int $start, ?int $length = null): StringLiteral;
 
     /**
      * Creates a list of strings split by a delimiter
@@ -340,11 +342,11 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
      * @param string   $delimiter The delimiter
      * @param int|null $limit     The limit or null for no limit
      *
-     * @return IndexedList
+     * @return Sequence
      *
      * @throws DomainException When the delimiter is empty
      */
-    public function split(string $delimiter = ' ', ?int $limit = null): IndexedList;
+    public function split(string $delimiter = ' ', ?int $limit = null): Sequence;
 
     /**
      * Creates a list of string chunks
@@ -353,11 +355,11 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
      *
      * @param int $size The chunk size; must be greater than zero
      *
-     * @return IndexedList
+     * @return Sequence
      *
      * @throws DomainException When the chunk size is invalid
      */
-    public function chunk(int $size = 1): IndexedList;
+    public function chunk(int $size = 1): Sequence;
 
     /**
      * Creates a string replacing all occurrences of search with replacement

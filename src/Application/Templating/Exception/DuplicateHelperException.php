@@ -5,11 +5,7 @@ namespace Novuso\Common\Application\Templating\Exception;
 use Throwable;
 
 /**
- * DuplicateHelperException is thrown when a helper name is duplicated
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class DuplicateHelperException
  */
 class DuplicateHelperException extends TemplatingException
 {
@@ -21,7 +17,7 @@ class DuplicateHelperException extends TemplatingException
     protected $name;
 
     /**
-     * Constructs ServiceContainerException
+     * Constructs DuplicateHelperException
      *
      * @param string         $message  The message
      * @param string|null    $name     The helper name

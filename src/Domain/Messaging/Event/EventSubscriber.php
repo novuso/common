@@ -3,11 +3,7 @@
 namespace Novuso\Common\Domain\Messaging\Event;
 
 /**
- * EventSubscriber is the interface for an event subscriber
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Interface EventSubscriber
  */
 interface EventSubscriber
 {
@@ -15,7 +11,8 @@ interface EventSubscriber
      * Retrieves event registration
      *
      * The returned array keys are event types. The event type string is the
-     * fully qualified domain event class name.
+     * fully qualified domain event class name. The AllEvents class can be used
+     * to register for all events.
      *
      * Array values can be:
      *

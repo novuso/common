@@ -5,10 +5,9 @@ namespace Novuso\Common\Domain\Type;
 use JsonSerializable;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Type\Equatable;
-use Serializable;
 
 /**
- * Value is the interface for a domain value object
+ * Interface Value
  *
  * Implementations must adhere to value characteristics:
  *
@@ -18,19 +17,15 @@ use Serializable;
  * * It is completely replaceable when the measurement or description changes
  * * It can be compared with others using value equality
  * * It supplies its collaborators with side-effect-free behavior
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
  */
-interface Value extends Equatable, JsonSerializable, Serializable
+interface Value extends Equatable, JsonSerializable
 {
     /**
      * Creates instance from a string representation
      *
      * @param string $value The string representation
      *
-     * @return Value
+     * @return static
      *
      * @throws DomainException When value is not valid
      */
@@ -48,30 +43,14 @@ interface Value extends Equatable, JsonSerializable, Serializable
      *
      * @return string
      */
-    public function __toString(): string;
+    public function __toString();
 
     /**
-     * Retrieves a value for JSON encoding
+     * Retrieves value for JSON encoding
      *
      * @return mixed
      */
     public function jsonSerialize();
-
-    /**
-     * Retrieves a serialized representation
-     *
-     * @return string
-     */
-    public function serialize(): string;
-
-    /**
-     * Handles construction from a serialized representation
-     *
-     * @param string $serialized The serialized representation
-     *
-     * @return void
-     */
-    public function unserialize($serialized): void;
 
     /**
      * Checks if an object equals this instance

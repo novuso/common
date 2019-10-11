@@ -5,16 +5,13 @@ namespace Novuso\Common\Domain\Value\Identifier;
 use Novuso\Common\Domain\Type\ValueObject;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Type\Comparable;
-use Novuso\System\Utility\Validate;
+use Novuso\System\Utility\Assert;
 use Novuso\System\Utility\VarPrinter;
 
 /**
- * Uri represents a uniform resource identifier
+ * Class Uri
  *
- * @link      http://tools.ietf.org/html/rfc3986 RFC 3986
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * @link http://tools.ietf.org/html/rfc3986 RFC 3986
  */
 class Uri extends ValueObject implements Comparable
 {
@@ -57,15 +54,6 @@ class Uri extends ValueObject implements Comparable
      * @var string
      */
     protected const PCT_ENCODED_SET = '%[a-fA-F0-9]{2}';
-
-    /**
-     * General delimiters
-     *
-     * @link http://tools.ietf.org/html/rfc3986#section-2.2
-     *
-     * @var string
-     */
-    protected const GEN_DELIMS_SET = ':\/\?#\[\]@';
 
     /**
      * Sub-component delimiters
@@ -151,8 +139,6 @@ class Uri extends ValueObject implements Comparable
     /**
      * Constructs Uri
      *
-     * @internal
-     *
      * @param string      $path      The path
      * @param string|null $scheme    The scheme
      * @param string|null $authority The authority
@@ -160,6 +146,8 @@ class Uri extends ValueObject implements Comparable
      * @param string|null $fragment  The fragment
      *
      * @throws DomainException When values are not valid
+     * @internal
+     *
      */
     protected function __construct(
         string $path,
@@ -181,8 +169,10 @@ class Uri extends ValueObject implements Comparable
 
     /**
      * {@inheritdoc}
+     *
+     * @return static
      */
-    public static function fromString(string $value): Uri
+    public static function fromString(string $value)
     {
         return static::parse($value);
     }
@@ -192,11 +182,11 @@ class Uri extends ValueObject implements Comparable
      *
      * @param string $uri A URI string
      *
-     * @return Uri
+     * @return static
      *
-     * @throws DomainException When the URI string is invalid
+     * @throws DomainException When the URI is not valid
      */
-    public static function parse(string $uri): Uri
+    public static function parse(string $uri)
     {
         preg_match(static::URI_PATTERN, $uri, $matches);
 
@@ -219,11 +209,11 @@ class Uri extends ValueObject implements Comparable
      * @param string     $reference A relative URI reference
      * @param bool       $strict    Whether or not to enable strict parsing
      *
-     * @return Uri
+     * @return static
      *
      * @throws DomainException When the base or reference are invalid
      */
-    public static function resolve($base, string $reference, bool $strict = true): Uri
+    public static function resolve($base, string $reference, bool $strict = true)
     {
         if (!($base instanceof self)) {
             $base = static::parse($base);
@@ -299,11 +289,11 @@ class Uri extends ValueObject implements Comparable
      *
      * @param array $components The components
      *
-     * @return Uri
+     * @return static
      *
-     * @throws DomainException When components are missing or invalid
+     * @throws DomainException When values are not valid
      */
-    public static function fromArray(array $components): Uri
+    public static function fromArray(array $components)
     {
         $scheme = $components['scheme'] ?? null;
         $authority = $components['authority'] ?? null;
@@ -464,10 +454,7 @@ class Uri extends ValueObject implements Comparable
             return 0;
         }
 
-        assert(
-            Validate::areSameType($this, $object),
-            sprintf('Comparison requires instance of %s', static::class)
-        );
+        Assert::areSameType($this, $object);
 
         $strComp = strnatcmp($this->toString(), $object->toString());
 
@@ -726,7 +713,7 @@ class Uri extends ValueObject implements Comparable
     /**
      * Validates and normalizes the port
      *
-     * @param int|null    $port The port
+     * @param int|null    $port   The port
      * @param string|null $scheme The scheme
      *
      * @return int|null

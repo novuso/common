@@ -11,13 +11,9 @@ use Novuso\System\Type\Arrayable;
 use Traversable;
 
 /**
- * ConfigContainer is a configuration container
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class ConfigContainer
  */
-class ConfigContainer implements Arrayable, ArrayAccess, Countable, IteratorAggregate
+final class ConfigContainer implements Arrayable, ArrayAccess, Countable, IteratorAggregate
 {
     /**
      * Data

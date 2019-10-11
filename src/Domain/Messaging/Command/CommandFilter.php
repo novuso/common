@@ -5,11 +5,7 @@ namespace Novuso\Common\Domain\Messaging\Command;
 use Throwable;
 
 /**
- * CommandFilter is the interface for a command filter
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Interface CommandFilter
  */
 interface CommandFilter
 {

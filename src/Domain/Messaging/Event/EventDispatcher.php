@@ -5,11 +5,7 @@ namespace Novuso\Common\Domain\Messaging\Event;
 use Throwable;
 
 /**
- * EventDispatcher is the interface for an event dispatcher
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Interface EventDispatcher
  */
 interface EventDispatcher
 {

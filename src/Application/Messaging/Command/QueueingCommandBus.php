@@ -3,18 +3,14 @@
 namespace Novuso\Common\Application\Messaging\Command;
 
 use Novuso\Common\Application\Messaging\MessageQueue;
-use Novuso\Common\Domain\Messaging\Command\CommandBus;
+use Novuso\Common\Domain\Messaging\Command\AsynchronousCommandBus;
 use Novuso\Common\Domain\Messaging\Command\Command;
 use Novuso\Common\Domain\Messaging\Command\CommandMessage;
 
 /**
- * QueueingCommandBus dispatches commands to a message queue
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class QueueingCommandBus
  */
-class QueueingCommandBus implements CommandBus
+final class QueueingCommandBus implements AsynchronousCommandBus
 {
     /**
      * Message queue
@@ -24,22 +20,22 @@ class QueueingCommandBus implements CommandBus
     protected $messageQueue;
 
     /**
-     * Topic name
+     * Queue name
      *
      * @var string
      */
-    protected $topicName;
+    protected $queueName;
 
     /**
      * Constructs QueueingCommandBus
      *
      * @param MessageQueue $messageQueue The message queue
-     * @param string       $topicName    The topic name
+     * @param string       $queueName    The queue name
      */
-    public function __construct(MessageQueue $messageQueue, string $topicName)
+    public function __construct(MessageQueue $messageQueue, string $queueName)
     {
         $this->messageQueue = $messageQueue;
-        $this->topicName = $topicName;
+        $this->queueName = $queueName;
     }
 
     /**
@@ -55,6 +51,6 @@ class QueueingCommandBus implements CommandBus
      */
     public function dispatch(CommandMessage $message): void
     {
-        $this->messageQueue->enqueue($this->topicName, $message);
+        $this->messageQueue->enqueue($this->queueName, $message);
     }
 }

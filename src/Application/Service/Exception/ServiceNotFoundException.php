@@ -6,11 +6,7 @@ use Psr\Container\NotFoundExceptionInterface;
 use Throwable;
 
 /**
- * ServiceNotFoundException is thrown when a service is not defined
- *
- * @copyright Copyright (c) 2017, Novuso. <http://novuso.com>
- * @license   http://opensource.org/licenses/MIT The MIT License
- * @author    John Nickell <email@johnnickell.com>
+ * Class ServiceNotFoundException
  */
 class ServiceNotFoundException extends ServiceContainerException implements NotFoundExceptionInterface
 {
