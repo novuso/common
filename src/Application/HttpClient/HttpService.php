@@ -68,25 +68,17 @@ final class HttpService implements HttpClient, MessageFactory, StreamFactory, Ur
     /**
      * {@inheritdoc}
      */
-    public function send(RequestInterface $request, array $options = []): ResponseInterface
-    {
-        return $this->httpClient->send($request, $options);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function sendAsync(RequestInterface $request, array $options = []): Promise
-    {
-        return $this->httpClient->sendAsync($request, $options);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function sendRequest(RequestInterface $request): ResponseInterface
     {
         return $this->httpClient->sendRequest($request);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function sendAsync(RequestInterface $request): Promise
+    {
+        return $this->httpClient->sendAsync($request);
     }
 
     /**

@@ -46,21 +46,6 @@ class HttpServiceTest extends UnitTestCase
         );
     }
 
-    public function test_that_send_delegates_to_http_client()
-    {
-        $mockResponse = $this->mock(ResponseInterface::class);
-        /** @var RequestInterface|MockInterface $mockRequest */
-        $mockRequest = $this->mock(RequestInterface::class);
-
-        $this->mockHttpClient
-            ->shouldReceive('send')
-            ->once()
-            ->with($mockRequest, [])
-            ->andReturn($mockResponse);
-
-        $this->assertSame($mockResponse, $this->httpService->send($mockRequest));
-    }
-
     public function test_that_send_async_delegates_to_http_client()
     {
         $mockPromise = $this->mock(Promise::class);
@@ -70,7 +55,7 @@ class HttpServiceTest extends UnitTestCase
         $this->mockHttpClient
             ->shouldReceive('sendAsync')
             ->once()
-            ->with($mockRequest, [])
+            ->with($mockRequest)
             ->andReturn($mockPromise);
 
         $this->assertSame($mockPromise, $this->httpService->sendAsync($mockRequest));
