@@ -4,7 +4,6 @@ namespace Novuso\Common\Domain\Type;
 
 use Novuso\Common\Domain\Type\Mixin\StringOffsets;
 use Novuso\System\Collection\ArrayList;
-use Novuso\System\Collection\Type\Sequence;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Exception\ImmutableException;
 use Novuso\System\Exception\IndexException;
@@ -18,53 +17,34 @@ final class StringObject extends ValueObject implements StringLiteral
 {
     use StringOffsets;
 
-    /**
-     * String value
-     *
-     * @var string
-     */
-    protected $value;
-
-    /**
-     * String length
-     *
-     * @var int
-     */
-    protected $length;
+    protected int $length;
 
     /**
      * Constructs StringObject
-     *
-     * @param string $value The string value
      */
-    public function __construct(string $value)
+    public function __construct(protected string $value)
     {
-        $this->length = strlen($value);
-        $this->value = $value;
+        $this->length = strlen($this->value);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public static function fromString(string $value): StringObject
+    public static function fromString(string $value): static
     {
         return new static($value);
     }
 
     /**
      * Creates instance
-     *
-     * @param string $value The string value
-     *
-     * @return StringObject
      */
-    public static function create(string $value): StringObject
+    public static function create(string $value): static
     {
         return new static($value);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function value(): string
     {
@@ -72,7 +52,7 @@ final class StringObject extends ValueObject implements StringLiteral
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function length(): int
     {
@@ -80,7 +60,7 @@ final class StringObject extends ValueObject implements StringLiteral
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function isEmpty(): bool
     {
@@ -88,7 +68,7 @@ final class StringObject extends ValueObject implements StringLiteral
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function count(): int
     {
@@ -96,7 +76,7 @@ final class StringObject extends ValueObject implements StringLiteral
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function get(int $index): string
     {
@@ -104,7 +84,12 @@ final class StringObject extends ValueObject implements StringLiteral
         $length = $this->length;
 
         if ($index < -$length || $index > $length - 1) {
-            $message = sprintf('Index (%d) out of range[%d, %d]', $index, -$length, $length - 1);
+            $message = sprintf(
+                'Index (%d) out of range[%d, %d]',
+                $index,
+                -$length,
+                $length - 1
+            );
             throw new IndexException($message);
         }
 
@@ -116,7 +101,7 @@ final class StringObject extends ValueObject implements StringLiteral
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function has(int $index): bool
     {
@@ -130,17 +115,17 @@ final class StringObject extends ValueObject implements StringLiteral
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function offsetSet($index, $character): void
+    public function offsetSet(mixed $index, mixed $character): void
     {
         throw new ImmutableException('Cannot modify immutable string');
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function offsetGet($index): string
+    public function offsetGet(mixed $index): string
     {
         Assert::isInt($index);
 
@@ -148,9 +133,9 @@ final class StringObject extends ValueObject implements StringLiteral
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function offsetExists($index): bool
+    public function offsetExists(mixed $index): bool
     {
         Assert::isInt($index);
 
@@ -158,17 +143,17 @@ final class StringObject extends ValueObject implements StringLiteral
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function offsetUnset($index): void
+    public function offsetUnset(mixed $index): void
     {
         throw new ImmutableException('Cannot modify immutable string');
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function chars(): Sequence
+    public function chars(): ArrayList
     {
         $list = ArrayList::of('string');
 
@@ -180,7 +165,7 @@ final class StringObject extends ValueObject implements StringLiteral
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function contains(string $search, bool $caseSensitive = true): bool
     {
@@ -206,7 +191,7 @@ final class StringObject extends ValueObject implements StringLiteral
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function startsWith(string $search, bool $caseSensitive = true): bool
     {
@@ -230,7 +215,7 @@ final class StringObject extends ValueObject implements StringLiteral
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function endsWith(string $search, bool $caseSensitive = true): bool
     {
@@ -256,7 +241,7 @@ final class StringObject extends ValueObject implements StringLiteral
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function indexOf(string $search, ?int $start = null, bool $caseSensitive = true): int
     {
@@ -287,7 +272,7 @@ final class StringObject extends ValueObject implements StringLiteral
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function lastIndexOf(string $search, ?int $stop = null, bool $caseSensitive = true): int
     {
@@ -322,25 +307,25 @@ final class StringObject extends ValueObject implements StringLiteral
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function append(string $string): StringLiteral
+    public function append(string $string): static
     {
         return static::create($this->value.$string);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function prepend(string $string): StringLiteral
+    public function prepend(string $string): static
     {
         return static::create($string.$this->value);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function insert(int $index, string $string): StringLiteral
+    public function insert(int $index, string $string): static
     {
         $length = $this->length;
 
@@ -352,17 +337,17 @@ final class StringObject extends ValueObject implements StringLiteral
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function surround(string $string): StringLiteral
+    public function surround(string $string): static
     {
         return static::create($string.$this->value.$string);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function pad(int $length, ?string $char = null): StringLiteral
+    public function pad(int $length, ?string $char = null): static
     {
         $totalLength = $this->length;
 
@@ -384,15 +369,20 @@ final class StringObject extends ValueObject implements StringLiteral
             return static::create($this->value);
         }
 
-        $padlen = (float) ($length - $totalLength);
+        $padLength = (float) ($length - $totalLength);
 
-        return static::create(self::padString($this->value, (int) floor($padlen / 2), (int) ceil($padlen / 2), $char));
+        return static::create(self::padString(
+            $this->value,
+            (int) floor($padLength / 2),
+            (int) ceil($padLength / 2),
+            $char
+        ));
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function padLeft(int $length, ?string $char = null): StringLiteral
+    public function padLeft(int $length, ?string $char = null): static
     {
         $totalLength = $this->length;
 
@@ -414,15 +404,20 @@ final class StringObject extends ValueObject implements StringLiteral
             return static::create($this->value);
         }
 
-        $padlen = $length - $totalLength;
+        $padLength = $length - $totalLength;
 
-        return static::create(self::padString($this->value, $padlen, 0, $char));
+        return static::create(self::padString(
+            $this->value,
+            $padLength,
+            0,
+            $char
+        ));
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function padRight(int $length, ?string $char = null): StringLiteral
+    public function padRight(int $length, ?string $char = null): static
     {
         $totalLength = $this->length;
 
@@ -444,25 +439,37 @@ final class StringObject extends ValueObject implements StringLiteral
             return static::create($this->value);
         }
 
-        $padlen = $length - $totalLength;
+        $padLength = $length - $totalLength;
 
-        return static::create(self::padString($this->value, 0, $padlen, $char));
+        return static::create(self::padString(
+            $this->value,
+            0,
+            $padLength,
+            $char
+        ));
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function truncate(int $length, string $append = ''): StringLiteral
+    public function truncate(int $length, string $append = ''): static
     {
         if ($length < 1) {
-            $message = sprintf('Invalid length for truncated string: %d', $length);
+            $message = sprintf(
+                'Invalid length for truncated string: %d',
+                $length
+            );
             throw new DomainException($message);
         }
 
         $extra = strlen($append);
 
         if ($extra > $length - 1) {
-            $message = sprintf('Append string length (%d) must be less than truncated length (%d)', $extra, $length);
+            $message = sprintf(
+                'Append string length (%d) must be less than truncated length (%d)',
+                $extra,
+                $length
+            );
             throw new DomainException($message);
         }
 
@@ -476,19 +483,26 @@ final class StringObject extends ValueObject implements StringLiteral
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function truncateWords(int $length, string $append = ''): StringLiteral
+    public function truncateWords(int $length, string $append = ''): static
     {
         if ($length < 1) {
-            $message = sprintf('Invalid length for truncated string: %d', $length);
+            $message = sprintf(
+                'Invalid length for truncated string: %d',
+                $length
+            );
             throw new DomainException($message);
         }
 
         $extra = strlen($append);
 
         if ($extra > $length - 1) {
-            $message = sprintf('Append string length (%d) must be less than truncated length (%d)', $extra, $length);
+            $message = sprintf(
+                'Append string length (%d) must be less than truncated length (%d)',
+                $extra,
+                $length
+            );
             throw new DomainException($message);
         }
 
@@ -513,9 +527,9 @@ final class StringObject extends ValueObject implements StringLiteral
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function repeat(int $multiplier): StringLiteral
+    public function repeat(int $multiplier): static
     {
         if ($multiplier < 1) {
             $message = sprintf('Invalid multiplier: %d', $multiplier);
@@ -526,9 +540,9 @@ final class StringObject extends ValueObject implements StringLiteral
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function slice(int $start, ?int $stop = null): StringLiteral
+    public function slice(int $start, ?int $stop = null): static
     {
         if ($stop === null) {
             $stop = 0;
@@ -541,9 +555,9 @@ final class StringObject extends ValueObject implements StringLiteral
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function substr(int $start, ?int $length = null): StringLiteral
+    public function substr(int $start, ?int $length = null): static
     {
         if ($length === null) {
             $length = 0;
@@ -556,9 +570,9 @@ final class StringObject extends ValueObject implements StringLiteral
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function split(string $delimiter = ' ', ?int $limit = null): Sequence
+    public function split(string $delimiter = ' ', ?int $limit = null): ArrayList
     {
         if (empty($delimiter)) {
             throw new DomainException('Delimiter cannot be empty');
@@ -580,9 +594,9 @@ final class StringObject extends ValueObject implements StringLiteral
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function chunk(int $size = 1): Sequence
+    public function chunk(int $size = 1): ArrayList
     {
         if ($size < 1) {
             $message = sprintf('Invalid chunk size: %d', $size);
@@ -600,17 +614,17 @@ final class StringObject extends ValueObject implements StringLiteral
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function replace($search, $replace): StringLiteral
+    public function replace($search, $replace): static
     {
         return static::create(str_replace($search, $replace, $this->value));
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function trim(?string $mask = null): StringLiteral
+    public function trim(?string $mask = null): static
     {
         if ($mask === null) {
             return static::create(trim($this->value));
@@ -620,9 +634,9 @@ final class StringObject extends ValueObject implements StringLiteral
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function trimLeft(?string $mask = null): StringLiteral
+    public function trimLeft(?string $mask = null): static
     {
         if ($mask === null) {
             return static::create(ltrim($this->value));
@@ -632,9 +646,9 @@ final class StringObject extends ValueObject implements StringLiteral
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function trimRight(?string $mask = null): StringLiteral
+    public function trimRight(?string $mask = null): static
     {
         if ($mask === null) {
             return static::create(rtrim($this->value));
@@ -644,56 +658,56 @@ final class StringObject extends ValueObject implements StringLiteral
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function expandTabs(int $tabsize = 4): StringLiteral
+    public function expandTabs(int $tabSize = 4): static
     {
-        if ($tabsize < 0) {
-            $message = sprintf('Invalid tabsize: %d', $tabsize);
+        if ($tabSize < 0) {
+            $message = sprintf('Invalid tab size: %d', $tabSize);
             throw new DomainException($message);
         }
 
-        $spaces = str_repeat(' ', $tabsize);
+        $spaces = str_repeat(' ', $tabSize);
 
         return static::create(str_replace("\t", $spaces, $this->value));
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function toLowerCase(): StringLiteral
+    public function toLowerCase(): static
     {
         return static::create(strtolower($this->value));
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function toUpperCase(): StringLiteral
+    public function toUpperCase(): static
     {
         return static::create(strtoupper($this->value));
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function toFirstLowerCase(): StringLiteral
+    public function toFirstLowerCase(): static
     {
         return static::create(lcfirst($this->value));
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function toFirstUpperCase(): StringLiteral
+    public function toFirstUpperCase(): static
     {
         return static::create(ucfirst($this->value));
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function toCamelCase(): StringLiteral
+    public function toCamelCase(): static
     {
         $value = trim($this->value);
         $length = strlen($value);
@@ -706,9 +720,9 @@ final class StringObject extends ValueObject implements StringLiteral
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function toPascalCase(): StringLiteral
+    public function toPascalCase(): static
     {
         $value = trim($this->value);
         $length = strlen($value);
@@ -721,9 +735,9 @@ final class StringObject extends ValueObject implements StringLiteral
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function toSnakeCase(): StringLiteral
+    public function toSnakeCase(): static
     {
         $value = trim($this->value);
         $length = strlen($value);
@@ -736,9 +750,9 @@ final class StringObject extends ValueObject implements StringLiteral
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function toLowerHyphenated(): StringLiteral
+    public function toLowerHyphenated(): static
     {
         $value = trim($this->value);
         $length = strlen($value);
@@ -751,9 +765,9 @@ final class StringObject extends ValueObject implements StringLiteral
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function toUpperHyphenated(): StringLiteral
+    public function toUpperHyphenated(): static
     {
         $value = trim($this->value);
         $length = strlen($value);
@@ -766,9 +780,9 @@ final class StringObject extends ValueObject implements StringLiteral
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function toLowerUnderscored(): StringLiteral
+    public function toLowerUnderscored(): static
     {
         $value = trim($this->value);
         $length = strlen($value);
@@ -781,9 +795,9 @@ final class StringObject extends ValueObject implements StringLiteral
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function toUpperUnderscored(): StringLiteral
+    public function toUpperUnderscored(): static
     {
         $value = trim($this->value);
         $length = strlen($value);
@@ -796,9 +810,9 @@ final class StringObject extends ValueObject implements StringLiteral
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function toSlug(): StringLiteral
+    public function toSlug(): static
     {
         $slug = trim($this->value);
         $slug = iconv('UTF-8', 'ASCII//TRANSLIT', $slug);
@@ -811,7 +825,7 @@ final class StringObject extends ValueObject implements StringLiteral
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function toString(): string
     {
@@ -819,9 +833,9 @@ final class StringObject extends ValueObject implements StringLiteral
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function compareTo($object): int
+    public function compareTo(mixed $object): int
     {
         if ($this === $object) {
             return 0;
@@ -835,7 +849,7 @@ final class StringObject extends ValueObject implements StringLiteral
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function getIterator(): Traversable
     {
@@ -871,7 +885,8 @@ final class StringObject extends ValueObject implements StringLiteral
     {
         $output = [];
 
-        if (preg_match('/\A[a-z0-9]+\z/i', $string) && strtoupper($string) !== $string) {
+        if (preg_match('/\A[a-z0-9]+\z/i', $string)
+            && strtoupper($string) !== $string) {
             $parts = self::explodeOnCaps($string);
         } else {
             $parts = self::explodeOnDelimiters($string);
@@ -896,7 +911,8 @@ final class StringObject extends ValueObject implements StringLiteral
     {
         $output = [];
 
-        if (preg_match('/\A[a-z0-9]+\z/ui', $string) && strtoupper($string) !== $string) {
+        if (preg_match('/\A[a-z0-9]+\z/ui', $string)
+            && strtoupper($string) !== $string) {
             $parts = self::explodeOnCaps($string);
         } else {
             $parts = self::explodeOnDelimiters($string);

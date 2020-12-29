@@ -8,12 +8,12 @@ namespace Novuso\Common\Domain\Specification;
 abstract class CompositeSpecification implements Specification
 {
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    abstract public function isSatisfiedBy($candidate): bool;
+    abstract public function isSatisfiedBy(mixed $candidate): bool;
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function and(Specification $other): Specification
     {
@@ -21,7 +21,7 @@ abstract class CompositeSpecification implements Specification
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function or(Specification $other): Specification
     {
@@ -29,7 +29,7 @@ abstract class CompositeSpecification implements Specification
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function not(): Specification
     {

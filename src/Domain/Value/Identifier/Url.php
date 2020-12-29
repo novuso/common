@@ -9,12 +9,7 @@ use Novuso\System\Exception\DomainException;
  */
 final class Url extends Uri
 {
-    /**
-     * Default ports
-     *
-     * @var array
-     */
-    protected static $defaultPorts = [
+    protected static array $defaultPorts = [
         'http'  => 80,
         'https' => 443
     ];
@@ -23,10 +18,6 @@ final class Url extends Uri
      * Normalizes the query
      *
      * Sorts query by key and removes values without keys.
-     *
-     * @param string|null $query The query
-     *
-     * @return string|null
      *
      * @throws DomainException When the query is invalid
      */

@@ -18,7 +18,7 @@ class RegisterUserCommand implements Command
     private $email;
     private $password;
 
-    public static function fromArray(array $data): RegisterUserCommand
+    public static function fromArray(array $data): static
     {
         $keys = ['prefix', 'first_name', 'middle_name', 'last_name', 'suffix', 'email', 'password'];
         foreach ($keys as $key) {
@@ -41,7 +41,7 @@ class RegisterUserCommand implements Command
         return $command;
     }
 
-    public function setPrefix(string $prefix = null): RegisterUserCommand
+    public function setPrefix(string $prefix = null): static
     {
         if ($prefix === null) {
             $this->prefix = null;
@@ -57,7 +57,7 @@ class RegisterUserCommand implements Command
         return $this->prefix;
     }
 
-    public function setFirstName(string $firstName): RegisterUserCommand
+    public function setFirstName(string $firstName): static
     {
         $this->firstName = trim((string) $firstName);
 
@@ -69,7 +69,7 @@ class RegisterUserCommand implements Command
         return $this->firstName;
     }
 
-    public function setMiddleName(string $middleName = null): RegisterUserCommand
+    public function setMiddleName(string $middleName = null): static
     {
         if ($middleName === null) {
             $this->middleName = null;
@@ -85,7 +85,7 @@ class RegisterUserCommand implements Command
         return $this->middleName;
     }
 
-    public function setLastName(string $lastName): RegisterUserCommand
+    public function setLastName(string $lastName): static
     {
         $this->lastName = trim((string) $lastName);
 
@@ -97,7 +97,7 @@ class RegisterUserCommand implements Command
         return $this->lastName;
     }
 
-    public function setSuffix(string $suffix = null): RegisterUserCommand
+    public function setSuffix(string $suffix = null): static
     {
         if ($suffix === null) {
             $this->suffix = null;
@@ -113,7 +113,7 @@ class RegisterUserCommand implements Command
         return $this->suffix;
     }
 
-    public function setEmail(string $email): RegisterUserCommand
+    public function setEmail(string $email): static
     {
         $this->email = trim((string) $email);
 
@@ -125,7 +125,7 @@ class RegisterUserCommand implements Command
         return $this->email;
     }
 
-    public function setPassword(string $password): RegisterUserCommand
+    public function setPassword(string $password): static
     {
         $this->password = password_hash(trim($password), PASSWORD_DEFAULT);
 
@@ -150,7 +150,7 @@ class RegisterUserCommand implements Command
         ];
     }
 
-    private function setPasswordHash(string $password): RegisterUserCommand
+    private function setPasswordHash(string $password): static
     {
         $this->password = trim($password);
 

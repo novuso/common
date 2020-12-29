@@ -15,28 +15,24 @@ use Novuso\System\Utility\VarPrinter;
  */
 final class Timezone extends ValueObject implements Comparable
 {
-    /**
-     * Timezone value
-     *
-     * @var string
-     */
-    protected $value;
+    protected string $value;
 
     /**
      * Constructs Timezone
      *
-     * @param mixed $value The timezone value
-     *
      * @throws DomainException When the value is not a valid timezone
      */
-    public function __construct($value)
+    public function __construct(mixed $value)
     {
         if ($value instanceof DateTimeZone) {
             $value = $value->getName();
         }
 
         if (!Validate::isTimezone($value)) {
-            $message = sprintf('Invalid timezone: %s', VarPrinter::toString($value));
+            $message = sprintf(
+                'Invalid timezone: %s',
+                VarPrinter::toString($value)
+            );
             throw new DomainException($message);
         }
 
@@ -44,9 +40,9 @@ final class Timezone extends ValueObject implements Comparable
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public static function fromString(string $value): Timezone
+    public static function fromString(string $value): static
     {
         return new static($value);
     }
@@ -54,19 +50,15 @@ final class Timezone extends ValueObject implements Comparable
     /**
      * Creates instance from a timezone value
      *
-     * @param mixed $value The timezone value
-     *
-     * @return Timezone
-     *
      * @throws DomainException When the value is not a valid timezone
      */
-    public static function create($value): Timezone
+    public static function create(mixed $value): static
     {
         return new static($value);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function toString(): string
     {
@@ -74,9 +66,9 @@ final class Timezone extends ValueObject implements Comparable
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function compareTo($object): int
+    public function compareTo(mixed $object): int
     {
         if ($this === $object) {
             return 0;
@@ -105,11 +97,6 @@ final class Timezone extends ValueObject implements Comparable
 
     /**
      * Compares two timezones by segments
-     *
-     * @param array $thisParts This parts
-     * @param array $thatParts Other parts
-     *
-     * @return int
      */
     protected function compareParts(array $thisParts, array $thatParts): int
     {

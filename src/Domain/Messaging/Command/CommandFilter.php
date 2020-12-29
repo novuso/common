@@ -18,11 +18,6 @@ interface CommandFilter
      * function (CommandMessage $message): void {}
      * </code>
      *
-     * @param CommandMessage $message The command message
-     * @param callable       $next    The next filter
-     *
-     * @return void
-     *
      * @throws Throwable When an error occurs
      */
     public function process(CommandMessage $message, callable $next): void;

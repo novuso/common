@@ -10,32 +10,16 @@ use NumberFormatter;
 final class LocaleFormatter implements MoneyFormatter
 {
     /**
-     * Formatter
-     *
-     * @var NumberFormatter
-     */
-    protected $formatter;
-
-    /**
      * Constructs LocaleFormatter
      *
      * @internal
-     *
-     * @param NumberFormatter $formatter The number formatter
      */
-    protected function __construct(NumberFormatter $formatter)
-    {
-        $this->formatter = $formatter;
-    }
+    protected function __construct(protected NumberFormatter $formatter) {}
 
     /**
      * Creates instance from a locale string
-     *
-     * @param string $locale The locale string
-     *
-     * @return LocaleFormatter
      */
-    public static function fromLocale(string $locale): LocaleFormatter
+    public static function fromLocale(string $locale): static
     {
         $formatter = new NumberFormatter((string) $locale, NumberFormatter::CURRENCY);
 
@@ -43,7 +27,7 @@ final class LocaleFormatter implements MoneyFormatter
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function format(Money $money): string
     {

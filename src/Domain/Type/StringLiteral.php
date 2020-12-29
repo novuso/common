@@ -5,7 +5,7 @@ namespace Novuso\Common\Domain\Type;
 use ArrayAccess;
 use Countable;
 use IteratorAggregate;
-use Novuso\System\Collection\Type\Sequence;
+use Novuso\System\Collection\ArrayList;
 use Novuso\System\Exception\AssertionException;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Exception\ImmutableException;
@@ -20,38 +20,26 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
 {
     /**
      * Retrieves the string value
-     *
-     * @return string
      */
     public function value(): string;
 
     /**
      * Retrieves the string length
-     *
-     * @return int
      */
     public function length(): int;
 
     /**
      * Checks if empty
-     *
-     * @return bool
      */
     public function isEmpty(): bool;
 
     /**
      * Retrieves the character count
-     *
-     * @return int
      */
     public function count(): int;
 
     /**
      * Retrieves the character at an index
-     *
-     * @param int $index The index
-     *
-     * @return string
      *
      * @throws IndexException When the index is invalid
      */
@@ -59,93 +47,55 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
 
     /**
      * Checks if an index is valid
-     *
-     * @param int $index The index
-     *
-     * @return bool
      */
     public function has(int $index): bool;
 
     /**
      * Not implemented
      *
-     * @param int    $index     The index
-     * @param string $character The character
-     *
-     * @return void
-     *
      * @throws ImmutableException When called
      */
-    public function offsetSet($index, $character): void;
+    public function offsetSet(mixed $index, mixed $character): void;
 
     /**
      * Retrieves the character at an index
      *
-     * @param int $index The index
-     *
-     * @return string
-     *
      * @throws IndexException When the index is invalid
      * @throws AssertionException When index is not an integer
      */
-    public function offsetGet($index): string;
+    public function offsetGet(mixed $index): string;
 
     /**
      * Checks if an index is valid
      *
-     * @param int $index The index
-     *
-     * @return bool
-     *
      * @throws AssertionException When index is not an integer
      */
-    public function offsetExists($index): bool;
+    public function offsetExists(mixed $index): bool;
 
     /**
      * Not implemented
      *
-     * @param int $index The index
-     *
-     * @return void
-     *
      * @throws ImmutableException When called
      */
-    public function offsetUnset($index): void;
+    public function offsetUnset(mixed $index): void;
 
     /**
      * Retrieves a list of characters
-     *
-     * @return Sequence
      */
-    public function chars(): Sequence;
+    public function chars(): ArrayList;
 
     /**
      * Checks if this string contains a search string
-     *
-     * @param string $search        The search string
-     * @param bool   $caseSensitive Whether search should be case sensitive
-     *
-     * @return bool
      */
     public function contains(string $search, bool $caseSensitive = true): bool;
 
     /**
      * Checks if this string starts with a search string
-     *
-     * @param string $search        The search string
-     * @param bool   $caseSensitive Whether search should be case sensitive
-     *
-     * @return bool
      */
     public function startsWith(string $search, bool $caseSensitive = true): bool;
 
     /**
      * Checks if this string ends with a search string
-     *
-     * @param string $search        The search string
-     * @param bool   $caseSensitive Whether search should be case sensitive
-     *
-     * @return bool
      */
     public function endsWith(string $search, bool $caseSensitive = true): bool;
 
@@ -153,12 +103,6 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
      * Retrieves the first index of a search string
      *
      * Returns -1 if the search string is not found.
-     *
-     * @param string   $search        The search string
-     * @param int|null $start         The start index or null for entire string
-     * @param bool     $caseSensitive Whether search should be case sensitive
-     *
-     * @return int
      *
      * @throws DomainException When the start index is invalid
      */
@@ -169,99 +113,61 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
      *
      * Returns -1 if the search string is not found.
      *
-     * @param string   $search        The search string
-     * @param int|null $stop          The stop index or null for entire string
-     * @param bool     $caseSensitive Whether search should be case sensitive
-     *
-     * @return int
-     *
      * @throws DomainException When the stop index is invalid
      */
     public function lastIndexOf(string $search, ?int $stop = null, bool $caseSensitive = true): int;
 
     /**
      * Creates a string with the given string appended
-     *
-     * @param string $string The string
-     *
-     * @return StringLiteral
      */
-    public function append(string $string): StringLiteral;
+    public function append(string $string): static;
 
     /**
      * Creates a string with the given string prepended
-     *
-     * @param string $string The string
-     *
-     * @return StringLiteral
      */
-    public function prepend(string $string): StringLiteral;
+    public function prepend(string $string): static;
 
     /**
      * Creates a string with the given string inserted at a given index
      *
-     * @param int    $index  The index
-     * @param string $string The string
-     *
-     * @return StringLiteral
-     *
      * @throws DomainException When the index is out of bounds
      */
-    public function insert(int $index, string $string): StringLiteral;
+    public function insert(int $index, string $string): static;
 
     /**
      * Creates a string that is wrapped with a given string
-     *
-     * @param string $string The string
-     *
-     * @return StringLiteral
      */
-    public function surround(string $string): StringLiteral;
+    public function surround(string $string): static;
 
     /**
      * Creates a string centered and padded to a given length
      *
      * The pad is a single character string used to pad the string.
      *
-     * @param int         $length The desired string length
-     * @param string|null $char   The padding character or null for a space
-     *
-     * @return StringLiteral
-     *
      * @throws DomainException When the string length is invalid
      * @throws DomainException When the padding character is invalid
      */
-    public function pad(int $length, ?string $char = null): StringLiteral;
+    public function pad(int $length, ?string $char = null): static;
 
     /**
      * Creates a string padded on the left to a given length
      *
      * The pad is a single character string used to pad the string.
      *
-     * @param int         $length The desired string length
-     * @param string|null $char   The padding character or null for a space
-     *
-     * @return StringLiteral
-     *
      * @throws DomainException When the string length is invalid
      * @throws DomainException When the padding character is invalid
      */
-    public function padLeft(int $length, ?string $char = null): StringLiteral;
+    public function padLeft(int $length, ?string $char = null): static;
 
     /**
      * Creates a string padded on the right to a given length
      *
      * The pad is a single character string used to pad the string.
      *
-     * @param int         $length The desired string length
-     * @param string|null $char   The padding character or null for a space
-     *
-     * @return StringLiteral
-     *
      * @throws DomainException When the string length is invalid
      * @throws DomainException When the padding character is invalid
      */
-    public function padRight(int $length, ?string $char = null): StringLiteral;
+    public function padRight(int $length, ?string $char = null): static;
 
     /**
      * Creates a string truncated to a given length
@@ -271,15 +177,10 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
      * If truncating occurs, the string is further truncated and the substring
      * is appended without exceeding the desired length.
      *
-     * @param int    $length The desired string length
-     * @param string $append A string to append
-     *
-     * @return StringLiteral
-     *
      * @throws DomainException When the string length is invalid
      * @throws DomainException When the append string is invalid
      */
-    public function truncate(int $length, string $append = ''): StringLiteral;
+    public function truncate(int $length, string $append = ''): static;
 
     /**
      * Creates a string truncated to a given length without splitting words
@@ -289,77 +190,49 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
      * If truncating occurs, the string is further truncated and the substring
      * is appended without exceeding the desired length.
      *
-     * @param int    $length The desired string length
-     * @param string $append A string to append
-     *
-     * @return StringLiteral
-     *
      * @throws DomainException When the string length is invalid
      * @throws DomainException When the append string is invalid
      */
-    public function truncateWords(int $length, string $append = ''): StringLiteral;
+    public function truncateWords(int $length, string $append = ''): static;
 
     /**
      * Creates a string that repeats the original string
      *
-     * @param int $multiplier Times to repeat; must be greater than zero
-     *
-     * @return StringLiteral
-     *
      * @throws DomainException When the multiplier is invalid
      */
-    public function repeat(int $multiplier): StringLiteral;
+    public function repeat(int $multiplier): static;
 
     /**
      * Creates a substring between two indexes
      *
-     * @param int      $start The start index
-     * @param int|null $stop  The stop index or null for the remainder
-     *
-     * @return StringLiteral
-     *
      * @throws DomainException When the start index is invalid
      * @throws DomainException When the stop index is invalid
      */
-    public function slice(int $start, ?int $stop = null): StringLiteral;
+    public function slice(int $start, ?int $stop = null): static;
 
     /**
      * Creates a substring starting at an index
      *
-     * @param int      $start  The start index
-     * @param int|null $length The length or null for the remainder
-     *
-     * @return StringLiteral
-     *
      * @throws DomainException When the start index is invalid
      * @throws DomainException When the string length is invalid
      */
-    public function substr(int $start, ?int $length = null): StringLiteral;
+    public function substr(int $start, ?int $length = null): static;
 
     /**
      * Creates a list of strings split by a delimiter
      *
-     * @param string   $delimiter The delimiter
-     * @param int|null $limit     The limit or null for no limit
-     *
-     * @return Sequence
-     *
      * @throws DomainException When the delimiter is empty
      */
-    public function split(string $delimiter = ' ', ?int $limit = null): Sequence;
+    public function split(string $delimiter = ' ', ?int $limit = null): ArrayList;
 
     /**
      * Creates a list of string chunks
      *
-     * Each string in the list is represented by a StringLiteral instance.
-     *
-     * @param int $size The chunk size; must be greater than zero
-     *
-     * @return Sequence
+     * Each string in the list is represented by a static instance.
      *
      * @throws DomainException When the chunk size is invalid
      */
-    public function chunk(int $size = 1): Sequence;
+    public function chunk(int $size = 1): ArrayList;
 
     /**
      * Creates a string replacing all occurrences of search with replacement
@@ -372,79 +245,50 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
      *
      * If search is an array and replacement is a string, then the replacement
      * string is used for every value of search.
-     *
-     * @param string|array $search  The search string or array
-     * @param string|array $replace The replacement string or array
-     *
-     * @return StringLiteral
      */
-    public function replace($search, $replace): StringLiteral;
+    public function replace(string|array $search, string|array $replace): static;
 
     /**
      * Creates a string with both ends trimmed
-     *
-     * @param string|null $mask Characters to trim or null to trim whitespace
-     *
-     * @return StringLiteral
      */
-    public function trim(?string $mask = null): StringLiteral;
+    public function trim(?string $mask = null): static;
 
     /**
      * Creates a string with the left end trimmed
-     *
-     * @param string|null $mask Characters to trim or null to trim whitespace
-     *
-     * @return StringLiteral
      */
-    public function trimLeft(?string $mask = null): StringLiteral;
+    public function trimLeft(?string $mask = null): static;
 
     /**
      * Creates a string with the right end trimmed
-     *
-     * @param string|null $mask Characters to trim or null to trim whitespace
-     *
-     * @return StringLiteral
      */
-    public function trimRight(?string $mask = null): StringLiteral;
+    public function trimRight(?string $mask = null): static;
 
     /**
      * Creates a string with tabs replaced by spaces
      *
-     * @param int $tabsize Number of spaces for each tab; cannot be negative
-     *
-     * @return StringLiteral
-     *
-     * @throws DomainException When the tabsize is invalid
+     * @throws DomainException When the tab size is invalid
      */
-    public function expandTabs(int $tabsize = 4): StringLiteral;
+    public function expandTabs(int $tabSize = 4): static;
 
     /**
      * Creates a lower-case string
-     *
-     * @return StringLiteral
      */
-    public function toLowerCase(): StringLiteral;
+    public function toLowerCase(): static;
 
     /**
      * Creates an upper-case string
-     *
-     * @return StringLiteral
      */
-    public function toUpperCase(): StringLiteral;
+    public function toUpperCase(): static;
 
     /**
      * Creates a string with the first character lower-case
-     *
-     * @return StringLiteral
      */
-    public function toFirstLowerCase(): StringLiteral;
+    public function toFirstLowerCase(): static;
 
     /**
      * Creates a string with the first character upper-case
-     *
-     * @return StringLiteral
      */
-    public function toFirstUpperCase(): StringLiteral;
+    public function toFirstUpperCase(): static;
 
     /**
      * Creates a camel-case string
@@ -454,10 +298,8 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
      *
      * The first letter is lowercase and spaces, dashes, and underscores are
      * removed.
-     *
-     * @return StringLiteral
      */
-    public function toCamelCase(): StringLiteral;
+    public function toCamelCase(): static;
 
     /**
      * Creates a pascal-case string
@@ -467,10 +309,8 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
      *
      * The first letter is capitalized and spaces, dashes, and underscores are
      * removed.
-     *
-     * @return StringLiteral
      */
-    public function toPascalCase(): StringLiteral;
+    public function toPascalCase(): static;
 
     /**
      * Creates a snake-case string
@@ -482,10 +322,8 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
      *
      * Underscores are added in place of spaces and hyphens, and the string is
      * converted to lowercase.
-     *
-     * @return StringLiteral
      */
-    public function toSnakeCase(): StringLiteral;
+    public function toSnakeCase(): static;
 
     /**
      * Creates a hyphenated lowercase string
@@ -495,10 +333,8 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
      *
      * Hyphens are added in place of spaces and underscores, and the string is
      * converted to lowercase.
-     *
-     * @return StringLiteral
      */
-    public function toLowerHyphenated(): StringLiteral;
+    public function toLowerHyphenated(): static;
 
     /**
      * Creates a hyphenated uppercase string
@@ -508,10 +344,8 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
      *
      * Hyphens are added in place of spaces and underscores, and the string is
      * converted to uppercase.
-     *
-     * @return StringLiteral
      */
-    public function toUpperHyphenated(): StringLiteral;
+    public function toUpperHyphenated(): static;
 
     /**
      * Creates an underscored lowercase string
@@ -521,10 +355,8 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
      *
      * Underscores are added in place of spaces and hyphens, and the string is
      * converted to lowercase.
-     *
-     * @return StringLiteral
      */
-    public function toLowerUnderscored(): StringLiteral;
+    public function toLowerUnderscored(): static;
 
     /**
      * Creates an underscored uppercase string
@@ -534,10 +366,8 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
      *
      * Underscores are added in place of spaces and hyphens, and the string is
      * converted to uppercase.
-     *
-     * @return StringLiteral
      */
-    public function toUpperUnderscored(): StringLiteral;
+    public function toUpperUnderscored(): static;
 
     /**
      * Creates a string that is suitable for a URL segment
@@ -546,15 +376,11 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
      * characters with hyphens.
      *
      * Duplicate hyphens are removed and the string is converted to lowercase.
-     *
-     * @return StringLiteral
      */
-    public function toSlug(): StringLiteral;
+    public function toSlug(): static;
 
     /**
      * Retrieves an iterator for characters
-     *
-     * @return Traversable
      */
     public function getIterator(): Traversable;
 }

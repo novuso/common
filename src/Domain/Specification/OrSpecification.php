@@ -8,36 +8,16 @@ namespace Novuso\Common\Domain\Specification;
 final class OrSpecification extends CompositeSpecification
 {
     /**
-     * First specification
-     *
-     * @var Specification
-     */
-    protected $firstSpec;
-
-    /**
-     * Second specification
-     *
-     * @var Specification
-     */
-    protected $secondSpec;
-
-    /**
      * Constructs OrSpecification
-     *
-     * @param Specification $firstSpec  The first specification
-     * @param Specification $secondSpec The second specification
      */
-    public function __construct(Specification $firstSpec, Specification $secondSpec)
-    {
-        $this->firstSpec = $firstSpec;
-        $this->secondSpec = $secondSpec;
-    }
+    public function __construct(protected Specification $firstSpec, protected Specification $secondSpec) {}
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function isSatisfiedBy($candidate): bool
+    public function isSatisfiedBy(mixed $candidate): bool
     {
-        return $this->firstSpec->isSatisfiedBy($candidate) || $this->secondSpec->isSatisfiedBy($candidate);
+        return $this->firstSpec->isSatisfiedBy($candidate)
+            || $this->secondSpec->isSatisfiedBy($candidate);
     }
 }

@@ -12,61 +12,35 @@ use Novuso\System\Utility\VarPrinter;
 final class JsonObject extends ValueObject
 {
     /**
-     * Data
-     *
-     * @var mixed
-     */
-    protected $data;
-
-    /**
-     * Encoding options
-     *
-     * @var int
-     */
-    protected $encodingOptions;
-
-    /**
      * Constructs JsonObject
-     *
-     * @param mixed    $data            The data to convert to JSON
-     * @param int|null $encodingOptions Options bitmask for encoding
      *
      * @throws DomainException When the data is not JSON encodable
      */
-    public function __construct($data, ?int $encodingOptions = null)
+    public function __construct(protected mixed $data, protected int $encodingOptions = JSON_UNESCAPED_SLASHES)
     {
-        if (!Validate::isJsonEncodable($data)) {
-            $message = sprintf('Unable to JSON encode: %s', VarPrinter::toString($data));
+        if (!Validate::isJsonEncodable($this->data)) {
+            $message = sprintf(
+                'Unable to JSON encode: %s',
+                VarPrinter::toString($this->data)
+            );
             throw new DomainException($message);
         }
-
-        if ($encodingOptions === null) {
-            $encodingOptions = JSON_UNESCAPED_SLASHES;
-        }
-
-        $this->data = $data;
-        $this->encodingOptions = $encodingOptions;
     }
 
     /**
      * Creates instance from data
      *
-     * @param mixed    $data            The data to convert to JSON
-     * @param int|null $encodingOptions Options bitmask for encoding
-     *
-     * @return JsonObject
-     *
      * @throws DomainException When the data is not JSON encodable
      */
-    public static function fromData($data, ?int $encodingOptions = null): JsonObject
+    public static function fromData(mixed $data, int $encodingOptions = JSON_UNESCAPED_SLASHES): static
     {
         return new static($data, $encodingOptions);
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public static function fromString(string $value): JsonObject
+    public static function fromString(string $value): static
     {
         if (!Validate::isJson($value)) {
             $message = sprintf('Invalid JSON string: %s', $value);
@@ -78,16 +52,14 @@ final class JsonObject extends ValueObject
 
     /**
      * Retrieves data representation
-     *
-     * @return mixed
      */
-    public function toData()
+    public function toData(): mixed
     {
         return $this->data;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function toString(): string
     {
@@ -95,19 +67,28 @@ final class JsonObject extends ValueObject
     }
 
     /**
-     * Retrieves a pretty print representation
-     *
-     * @return string
+     * Retrieves a string representation with given encoding options
      */
-    public function prettyPrint(): string
+    public function encode(int $encodingOptions = JSON_UNESCAPED_SLASHES): string
     {
-        return json_encode($this->data, $this->encodingOptions | JSON_PRETTY_PRINT);
+        return json_encode($this->data, $encodingOptions);
     }
 
     /**
-     * {@inheritdoc}
+     * Retrieves a pretty print representation
      */
-    public function jsonSerialize()
+    public function prettyPrint(): string
+    {
+        return json_encode(
+            $this->data,
+            $this->encodingOptions | JSON_PRETTY_PRINT
+        );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize(): mixed
     {
         return $this->data;
     }

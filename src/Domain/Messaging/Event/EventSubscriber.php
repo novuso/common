@@ -37,8 +37,6 @@ interface EventSubscriber
      * <code>
      * function (EventMessage $message): void {}
      * </code>
-     *
-     * @return array
      */
     public static function eventRegistration(): array;
 }

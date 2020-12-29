@@ -12,33 +12,22 @@ use Novuso\System\Utility\Validate;
 final class EmailAddress extends ValueObject
 {
     /**
-     * Email address value
-     *
-     * @var string
-     */
-    protected $value;
-
-    /**
      * Constructs EmailAddress
-     *
-     * @param string $value The email address
      *
      * @throws DomainException When the email address is invalid
      */
-    public function __construct(string $value)
+    public function __construct(protected string $value)
     {
-        if (!Validate::isEmail($value)) {
-            $message = sprintf('Invalid email address: %s', $value);
+        if (!Validate::isEmail($this->value)) {
+            $message = sprintf('Invalid email address: %s', $this->value);
             throw new DomainException($message);
         }
-
-        $this->value = $value;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public static function fromString(string $value): EmailAddress
+    public static function fromString(string $value): static
     {
         return new static($value);
     }
@@ -79,7 +68,7 @@ final class EmailAddress extends ValueObject
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function toString(): string
     {

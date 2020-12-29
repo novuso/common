@@ -17,68 +17,17 @@ use Novuso\System\Utility\Assert;
  */
 final class DateTime extends ValueObject implements Comparable
 {
-    /**
-     * String format
-     *
-     * @var string
-     */
     public const STRING_FORMAT = 'Y-m-d\TH:i:s.u[e]';
 
-    /**
-     * Date
-     *
-     * @var Date
-     */
-    protected $date;
-
-    /**
-     * Time
-     *
-     * @var Time
-     */
-    protected $time;
-
-    /**
-     * Timezone
-     *
-     * @var Timezone
-     */
-    protected $timezone;
-
-    /**
-     * Native DateTime
-     *
-     * @var DateTimeImmutable|null
-     */
-    protected $dateTime;
+    protected ?DateTimeImmutable $dateTime = null;
 
     /**
      * Constructs DateTime
-     *
-     * @param Date     $date     The date
-     * @param Time     $time     The time
-     * @param Timezone $timezone The timezone
      */
-    public function __construct(Date $date, Time $time, Timezone $timezone)
-    {
-        $this->date = $date;
-        $this->time = $time;
-        $this->timezone = $timezone;
-    }
+    public function __construct(protected Date $date, protected Time $time, protected Timezone $timezone) {}
 
     /**
      * Creates instance from date and time values
-     *
-     * @param int         $year        The year
-     * @param int         $month       The month
-     * @param int         $day         The day
-     * @param int         $hour        The hour
-     * @param int         $minute      The minute
-     * @param int         $second      The second
-     * @param int         $microsecond The microsecond
-     * @param string|null $timezone    The timezone string or null for default
-     *
-     * @return DateTime
      *
      * @throws DomainException When the date/time is not valid
      */
@@ -91,7 +40,7 @@ final class DateTime extends ValueObject implements Comparable
         int $second,
         int $microsecond = 0,
         ?string $timezone = null
-    ): DateTime {
+    ): static {
         try {
             $timezone = $timezone ?: date_default_timezone_get();
             Assert::isTimezone($timezone);
@@ -109,19 +58,18 @@ final class DateTime extends ValueObject implements Comparable
     /**
      * Creates instance for the current date and time
      *
-     * @param string|null $timezone The timezone string or null for default
-     *
-     * @return DateTime
-     *
      * @throws DomainException When the date/time or timezone is not valid
      */
-    public static function now(?string $timezone = null): DateTime
+    public static function now(?string $timezone = null): static
     {
         try {
             $timezone = $timezone ?: date_default_timezone_get();
             Assert::isTimezone($timezone);
 
-            $dateTime = new DateTimeImmutable('now', new DateTimeZone($timezone));
+            $dateTime = new DateTimeImmutable(
+                'now',
+                new DateTimeZone($timezone)
+            );
             $year = (int) $dateTime->format('Y');
             $month = (int) $dateTime->format('n');
             $day = (int) $dateTime->format('j');
@@ -143,24 +91,26 @@ final class DateTime extends ValueObject implements Comparable
     /**
      * Creates instance from date/time string in a given format
      *
-     * @param string      $format   The format
-     * @param string      $time     The date/time string
-     * @param string|null $timezone The timezone string or null for default
-     *
-     * @return DateTime
-     *
      * @throws DomainException When the date/time or timezone is not valid
      */
-    public static function fromFormat($format, $time, $timezone = null): DateTime
+    public static function fromFormat(string $format, string $time, ?string $timezone = null): static
     {
         try {
             $timezone = $timezone ?: date_default_timezone_get();
             Assert::isTimezone($timezone);
 
-            $dateTime = DateTimeImmutable::createFromFormat($format, $time, new DateTimeZone($timezone));
+            $dateTime = DateTimeImmutable::createFromFormat(
+                $format,
+                $time,
+                new DateTimeZone($timezone)
+            );
 
             if ($dateTime === false) {
-                $message = sprintf('Invalid data for format "%s": "%s"', $format, $time);
+                $message = sprintf(
+                    'Invalid data for format "%s": "%s"',
+                    $format,
+                    $time
+                );
                 throw new DomainException($message);
             }
 
@@ -186,13 +136,9 @@ final class DateTime extends ValueObject implements Comparable
     /**
      * Creates instance from a native DateTime
      *
-     * @param DateTimeInterface $dateTime A DateTimeInterface instance
-     *
-     * @return DateTime
-     *
      * @throws DomainException When the timezone is not valid
      */
-    public static function fromNative(DateTimeInterface $dateTime): DateTime
+    public static function fromNative(DateTimeInterface $dateTime): static
     {
         $year = (int) $dateTime->format('Y');
         $month = (int) $dateTime->format('n');
@@ -213,21 +159,20 @@ final class DateTime extends ValueObject implements Comparable
     /**
      * Creates instance from a timestamp and timezone
      *
-     * @param int         $timestamp The timestamp
-     * @param string|null $timezone  The timezone string or null for default
-     *
-     * @return DateTime
-     *
      * @throws DomainException When the date/time or timezone is not valid
      */
-    public static function fromTimestamp(int $timestamp, ?string $timezone = null): DateTime
+    public static function fromTimestamp(int $timestamp, ?string $timezone = null): static
     {
         try {
             $timezone = $timezone ?: date_default_timezone_get();
             Assert::isTimezone($timezone);
 
             $time = sprintf('%d', $timestamp);
-            $dateTime = DateTimeImmutable::createFromFormat('U', $time, new DateTimeZone('UTC'));
+            $dateTime = DateTimeImmutable::createFromFormat(
+                'U',
+                $time,
+                new DateTimeZone('UTC')
+            );
             $dateTime = $dateTime->setTimezone(new DateTimeZone($timezone));
             $year = (int) $dateTime->format('Y');
             $month = (int) $dateTime->format('n');
@@ -248,9 +193,9 @@ final class DateTime extends ValueObject implements Comparable
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public static function fromString(string $value): DateTime
+    public static function fromString(string $value): static
     {
         $pattern = sprintf(
             '/\A%s-%s-%sT%s:%s:%s\.%s\[%s\]\z/',
@@ -264,7 +209,10 @@ final class DateTime extends ValueObject implements Comparable
             '(?P<timezone>.+)'
         );
         if (!preg_match($pattern, $value, $matches)) {
-            $message = sprintf('%s expects $value in "Y-m-d\TH:i:s.u[e]" format', __METHOD__);
+            $message = sprintf(
+                '%s expects $value in "Y-m-d\TH:i:s.u[e]" format',
+                __METHOD__
+            );
             throw new DomainException($message);
         }
 
@@ -290,13 +238,9 @@ final class DateTime extends ValueObject implements Comparable
      * Alters the timestamp of the DateTime by incrementing or decrementing in
      * a format accepted by strtotime().
      *
-     * @param string $modify A date/time string
-     *
-     * @return DateTime
-     *
      * @throws DomainException When the modify string is invalid
      */
-    public function modify(string $modify): DateTime
+    public function modify(string $modify): static
     {
         try {
             $dateTime = $this->dateTime()->modify($modify);
@@ -329,12 +273,8 @@ final class DateTime extends ValueObject implements Comparable
 
     /**
      * Creates instance with a given date
-     *
-     * @param Date $date The date
-     *
-     * @return DateTime
      */
-    public function withDate(Date $date): DateTime
+    public function withDate(Date $date): static
     {
         return new static($date, $this->time(), $this->timezone());
     }
@@ -342,13 +282,9 @@ final class DateTime extends ValueObject implements Comparable
     /**
      * Creates instance with a given year
      *
-     * @param int $year The year
-     *
-     * @return DateTime
-     *
      * @throws DomainException When the date/time is not valid
      */
-    public function withYear(int $year): DateTime
+    public function withYear(int $year): static
     {
         return new static(
             Date::create($year, $this->month(), $this->day()),
@@ -360,13 +296,9 @@ final class DateTime extends ValueObject implements Comparable
     /**
      * Creates instance with a given month
      *
-     * @param int $month The month
-     *
-     * @return DateTime
-     *
      * @throws DomainException When the date/time is not valid
      */
-    public function withMonth(int $month): DateTime
+    public function withMonth(int $month): static
     {
         return new static(
             Date::create($this->year(), $month, $this->day()),
@@ -378,13 +310,9 @@ final class DateTime extends ValueObject implements Comparable
     /**
      * Creates instance with a given day
      *
-     * @param int $day The day
-     *
-     * @return DateTime
-     *
      * @throws DomainException When the date/time is not valid
      */
-    public function withDay(int $day): DateTime
+    public function withDay(int $day): static
     {
         return new static(
             Date::create($this->year(), $this->month(), $day),
@@ -395,12 +323,8 @@ final class DateTime extends ValueObject implements Comparable
 
     /**
      * Creates instance with a given time
-     *
-     * @param Time $time The time
-     *
-     * @return DateTime
      */
-    public function withTime(Time $time): DateTime
+    public function withTime(Time $time): static
     {
         return new static($this->date(), $time, $this->timezone());
     }
@@ -408,17 +332,18 @@ final class DateTime extends ValueObject implements Comparable
     /**
      * Creates instance with a given hour
      *
-     * @param int $hour The hour
-     *
-     * @return DateTime
-     *
      * @throws DomainException When the date/time is not valid
      */
-    public function withHour(int $hour): DateTime
+    public function withHour(int $hour): static
     {
         return new static(
             $this->date(),
-            Time::create($hour, $this->minute(), $this->second(), $this->microsecond()),
+            Time::create(
+                $hour,
+                $this->minute(),
+                $this->second(),
+                $this->microsecond()
+            ),
             $this->timezone()
         );
     }
@@ -426,17 +351,18 @@ final class DateTime extends ValueObject implements Comparable
     /**
      * Creates instance with a given minute
      *
-     * @param int $minute The minute
-     *
-     * @return DateTime
-     *
      * @throws DomainException When the date/time is not valid
      */
-    public function withMinute(int $minute): DateTime
+    public function withMinute(int $minute): static
     {
         return new static(
             $this->date(),
-            Time::create($this->hour(), $minute, $this->second(), $this->microsecond()),
+            Time::create(
+                $this->hour(),
+                $minute,
+                $this->second(),
+                $this->microsecond()
+            ),
             $this->timezone()
         );
     }
@@ -444,17 +370,18 @@ final class DateTime extends ValueObject implements Comparable
     /**
      * Creates instance with a given second
      *
-     * @param int $second The second
-     *
-     * @return DateTime
-     *
      * @throws DomainException When the date/time is not valid
      */
-    public function withSecond(int $second): DateTime
+    public function withSecond(int $second): static
     {
         return new static(
             $this->date(),
-            Time::create($this->hour(), $this->minute(), $second, $this->microsecond()),
+            Time::create(
+                $this->hour(),
+                $this->minute(),
+                $second,
+                $this->microsecond()
+            ),
             $this->timezone()
         );
     }
@@ -462,17 +389,18 @@ final class DateTime extends ValueObject implements Comparable
     /**
      * Creates instance with a given microsecond
      *
-     * @param int $microsecond The microsecond
-     *
-     * @return DateTime
-     *
      * @throws DomainException When the date/time is not valid
      */
-    public function withMicrosecond(int $microsecond): DateTime
+    public function withMicrosecond(int $microsecond): static
     {
         return new static(
             $this->date(),
-            Time::create($this->hour(), $this->minute(), $this->second(), $microsecond),
+            Time::create(
+                $this->hour(),
+                $this->minute(),
+                $this->second(),
+                $microsecond
+            ),
             $this->timezone()
         );
     }
@@ -482,13 +410,9 @@ final class DateTime extends ValueObject implements Comparable
      *
      * Note: This method does not convert the date/time values
      *
-     * @param mixed $timezone The timezone value
-     *
-     * @return DateTime
-     *
      * @throws DomainException When the timezone is not valid
      */
-    public function withTimezone($timezone): DateTime
+    public function withTimezone(mixed $timezone): static
     {
         return new static(
             $this->date(),
@@ -500,13 +424,9 @@ final class DateTime extends ValueObject implements Comparable
     /**
      * Creates instance converted to a given timezone
      *
-     * @param mixed $timezone The timezone value
-     *
-     * @return DateTime
-     *
      * @throws DomainException When the timezone is not valid
      */
-    public function toTimezone($timezone): DateTime
+    public function toTimezone(mixed $timezone): static
     {
         if ($timezone instanceof DateTimeZone) {
             $timezone = $timezone->getName();
@@ -526,10 +446,6 @@ final class DateTime extends ValueObject implements Comparable
      * Returns string formatted according to PHP date() function.
      *
      * @link http://php.net/date PHP date function
-     *
-     * @param string $format The format string
-     *
-     * @return string
      */
     public function format(string $format): string
     {
@@ -544,10 +460,6 @@ final class DateTime extends ValueObject implements Comparable
      *
      * @link http://php.net/strftime PHP strftime function
      * @link http://php.net/setlocale PHP setlocale function
-     *
-     * @param string $format The format string
-     *
-     * @return string
      */
     public function localeFormat(string $format): string
     {
@@ -556,18 +468,14 @@ final class DateTime extends ValueObject implements Comparable
 
     /**
      * Retrieves ISO-8601 string representation
-     *
-     * @return string
      */
     public function iso8601(): string
     {
-        return $this->format(DATE_ATOM);
+        return $this->format(DateTimeInterface::ATOM);
     }
 
     /**
      * Retrieves the date
-     *
-     * @return Date
      */
     public function date(): Date
     {
@@ -576,8 +484,6 @@ final class DateTime extends ValueObject implements Comparable
 
     /**
      * Retrieves the time
-     *
-     * @return Time
      */
     public function time(): Time
     {
@@ -586,8 +492,6 @@ final class DateTime extends ValueObject implements Comparable
 
     /**
      * Retrieves the timezone
-     *
-     * @return Timezone
      */
     public function timezone(): Timezone
     {
@@ -599,8 +503,6 @@ final class DateTime extends ValueObject implements Comparable
      *
      * The offset for timezones west of UTC is always negative, and for those
      * east of UTC is always positive.
-     *
-     * @return int
      */
     public function timezoneOffset(): int
     {
@@ -609,8 +511,6 @@ final class DateTime extends ValueObject implements Comparable
 
     /**
      * Retrieves the year
-     *
-     * @return int
      */
     public function year(): int
     {
@@ -619,8 +519,6 @@ final class DateTime extends ValueObject implements Comparable
 
     /**
      * Retrieves the month
-     *
-     * @return int
      */
     public function month(): int
     {
@@ -633,8 +531,6 @@ final class DateTime extends ValueObject implements Comparable
      * Set the current locale using the setlocale() function.
      *
      * @link http://php.net/setlocale PHP setlocale function
-     *
-     * @return string
      */
     public function monthName(): string
     {
@@ -647,8 +543,6 @@ final class DateTime extends ValueObject implements Comparable
      * Set the current locale using the setlocale() function.
      *
      * @link http://php.net/setlocale PHP setlocale function
-     *
-     * @return string
      */
     public function monthAbbreviation(): string
     {
@@ -657,8 +551,6 @@ final class DateTime extends ValueObject implements Comparable
 
     /**
      * Retrieves the day
-     *
-     * @return int
      */
     public function day(): int
     {
@@ -667,8 +559,6 @@ final class DateTime extends ValueObject implements Comparable
 
     /**
      * Retrieves the hour
-     *
-     * @return int
      */
     public function hour(): int
     {
@@ -677,8 +567,6 @@ final class DateTime extends ValueObject implements Comparable
 
     /**
      * Retrieves the minute
-     *
-     * @return int
      */
     public function minute(): int
     {
@@ -687,8 +575,6 @@ final class DateTime extends ValueObject implements Comparable
 
     /**
      * Retrieves the second
-     *
-     * @return int
      */
     public function second(): int
     {
@@ -697,8 +583,6 @@ final class DateTime extends ValueObject implements Comparable
 
     /**
      * Retrieves the microsecond
-     *
-     * @return int
      */
     public function microsecond(): int
     {
@@ -707,14 +591,10 @@ final class DateTime extends ValueObject implements Comparable
 
     /**
      * Retrieves the week day
-     *
-     * From 0 for Sunday to 6 for Saturday.
-     *
-     * @return int
      */
-    public function weekDay(): int
+    public function weekDay(): WeekDay
     {
-        return (int) $this->format('w');
+        return WeekDay::fromValue((int) $this->format('w'));
     }
 
     /**
@@ -723,8 +603,6 @@ final class DateTime extends ValueObject implements Comparable
      * Set the current locale using the setlocale() function.
      *
      * @link http://php.net/setlocale PHP setlocale function
-     *
-     * @return string
      */
     public function weekDayName(): string
     {
@@ -737,8 +615,6 @@ final class DateTime extends ValueObject implements Comparable
      * Set the current locale using the setlocale() function.
      *
      * @link http://php.net/setlocale PHP setlocale function
-     *
-     * @return string
      */
     public function weekDayAbbreviation(): string
     {
@@ -747,8 +623,6 @@ final class DateTime extends ValueObject implements Comparable
 
     /**
      * Retrieves seconds since the Unix Epoch
-     *
-     * @return int
      */
     public function timestamp(): int
     {
@@ -759,8 +633,6 @@ final class DateTime extends ValueObject implements Comparable
      * Retrieves the day of the year
      *
      * Days are numbered starting with 0.
-     *
-     * @return int
      */
     public function dayOfYear(): int
     {
@@ -769,8 +641,6 @@ final class DateTime extends ValueObject implements Comparable
 
     /**
      * Retrieves ISO-8601 week number of the year
-     *
-     * @return int
      */
     public function weekNumber(): int
     {
@@ -779,8 +649,6 @@ final class DateTime extends ValueObject implements Comparable
 
     /**
      * Retrieves the number of days in the month
-     *
-     * @return int
      */
     public function daysInMonth(): int
     {
@@ -789,8 +657,6 @@ final class DateTime extends ValueObject implements Comparable
 
     /**
      * Checks if the year is a leap year
-     *
-     * @return bool
      */
     public function isLeapYear(): bool
     {
@@ -803,8 +669,6 @@ final class DateTime extends ValueObject implements Comparable
 
     /**
      * Checks if the date is in daylight savings time
-     *
-     * @return bool
      */
     public function isDaylightSavings(): bool
     {
@@ -816,11 +680,66 @@ final class DateTime extends ValueObject implements Comparable
     }
 
     /**
-     * Retrieves a native DateTime instance
-     *
-     * @return DateTimeInterface
+     * Checks if this is before the given date/time
      */
-    public function toNative(): DateTimeInterface
+    public function isBefore(DateTime $dateTime): bool
+    {
+        return $this->compareTo($dateTime) < 0;
+    }
+
+    /**
+     * Checks if this is same as the given date/time
+     */
+    public function isSame(DateTime $dateTime): bool
+    {
+        return $this->compareTo($dateTime) === 0;
+    }
+
+    /**
+     * Checks if this is after the given date/time
+     */
+    public function isAfter(DateTime $dateTime): bool
+    {
+        return $this->compareTo($dateTime) > 0;
+    }
+
+    /**
+     * Checks if this is same or before the given date/time
+     */
+    public function isSameOrBefore(DateTime $dateTime): bool
+    {
+        return $this->compareTo($dateTime) <= 0;
+    }
+
+    /**
+     * Checks if this is same or after the given date/time
+     */
+    public function isSameOrAfter(DateTime $dateTime): bool
+    {
+        return $this->compareTo($dateTime) >= 0;
+    }
+
+    /**
+     * Checks if this is between the given date/times
+     *
+     * @throws DomainException When the given date/times are invalid
+     */
+    public function isBetween(DateTime $startDateTime, DateTime $endDateTime): bool
+    {
+        if ($startDateTime->isAfter($endDateTime)) {
+            throw new DomainException(
+                'Start date/time must come before end date/time'
+            );
+        }
+
+        return $this->isSameOrAfter($startDateTime)
+            && $this->isSameOrBefore($endDateTime);
+    }
+
+    /**
+     * Retrieves a native DateTime instance
+     */
+    public function toNative(): NativeDateTime
     {
         $time = sprintf(
             '%04d-%02d-%02d %02d:%02d:%02d.%06d',
@@ -841,7 +760,30 @@ final class DateTime extends ValueObject implements Comparable
     }
 
     /**
-     * {@inheritdoc}
+     * Retrieves a DateTimeImmutable instance
+     */
+    public function toImmutable(): DateTimeImmutable
+    {
+        $time = sprintf(
+            '%04d-%02d-%02d %02d:%02d:%02d.%06d',
+            $this->year(),
+            $this->month(),
+            $this->day(),
+            $this->hour(),
+            $this->minute(),
+            $this->second(),
+            $this->microsecond()
+        );
+
+        return DateTimeImmutable::createFromFormat(
+            'Y-m-d H:i:s.u',
+            $time,
+            new DateTimeZone($this->timezone->toString())
+        );
+    }
+
+    /**
+     * @inheritDoc
      */
     public function toString(): string
     {
@@ -849,9 +791,9 @@ final class DateTime extends ValueObject implements Comparable
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function compareTo($object): int
+    public function compareTo(mixed $object): int
     {
         if ($this === $object) {
             return 0;
@@ -883,9 +825,7 @@ final class DateTime extends ValueObject implements Comparable
     }
 
     /**
-     * Retrieves a native DateTime instance
-     *
-     * @return DateTimeImmutable
+     * Retrieves internal DateTimeImmutable instance
      */
     protected function dateTime(): DateTimeImmutable
     {
@@ -915,17 +855,6 @@ final class DateTime extends ValueObject implements Comparable
 
     /**
      * Creates a native DateTime from date and time values
-     *
-     * @param int    $year        The year
-     * @param int    $month       The month
-     * @param int    $day         The day
-     * @param int    $hour        The hour
-     * @param int    $minute      The minute
-     * @param int    $second      The second
-     * @param int    $microsecond The microsecond
-     * @param string $timezone    The timezone
-     *
-     * @return DateTimeImmutable
      */
     private static function createNative(
         int $year,
@@ -949,6 +878,10 @@ final class DateTime extends ValueObject implements Comparable
             $microsecond
         );
 
-        return DateTimeImmutable::createFromFormat($format, $time, new DateTimeZone($timezone));
+        return DateTimeImmutable::createFromFormat(
+            $format,
+            $time,
+            new DateTimeZone($timezone)
+        );
     }
 }

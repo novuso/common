@@ -20,57 +20,41 @@ final class ResourceType extends Enum
 {
     /**
      * Regular file
-     *
-     * @var string
      */
     public const FILE = 'file';
 
     /**
      * Directory
-     *
-     * @var string
      */
     public const DIR = 'dir';
 
     /**
      * Symbolic Link
-     *
-     * @var string
      */
     public const LINK = 'link';
 
     /**
      * FIFO named pipe
-     *
-     * @var string
      */
     public const FIFO = 'fifo';
 
     /**
      * Character special device
-     *
-     * @var string
      */
     public const CHAR = 'char';
 
     /**
      * Block special device
-     *
-     * @var string
      */
     public const BLOCK = 'block';
 
     /**
      * Socket
-     *
-     * @var string
      */
     public const SOCKET = 'socket';
 
     /**
      * Unknown file type
-     *
-     * @var string
      */
     public const UNKNOWN = 'unknown';
 }

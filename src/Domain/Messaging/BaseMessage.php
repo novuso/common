@@ -5,6 +5,7 @@ namespace Novuso\Common\Domain\Messaging;
 use Novuso\Common\Domain\Value\DateTime\DateTime;
 use Novuso\System\Type\Type;
 use Novuso\System\Utility\Assert;
+use Novuso\System\Utility\ClassName;
 use Novuso\System\Utility\Validate;
 
 /**
@@ -12,74 +13,23 @@ use Novuso\System\Utility\Validate;
  */
 abstract class BaseMessage implements Message
 {
-    /**
-     * Message ID
-     *
-     * @var MessageId
-     */
-    protected $id;
-
-    /**
-     * Message type
-     *
-     * @var MessageType
-     */
-    protected $type;
-
-    /**
-     * Timestamp
-     *
-     * @var DateTime
-     */
-    protected $timestamp;
-
-    /**
-     * Payload
-     *
-     * @var Payload
-     */
-    protected $payload;
-
-    /**
-     * Payload type
-     *
-     * @var Type
-     */
-    protected $payloadType;
-
-    /**
-     * Meta data
-     *
-     * @var MetaData
-     */
-    protected $metaData;
+    protected Type $payloadType;
 
     /**
      * Constructs BaseMessage
-     *
-     * @param MessageId   $id        The message ID
-     * @param MessageType $type      The message type
-     * @param DateTime    $timestamp The timestamp
-     * @param Payload     $payload   The payload
-     * @param MetaData    $metaData  The meta data
      */
     protected function __construct(
-        MessageId $id,
-        MessageType $type,
-        DateTime $timestamp,
-        Payload $payload,
-        MetaData $metaData
+        protected MessageId $id,
+        protected MessageType $type,
+        protected DateTime $timestamp,
+        protected Payload $payload,
+        protected MetaData $metaData
     ) {
-        $this->id = $id;
-        $this->type = $type;
-        $this->timestamp = $timestamp;
-        $this->payload = $payload;
-        $this->payloadType = Type::create($payload);
-        $this->metaData = $metaData;
+        $this->payloadType = Type::create($this->payload);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function id(): MessageId
     {
@@ -87,7 +37,7 @@ abstract class BaseMessage implements Message
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function type(): MessageType
     {
@@ -95,7 +45,7 @@ abstract class BaseMessage implements Message
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function timestamp(): DateTime
     {
@@ -103,7 +53,7 @@ abstract class BaseMessage implements Message
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function payload(): Payload
     {
@@ -111,7 +61,7 @@ abstract class BaseMessage implements Message
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function payloadType(): Type
     {
@@ -119,7 +69,7 @@ abstract class BaseMessage implements Message
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function metaData(): MetaData
     {
@@ -127,7 +77,7 @@ abstract class BaseMessage implements Message
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function toString(): string
     {
@@ -135,15 +85,15 @@ abstract class BaseMessage implements Message
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->toString();
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function toArray(): array
     {
@@ -158,7 +108,7 @@ abstract class BaseMessage implements Message
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function jsonSerialize(): array
     {
@@ -166,7 +116,7 @@ abstract class BaseMessage implements Message
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function arraySerialize(): array
     {
@@ -174,9 +124,9 @@ abstract class BaseMessage implements Message
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function compareTo($object): int
+    public function compareTo(mixed $object): int
     {
         if ($this === $object) {
             return 0;
@@ -188,9 +138,9 @@ abstract class BaseMessage implements Message
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function equals($object): bool
+    public function equals(mixed $object): bool
     {
         if ($this === $object) {
             return true;
@@ -204,10 +154,14 @@ abstract class BaseMessage implements Message
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function hashValue(): string
     {
-        return $this->id->hashValue();
+        return sprintf(
+            '%s:%s',
+            ClassName::short(static::class),
+            $this->id->hashValue()
+        );
     }
 }

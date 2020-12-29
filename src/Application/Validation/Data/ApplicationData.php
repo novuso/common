@@ -64,7 +64,7 @@ class ApplicationData implements Arrayable, Collection
     /**
      * Retrieves a list of names
      *
-     * @return array
+     * @return array<string>
      */
     public function names(): array
     {

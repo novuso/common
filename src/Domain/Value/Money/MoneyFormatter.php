@@ -9,10 +9,6 @@ interface MoneyFormatter
 {
     /**
      * Retrieves a formatted string for a monetary value
-     *
-     * @param Money $money The monetary value
-     *
-     * @return string
      */
     public function format(Money $money): string;
 }

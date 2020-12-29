@@ -18,11 +18,6 @@ interface QueryFilter
      * function (QueryMessage $message): void {}
      * </code>
      *
-     * @param QueryMessage $message The query message
-     * @param callable     $next    The next filter
-     *
-     * @return void
-     *
      * @throws Throwable When an error occurs
      */
     public function process(QueryMessage $message, callable $next): void;

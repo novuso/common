@@ -23,61 +23,17 @@ interface Value extends Equatable, JsonSerializable
     /**
      * Creates instance from a string representation
      *
-     * @param string $value The string representation
-     *
-     * @return static
-     *
      * @throws DomainException When value is not valid
      */
-    public static function fromString(string $value);
+    public static function fromString(string $value): static;
 
     /**
      * Retrieves a string representation
-     *
-     * @return string
      */
     public function toString(): string;
 
     /**
      * Handles casting to a string
-     *
-     * @return string
      */
-    public function __toString();
-
-    /**
-     * Retrieves value for JSON encoding
-     *
-     * @return mixed
-     */
-    public function jsonSerialize();
-
-    /**
-     * Checks if an object equals this instance
-     *
-     * The passed object must be an instance of the same type.
-     *
-     * The method should return false for invalid object types, rather than
-     * throw an exception.
-     *
-     * @param mixed $object The object
-     *
-     * @return bool
-     */
-    public function equals($object): bool;
-
-    /**
-     * Retrieves a string representation for hashing
-     *
-     * The returned value must behave in a way consistent with the same
-     * object's equals() method.
-     *
-     * A given object must consistently report the same hash value (unless it
-     * is changed so that the new version is no longer considered "equal" to
-     * the old), and two objects which equals() says are equal must report the
-     * same hash value.
-     *
-     * @return string
-     */
-    public function hashValue(): string;
+    public function __toString(): string;
 }

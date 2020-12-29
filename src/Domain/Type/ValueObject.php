@@ -19,20 +19,20 @@ use Novuso\System\Utility\Validate;
 abstract class ValueObject implements Value
 {
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     abstract public function toString(): string;
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->toString();
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function jsonSerialize()
     {
@@ -40,7 +40,7 @@ abstract class ValueObject implements Value
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function equals($object): bool
     {
@@ -57,7 +57,7 @@ abstract class ValueObject implements Value
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function hashValue(): string
     {

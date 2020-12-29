@@ -9,73 +9,17 @@ use Novuso\Common\Domain\Value\DateTime\DateTime;
  */
 final class Resource
 {
-    /**
-     * Resource path
-     *
-     * @var string
-     */
-    protected $path;
-
-    /**
-     * Size in bytes
-     *
-     * @var int
-     */
-    protected $size;
-
-    /**
-     * User ID
-     *
-     * @var int
-     */
-    protected $userId;
-
-    /**
-     * Group ID
-     *
-     * @var int
-     */
-    protected $groupId;
-
-    /**
-     * Mode
-     *
-     * @var int
-     */
-    protected $mode;
-
-    /**
-     * File access time
-     *
-     * @var DateTime
-     */
-    protected $accessTime;
-
-    /**
-     * File modify time
-     *
-     * @var DateTime
-     */
-    protected $modifyTime;
-
-    /**
-     * Resource type
-     *
-     * @var ResourceType
-     */
-    protected $type;
+    protected string $path;
+    protected int $size;
+    protected int $userId;
+    protected int $groupId;
+    protected int $mode;
+    protected DateTime $accessTime;
+    protected DateTime $modifyTime;
+    protected ResourceType $type;
 
     /**
      * Constructs Resource
-     *
-     * @param string       $path       The resource path
-     * @param int          $size       The size in bytes
-     * @param int          $userId     The user ID
-     * @param int          $groupId    The group ID
-     * @param int          $mode       The mode
-     * @param DateTime     $accessTime The file access time
-     * @param DateTime     $modifyTime The file modify time
-     * @param ResourceType $type       The resource type
      */
     public function __construct(
         string $path,
@@ -99,8 +43,6 @@ final class Resource
 
     /**
      * Retrieves the resource path
-     *
-     * @return string
      */
     public function path(): string
     {
@@ -109,8 +51,6 @@ final class Resource
 
     /**
      * Retrieves the size in bytes
-     *
-     * @return int
      */
     public function size(): int
     {
@@ -119,8 +59,6 @@ final class Resource
 
     /**
      * Retrieves the user ID
-     *
-     * @return int
      */
     public function userId(): int
     {
@@ -129,8 +67,6 @@ final class Resource
 
     /**
      * Retrieves the group ID
-     *
-     * @return int
      */
     public function groupId(): int
     {
@@ -139,8 +75,6 @@ final class Resource
 
     /**
      * Retrieves the mode
-     *
-     * @return int
      */
     public function mode(): int
     {
@@ -149,8 +83,6 @@ final class Resource
 
     /**
      * Retrieves the permissions
-     *
-     * @return string
      */
     public function permissions(): string
     {
@@ -159,8 +91,6 @@ final class Resource
 
     /**
      * Retrieves the access time
-     *
-     * @return DateTime
      */
     public function accessTime(): DateTime
     {
@@ -169,8 +99,6 @@ final class Resource
 
     /**
      * Retrieves the modify time
-     *
-     * @return DateTime
      */
     public function modifyTime(): DateTime
     {
@@ -179,8 +107,6 @@ final class Resource
 
     /**
      * Retrieves the resource type
-     *
-     * @return ResourceType
      */
     public function type(): ResourceType
     {
@@ -189,10 +115,8 @@ final class Resource
 
     /**
      * Handles casting to a string
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->path;
     }

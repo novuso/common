@@ -192,1270 +192,905 @@ final class Currency extends Enum
 {
     /**
      * UAE Dirham
-     *
-     * @var string
      */
     public const AED = 'AED';
 
     /**
      * Afghani
-     *
-     * @var string
      */
     public const AFN = 'AFN';
 
     /**
      * Lek
-     *
-     * @var string
      */
     public const ALL = 'ALL';
 
     /**
      * Armenian Dram
-     *
-     * @var string
      */
     public const AMD = 'AMD';
 
     /**
      * Netherlands Antillean Guilder
-     *
-     * @var string
      */
     public const ANG = 'ANG';
 
     /**
      * Kwanza
-     *
-     * @var string
      */
     public const AOA = 'AOA';
 
     /**
      * Argentine Peso
-     *
-     * @var string
      */
     public const ARS = 'ARS';
 
     /**
      * Australian Dollar
-     *
-     * @var string
      */
     public const AUD = 'AUD';
 
     /**
      * Aruban Florin
-     *
-     * @var string
      */
     public const AWG = 'AWG';
 
     /**
      * Azerbaijanian Manat
-     *
-     * @var string
      */
     public const AZN = 'AZN';
 
     /**
      * Convertible Mark
-     *
-     * @var string
      */
     public const BAM = 'BAM';
 
     /**
      * Barbados Dollar
-     *
-     * @var string
      */
     public const BBD = 'BBD';
 
     /**
      * Taka
-     *
-     * @var string
      */
     public const BDT = 'BDT';
 
     /**
      * Bulgarian Lev
-     *
-     * @var string
      */
     public const BGN = 'BGN';
 
     /**
      * Bahraini Dinar
-     *
-     * @var string
      */
     public const BHD = 'BHD';
 
     /**
      * Burundi Franc
-     *
-     * @var string
      */
     public const BIF = 'BIF';
 
     /**
      * Bermudian Dollar
-     *
-     * @var string
      */
     public const BMD = 'BMD';
 
     /**
      * Brunei Dollar
-     *
-     * @var string
      */
     public const BND = 'BND';
 
     /**
      * Boliviano
-     *
-     * @var string
      */
     public const BOB = 'BOB';
 
     /**
      * Mvdol
-     *
-     * @var string
      */
     public const BOV = 'BOV';
 
     /**
      * Brazilian Real
-     *
-     * @var string
      */
     public const BRL = 'BRL';
 
     /**
      * Bahamian Dollar
-     *
-     * @var string
      */
     public const BSD = 'BSD';
 
     /**
      * Ngultrum
-     *
-     * @var string
      */
     public const BTN = 'BTN';
 
     /**
      * Pula
-     *
-     * @var string
      */
     public const BWP = 'BWP';
 
     /**
      * Belarussian Ruble
-     *
-     * @var string
      */
     public const BYR = 'BYR';
 
     /**
      * Belize Dollar
-     *
-     * @var string
      */
     public const BZD = 'BZD';
 
     /**
      * Canadian Dollar
-     *
-     * @var string
      */
     public const CAD = 'CAD';
 
     /**
      * Congolese Franc
-     *
-     * @var string
      */
     public const CDF = 'CDF';
 
     /**
      * WIR Euro
-     *
-     * @var string
      */
     public const CHE = 'CHE';
 
     /**
      * Swiss Franc
-     *
-     * @var string
      */
     public const CHF = 'CHF';
 
     /**
      * WIR Franc
-     *
-     * @var string
      */
     public const CHW = 'CHW';
 
     /**
      * Unidad de Fomento
-     *
-     * @var string
      */
     public const CLF = 'CLF';
 
     /**
      * Chilean Peso
-     *
-     * @var string
      */
     public const CLP = 'CLP';
 
     /**
      * Yuan Renminbi
-     *
-     * @var string
      */
     public const CNY = 'CNY';
 
     /**
      * Colombian Peso
-     *
-     * @var string
      */
     public const COP = 'COP';
 
     /**
      * Unidad de Valor Real
-     *
-     * @var string
      */
     public const COU = 'COU';
 
     /**
      * Costa Rican Colon
-     *
-     * @var string
      */
     public const CRC = 'CRC';
 
     /**
      * Peso Convertible
-     *
-     * @var string
      */
     public const CUC = 'CUC';
 
     /**
      * Cuban Peso
-     *
-     * @var string
      */
     public const CUP = 'CUP';
 
     /**
      * Cabo Verde Escudo
-     *
-     * @var string
      */
     public const CVE = 'CVE';
 
     /**
      * Czech Koruna
-     *
-     * @var string
      */
     public const CZK = 'CZK';
 
     /**
      * Djibouti Franc
-     *
-     * @var string
      */
     public const DJF = 'DJF';
 
     /**
      * Danish Krone
-     *
-     * @var string
      */
     public const DKK = 'DKK';
 
     /**
      * Dominican Peso
-     *
-     * @var string
      */
     public const DOP = 'DOP';
 
     /**
      * Algerian Dinar
-     *
-     * @var string
      */
     public const DZD = 'DZD';
 
     /**
      * Egyptian Pound
-     *
-     * @var string
      */
     public const EGP = 'EGP';
 
     /**
      * Nakfa
-     *
-     * @var string
      */
     public const ERN = 'ERN';
 
     /**
      * Ethiopian Birr
-     *
-     * @var string
      */
     public const ETB = 'ETB';
 
     /**
      * Euro
-     *
-     * @var string
      */
     public const EUR = 'EUR';
 
     /**
      * Fiji Dollar
-     *
-     * @var string
      */
     public const FJD = 'FJD';
 
     /**
      * Falkland Islands Pound
-     *
-     * @var string
      */
     public const FKP = 'FKP';
 
     /**
      * Pound Sterling
-     *
-     * @var string
      */
     public const GBP = 'GBP';
 
     /**
      * Lari
-     *
-     * @var string
      */
     public const GEL = 'GEL';
 
     /**
      * Ghana Cedi
-     *
-     * @var string
      */
     public const GHS = 'GHS';
 
     /**
      * Gibraltar Pound
-     *
-     * @var string
      */
     public const GIP = 'GIP';
 
     /**
      * Dalasi
-     *
-     * @var string
      */
     public const GMD = 'GMD';
 
     /**
      * Guinea Franc
-     *
-     * @var string
      */
     public const GNF = 'GNF';
 
     /**
      * Quetzal
-     *
-     * @var string
      */
     public const GTQ = 'GTQ';
 
     /**
      * Guyana Dollar
-     *
-     * @var string
      */
     public const GYD = 'GYD';
 
     /**
      * Hong Kong Dollar
-     *
-     * @var string
      */
     public const HKD = 'HKD';
 
     /**
      * Lempira
-     *
-     * @var string
      */
     public const HNL = 'HNL';
 
     /**
      * Kuna
-     *
-     * @var string
      */
     public const HRK = 'HRK';
 
     /**
      * Gourde
-     *
-     * @var string
      */
     public const HTG = 'HTG';
 
     /**
      * Forint
-     *
-     * @var string
      */
     public const HUF = 'HUF';
 
     /**
      * Rupiah
-     *
-     * @var string
      */
     public const IDR = 'IDR';
 
     /**
      * New Israeli Sheqel
-     *
-     * @var string
      */
     public const ILS = 'ILS';
 
     /**
      * Indian Rupee
-     *
-     * @var string
      */
     public const INR = 'INR';
 
     /**
      * Iraqi Dinar
-     *
-     * @var string
      */
     public const IQD = 'IQD';
 
     /**
      * Iranian Rial
-     *
-     * @var string
      */
     public const IRR = 'IRR';
 
     /**
      * Iceland Krona
-     *
-     * @var string
      */
     public const ISK = 'ISK';
 
     /**
      * Jamaican Dollar
-     *
-     * @var string
      */
     public const JMD = 'JMD';
 
     /**
      * Jordanian Dinar
-     *
-     * @var string
      */
     public const JOD = 'JOD';
 
     /**
      * Yen
-     *
-     * @var string
      */
     public const JPY = 'JPY';
 
     /**
      * Kenyan Shilling
-     *
-     * @var string
      */
     public const KES = 'KES';
 
     /**
      * Som
-     *
-     * @var string
      */
     public const KGS = 'KGS';
 
     /**
      * Riel
-     *
-     * @var string
      */
     public const KHR = 'KHR';
 
     /**
      * Comoro Franc
-     *
-     * @var string
      */
     public const KMF = 'KMF';
 
     /**
      * North Korean Won
-     *
-     * @var string
      */
     public const KPW = 'KPW';
 
     /**
      * Won
-     *
-     * @var string
      */
     public const KRW = 'KRW';
 
     /**
      * Kuwaiti Dinar
-     *
-     * @var string
      */
     public const KWD = 'KWD';
 
     /**
      * Cayman Islands Dollar
-     *
-     * @var string
      */
     public const KYD = 'KYD';
 
     /**
      * Tenge
-     *
-     * @var string
      */
     public const KZT = 'KZT';
 
     /**
      * Kip
-     *
-     * @var string
      */
     public const LAK = 'LAK';
 
     /**
      * Lebanese Pound
-     *
-     * @var string
      */
     public const LBP = 'LBP';
 
     /**
      * Sri Lanka Rupee
-     *
-     * @var string
      */
     public const LKR = 'LKR';
 
     /**
      * Liberian Dollar
-     *
-     * @var string
      */
     public const LRD = 'LRD';
 
     /**
      * Loti
-     *
-     * @var string
      */
     public const LSL = 'LSL';
 
     /**
      * Lithuanian Litas
-     *
-     * @var string
      */
     public const LTL = 'LTL';
 
     /**
      * Latvian Lats
-     *
-     * @var string
      */
     public const LVL = 'LVL';
 
     /**
      * Libyan Dinar
-     *
-     * @var string
      */
     public const LYD = 'LYD';
 
     /**
      * Moroccan Dirham
-     *
-     * @var string
      */
     public const MAD = 'MAD';
 
     /**
      * Moldovan Leu
-     *
-     * @var string
      */
     public const MDL = 'MDL';
 
     /**
      * Malagasy Ariary
-     *
-     * @var string
      */
     public const MGA = 'MGA';
 
     /**
      * Denar
-     *
-     * @var string
      */
     public const MKD = 'MKD';
 
     /**
      * Kyat
-     *
-     * @var string
      */
     public const MMK = 'MMK';
 
     /**
      * Tugrik
-     *
-     * @var string
      */
     public const MNT = 'MNT';
 
     /**
      * Pataca
-     *
-     * @var string
      */
     public const MOP = 'MOP';
 
     /**
      * Ouguiya
-     *
-     * @var string
      */
     public const MRO = 'MRO';
 
     /**
      * Mauritius Rupee
-     *
-     * @var string
      */
     public const MUR = 'MUR';
 
     /**
      * Rufiyaa
-     *
-     * @var string
      */
     public const MVR = 'MVR';
 
     /**
      * Kwacha
-     *
-     * @var string
      */
     public const MWK = 'MWK';
 
     /**
      * Mexican Peso
-     *
-     * @var string
      */
     public const MXN = 'MXN';
 
     /**
      * Mexican Unidad de Inversion (UDI)
-     *
-     * @var string
      */
     public const MXV = 'MXV';
 
     /**
      * Malaysian Ringgit
-     *
-     * @var string
      */
     public const MYR = 'MYR';
 
     /**
      * Mozambique Metical
-     *
-     * @var string
      */
     public const MZN = 'MZN';
 
     /**
      * Namibia Dollar
-     *
-     * @var string
      */
     public const NAD = 'NAD';
 
     /**
      * Naira
-     *
-     * @var string
      */
     public const NGN = 'NGN';
 
     /**
      * Cordoba Oro
-     *
-     * @var string
      */
     public const NIO = 'NIO';
 
     /**
      * Norwegian Krone
-     *
-     * @var string
      */
     public const NOK = 'NOK';
 
     /**
      * Nepalese Rupee
-     *
-     * @var string
      */
     public const NPR = 'NPR';
 
     /**
      * New Zealand Dollar
-     *
-     * @var string
      */
     public const NZD = 'NZD';
 
     /**
      * Rial Omani
-     *
-     * @var string
      */
     public const OMR = 'OMR';
 
     /**
      * Balboa
-     *
-     * @var string
      */
     public const PAB = 'PAB';
 
     /**
      * Nuevo Sol
-     *
-     * @var string
      */
     public const PEN = 'PEN';
 
     /**
      * Kina
-     *
-     * @var string
      */
     public const PGK = 'PGK';
 
     /**
      * Philippine Peso
-     *
-     * @var string
      */
     public const PHP = 'PHP';
 
     /**
      * Pakistan Rupee
-     *
-     * @var string
      */
     public const PKR = 'PKR';
 
     /**
      * Zloty
-     *
-     * @var string
      */
     public const PLN = 'PLN';
 
     /**
      * Guarani
-     *
-     * @var string
      */
     public const PYG = 'PYG';
 
     /**
      * Qatari Rial
-     *
-     * @var string
      */
     public const QAR = 'QAR';
 
     /**
      * Romanian Leu
-     *
-     * @var string
      */
     public const RON = 'RON';
 
     /**
      * Serbian Dinar
-     *
-     * @var string
      */
     public const RSD = 'RSD';
 
     /**
      * Russian Ruble
-     *
-     * @var string
      */
     public const RUB = 'RUB';
 
     /**
      * Rwanda Franc
-     *
-     * @var string
      */
     public const RWF = 'RWF';
 
     /**
      * Saudi Riyal
-     *
-     * @var string
      */
     public const SAR = 'SAR';
 
     /**
      * Solomon Islands Dollar
-     *
-     * @var string
      */
     public const SBD = 'SBD';
 
     /**
      * Seychelles Rupee
-     *
-     * @var string
      */
     public const SCR = 'SCR';
 
     /**
      * Sudanese Pound
-     *
-     * @var string
      */
     public const SDG = 'SDG';
 
     /**
      * Swedish Krona
-     *
-     * @var string
      */
     public const SEK = 'SEK';
 
     /**
      * Singapore Dollar
-     *
-     * @var string
      */
     public const SGD = 'SGD';
 
     /**
      * Saint Helena Pound
-     *
-     * @var string
      */
     public const SHP = 'SHP';
 
     /**
      * Leone
-     *
-     * @var string
      */
     public const SLL = 'SLL';
 
     /**
      * Somali Shilling
-     *
-     * @var string
      */
     public const SOS = 'SOS';
 
     /**
      * Surinam Dollar
-     *
-     * @var string
      */
     public const SRD = 'SRD';
 
     /**
      * South Sudanese Pound
-     *
-     * @var string
      */
     public const SSP = 'SSP';
 
     /**
      * Dobra
-     *
-     * @var string
      */
     public const STD = 'STD';
 
     /**
      * El Salvador Colon
-     *
-     * @var string
      */
     public const SVC = 'SVC';
 
     /**
      * Syrian Pound
-     *
-     * @var string
      */
     public const SYP = 'SYP';
 
     /**
      * Lilangeni
-     *
-     * @var string
      */
     public const SZL = 'SZL';
 
     /**
      * Baht
-     *
-     * @var string
      */
     public const THB = 'THB';
 
     /**
      * Somoni
-     *
-     * @var string
      */
     public const TJS = 'TJS';
 
     /**
      * Turkmenistan New Manat
-     *
-     * @var string
      */
     public const TMT = 'TMT';
 
     /**
      * Tunisian Dinar
-     *
-     * @var string
      */
     public const TND = 'TND';
 
     /**
      * Pa’anga
-     *
-     * @var string
      */
     public const TOP = 'TOP';
 
     /**
      * Turkish Lira
-     *
-     * @var string
      */
     public const TRY = 'TRY';
 
     /**
      * Trinidad and Tobago Dollar
-     *
-     * @var string
      */
     public const TTD = 'TTD';
 
     /**
      * New Taiwan Dollar
-     *
-     * @var string
      */
     public const TWD = 'TWD';
 
     /**
      * Tanzanian Shilling
-     *
-     * @var string
      */
     public const TZS = 'TZS';
 
     /**
      * Hryvnia
-     *
-     * @var string
      */
     public const UAH = 'UAH';
 
     /**
      * Uganda Shilling
-     *
-     * @var string
      */
     public const UGX = 'UGX';
 
     /**
      * US Dollar
-     *
-     * @var string
      */
     public const USD = 'USD';
 
     /**
      * US Dollar (Next day)
-     *
-     * @var string
      */
     public const USN = 'USN';
 
     /**
      * Uruguay Peso en Unidades Indexadas (URUIURUI)
-     *
-     * @var string
      */
     public const UYI = 'UYI';
 
     /**
      * Peso Uruguayo
-     *
-     * @var string
      */
     public const UYU = 'UYU';
 
     /**
      * Uzbekistan Sum
-     *
-     * @var string
      */
     public const UZS = 'UZS';
 
     /**
      * Bolivar
-     *
-     * @var string
      */
     public const VEF = 'VEF';
 
     /**
      * Dong
-     *
-     * @var string
      */
     public const VND = 'VND';
 
     /**
      * Vatu
-     *
-     * @var string
      */
     public const VUV = 'VUV';
 
     /**
      * Tala
-     *
-     * @var string
      */
     public const WST = 'WST';
 
     /**
      * CFA Franc BEAC
-     *
-     * @var string
      */
     public const XAF = 'XAF';
 
     /**
      * Silver
-     *
-     * @var string
      */
     public const XAG = 'XAG';
 
     /**
      * Gold
-     *
-     * @var string
      */
     public const XAU = 'XAU';
 
     /**
      * Bond Markets Unit European Composite Unit (EURCO)
-     *
-     * @var string
      */
     public const XBA = 'XBA';
 
     /**
      * Bond Markets Unit European Monetary Unit (E.M.U.-6)
-     *
-     * @var string
      */
     public const XBB = 'XBB';
 
     /**
      * Bond Markets Unit European Unit of Account 9 (E.U.A.-9)
-     *
-     * @var string
      */
     public const XBC = 'XBC';
 
     /**
      * Bond Markets Unit European Unit of Account 17 (E.U.A.-17)
-     *
-     * @var string
      */
     public const XBD = 'XBD';
 
     /**
      * East Caribbean Dollar
-     *
-     * @var string
      */
     public const XCD = 'XCD';
 
     /**
      * SDR (Special Drawing Right)
-     *
-     * @var string
      */
     public const XDR = 'XDR';
 
     /**
      * CFA Franc BCEAO
-     *
-     * @var string
      */
     public const XOF = 'XOF';
 
     /**
      * Palladium
-     *
-     * @var string
      */
     public const XPD = 'XPD';
 
     /**
      * CFP Franc
-     *
-     * @var string
      */
     public const XPF = 'XPF';
 
     /**
      * Platinum
-     *
-     * @var string
      */
     public const XPT = 'XPT';
 
     /**
      * Sucre
-     *
-     * @var string
      */
     public const XSU = 'XSU';
 
     /**
      * Codes specifically reserved for testing purposes
-     *
-     * @var string
      */
     public const XTS = 'XTS';
 
     /**
      * ADB Unit of Account
-     *
-     * @var string
      */
     public const XUA = 'XUA';
 
     /**
      * The codes assigned for transactions where no currency is involved
-     *
-     * @var string
      */
     public const XXX = 'XXX';
 
     /**
      * Yemeni Rial
-     *
-     * @var string
      */
     public const YER = 'YER';
 
     /**
      * Rand
-     *
-     * @var string
      */
     public const ZAR = 'ZAR';
 
     /**
      * Zambian Kwacha
-     *
-     * @var string
      */
     public const ZMW = 'ZMW';
 
     /**
      * Zimbabwe Dollar
-     *
-     * @var string
      */
     public const ZWL = 'ZWL';
 
-    /**
-     * Currency data
-     *
-     * @var array
-     */
-    protected static $currencies = [
+    protected static array $currencies = [
         'AED' => [
             'display' => 'UAE Dirham',
             'code'    => 'AED',
@@ -2720,8 +2355,6 @@ final class Currency extends Enum
 
     /**
      * Retrieves the display name
-     *
-     * @return string
      */
     public function displayName(): string
     {
@@ -2730,8 +2363,6 @@ final class Currency extends Enum
 
     /**
      * Retrieves the ISO 4217 currency code
-     *
-     * @return string
      */
     public function code(): string
     {
@@ -2740,8 +2371,6 @@ final class Currency extends Enum
 
     /**
      * Retrieves the ISO 4217 numeric code
-     *
-     * @return int
      */
     public function numericCode(): int
     {
@@ -2752,8 +2381,6 @@ final class Currency extends Enum
      * Retrieves the default number of fraction digits
      *
      * In the case of pseudo-currencies, -1 is returned.
-     *
-     * @return int
      */
     public function digits(): int
     {
@@ -2762,8 +2389,6 @@ final class Currency extends Enum
 
     /**
      * Retrieves the number of minor units
-     *
-     * @return int
      */
     public function minor(): int
     {

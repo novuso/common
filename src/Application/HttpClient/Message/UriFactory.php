@@ -13,11 +13,7 @@ interface UriFactory
     /**
      * Creates a UriInterface instance
      *
-     * @param mixed $uri The URI
-     *
-     * @return UriInterface
-     *
      * @throws DomainException When the URI is invalid
      */
-    public function createUri($uri): UriInterface;
+    public function createUri(string $uri): UriInterface;
 }

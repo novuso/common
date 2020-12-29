@@ -16,54 +16,29 @@ use Traversable;
 final class DateRange extends ValueObject implements IteratorAggregate
 {
     /**
-     * Start date
-     *
-     * @var Date
-     */
-    protected $start;
-
-    /**
-     * End date
-     *
-     * @var Date
-     */
-    protected $end;
-
-    /**
-     * Interval step
-     *
-     * @var int
-     */
-    protected $step;
-
-    /**
      * Constructs DateRange
      *
      * The step may be positive or negative, but cannot be zero.
      *
-     * @param Date $start The start date
-     * @param Date $end   The end date
-     * @param int  $step  The interval step
-     *
      * @throws DomainException When the arguments are invalid
      */
-    public function __construct(Date $start, Date $end, int $step = 1)
+    public function __construct(protected Date $start, protected Date $end, protected int $step = 1)
     {
-        if ($step === 0) {
+        if ($this->step === 0) {
             throw new DomainException('Step cannot be zero');
         }
 
-        if ($step > 0 && $start->compareTo($end) !== -1) {
-            throw new DomainException('End date must be greater than start date with a positive step');
+        if ($this->step > 0 && $this->start->isAfter($this->end)) {
+            throw new DomainException(
+                'End date must be after start date with a positive step'
+            );
         }
 
-        if ($step < 0 && $start->compareTo($end) !== 1) {
-            throw new DomainException('Start date must be greater than end date with a negative step');
+        if ($this->step < 0 && $this->start->isBefore($this->end)) {
+            throw new DomainException(
+                'Start date must be before end date with a negative step'
+            );
         }
-
-        $this->start = $start;
-        $this->end = $end;
-        $this->step = $step;
     }
 
     /**
@@ -71,31 +46,19 @@ final class DateRange extends ValueObject implements IteratorAggregate
      *
      * The step may be positive or negative, but cannot be zero.
      *
-     * @param Date $start The start date
-     * @param Date $end   The end date
-     * @param int  $step  The interval step
-     *
-     * @return DateRange
-     *
      * @throws DomainException When the arguments are invalid
      */
-    public static function create(Date $start, Date $end, int $step = 1): DateRange
+    public static function create(Date $start, Date $end, int $step = 1): static
     {
         return new static($start, $end, $step);
     }
 
     /**
-     * Creates instance from a start date, interval step, and number of iterations
-     *
-     * @param Date $start The start date
-     * @param int  $step  The interval step
-     * @param int  $iterations
-     *
-     * @return DateRange
+     * Creates instance from a start date, interval step, and iterations
      *
      * @throws DomainException When the arguments are invalid
      */
-    public static function fromIterations(Date $start, int $step, int $iterations): DateRange
+    public static function fromIterations(Date $start, int $step, int $iterations): static
     {
         if ($step === 0) {
             throw new DomainException('Step cannot be zero');
@@ -120,9 +83,9 @@ final class DateRange extends ValueObject implements IteratorAggregate
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public static function fromString(string $value): DateRange
+    public static function fromString(string $value): static
     {
         $pattern = sprintf('/\A%s\z/', implode('', [
             '(?P<start_year>[\d]{4})-(?P<start_month>[\d]{2})-(?P<start_day>[\d]{2})',
@@ -131,7 +94,10 @@ final class DateRange extends ValueObject implements IteratorAggregate
             '\{(?P<step>-?[\d]+)\}'
         ]));
         if (!preg_match($pattern, $value, $matches)) {
-            $message = sprintf('%s expects $value in "Y-m-d..Y-m-d{n}" format', __METHOD__);
+            $message = sprintf(
+                '%s expects $value in "Y-m-d..Y-m-d{n}" format',
+                __METHOD__
+            );
             throw new DomainException($message);
         }
 
@@ -152,8 +118,6 @@ final class DateRange extends ValueObject implements IteratorAggregate
 
     /**
      * Retrieves the start date
-     *
-     * @return Date
      */
     public function start(): Date
     {
@@ -162,8 +126,6 @@ final class DateRange extends ValueObject implements IteratorAggregate
 
     /**
      * Retrieves the end date
-     *
-     * @return Date
      */
     public function end(): Date
     {
@@ -172,8 +134,6 @@ final class DateRange extends ValueObject implements IteratorAggregate
 
     /**
      * Retrieves the step
-     *
-     * @return int
      */
     public function step(): int
     {
@@ -181,7 +141,7 @@ final class DateRange extends ValueObject implements IteratorAggregate
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function toString(): string
     {
@@ -195,10 +155,6 @@ final class DateRange extends ValueObject implements IteratorAggregate
 
     /**
      * Checks if a date is in the range
-     *
-     * @param Date $date The date
-     *
-     * @return bool
      */
     public function contains(Date $date): bool
     {
@@ -213,18 +169,14 @@ final class DateRange extends ValueObject implements IteratorAggregate
 
     /**
      * Retrieves an iterator
-     *
-     * @return Traversable|Date[]
      */
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return $this->createIterator();
     }
 
     /**
      * Creates iterator for the range
-     *
-     * @return Generator|Date[]
      */
     protected function createIterator(): Generator
     {
@@ -232,7 +184,9 @@ final class DateRange extends ValueObject implements IteratorAggregate
         if ($this->step > 0) {
             // forward iteration
             yield Date::fromString($current->format('Y-m-d'));
-            $interval = DateInterval::createFromDateString(sprintf('+%d days', $this->step));
+            $interval = DateInterval::createFromDateString(
+                sprintf('+%d days', $this->step)
+            );
             while ($current->format('Y-m-d') < $this->end->toString()) {
                 $current->add($interval);
                 if ($current->format('Y-m-d') <= $this->end->toString()) {
@@ -242,7 +196,9 @@ final class DateRange extends ValueObject implements IteratorAggregate
         } else {
             // reverse iteration
             yield Date::fromString($current->format('Y-m-d'));
-            $interval = DateInterval::createFromDateString(sprintf('%d days', $this->step));
+            $interval = DateInterval::createFromDateString(
+                sprintf('%d days', $this->step)
+            );
             while ($current->format('Y-m-d') > $this->end->toString()) {
                 $current->add($interval);
                 if ($current->format('Y-m-d') >= $this->end->toString()) {

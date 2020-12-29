@@ -6,7 +6,6 @@ use DateTimeImmutable;
 use DateTimeInterface;
 use DateTimeZone;
 use Novuso\Common\Domain\Type\ValueObject;
-use Novuso\System\Exception\AssertionException;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Type\Comparable;
 use Novuso\System\Utility\Assert;
@@ -17,51 +16,17 @@ use Novuso\System\Utility\Assert;
 final class Date extends ValueObject implements Comparable
 {
     /**
-     * Year
-     *
-     * @var int
-     */
-    protected $year;
-
-    /**
-     * Month
-     *
-     * @var int
-     */
-    protected $month;
-
-    /**
-     * Day
-     *
-     * @var int
-     */
-    protected $day;
-
-    /**
      * Constructs Date
-     *
-     * @param int $year  The year
-     * @param int $month The month
-     * @param int $day   The day
      *
      * @throws DomainException When the date is not valid
      */
-    public function __construct(int $year, int $month, int $day)
+    public function __construct(protected int $year, protected int $month, protected int $day)
     {
-        $this->guardDate($year, $month, $day);
-        $this->year = $year;
-        $this->month = $month;
-        $this->day = $day;
+        $this->guardDate($this->year, $this->month, $this->day);
     }
 
     /**
      * Creates instance from date values
-     *
-     * @param int $year  The year
-     * @param int $month The month
-     * @param int $day   The day
-     *
-     * @return Date
      *
      * @throws DomainException When the date is not valid
      */
@@ -72,12 +37,6 @@ final class Date extends ValueObject implements Comparable
 
     /**
      * Creates instance for the current date
-     *
-     * @param string|null $timezone The timezone string or null for default
-     *
-     * @return Date
-     *
-     * @throws AssertionException When the timezone is not valid
      */
     public static function now(?string $timezone = null): Date
     {
@@ -94,10 +53,6 @@ final class Date extends ValueObject implements Comparable
 
     /**
      * Creates instance from a native DateTime
-     *
-     * @param DateTimeInterface $dateTime A DateTimeInterface instance
-     *
-     * @return Date
      */
     public static function fromNative(DateTimeInterface $dateTime): Date
     {
@@ -110,13 +65,6 @@ final class Date extends ValueObject implements Comparable
 
     /**
      * Creates instance from a timestamp and timezone
-     *
-     * @param int         $timestamp The timestamp
-     * @param string|null $timezone  The timezone string or null for default
-     *
-     * @return Date
-     *
-     * @throws AssertionException When the timezone is not valid
      */
     public static function fromTimestamp(int $timestamp, ?string $timezone = null): Date
     {
@@ -124,7 +72,11 @@ final class Date extends ValueObject implements Comparable
         Assert::isTimezone($timezone);
 
         $time = sprintf('%d', $timestamp);
-        $dateTime = DateTimeImmutable::createFromFormat('U', $time, new DateTimeZone('UTC'));
+        $dateTime = DateTimeImmutable::createFromFormat(
+            'U',
+            $time,
+            new DateTimeZone('UTC')
+        );
         $dateTime = $dateTime->setTimezone(new DateTimeZone($timezone));
         $year = (int) $dateTime->format('Y');
         $month = (int) $dateTime->format('n');
@@ -134,13 +86,16 @@ final class Date extends ValueObject implements Comparable
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public static function fromString(string $value): Date
+    public static function fromString(string $value): static
     {
         $pattern = '/\A(?P<year>[\d]{4})-(?P<month>[\d]{2})-(?P<day>[\d]{2})\z/';
         if (!preg_match($pattern, $value, $matches)) {
-            $message = sprintf('%s expects $value in "Y-m-d" format', __METHOD__);
+            $message = sprintf(
+                '%s expects $value in "Y-m-d" format',
+                __METHOD__
+            );
             throw new DomainException($message);
         }
 
@@ -152,9 +107,37 @@ final class Date extends ValueObject implements Comparable
     }
 
     /**
-     * Retrieves the year
+     * Creates instance with a given year
      *
-     * @return int
+     * @throws DomainException When the date is not valid
+     */
+    public function withYear(int $year): static
+    {
+        return new static($year, $this->month(), $this->day());
+    }
+
+    /**
+     * Creates instance with a given month
+     *
+     * @throws DomainException When the date is not valid
+     */
+    public function withMonth(int $month): static
+    {
+        return new static($this->year(), $month, $this->day());
+    }
+
+    /**
+     * Creates instance with a given day
+     *
+     * @throws DomainException When the date is not valid
+     */
+    public function withDay(int $day): static
+    {
+        return new static($this->year(), $this->month(), $day);
+    }
+
+    /**
+     * Retrieves the year
      */
     public function year(): int
     {
@@ -163,8 +146,6 @@ final class Date extends ValueObject implements Comparable
 
     /**
      * Retrieves the month
-     *
-     * @return int
      */
     public function month(): int
     {
@@ -173,8 +154,6 @@ final class Date extends ValueObject implements Comparable
 
     /**
      * Retrieves the day
-     *
-     * @return int
      */
     public function day(): int
     {
@@ -183,10 +162,6 @@ final class Date extends ValueObject implements Comparable
 
     /**
      * Retrieves the week day
-     *
-     * From 0 for Sunday to 6 for Saturday.
-     *
-     * @return WeekDay
      */
     public function weekDay(): WeekDay
     {
@@ -204,8 +179,6 @@ final class Date extends ValueObject implements Comparable
      * Set the current locale using the setlocale() function.
      *
      * @link http://php.net/setlocale PHP setlocale function
-     *
-     * @return string
      */
     public function weekDayName(): string
     {
@@ -218,7 +191,62 @@ final class Date extends ValueObject implements Comparable
     }
 
     /**
-     * {@inheritdoc}
+     * Checks if this date is before the given date
+     */
+    public function isBefore(Date $date): bool
+    {
+        return $this->compareTo($date) < 0;
+    }
+
+    /**
+     * Checks if this date is same as the given date
+     */
+    public function isSame(Date $date): bool
+    {
+        return $this->compareTo($date) === 0;
+    }
+
+    /**
+     * Checks if this date is after the given date
+     */
+    public function isAfter(Date $date): bool
+    {
+        return $this->compareTo($date) > 0;
+    }
+
+    /**
+     * Checks if this date is same or before the given date
+     */
+    public function isSameOrBefore(Date $date): bool
+    {
+        return $this->compareTo($date) <= 0;
+    }
+
+    /**
+     * Checks if this date is same or after the given date
+     */
+    public function isSameOrAfter(Date $date): bool
+    {
+        return $this->compareTo($date) >= 0;
+    }
+
+    /**
+     * Checks if this date is between the given dates
+     *
+     * @throws DomainException When the given dates are invalid
+     */
+    public function isBetween(Date $startDate, Date $endDate): bool
+    {
+        if ($startDate->isAfter($endDate)) {
+            throw new DomainException('Start date must come before end date');
+        }
+
+        return $this->isSameOrAfter($startDate)
+            && $this->isSameOrBefore($endDate);
+    }
+
+    /**
+     * @inheritDoc
      */
     public function toString(): string
     {
@@ -226,9 +254,9 @@ final class Date extends ValueObject implements Comparable
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function compareTo($object): int
+    public function compareTo(mixed $object): int
     {
         if ($this === $object) {
             return 0;
@@ -263,18 +291,17 @@ final class Date extends ValueObject implements Comparable
     /**
      * Validates the date
      *
-     * @param int $year  The year
-     * @param int $month The month
-     * @param int $day   The day
-     *
-     * @return void
-     *
      * @throws DomainException When the date is not valid
      */
     protected function guardDate(int $year, int $month, int $day): void
     {
         if (!checkdate($month, $day, $year)) {
-            $message = sprintf('Invalid date: %04d-%02d-%02d', $year, $month, $day);
+            $message = sprintf(
+                'Invalid date: %04d-%02d-%02d',
+                $year,
+                $month,
+                $day
+            );
             throw new DomainException($message);
         }
     }

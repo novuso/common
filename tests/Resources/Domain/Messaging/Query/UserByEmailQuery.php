@@ -18,7 +18,7 @@ class UserByEmailQuery implements Query
         $this->email = $email;
     }
 
-    public static function fromArray(array $data): UserByEmailQuery
+    public static function fromArray(array $data): static
     {
         $keys = ['email'];
         foreach ($keys as $key) {

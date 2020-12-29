@@ -34,7 +34,7 @@ class UserRegisteredEvent implements Event
         $this->email = $email;
     }
 
-    public static function fromArray(array $data): UserRegisteredEvent
+    public static function fromArray(array $data): static
     {
         $keys = ['prefix', 'first_name', 'middle_name', 'last_name', 'suffix', 'email'];
         foreach ($keys as $key) {

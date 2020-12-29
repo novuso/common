@@ -18,107 +18,81 @@ use Psr\Http\Message\UriInterface;
 final class HttpService implements HttpClient, MessageFactory, StreamFactory, UriFactory
 {
     /**
-     * HTTP client
-     *
-     * @var HttpClient
-     */
-    protected $httpClient;
-
-    /**
-     * Message factory
-     *
-     * @var MessageFactory
-     */
-    protected $messageFactory;
-
-    /**
-     * Stream factory
-     *
-     * @var StreamFactory
-     */
-    protected $streamFactory;
-
-    /**
-     * URI factory
-     *
-     * @var UriFactory
-     */
-    protected $uriFactory;
-
-    /**
      * Constructs HttpService
-     *
-     * @param HttpClient     $httpClient     The HTTP client
-     * @param MessageFactory $messageFactory The message factory
-     * @param StreamFactory  $streamFactory  The stream factory
-     * @param UriFactory     $uriFactory     The URI factory
      */
     public function __construct(
-        HttpClient $httpClient,
-        MessageFactory $messageFactory,
-        StreamFactory $streamFactory,
-        UriFactory $uriFactory
-    ) {
-        $this->httpClient = $httpClient;
-        $this->messageFactory = $messageFactory;
-        $this->streamFactory = $streamFactory;
-        $this->uriFactory = $uriFactory;
-    }
+        protected HttpClient $httpClient,
+        protected MessageFactory $messageFactory,
+        protected StreamFactory $streamFactory,
+        protected UriFactory $uriFactory
+    ) {}
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function sendRequest(RequestInterface $request): ResponseInterface
+    public function send(RequestInterface $request, array $options = []): ResponseInterface
     {
-        return $this->httpClient->sendRequest($request);
+        return $this->httpClient->send($request, $options);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function sendAsync(RequestInterface $request): Promise
+    public function sendAsync(RequestInterface $request, array $options = []): Promise
     {
-        return $this->httpClient->sendAsync($request);
+        return $this->httpClient->sendAsync($request, $options);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function createRequest(
         string $method,
-        $uri,
+        UriInterface|string $uri,
         array $headers = [],
-        $body = null,
+        StreamInterface|string|null $body = null,
         string $protocol = '1.1'
     ): RequestInterface {
-        return $this->messageFactory->createRequest($method, $uri, $headers, $body, $protocol);
+        return $this->messageFactory->createRequest(
+            $method,
+            $uri,
+            $headers,
+            $body,
+            $protocol
+        );
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function createResponse(
         int $status = 200,
         array $headers = [],
-        $body = null,
+        StreamInterface|string|null $body = null,
         string $protocol = '1.1',
         ?string $reason = null
     ): ResponseInterface {
-        return $this->messageFactory->createResponse($status, $headers, $body, $protocol, $reason);
+        return $this->messageFactory->createResponse(
+            $status,
+            $headers,
+            $body,
+            $protocol,
+            $reason
+        );
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function createStream($body = null): StreamInterface
+    public function createStream(mixed $body = null): StreamInterface
     {
         return $this->streamFactory->createStream($body);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function createUri($uri): UriInterface
+    public function createUri(string $uri): UriInterface
     {
         return $this->uriFactory->createUri($uri);
     }

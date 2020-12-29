@@ -21,8 +21,6 @@ class Uri extends ValueObject implements Comparable
      * This is a variation on the capture pattern in RFC 3986 - appendix B.
      *
      * @link http://tools.ietf.org/html/rfc3986#appendix-B
-     *
-     * @var string
      */
     protected const URI_PATTERN = '/\A(?:([^:\/?#]+)(:))?(?:(\/\/)([^\/?#]*))?([^?#]*)(?:(\?)([^#]*))?(?:(#)(.*))?\z/';
 
@@ -32,8 +30,6 @@ class Uri extends ValueObject implements Comparable
      * This pattern is used to capture authority sub-components.
      *
      * @link http://tools.ietf.org/html/rfc3986#section-3.2
-     *
-     * @var string
      */
     protected const AUTHORITY_PATTERN = '/\A(?:([^@]*)@)?(\[[^\]]*\]|[^:]*)(?::(\d*))?\z/';
 
@@ -41,8 +37,6 @@ class Uri extends ValueObject implements Comparable
      * Scheme validation pattern
      *
      * @link http://tools.ietf.org/html/rfc3986#section-3.1
-     *
-     * @var string
      */
     protected const SCHEME_PATTERN = '/\A[a-z][a-z0-9+.\-]*\z/i';
 
@@ -50,8 +44,6 @@ class Uri extends ValueObject implements Comparable
      * Percent encoded characters
      *
      * @link http://tools.ietf.org/html/rfc3986#section-2.1
-     *
-     * @var string
      */
     protected const PCT_ENCODED_SET = '%[a-fA-F0-9]{2}';
 
@@ -59,8 +51,6 @@ class Uri extends ValueObject implements Comparable
      * Sub-component delimiters
      *
      * @link http://tools.ietf.org/html/rfc3986#section-2.2
-     *
-     * @var string
      */
     protected const SUB_DELIMS_SET = '!$&\'()*+,;=';
 
@@ -68,86 +58,26 @@ class Uri extends ValueObject implements Comparable
      * Set of unreserved characters
      *
      * @link http://tools.ietf.org/html/rfc3986#section-2.3
-     *
-     * @var string
      */
     protected const UNRESERVED_SET = 'a-zA-Z0-9\-._~';
 
-    /**
-     * Default ports
-     *
-     * @var array
-     */
-    protected static $defaultPorts = [];
+    protected static array $defaultPorts = [];
 
-    /**
-     * Scheme
-     *
-     * @var string
-     */
-    protected $scheme;
-
-    /**
-     * Authority
-     *
-     * @var string|null
-     */
-    protected $authority;
-
-    /**
-     * Path
-     *
-     * @var string
-     */
-    protected $path;
-
-    /**
-     * Query
-     *
-     * @var string|null
-     */
-    protected $query;
-
-    /**
-     * Fragment
-     *
-     * @var string|null
-     */
-    protected $fragment;
-
-    /**
-     * User info
-     *
-     * @var string|null
-     */
-    protected $userInfo;
-
-    /**
-     * Host
-     *
-     * @var string|null
-     */
-    protected $host;
-
-    /**
-     * Port
-     *
-     * @var int|null
-     */
-    protected $port;
+    protected string $scheme;
+    protected ?string $authority;
+    protected string $path;
+    protected ?string $query;
+    protected ?string $fragment;
+    protected ?string $userInfo;
+    protected ?string $host;
+    protected ?int $port;
 
     /**
      * Constructs Uri
      *
-     * @param string      $path      The path
-     * @param string|null $scheme    The scheme
-     * @param string|null $authority The authority
-     * @param string|null $query     The query
-     * @param string|null $fragment  The fragment
-     *
-     * @throws DomainException When values are not valid
      * @internal
      *
+     * @throws DomainException When values are not valid
      */
     protected function __construct(
         string $path,
@@ -168,11 +98,9 @@ class Uri extends ValueObject implements Comparable
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * @return static
+     * @inheritDoc
      */
-    public static function fromString(string $value)
+    public static function fromString(string $value): static
     {
         return static::parse($value);
     }
@@ -180,13 +108,9 @@ class Uri extends ValueObject implements Comparable
     /**
      * Creates instance from a URI string
      *
-     * @param string $uri A URI string
-     *
-     * @return static
-     *
      * @throws DomainException When the URI is not valid
      */
-    public static function parse(string $uri)
+    public static function parse(string $uri): static
     {
         preg_match(static::URI_PATTERN, $uri, $matches);
 
@@ -205,15 +129,9 @@ class Uri extends ValueObject implements Comparable
      *
      * @link http://tools.ietf.org/html/rfc3986#section-5.2
      *
-     * @param Uri|string $base      A Uri instance or string
-     * @param string     $reference A relative URI reference
-     * @param bool       $strict    Whether or not to enable strict parsing
-     *
-     * @return static
-     *
      * @throws DomainException When the base or reference are invalid
      */
-    public static function resolve($base, string $reference, bool $strict = true)
+    public static function resolve(Uri|string $base, string $reference, bool $strict = true): static
     {
         if (!($base instanceof self)) {
             $base = static::parse($base);
@@ -225,7 +143,8 @@ class Uri extends ValueObject implements Comparable
         // http://tools.ietf.org/html/rfc3986#section-5.2.2
         // A non-strict parser may ignore a scheme in the reference if it is
         // identical to the base URI's scheme
-        if (!$strict && ($ref['scheme'] !== null && $base->scheme() === $ref['scheme'])) {
+        if (!$strict
+            && ($ref['scheme'] !== null && $base->scheme() === $ref['scheme'])) {
             $ref['scheme'] = null;
         }
 
@@ -241,8 +160,11 @@ class Uri extends ValueObject implements Comparable
             // cannot contain a colon (":") character.
             // START: extra check for colon in first segment
             $segments = explode('/', trim($ref['path'], '/'));
-            if (isset($segments[0]) && strpos($segments[0], ':') !== false) {
-                $message = sprintf('First segment in reference (%s) cannot contain a colon (":")', $reference);
+            if (isset($segments[0]) && str_contains($segments[0], ':')) {
+                $message = sprintf(
+                    'First segment in reference (%s) cannot contain a colon (":")',
+                    $reference
+                );
                 throw new DomainException($message);
             }
             // END: extra check for colon in first segment
@@ -287,13 +209,9 @@ class Uri extends ValueObject implements Comparable
      * * query
      * * fragment
      *
-     * @param array $components The components
-     *
-     * @return static
-     *
      * @throws DomainException When values are not valid
      */
-    public static function fromArray(array $components)
+    public static function fromArray(array $components): static
     {
         $scheme = $components['scheme'] ?? null;
         $authority = $components['authority'] ?? null;
@@ -305,9 +223,87 @@ class Uri extends ValueObject implements Comparable
     }
 
     /**
-     * Retrieves the scheme
+     * Creates instance with a given scheme
      *
-     * @return string
+     * @throws DomainException When scheme is not valid
+     */
+    public function withScheme(string $scheme): static
+    {
+        return new static(
+            $this->path(),
+            $scheme,
+            $this->authority(),
+            $this->query(),
+            $this->fragment()
+        );
+    }
+
+    /**
+     * Creates instance with a given authority
+     *
+     * @throws DomainException When authority is not valid
+     */
+    public function withAuthority(?string $authority): static
+    {
+        return new static(
+            $this->path(),
+            $this->scheme(),
+            $authority,
+            $this->query(),
+            $this->fragment()
+        );
+    }
+
+    /**
+     * Creates instance with a given path
+     *
+     * @throws DomainException When path is not valid
+     */
+    public function withPath(string $path): static
+    {
+        return new static(
+            $path,
+            $this->scheme(),
+            $this->authority(),
+            $this->query(),
+            $this->fragment()
+        );
+    }
+
+    /**
+     * Creates instance with a given query
+     *
+     * @throws DomainException When query is not valid
+     */
+    public function withQuery(?string $query): static
+    {
+        return new static(
+            $this->path(),
+            $this->scheme(),
+            $this->authority(),
+            $query,
+            $this->fragment()
+        );
+    }
+
+    /**
+     * Creates instance with a given fragment
+     *
+     * @throws DomainException When fragment is not valid
+     */
+    public function withFragment(?string $fragment): static
+    {
+        return new static(
+            $this->path(),
+            $this->scheme(),
+            $this->authority(),
+            $this->query(),
+            $fragment
+        );
+    }
+
+    /**
+     * Retrieves the scheme
      */
     public function scheme(): string
     {
@@ -316,8 +312,6 @@ class Uri extends ValueObject implements Comparable
 
     /**
      * Retrieves the authority
-     *
-     * @return string|null
      */
     public function authority(): ?string
     {
@@ -326,8 +320,6 @@ class Uri extends ValueObject implements Comparable
 
     /**
      * Retrieves the path
-     *
-     * @return string
      */
     public function path(): string
     {
@@ -336,8 +328,6 @@ class Uri extends ValueObject implements Comparable
 
     /**
      * Retrieves the query
-     *
-     * @return string|null
      */
     public function query(): ?string
     {
@@ -346,8 +336,6 @@ class Uri extends ValueObject implements Comparable
 
     /**
      * Retrieves the fragment
-     *
-     * @return string|null
      */
     public function fragment(): ?string
     {
@@ -356,8 +344,6 @@ class Uri extends ValueObject implements Comparable
 
     /**
      * Retrieves the user info
-     *
-     * @return string|null
      */
     public function userInfo(): ?string
     {
@@ -366,8 +352,6 @@ class Uri extends ValueObject implements Comparable
 
     /**
      * Retrieves the host
-     *
-     * @return string|null
      */
     public function host(): ?string
     {
@@ -376,8 +360,6 @@ class Uri extends ValueObject implements Comparable
 
     /**
      * Retrieves the port
-     *
-     * @return int|null
      */
     public function port(): ?int
     {
@@ -386,8 +368,6 @@ class Uri extends ValueObject implements Comparable
 
     /**
      * Retrieves an array representation
-     *
-     * @return array
      */
     public function toArray(): array
     {
@@ -401,18 +381,22 @@ class Uri extends ValueObject implements Comparable
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function toString(): string
     {
         $output = sprintf('%s:', $this->scheme);
+
         if ($this->authority !== null) {
             $output .= sprintf('//%s', $this->authority);
         }
+
         $output .= $this->path;
+
         if ($this->query !== null) {
             $output .= sprintf('?%s', $this->query);
         }
+
         if ($this->fragment !== null) {
             $output .= sprintf('#%s', $this->fragment);
         }
@@ -422,22 +406,24 @@ class Uri extends ValueObject implements Comparable
 
     /**
      * Retrieves string representation without user info
-     *
-     * @return string
      */
     public function display(): string
     {
         $output = sprintf('%s:', $this->scheme);
+
         if ($this->authority !== null) {
             $output .= sprintf('//%s', $this->host);
             if ($this->port !== null) {
                 $output .= sprintf(':%d', $this->port);
             }
         }
+
         $output .= $this->path;
+
         if ($this->query !== null) {
             $output .= sprintf('?%s', $this->query);
         }
+
         if ($this->fragment !== null) {
             $output .= sprintf('#%s', $this->fragment);
         }
@@ -446,9 +432,9 @@ class Uri extends ValueObject implements Comparable
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function compareTo($object): int
+    public function compareTo(mixed $object): int
     {
         if ($this === $object) {
             return 0;
@@ -458,18 +444,11 @@ class Uri extends ValueObject implements Comparable
 
         $strComp = strnatcmp($this->toString(), $object->toString());
 
-        /** @var int $comp */
-        $comp = $strComp <=> 0;
-
-        return $comp;
+        return $strComp <=> 0;
     }
 
     /**
      * Exchanges URI_PATTERN matches for components
-     *
-     * @param array $matches The regex matches
-     *
-     * @return array
      */
     protected static function componentsFromMatches(array $matches): array
     {
@@ -512,10 +491,6 @@ class Uri extends ValueObject implements Comparable
 
     /**
      * Parses authority component into parts
-     *
-     * @param string|null $authority The authority
-     *
-     * @return array
      */
     protected static function parseAuthority(?string $authority): array
     {
@@ -542,12 +517,6 @@ class Uri extends ValueObject implements Comparable
 
     /**
      * Builds authority from parts
-     *
-     * @param string|null $userInfo The user info
-     * @param string|null $host     The host
-     * @param int|null    $port     The port
-     *
-     * @return string|null
      */
     protected static function buildAuthority(?string $userInfo, ?string $host, ?int $port): ?string
     {
@@ -571,16 +540,15 @@ class Uri extends ValueObject implements Comparable
     /**
      * Validates and normalizes the scheme
      *
-     * @param string|null $scheme The scheme
-     *
-     * @return string
-     *
      * @throws DomainException When the scheme is invalid
      */
     protected static function normalizeScheme(?string $scheme): string
     {
         if (!static::isValidScheme($scheme)) {
-            $message = sprintf('Invalid URI scheme: %s', VarPrinter::toString($scheme));
+            $message = sprintf(
+                'Invalid URI scheme: %s',
+                VarPrinter::toString($scheme)
+            );
             throw new DomainException($message);
         }
 
@@ -589,10 +557,6 @@ class Uri extends ValueObject implements Comparable
 
     /**
      * Validates and normalizes the path
-     *
-     * @param string $path The path
-     *
-     * @return string
      *
      * @throws DomainException When the path is invalid
      */
@@ -605,15 +569,14 @@ class Uri extends ValueObject implements Comparable
 
         $path = static::removeDotSegments($path);
 
-        return static::encodePath(static::decode($path, static::UNRESERVED_SET));
+        return static::encodePath(static::decode(
+            $path,
+            static::UNRESERVED_SET
+        ));
     }
 
     /**
      * Validates and normalizes the query
-     *
-     * @param string|null $query The query
-     *
-     * @return string|null
      *
      * @throws DomainException When the query is invalid
      */
@@ -628,15 +591,14 @@ class Uri extends ValueObject implements Comparable
             throw new DomainException($message);
         }
 
-        return static::encodeQuery(static::decode($query, static::UNRESERVED_SET));
+        return static::encodeQuery(static::decode(
+            $query,
+            static::UNRESERVED_SET
+        ));
     }
 
     /**
      * Validates and normalizes the fragment
-     *
-     * @param string|null $fragment The fragment
-     *
-     * @return string|null
      *
      * @throws DomainException When the fragment is invalid
      */
@@ -651,15 +613,14 @@ class Uri extends ValueObject implements Comparable
             throw new DomainException($message);
         }
 
-        return static::encodeFragment(static::decode($fragment, static::UNRESERVED_SET));
+        return static::encodeFragment(static::decode(
+            $fragment,
+            static::UNRESERVED_SET
+        ));
     }
 
     /**
      * Validates and normalizes the user info
-     *
-     * @param string|null $userInfo The user info
-     *
-     * @return string|null
      *
      * @throws DomainException When the user info is invalid
      */
@@ -674,15 +635,14 @@ class Uri extends ValueObject implements Comparable
             throw new DomainException($message);
         }
 
-        return static::encodeUserInfo(static::decode($userInfo, static::UNRESERVED_SET));
+        return static::encodeUserInfo(static::decode(
+            $userInfo,
+            static::UNRESERVED_SET
+        ));
     }
 
     /**
      * Validates and normalizes the host
-     *
-     * @param string|null $host The host
-     *
-     * @return string|null
      *
      * @throws DomainException When the host is invalid
      */
@@ -707,16 +667,14 @@ class Uri extends ValueObject implements Comparable
         // percent-encodings.
         $host = mb_strtolower($host, 'UTF-8');
 
-        return static::encodeHost(static::decode($host, static::UNRESERVED_SET));
+        return static::encodeHost(static::decode(
+            $host,
+            static::UNRESERVED_SET
+        ));
     }
 
     /**
      * Validates and normalizes the port
-     *
-     * @param int|null    $port   The port
-     * @param string|null $scheme The scheme
-     *
-     * @return int|null
      */
     protected static function normalizePort(?int $port, ?string $scheme): ?int
     {
@@ -724,7 +682,9 @@ class Uri extends ValueObject implements Comparable
             return null;
         }
 
-        if ($scheme && isset(static::$defaultPorts[$scheme]) && ($port == static::$defaultPorts[$scheme])) {
+        if ($scheme
+            && isset(static::$defaultPorts[$scheme])
+            && ($port == static::$defaultPorts[$scheme])) {
             return null;
         }
 
@@ -733,10 +693,6 @@ class Uri extends ValueObject implements Comparable
 
     /**
      * Encodes the path
-     *
-     * @param string $path The path
-     *
-     * @return string
      */
     protected static function encodePath(string $path): string
     {
@@ -764,10 +720,6 @@ class Uri extends ValueObject implements Comparable
 
     /**
      * Encodes the query
-     *
-     * @param string $query The query
-     *
-     * @return string
      */
     protected static function encodeQuery(string $query): string
     {
@@ -781,10 +733,6 @@ class Uri extends ValueObject implements Comparable
 
     /**
      * Encodes the fragment
-     *
-     * @param string $fragment The fragment
-     *
-     * @return string
      */
     protected static function encodeFragment(string $fragment): string
     {
@@ -798,10 +746,6 @@ class Uri extends ValueObject implements Comparable
 
     /**
      * Encodes the user info
-     *
-     * @param string $userInfo The user info
-     *
-     * @return string
      */
     protected static function encodeUserInfo(string $userInfo): string
     {
@@ -814,10 +758,6 @@ class Uri extends ValueObject implements Comparable
 
     /**
      * Encodes the host
-     *
-     * @param string $host The host
-     *
-     * @return string
      */
     protected static function encodeHost(string $host): string
     {
@@ -843,41 +783,39 @@ class Uri extends ValueObject implements Comparable
      * Encodes a component
      *
      * @codeCoverageIgnore
-     *
-     * @param string $component The component
-     * @param string $excluded  The set of excluded characters
-     *
-     * @return string
      */
     protected static function encode(string $component, string $excluded): string
     {
-        return preg_replace_callback(static::encodingRegex($excluded), function (array $matches) {
-            return rawurlencode($matches[0]);
-        }, $component);
+        return preg_replace_callback(
+            static::encodingRegex($excluded),
+            function (array $matches) {
+                return rawurlencode($matches[0]);
+            },
+            $component
+        );
     }
 
     /**
      * Decodes a component
-     *
-     * @param string $component The component
-     * @param string $allowed   The set of allowed characters
-     *
-     * @return string
      */
     protected static function decode(string $component, string $allowed): string
     {
         $allowed = sprintf('/[%s]/', $allowed);
         $encoded = sprintf('/%s/', static::PCT_ENCODED_SET);
 
-        return preg_replace_callback($encoded, function ($matches) use ($allowed) {
-            $char = rawurldecode($matches[0]);
+        return preg_replace_callback(
+            $encoded,
+            function ($matches) use ($allowed) {
+                $char = rawurldecode($matches[0]);
 
-            if (preg_match($allowed, $char)) {
-                return $char;
-            }
+                if (preg_match($allowed, $char)) {
+                    return $char;
+                }
 
-            return strtoupper($matches[0]);
-        }, $component);
+                return strtoupper($matches[0]);
+            },
+            $component
+        );
     }
 
     /**
@@ -886,10 +824,6 @@ class Uri extends ValueObject implements Comparable
      * Algorithm based on section 5.2.4 of RFC 3986.
      *
      * @link http://tools.ietf.org/html/rfc3986#section-5.2.4
-     *
-     * @param string $path The input path
-     *
-     * @return string
      */
     protected static function removeDotSegments(string $path): string
     {
@@ -899,14 +833,12 @@ class Uri extends ValueObject implements Comparable
                 break;
             }
             switch (true) {
+                case ('/./' == substr($path, 0, 3)):
                 case ('./' == substr($path, 0, 2)):
                     $path = substr($path, 2);
                     break;
                 case ('../' == substr($path, 0, 3)):
                     $path = substr($path, 3);
-                    break;
-                case ('/./' == substr($path, 0, 3)):
-                    $path = substr($path, 2);
                     break;
                 case ('/../' == substr($path, 0, 4)):
                     $path = '/'.substr($path, 4);
@@ -915,14 +847,16 @@ class Uri extends ValueObject implements Comparable
                         $output = substr($output, 0, $pos);
                     }
                     break;
-                case ('/..' == substr($path, 0, 3) && (in_array(substr($path, 3, 1), [false, '', '/'], true))):
+                case ('/..' == substr($path, 0, 3)
+                    && (in_array(substr($path, 3, 1), [false, '', '/'], true))):
                     $path = '/'.substr($path, 3);
                     $pos = strrpos($output, '/', -1);
                     if ($pos !== false) {
                         $output = substr($output, 0, $pos);
                     }
                     break;
-                case ('/.' == substr($path, 0, 2) && (in_array(substr($path, 2, 1), [false, '', '/'], true))):
+                case ('/.' == substr($path, 0, 2)
+                    && (in_array(substr($path, 2, 1), [false, '', '/'], true))):
                     $path = '/'.substr($path, 2);
                     break;
                 default:
@@ -945,11 +879,6 @@ class Uri extends ValueObject implements Comparable
      * Merges a base URI and relative path
      *
      * @link http://tools.ietf.org/html/rfc3986#section-5.2.3
-     *
-     * @param Uri    $baseUri  The base Uri instance
-     * @param string $relative The relative path
-     *
-     * @return string
      */
     protected static function mergePaths(Uri $baseUri, string $relative): string
     {
@@ -970,10 +899,6 @@ class Uri extends ValueObject implements Comparable
 
     /**
      * Checks if a scheme is valid
-     *
-     * @param string|null $scheme The scheme
-     *
-     * @return bool
      */
     protected static function isValidScheme(?string $scheme): bool
     {
@@ -989,10 +914,6 @@ class Uri extends ValueObject implements Comparable
 
     /**
      * Checks if a path is valid
-     *
-     * @param string $path The path
-     *
-     * @return bool
      */
     protected static function isValidPath(string $path): bool
     {
@@ -1032,10 +953,6 @@ class Uri extends ValueObject implements Comparable
 
     /**
      * Checks if a query is valid
-     *
-     * @param string|null $query The query
-     *
-     * @return bool
      */
     protected static function isValidQuery(?string $query): bool
     {
@@ -1058,10 +975,6 @@ class Uri extends ValueObject implements Comparable
 
     /**
      * Checks if a fragment is valid
-     *
-     * @param string|null $fragment The fragment
-     *
-     * @return bool
      */
     protected static function isValidFragment(?string $fragment): bool
     {
@@ -1084,10 +997,6 @@ class Uri extends ValueObject implements Comparable
 
     /**
      * Checks if user info is valid
-     *
-     * @param string $userInfo The user info
-     *
-     * @return bool
      */
     protected static function isValidUserInfo(string $userInfo): bool
     {
@@ -1105,10 +1014,6 @@ class Uri extends ValueObject implements Comparable
 
     /**
      * Checks if a host is valid
-     *
-     * @param string $host The host
-     *
-     * @return bool
      */
     protected static function isValidHost(string $host): bool
     {
@@ -1117,7 +1022,7 @@ class Uri extends ValueObject implements Comparable
         // [RFC3513] or later, is distinguished by enclosing the IP literal
         // within square brackets ("[" and "]").  This is the only place where
         // square bracket characters are allowed in the URI syntax.
-        if (strpos($host, '[') !== false) {
+        if (str_contains($host, '[')) {
             return static::isValidIpLiteral($host);
         }
 
@@ -1141,10 +1046,6 @@ class Uri extends ValueObject implements Comparable
 
     /**
      * Checks if a IP literal is valid
-     *
-     * @param string $ip The IP literal
-     *
-     * @return bool
      */
     protected static function isValidIpLiteral(string $ip): bool
     {
@@ -1173,10 +1074,6 @@ class Uri extends ValueObject implements Comparable
 
     /**
      * Provides the encoding regex to prevent double encoding
-     *
-     * @param string $excluded The set of excluded characters
-     *
-     * @return string
      */
     protected static function encodingRegex(string $excluded): string
     {

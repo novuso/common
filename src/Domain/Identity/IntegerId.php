@@ -12,29 +12,19 @@ use Novuso\System\Utility\Assert;
 abstract class IntegerId extends ValueObject implements Identifier
 {
     /**
-     * Integer ID
-     *
-     * @var int
-     */
-    protected $id;
-
-    /**
      * Constructs IntegerId
-     *
-     * @param int $id The ID integer
      *
      * @throws DomainException When the ID is not valid
      */
-    public function __construct(int $id)
+    public function __construct(protected int $id)
     {
         $this->guardId($id);
-        $this->id = $id;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public static function fromString(string $value)
+    public static function fromString(string $value): static
     {
         if (!is_numeric($value)) {
             $message = sprintf('Invalid integer value: %s', $value);
@@ -47,21 +37,15 @@ abstract class IntegerId extends ValueObject implements Identifier
     /**
      * Creates instance from integer
      *
-     * @param int $id The ID integer
-     *
-     * @return IntegerId
-     *
      * @throws DomainException When the ID is not valid
      */
-    public static function fromInt(int $id)
+    public static function fromInt(int $id): static
     {
         return new static($id);
     }
 
     /**
      * Retrieves an integer representation
-     *
-     * @return int
      */
     public function toInt(): int
     {
@@ -69,7 +53,7 @@ abstract class IntegerId extends ValueObject implements Identifier
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function toString(): string
     {
@@ -77,9 +61,9 @@ abstract class IntegerId extends ValueObject implements Identifier
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function compareTo($object): int
+    public function compareTo(mixed $object): int
     {
         if ($this === $object) {
             return 0;
@@ -96,10 +80,6 @@ abstract class IntegerId extends ValueObject implements Identifier
      * Override to implement validation.
      *
      * @codeCoverageIgnore
-     *
-     * @param int $id The ID integer
-     *
-     * @return void
      *
      * @throws DomainException When the ID is not valid
      */

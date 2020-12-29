@@ -13,24 +13,7 @@ use Novuso\System\Type\Enum;
  */
 final class MessageType extends Enum
 {
-    /**
-     * Event type
-     *
-     * @var string
-     */
     public const EVENT = 'event';
-
-    /**
-     * Command type
-     *
-     * @var string
-     */
     public const COMMAND = 'command';
-
-    /**
-     * Query type
-     *
-     * @var string
-     */
     public const QUERY = 'query';
 }

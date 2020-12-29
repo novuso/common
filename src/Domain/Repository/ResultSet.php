@@ -3,9 +3,9 @@
 namespace Novuso\Common\Domain\Repository;
 
 use JsonSerializable;
+use Novuso\System\Collection\ArrayList;
 use Novuso\System\Collection\Contract\Collection;
-use Novuso\System\Collection\Mixin\ItemTypeMethods;
-use Novuso\System\Collection\Type\Sequence;
+use Novuso\System\Collection\Traits\ItemTypeMethods;
 use Novuso\System\Type\Arrayable;
 use Traversable;
 
@@ -16,61 +16,26 @@ final class ResultSet implements Arrayable, Collection, JsonSerializable
 {
     use ItemTypeMethods;
 
-    /**
-     * Page number
-     *
-     * @var int
-     */
-    protected $page;
-
-    /**
-     * Number of items per page
-     *
-     * @var int
-     */
-    protected $perPage;
-
-    /**
-     * Total number of pages
-     *
-     * @var int
-     */
-    protected $totalPages;
-
-    /**
-     * Total number of records
-     *
-     * @var int
-     */
-    protected $totalRecords;
-
-    /**
-     * Records
-     *
-     * @var Sequence
-     */
-    protected $records;
+    protected int $totalPages;
 
     /**
      * Constructs ResultSet
-     *
-     * @param int      $page         The page
-     * @param int      $perPage      The number of items per page
-     * @param int      $totalRecords The total number of records
-     * @param Sequence $records      The records
      */
-    public function __construct(int $page, int $perPage, int $totalRecords, Sequence $records)
-    {
-        $this->setItemType($records->itemType());
-        $this->page = $page;
-        $this->perPage = $perPage;
-        $this->totalPages = $this->countPages($totalRecords, $perPage);
-        $this->totalRecords = $totalRecords;
-        $this->records = $records;
+    public function __construct(
+        protected int $page,
+        protected int $perPage,
+        protected int $totalRecords,
+        protected ArrayList $records
+    ) {
+        $this->setItemType($this->records->itemType());
+        $this->totalPages = $this->countPages(
+            $this->totalRecords,
+            $this->perPage
+        );
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function isEmpty(): bool
     {
@@ -78,7 +43,7 @@ final class ResultSet implements Arrayable, Collection, JsonSerializable
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function count(): int
     {
@@ -87,8 +52,6 @@ final class ResultSet implements Arrayable, Collection, JsonSerializable
 
     /**
      * Retrieves the page number
-     *
-     * @return int
      */
     public function page(): int
     {
@@ -97,8 +60,6 @@ final class ResultSet implements Arrayable, Collection, JsonSerializable
 
     /**
      * Retrieves the number of items per page
-     *
-     * @return int
      */
     public function perPage(): int
     {
@@ -107,8 +68,6 @@ final class ResultSet implements Arrayable, Collection, JsonSerializable
 
     /**
      * Retrieves the number of total pages
-     *
-     * @return int
      */
     public function totalPages(): int
     {
@@ -117,8 +76,6 @@ final class ResultSet implements Arrayable, Collection, JsonSerializable
 
     /**
      * Retrieves the number of total records
-     *
-     * @return int
      */
     public function totalRecords(): int
     {
@@ -127,16 +84,14 @@ final class ResultSet implements Arrayable, Collection, JsonSerializable
 
     /**
      * Retrieves the records
-     *
-     * @return Sequence
      */
-    public function records(): Sequence
+    public function records(): ArrayList
     {
         return $this->records;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function getIterator(): Traversable
     {
@@ -144,7 +99,7 @@ final class ResultSet implements Arrayable, Collection, JsonSerializable
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function toArray(): array
     {
@@ -159,8 +114,6 @@ final class ResultSet implements Arrayable, Collection, JsonSerializable
 
     /**
      * Retrieves a representation for JSON encoding
-     *
-     * @return array
      */
     public function jsonSerialize(): array
     {
@@ -169,11 +122,6 @@ final class ResultSet implements Arrayable, Collection, JsonSerializable
 
     /**
      * Calculates the number of pages
-     *
-     * @param int $totalRecords The total records
-     * @param int $perPage      The records per page
-     *
-     * @return int
      */
     protected function countPages(int $totalRecords, int $perPage): int
     {
