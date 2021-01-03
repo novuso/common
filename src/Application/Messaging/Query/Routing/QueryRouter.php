@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Messaging\Query\Routing;
 
@@ -13,10 +15,6 @@ interface QueryRouter
 {
     /**
      * Matches a query to a handler
-     *
-     * @param Query $query The query
-     *
-     * @return QueryHandler
      *
      * @throws LookupException When the handler is not found
      */

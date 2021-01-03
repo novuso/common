@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Domain\Value\Identifier;
 
@@ -48,8 +50,7 @@ final class Uuid extends ValueObject implements Comparable
         protected string $clockSeqHiAndReserved,
         protected string $clockSeqLow,
         protected string $node
-    )
-    {
+    ) {
     }
 
     /**
@@ -106,8 +107,11 @@ final class Uuid extends ValueObject implements Comparable
      * @throws DomainException When the node is not 6 hex octets
      * @throws DomainException When timestamp is not 8 hex octets
      */
-    public static function time(?string $node = null, ?int $clockSeq = null, ?string $timestamp = null): static
-    {
+    public static function time(
+        ?string $node = null,
+        ?int $clockSeq = null,
+        ?string $timestamp = null
+    ): static {
         return static::uuid1($node, $clockSeq, $timestamp);
     }
 
@@ -245,11 +249,14 @@ final class Uuid extends ValueObject implements Comparable
     public static function timestamp(): string
     {
         // 122192928000000000 is the number of 100-nanosecond intervals between
-        // the UUID epoch 1582-10-15 00:00:00 and the Unix epoch 1970-01-01 00:00:00
+        // the UUID epoch 1582-10-15 00:00:00 and
+        // the Unix epoch 1970-01-01 00:00:00
         $offset = 122192928000000000;
         $timeOfDay = gettimeofday();
 
-        $time = ($timeOfDay['sec'] * 10000000) + ($timeOfDay['usec'] * 10) + $offset;
+        $time = ($timeOfDay['sec'] * 10000000)
+            + ($timeOfDay['usec'] * 10)
+            + $offset;
         $hi = intval($time / 0xffffffff);
 
         $timestamp = [];
@@ -573,8 +580,11 @@ final class Uuid extends ValueObject implements Comparable
      * @throws DomainException When the node is not 6 hex octets
      * @throws DomainException When timestamp is not 8 hex octets
      */
-    protected static function uuid1(?string $node = null, ?int $clockSeq = null, ?string $timestamp = null): static
-    {
+    protected static function uuid1(
+        ?string $node = null,
+        ?int $clockSeq = null,
+        ?string $timestamp = null
+    ): static {
         if ($timestamp === null) {
             $timestamp = static::timestamp();
         }
@@ -624,8 +634,10 @@ final class Uuid extends ValueObject implements Comparable
      *
      * @throws DomainException When the namespace is not a valid UUID
      */
-    protected static function uuid3(Uuid|string $namespace, string $name): static
-    {
+    protected static function uuid3(
+        Uuid|string $namespace,
+        string $name
+    ): static {
         if (!($namespace instanceof self)) {
             $namespace = static::parse($namespace);
         }
@@ -650,8 +662,10 @@ final class Uuid extends ValueObject implements Comparable
      *
      * @throws DomainException When the namespace is not a valid UUID
      */
-    protected static function uuid5(Uuid|string $namespace, string $name): static
-    {
+    protected static function uuid5(
+        Uuid|string $namespace,
+        string $name
+    ): static {
         if (!($namespace instanceof self)) {
             $namespace = static::parse($namespace);
         }

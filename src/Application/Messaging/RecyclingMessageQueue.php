@@ -15,36 +15,12 @@ use Throwable;
 final class RecyclingMessageQueue implements MessageQueue
 {
     /**
-     * Message queue
-     *
-     * @var MessageQueue
-     */
-    protected $queue;
-
-    /**
-     * Message store
-     *
-     * @var MessageStore
-     */
-    protected $store;
-
-    /**
      * Constructs RecyclingMessageQueue
-     *
-     * @param MessageQueue $queue The message queue
-     * @param MessageStore $store The message store
      */
-    public function __construct(MessageQueue $queue, MessageStore $store)
-    {
-        $this->queue = $queue;
-        $this->store = $store;
-    }
+    public function __construct(protected MessageQueue $queue, protected MessageStore $store) {}
 
     /**
      * Recycles a stored message
-     *
-     * @param string    $name      The queue name
-     * @param MessageId $messageId The message ID
      *
      * @throws MessageQueueException
      */
@@ -54,7 +30,10 @@ final class RecyclingMessageQueue implements MessageQueue
             $message = $this->store->get($name, $messageId);
 
             if ($message === null) {
-                throw new LookupException(sprintf('Message %s not found', $messageId->toString()));
+                throw new LookupException(sprintf(
+                    'Message %s not found',
+                    $messageId->toString()
+                ));
             }
 
             $this->enqueue($name, $message->withMetaData(MetaData::create()));
@@ -66,8 +45,6 @@ final class RecyclingMessageQueue implements MessageQueue
 
     /**
      * Recycles all stored messages
-     *
-     * @param string $name The queue name
      *
      * @throws MessageQueueException
      */
@@ -87,7 +64,7 @@ final class RecyclingMessageQueue implements MessageQueue
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function enqueue(string $name, Message $message): void
     {
@@ -95,7 +72,7 @@ final class RecyclingMessageQueue implements MessageQueue
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function dequeue(string $name, int $timeout = 0): ?Message
     {
@@ -103,7 +80,7 @@ final class RecyclingMessageQueue implements MessageQueue
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function dequeueNonBlocking(string $name): ?Message
     {
@@ -111,7 +88,7 @@ final class RecyclingMessageQueue implements MessageQueue
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function acknowledge(string $name, Message $message): void
     {
@@ -119,7 +96,7 @@ final class RecyclingMessageQueue implements MessageQueue
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function reject(string $name, Message $message, bool $requeue = false): void
     {

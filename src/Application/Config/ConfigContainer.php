@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Config;
 
@@ -172,17 +174,21 @@ final class ConfigContainer implements Arrayable, ArrayAccess, Countable, Iterat
         }
 
         foreach ($other as $name => $value) {
+            // key does not exist
             if (!array_key_exists($name, $this->data)) {
                 $this->data[$name] = $value;
+                continue;
+            }
+            // key exists
+            if (is_int($name)) {
+                $this->data[] = $value;
+            } elseif (
+                $value instanceof self
+                && $this->data[$name] instanceof self
+            ) {
+                $this->data[$name]->merge($value);
             } else {
-                if (is_int($name)) {
-                    $this->data[] = $value;
-                } elseif ($value instanceof self
-                    && $this->data[$name] instanceof self) {
-                    $this->data[$name]->merge($value);
-                } else {
-                    $this->data[$name] = $value;
-                }
+                $this->data[$name] = $value;
             }
         }
 

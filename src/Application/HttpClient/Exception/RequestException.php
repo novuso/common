@@ -1,23 +1,27 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\HttpClient\Exception;
 
-use Psr\Http\Client\RequestExceptionInterface;
 use Psr\Http\Message\RequestInterface;
 use Throwable;
 
 /**
  * Class RequestException
  */
-class RequestException extends TransferException implements RequestExceptionInterface
+class RequestException extends TransferException
 {
     protected RequestInterface $request;
 
     /**
      * Constructs RequestException
      */
-    public function __construct(string $message, RequestInterface $request, ?Throwable $previous = null)
-    {
+    public function __construct(
+        string $message,
+        RequestInterface $request,
+        ?Throwable $previous = null
+    ) {
         $this->request = $request;
         parent::__construct($message, 0, $previous);
     }

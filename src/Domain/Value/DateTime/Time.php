@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Domain\Value\DateTime;
 
@@ -48,8 +50,12 @@ final class Time extends ValueObject implements Comparable
      *
      * @throws DomainException When the time is not valid
      */
-    public static function create(int $hour, int $minute, int $second, int $microsecond = 0): static
-    {
+    public static function create(
+        int $hour,
+        int $minute,
+        int $second,
+        int $microsecond = 0
+    ): static {
         return new static($hour, $minute, $second, $microsecond);
     }
 
@@ -86,8 +92,10 @@ final class Time extends ValueObject implements Comparable
     /**
      * Creates instance from a timestamp and timezone
      */
-    public static function fromTimestamp(int $timestamp, ?string $timezone = null): static
-    {
+    public static function fromTimestamp(
+        int $timestamp,
+        ?string $timezone = null
+    ): static {
         $timezone = $timezone ?: date_default_timezone_get();
         Assert::isTimezone($timezone);
 
@@ -111,7 +119,13 @@ final class Time extends ValueObject implements Comparable
      */
     public static function fromString(string $value): static
     {
-        $pattern = '/\A(?P<hour>[\d]{2}):(?P<minute>[\d]{2}):(?P<second>[\d]{2})\.(?P<microsecond>[\d]{6})\z/';
+        $pattern = sprintf(
+            '/\A%s:%s:%s\.%s\z/',
+            '(?P<hour>[\d]{2})',
+            '(?P<minute>[\d]{2})',
+            '(?P<second>[\d]{2})',
+            '(?P<microsecond>[\d]{6})'
+        );
         if (!preg_match($pattern, $value, $matches)) {
             $message = sprintf(
                 '%s expects $value in "H:i:s.u" format',
@@ -336,8 +350,12 @@ final class Time extends ValueObject implements Comparable
      *
      * @throws DomainException When the time is not valid
      */
-    protected function guardTime(int $hour, int $minute, int $second, int $microsecond): void
-    {
+    protected function guardTime(
+        int $hour,
+        int $minute,
+        int $second,
+        int $microsecond
+    ): void {
         if ($hour < static::MIN_HOUR || $hour > static::MAX_HOUR) {
             $message = sprintf(
                 'Hour (%d) out of range[%d, %d]',
@@ -368,8 +386,10 @@ final class Time extends ValueObject implements Comparable
             throw new DomainException($message);
         }
 
-        if ($microsecond < static::MIN_MICROSECOND
-            || $microsecond > static::MAX_MICROSECOND) {
+        if (
+            $microsecond < static::MIN_MICROSECOND
+            || $microsecond > static::MAX_MICROSECOND
+        ) {
             $message = sprintf(
                 'Microsecond (%d) out of range[%d, %d]',
                 $microsecond,

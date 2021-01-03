@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Domain\Messaging\Event;
 
@@ -22,9 +24,19 @@ final class EventMessage extends BaseMessage
      *
      * @internal
      */
-    protected function __construct(MessageId $id, DateTime $timestamp, Event $payload, MetaData $metaData)
-    {
-        parent::__construct($id, MessageType::EVENT(), $timestamp, $payload, $metaData);
+    protected function __construct(
+        MessageId $id,
+        DateTime $timestamp,
+        Event $payload,
+        MetaData $metaData
+    ) {
+        parent::__construct(
+            $id,
+            MessageType::EVENT(),
+            $timestamp,
+            $payload,
+            $metaData
+        );
     }
 
     /**

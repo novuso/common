@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Domain\Messaging\Event;
 
@@ -38,7 +40,11 @@ interface EventDispatcher
     /**
      * Adds a handler for a specific event
      */
-    public function addHandler(string $eventType, callable $handler, int $priority = 0): void;
+    public function addHandler(
+        string $eventType,
+        callable $handler,
+        int $priority = 0
+    ): void;
 
     /**
      * Retrieves handlers for an event or all events

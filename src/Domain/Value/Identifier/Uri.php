@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Domain\Value\Identifier;
 
@@ -90,7 +92,11 @@ class Uri extends ValueObject implements Comparable
         $this->userInfo = static::normalizeUserInfo($auth['userInfo']);
         $this->host = static::normalizeHost($auth['host']);
         $this->port = static::normalizePort($auth['port'], $scheme);
-        $this->authority = static::buildAuthority($this->userInfo, $this->host, $this->port);
+        $this->authority = static::buildAuthority(
+            $this->userInfo,
+            $this->host,
+            $this->port
+        );
         $this->scheme = static::normalizeScheme($scheme);
         $this->path = static::normalizePath($path);
         $this->query = static::normalizeQuery($query);
@@ -131,8 +137,11 @@ class Uri extends ValueObject implements Comparable
      *
      * @throws DomainException When the base or reference are invalid
      */
-    public static function resolve(Uri|string $base, string $reference, bool $strict = true): static
-    {
+    public static function resolve(
+        Uri|string $base,
+        string $reference,
+        bool $strict = true
+    ): static {
         if (!($base instanceof self)) {
             $base = static::parse($base);
         }
@@ -143,8 +152,10 @@ class Uri extends ValueObject implements Comparable
         // http://tools.ietf.org/html/rfc3986#section-5.2.2
         // A non-strict parser may ignore a scheme in the reference if it is
         // identical to the base URI's scheme
-        if (!$strict
-            && ($ref['scheme'] !== null && $base->scheme() === $ref['scheme'])) {
+        if (
+            !$strict
+            && ($ref['scheme'] !== null && $base->scheme() === $ref['scheme'])
+        ) {
             $ref['scheme'] = null;
         }
 
@@ -518,8 +529,11 @@ class Uri extends ValueObject implements Comparable
     /**
      * Builds authority from parts
      */
-    protected static function buildAuthority(?string $userInfo, ?string $host, ?int $port): ?string
-    {
+    protected static function buildAuthority(
+        ?string $userInfo,
+        ?string $host,
+        ?int $port
+    ): ?string {
         if ($host === null) {
             return null;
         }
@@ -682,9 +696,11 @@ class Uri extends ValueObject implements Comparable
             return null;
         }
 
-        if ($scheme
+        if (
+            $scheme
             && isset(static::$defaultPorts[$scheme])
-            && ($port == static::$defaultPorts[$scheme])) {
+            && ($port == static::$defaultPorts[$scheme])
+        ) {
             return null;
         }
 
@@ -784,8 +800,10 @@ class Uri extends ValueObject implements Comparable
      *
      * @codeCoverageIgnore
      */
-    protected static function encode(string $component, string $excluded): string
-    {
+    protected static function encode(
+        string $component,
+        string $excluded
+    ): string {
         return preg_replace_callback(
             static::encodingRegex($excluded),
             function (array $matches) {

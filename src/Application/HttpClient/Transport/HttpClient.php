@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\HttpClient\Transport;
 
@@ -17,10 +19,16 @@ interface HttpClient
      *
      * @throws Exception When an error occurs
      */
-    public function send(RequestInterface $request, array $options = []): ResponseInterface;
+    public function send(
+        RequestInterface $request,
+        array $options = []
+    ): ResponseInterface;
 
     /**
      * Sends a request asynchronously with options
      */
-    public function sendAsync(RequestInterface $request, array $options = []): Promise;
+    public function sendAsync(
+        RequestInterface $request,
+        array $options = []
+    ): Promise;
 }

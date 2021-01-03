@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Domain\Value\Money;
 
@@ -14,14 +16,19 @@ final class LocaleFormatter implements MoneyFormatter
      *
      * @internal
      */
-    protected function __construct(protected NumberFormatter $formatter) {}
+    protected function __construct(protected NumberFormatter $formatter)
+    {
+    }
 
     /**
      * Creates instance from a locale string
      */
     public static function fromLocale(string $locale): static
     {
-        $formatter = new NumberFormatter((string) $locale, NumberFormatter::CURRENCY);
+        $formatter = new NumberFormatter(
+            (string) $locale,
+            NumberFormatter::CURRENCY
+        );
 
         return new self($formatter);
     }

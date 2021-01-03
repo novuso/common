@@ -1,10 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Messaging\Query\Routing;
 
 use Novuso\Common\Domain\Messaging\Query\Query;
 use Novuso\Common\Domain\Messaging\Query\QueryHandler;
-use Novuso\System\Exception\AssertionException;
 use Novuso\System\Exception\LookupException;
 use Novuso\System\Type\Type;
 use Novuso\System\Utility\Assert;
@@ -15,28 +16,13 @@ use Psr\Container\ContainerInterface;
  */
 final class ServiceAwareQueryMap implements QueryMap
 {
-    /**
-     * Service container
-     *
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    /**
-     * Query handlers
-     *
-     * @var array
-     */
-    protected $handlers = [];
+    protected array $handlers = [];
 
     /**
      * Constructs ServiceAwareQueryMap
-     *
-     * @param ContainerInterface $container The service container
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(protected ContainerInterface $container)
     {
-        $this->container = $container;
     }
 
     /**
@@ -46,12 +32,6 @@ final class ServiceAwareQueryMap implements QueryMap
      * [
      *     SomeQuery::class => 'handler_service_name'
      * ]
-     *
-     * @param array $queryToHandlerMap A map of class names to service names
-     *
-     * @return void
-     *
-     * @throws AssertionException When a query class is not valid
      */
     public function registerHandlers(array $queryToHandlerMap): void
     {
@@ -62,16 +42,11 @@ final class ServiceAwareQueryMap implements QueryMap
 
     /**
      * Registers a query handler
-     *
-     * @param string $queryClass  The full query class name
-     * @param string $serviceName The handler service name
-     *
-     * @return void
-     *
-     * @throws AssertionException When the query class is not valid
      */
-    public function registerHandler(string $queryClass, string $serviceName): void
-    {
+    public function registerHandler(
+        string $queryClass,
+        string $serviceName
+    ): void {
         Assert::implementsInterface($queryClass, Query::class);
 
         $type = Type::create($queryClass)->toString();
@@ -80,12 +55,15 @@ final class ServiceAwareQueryMap implements QueryMap
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function getHandler(string $queryClass): QueryHandler
     {
         if (!$this->hasHandler($queryClass)) {
-            $message = sprintf('Handler not defined for query: %s', $queryClass);
+            $message = sprintf(
+                'Handler not defined for query: %s',
+                $queryClass
+            );
             throw new LookupException($message);
         }
 
@@ -96,7 +74,7 @@ final class ServiceAwareQueryMap implements QueryMap
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function hasHandler(string $queryClass): bool
     {

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Logging;
 
@@ -13,7 +15,11 @@ final class SqlLogger
     /**
      * Constructs SqlLogger
      */
-    public function __construct(protected LoggerInterface $logger, protected string $logLevel = LogLevel::DEBUG) {}
+    public function __construct(
+        protected LoggerInterface $logger,
+        protected string $logLevel = LogLevel::DEBUG
+    ) {
+    }
 
     /**
      * Logs SQL and parameters

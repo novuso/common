@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Domain\Identity;
 
@@ -16,7 +18,9 @@ abstract class UniqueId extends ValueObject implements Identifier, IdentifierFac
     /**
      * Constructs UniqueId
      */
-    public function __construct(protected Uuid $uuid) {}
+    public function __construct(protected Uuid $uuid)
+    {
+    }
 
     /**
      * Generates a unique identifier

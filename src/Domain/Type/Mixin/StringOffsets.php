@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Domain\Type\Mixin;
 
@@ -57,10 +59,8 @@ trait StringOffsets
                 throw new DomainException($message);
             }
             $length += $remainder;
-        } else {
-            if (($offset + $length) > $total) {
-                return $remainder;
-            }
+        } elseif (($offset + $length) > $total) {
+            return $remainder;
         }
 
         return $length;
@@ -71,8 +71,11 @@ trait StringOffsets
      *
      * @throws DomainException When the stop is invalid
      */
-    protected function prepareLengthFromStop(int $stop, int $offset, int $total): int
-    {
+    protected function prepareLengthFromStop(
+        int $stop,
+        int $offset,
+        int $total
+    ): int {
         $remainder = $total - $offset;
 
         if ($stop === 0) {

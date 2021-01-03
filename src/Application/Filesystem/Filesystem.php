@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Filesystem;
 
@@ -21,28 +23,44 @@ interface Filesystem
      *
      * @throws FilesystemException When an error occurs
      */
-    public function touch(string|iterable $files, ?int $time = null, ?int $atime = null): void;
+    public function touch(
+        string|iterable $files,
+        ?int $time = null,
+        ?int $atime = null
+    ): void;
 
     /**
      * Renames a file or directory
      *
      * @throws FilesystemException When an error occurs
      */
-    public function rename(string $origin, string $target, bool $override = false): void;
+    public function rename(
+        string $origin,
+        string $target,
+        bool $override = false
+    ): void;
 
     /**
      * Creates a symbolic link
      *
      * @throws FilesystemException When an error occurs
      */
-    public function symlink(string $origin, string $target, bool $copyOnWindows = false): void;
+    public function symlink(
+        string $origin,
+        string $target,
+        bool $copyOnWindows = false
+    ): void;
 
     /**
      * Copies a file
      *
      * @throws FilesystemException When an error occurs
      */
-    public function copy(string $originFile, string $targetFile, bool $override = false): void;
+    public function copy(
+        string $originFile,
+        string $targetFile,
+        bool $override = false
+    ): void;
 
     /**
      * Mirrors a directory
@@ -204,19 +222,32 @@ interface Filesystem
      *
      * @throws FilesystemException When an error occurs
      */
-    public function chmod(string|iterable $paths, int $mode, int $umask = 0000, bool $recursive = false): void;
+    public function chmod(
+        string|iterable $paths,
+        int $mode,
+        int $umask = 0000,
+        bool $recursive = false
+    ): void;
 
     /**
      * Changes the owner of files or directories
      *
      * @throws FilesystemException When an error occurs
      */
-    public function chown(string|iterable $paths, string $user, bool $recursive = false): void;
+    public function chown(
+        string|iterable $paths,
+        string $user,
+        bool $recursive = false
+    ): void;
 
     /**
      * Changes the group of files or directories
      *
      * @throws FilesystemException When an error occurs
      */
-    public function chgrp(string|iterable $paths, string $group, bool $recursive = false): void;
+    public function chgrp(
+        string|iterable $paths,
+        string $group,
+        bool $recursive = false
+    ): void;
 }

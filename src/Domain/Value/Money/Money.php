@@ -1,10 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Domain\Value\Money;
 
 use Novuso\Common\Domain\Type\RoundingMode;
 use Novuso\Common\Domain\Type\ValueObject;
-use Novuso\System\Exception\AssertionException;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Exception\RangeException;
 use Novuso\System\Exception\TypeException;
@@ -19,7 +20,11 @@ final class Money extends ValueObject implements Comparable
     /**
      * Constructs Money
      */
-    public function __construct(protected int $amount, protected Currency $currency) {}
+    public function __construct(
+        protected int $amount,
+        protected Currency $currency
+    ) {
+    }
 
     /**
      * Creates instance from a currency name and amount
@@ -154,8 +159,10 @@ final class Money extends ValueObject implements Comparable
      *
      * @throws RangeException When integer overflow occurs
      */
-    public function multiply(int|float $multiplier, ?RoundingMode $mode = null): static
-    {
+    public function multiply(
+        int|float $multiplier,
+        ?RoundingMode $mode = null
+    ): static {
         if ($mode === null) {
             $mode = RoundingMode::HALF_UP();
         }
@@ -247,6 +254,8 @@ final class Money extends ValueObject implements Comparable
 
     /**
      * @inheritDoc
+     *
+     * @throws DomainException When the currencies do not match
      */
     public function compareTo($object): int
     {
@@ -264,7 +273,7 @@ final class Money extends ValueObject implements Comparable
     /**
      * Checks if this monetary value is greater than another
      *
-     * @throws AssertionException When the currencies do not match
+     * @throws DomainException When the currencies do not match
      */
     public function greaterThan(Money $other): bool
     {
@@ -274,7 +283,7 @@ final class Money extends ValueObject implements Comparable
     /**
      * Checks if this monetary value is greater or equal to another
      *
-     * @throws AssertionException When the currencies do not match
+     * @throws DomainException When the currencies do not match
      */
     public function greaterThanOrEqual(Money $other): bool
     {
@@ -284,7 +293,7 @@ final class Money extends ValueObject implements Comparable
     /**
      * Checks if this monetary value is less than another
      *
-     * @throws AssertionException When the currencies do not match
+     * @throws DomainException When the currencies do not match
      */
     public function lessThan(Money $other): bool
     {
@@ -294,7 +303,7 @@ final class Money extends ValueObject implements Comparable
     /**
      * Checks if this monetary value is less or equal to another
      *
-     * @throws AssertionException When the currencies do not match
+     * @throws DomainException When the currencies do not match
      */
     public function lessThanOrEqual(Money $other): bool
     {
@@ -328,12 +337,12 @@ final class Money extends ValueObject implements Comparable
     /**
      * Validates another monetary value uses the same currency
      *
-     * @throws AssertionException When other has different currency
+     * @throws DomainException When other has different currency
      */
     protected function guardCurrency(Money $other): void
     {
         if (!$this->isSameCurrency($other)) {
-            throw new AssertionException(
+            throw new DomainException(
                 'Math and comparison operations require the same currency'
             );
         }

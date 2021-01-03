@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Domain\Type;
 
@@ -16,8 +18,10 @@ final class JsonObject extends ValueObject
      *
      * @throws DomainException When the data is not JSON encodable
      */
-    public function __construct(protected mixed $data, protected int $encodingOptions = JSON_UNESCAPED_SLASHES)
-    {
+    public function __construct(
+        protected mixed $data,
+        protected int $encodingOptions = JSON_UNESCAPED_SLASHES
+    ) {
         if (!Validate::isJsonEncodable($this->data)) {
             $message = sprintf(
                 'Unable to JSON encode: %s',
@@ -32,8 +36,10 @@ final class JsonObject extends ValueObject
      *
      * @throws DomainException When the data is not JSON encodable
      */
-    public static function fromData(mixed $data, int $encodingOptions = JSON_UNESCAPED_SLASHES): static
-    {
+    public static function fromData(
+        mixed $data,
+        int $encodingOptions = JSON_UNESCAPED_SLASHES
+    ): static {
         return new static($data, $encodingOptions);
     }
 
@@ -69,8 +75,9 @@ final class JsonObject extends ValueObject
     /**
      * Retrieves a string representation with given encoding options
      */
-    public function encode(int $encodingOptions = JSON_UNESCAPED_SLASHES): string
-    {
+    public function encode(
+        int $encodingOptions = JSON_UNESCAPED_SLASHES
+    ): string {
         return json_encode($this->data, $encodingOptions);
     }
 

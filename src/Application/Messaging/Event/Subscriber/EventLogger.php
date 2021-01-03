@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Messaging\Event\Subscriber;
 
@@ -14,33 +16,16 @@ use Psr\Log\LogLevel;
 final class EventLogger implements EventSubscriber
 {
     /**
-     * Logger
-     *
-     * @var LoggerInterface
-     */
-    protected $logger;
-
-    /**
-     * Log level
-     *
-     * @var string
-     */
-    protected $logLevel;
-
-    /**
      * Constructs EventLogger
-     *
-     * @param LoggerInterface $logger   The logger
-     * @param string          $logLevel The log level
      */
-    public function __construct(LoggerInterface $logger, string $logLevel = LogLevel::INFO)
-    {
-        $this->logger = $logger;
-        $this->logLevel = $logLevel;
+    public function __construct(
+        protected LoggerInterface $logger,
+        protected string $logLevel = LogLevel::INFO
+    ) {
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public static function eventRegistration(): array
     {
@@ -49,10 +34,6 @@ final class EventLogger implements EventSubscriber
 
     /**
      * Logs the event message
-     *
-     * @param EventMessage $message The event message
-     *
-     * @return void
      */
     public function logEvent(EventMessage $message): void
     {

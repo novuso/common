@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Filesystem\Exception;
 
@@ -13,8 +15,11 @@ class FilesystemException extends SystemException
     /**
      * Constructs FilesystemException
      */
-    public function __construct(string $message = '', protected ?string $path = null, ?Throwable $previous = null)
-    {
+    public function __construct(
+        string $message = '',
+        protected ?string $path = null,
+        ?Throwable $previous = null
+    ) {
         parent::__construct($message, 0, $previous);
     }
 

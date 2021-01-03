@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Domain\Type;
 
@@ -6,7 +8,6 @@ use ArrayAccess;
 use Countable;
 use IteratorAggregate;
 use Novuso\System\Collection\ArrayList;
-use Novuso\System\Exception\AssertionException;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Exception\ImmutableException;
 use Novuso\System\Exception\IndexException;
@@ -55,29 +56,26 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
      *
      * @throws ImmutableException When called
      */
-    public function offsetSet(mixed $index, mixed $character): void;
+    public function offsetSet(mixed $offset, mixed $value): void;
 
     /**
      * Retrieves the character at an index
      *
      * @throws IndexException When the index is invalid
-     * @throws AssertionException When index is not an integer
      */
-    public function offsetGet(mixed $index): string;
+    public function offsetGet(mixed $offset): string;
 
     /**
      * Checks if an index is valid
-     *
-     * @throws AssertionException When index is not an integer
      */
-    public function offsetExists(mixed $index): bool;
+    public function offsetExists(mixed $offset): bool;
 
     /**
      * Not implemented
      *
      * @throws ImmutableException When called
      */
-    public function offsetUnset(mixed $index): void;
+    public function offsetUnset(mixed $offset): void;
 
     /**
      * Retrieves a list of characters
@@ -92,7 +90,10 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
     /**
      * Checks if this string starts with a search string
      */
-    public function startsWith(string $search, bool $caseSensitive = true): bool;
+    public function startsWith(
+        string $search,
+        bool $caseSensitive = true
+    ): bool;
 
     /**
      * Checks if this string ends with a search string
@@ -106,7 +107,11 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
      *
      * @throws DomainException When the start index is invalid
      */
-    public function indexOf(string $search, ?int $start = null, bool $caseSensitive = true): int;
+    public function indexOf(
+        string $search,
+        ?int $start = null,
+        bool $caseSensitive = true
+    ): int;
 
     /**
      * Retrieves the last index of a search string
@@ -115,7 +120,11 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
      *
      * @throws DomainException When the stop index is invalid
      */
-    public function lastIndexOf(string $search, ?int $stop = null, bool $caseSensitive = true): int;
+    public function lastIndexOf(
+        string $search,
+        ?int $stop = null,
+        bool $caseSensitive = true
+    ): int;
 
     /**
      * Creates a string with the given string appended
@@ -223,7 +232,10 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
      *
      * @throws DomainException When the delimiter is empty
      */
-    public function split(string $delimiter = ' ', ?int $limit = null): ArrayList;
+    public function split(
+        string $delimiter = ' ',
+        ?int $limit = null
+    ): ArrayList;
 
     /**
      * Creates a list of string chunks
@@ -246,7 +258,10 @@ interface StringLiteral extends ArrayAccess, Comparable, Countable, IteratorAggr
      * If search is an array and replacement is a string, then the replacement
      * string is used for every value of search.
      */
-    public function replace(string|array $search, string|array $replace): static;
+    public function replace(
+        string|array $search,
+        string|array $replace
+    ): static;
 
     /**
      * Creates a string with both ends trimmed

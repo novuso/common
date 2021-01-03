@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Domain\Value\DateTime;
 
@@ -24,7 +26,12 @@ final class DateTime extends ValueObject implements Comparable
     /**
      * Constructs DateTime
      */
-    public function __construct(protected Date $date, protected Time $time, protected Timezone $timezone) {}
+    public function __construct(
+        protected Date $date,
+        protected Time $time,
+        protected Timezone $timezone
+    ) {
+    }
 
     /**
      * Creates instance from date and time values
@@ -93,8 +100,11 @@ final class DateTime extends ValueObject implements Comparable
      *
      * @throws DomainException When the date/time or timezone is not valid
      */
-    public static function fromFormat(string $format, string $time, ?string $timezone = null): static
-    {
+    public static function fromFormat(
+        string $format,
+        string $time,
+        ?string $timezone = null
+    ): static {
         try {
             $timezone = $timezone ?: date_default_timezone_get();
             Assert::isTimezone($timezone);
@@ -161,8 +171,10 @@ final class DateTime extends ValueObject implements Comparable
      *
      * @throws DomainException When the date/time or timezone is not valid
      */
-    public static function fromTimestamp(int $timestamp, ?string $timezone = null): static
-    {
+    public static function fromTimestamp(
+        int $timestamp,
+        ?string $timezone = null
+    ): static {
         try {
             $timezone = $timezone ?: date_default_timezone_get();
             Assert::isTimezone($timezone);
@@ -724,8 +736,10 @@ final class DateTime extends ValueObject implements Comparable
      *
      * @throws DomainException When the given date/times are invalid
      */
-    public function isBetween(DateTime $startDateTime, DateTime $endDateTime): bool
-    {
+    public function isBetween(
+        DateTime $startDateTime,
+        DateTime $endDateTime
+    ): bool {
         if ($startDateTime->isAfter($endDateTime)) {
             throw new DomainException(
                 'Start date/time must come before end date/time'

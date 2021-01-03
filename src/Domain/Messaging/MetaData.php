@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Domain\Messaging;
 
@@ -7,7 +9,6 @@ use ArrayIterator;
 use Countable;
 use IteratorAggregate;
 use JsonSerializable;
-use Novuso\System\Exception\AssertionException;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Type\Arrayable;
 use Novuso\System\Utility\Assert;
@@ -78,7 +79,9 @@ final class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggre
      */
     public function get(string $key, mixed $default = null): mixed
     {
-        if (!(isset($this->data[$key]) || array_key_exists($key, $this->data))) {
+        if (
+            !(isset($this->data[$key]) || array_key_exists($key, $this->data))
+        ) {
             return $default;
         }
 
@@ -109,7 +112,6 @@ final class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggre
      * or null.
      *
      * @throws DomainException When value is not valid
-     * @throws AssertionException When the key is not a string
      */
     public function offsetSet(mixed $key, mixed $value): void
     {
@@ -120,8 +122,6 @@ final class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggre
 
     /**
      * Retrieves a value by key
-     *
-     * @throws AssertionException When the key is not a string
      */
     public function offsetGet(mixed $key): mixed
     {
@@ -132,8 +132,6 @@ final class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggre
 
     /**
      * Checks if a key is defined
-     *
-     * @throws AssertionException When the key is not a string
      */
     public function offsetExists(mixed $key): bool
     {
@@ -144,8 +142,6 @@ final class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggre
 
     /**
      * Removes a key/value pair
-     *
-     * @throws AssertionException When the key is not a string
      */
     public function offsetUnset(mixed $key): void
     {

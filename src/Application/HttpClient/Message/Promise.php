@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\HttpClient\Message;
 
@@ -18,7 +20,10 @@ interface Promise
     /**
      * Adds callbacks for when the promise is resolved or rejected
      */
-    public function then(?callable $onFulfilled = null, ?callable $onRejected = null): static;
+    public function then(
+        ?callable $onFulfilled = null,
+        ?callable $onRejected = null
+    ): static;
 
     /**
      * Retrieves the state

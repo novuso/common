@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Domain\Repository;
 
@@ -21,14 +23,21 @@ final class Pagination
     /**
      * Constructs Pagination
      */
-    public function __construct(?int $page = null, ?int $perPage = null, array $orderings = [])
-    {
+    public function __construct(
+        ?int $page = null,
+        ?int $perPage = null,
+        array $orderings = []
+    ) {
         $this->page = $page ?: static::DEFAULT_PAGE;
         $this->perPage = $perPage ?: static::DEFAULT_PER_PAGE;
         $this->offset = ($this->page - 1) * $this->perPage;
         $this->limit = $this->perPage;
         $this->orderings = array_map(function (string $ordering) {
-            return strtoupper($ordering) === static::DESC ? static::DESC : static::ASC;
+            if (strtoupper($ordering) === static::DESC) {
+                return static::DESC;
+            }
+
+            return static::ASC;
         }, $orderings);
     }
 

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Mail;
 
@@ -15,7 +17,11 @@ final class MailService implements MailTransport, MailFactory
     /**
      * Constructs MailService
      */
-    public function __construct(protected MailTransport $transport, protected MailFactory $factory) {}
+    public function __construct(
+        protected MailTransport $transport,
+        protected MailFactory $factory
+    ) {
+    }
 
     /**
      * @inheritDoc
@@ -42,7 +48,12 @@ final class MailService implements MailTransport, MailFactory
         string $contentType,
         ?string $embedId = null
     ): Attachment {
-        return $this->factory->createAttachmentFromString($body, $fileName, $contentType, $embedId);
+        return $this->factory->createAttachmentFromString(
+            $body,
+            $fileName,
+            $contentType,
+            $embedId
+        );
     }
 
     /**
@@ -54,7 +65,12 @@ final class MailService implements MailTransport, MailFactory
         string $contentType,
         ?string $embedId = null
     ): Attachment {
-        return $this->factory->createAttachmentFromPath($path, $fileName, $contentType, $embedId);
+        return $this->factory->createAttachmentFromPath(
+            $path,
+            $fileName,
+            $contentType,
+            $embedId
+        );
     }
 
     /**

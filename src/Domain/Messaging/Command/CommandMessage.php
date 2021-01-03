@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Domain\Messaging\Command;
 
@@ -22,9 +24,19 @@ final class CommandMessage extends BaseMessage
      *
      * @internal
      */
-    protected function __construct(MessageId $id, DateTime $timestamp, Command $payload, MetaData $metaData)
-    {
-        parent::__construct($id, MessageType::COMMAND(), $timestamp, $payload, $metaData);
+    protected function __construct(
+        MessageId $id,
+        DateTime $timestamp,
+        Command $payload,
+        MetaData $metaData
+    ) {
+        parent::__construct(
+            $id,
+            MessageType::COMMAND(),
+            $timestamp,
+            $payload,
+            $metaData
+        );
     }
 
     /**

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Domain\Type;
 
@@ -117,7 +119,7 @@ final class StringObject extends ValueObject implements StringLiteral
     /**
      * @inheritDoc
      */
-    public function offsetSet(mixed $index, mixed $character): void
+    public function offsetSet(mixed $offset, mixed $value): void
     {
         throw new ImmutableException('Cannot modify immutable string');
     }
@@ -125,27 +127,27 @@ final class StringObject extends ValueObject implements StringLiteral
     /**
      * @inheritDoc
      */
-    public function offsetGet(mixed $index): string
+    public function offsetGet(mixed $offset): string
     {
-        Assert::isInt($index);
+        Assert::isInt($offset);
 
-        return $this->get($index);
+        return $this->get($offset);
     }
 
     /**
      * @inheritDoc
      */
-    public function offsetExists(mixed $index): bool
+    public function offsetExists(mixed $offset): bool
     {
-        Assert::isInt($index);
+        Assert::isInt($offset);
 
-        return $this->has($index);
+        return $this->has($offset);
     }
 
     /**
      * @inheritDoc
      */
-    public function offsetUnset(mixed $index): void
+    public function offsetUnset(mixed $offset): void
     {
         throw new ImmutableException('Cannot modify immutable string');
     }
@@ -243,8 +245,11 @@ final class StringObject extends ValueObject implements StringLiteral
     /**
      * @inheritDoc
      */
-    public function indexOf(string $search, ?int $start = null, bool $caseSensitive = true): int
-    {
+    public function indexOf(
+        string $search,
+        ?int $start = null,
+        bool $caseSensitive = true
+    ): int {
         if ($this->value === '') {
             return -1;
         }
@@ -274,8 +279,11 @@ final class StringObject extends ValueObject implements StringLiteral
     /**
      * @inheritDoc
      */
-    public function lastIndexOf(string $search, ?int $stop = null, bool $caseSensitive = true): int
-    {
+    public function lastIndexOf(
+        string $search,
+        ?int $stop = null,
+        bool $caseSensitive = true
+    ): int {
         $length = $this->length;
 
         if ($this->value === '') {
@@ -572,8 +580,10 @@ final class StringObject extends ValueObject implements StringLiteral
     /**
      * @inheritDoc
      */
-    public function split(string $delimiter = ' ', ?int $limit = null): ArrayList
-    {
+    public function split(
+        string $delimiter = ' ',
+        ?int $limit = null
+    ): ArrayList {
         if (empty($delimiter)) {
             throw new DomainException('Delimiter cannot be empty');
         }
@@ -866,8 +876,12 @@ final class StringObject extends ValueObject implements StringLiteral
      *
      * @return string
      */
-    protected static function padString(string $string, int $left, int $right, string $char): string
-    {
+    protected static function padString(
+        string $string,
+        int $left,
+        int $right,
+        string $char
+    ): string {
         $leftPadding = str_repeat($char, $left);
         $rightPadding = str_repeat($char, $right);
 
@@ -885,8 +899,10 @@ final class StringObject extends ValueObject implements StringLiteral
     {
         $output = [];
 
-        if (preg_match('/\A[a-z0-9]+\z/i', $string)
-            && strtoupper($string) !== $string) {
+        if (
+            preg_match('/\A[a-z0-9]+\z/i', $string)
+            && strtoupper($string) !== $string
+        ) {
             $parts = self::explodeOnCaps($string);
         } else {
             $parts = self::explodeOnDelimiters($string);
@@ -907,12 +923,16 @@ final class StringObject extends ValueObject implements StringLiteral
      *
      * @return string
      */
-    protected static function delimitString(string $string, string $delimiter): string
-    {
+    protected static function delimitString(
+        string $string,
+        string $delimiter
+    ): string {
         $output = [];
 
-        if (preg_match('/\A[a-z0-9]+\z/ui', $string)
-            && strtoupper($string) !== $string) {
+        if (
+            preg_match('/\A[a-z0-9]+\z/ui', $string)
+            && strtoupper($string) !== $string
+        ) {
             $parts = self::explodeOnCaps($string);
         } else {
             $parts = self::explodeOnDelimiters($string);

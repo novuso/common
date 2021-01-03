@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Domain\Value\DateTime;
 
@@ -20,8 +22,11 @@ final class Date extends ValueObject implements Comparable
      *
      * @throws DomainException When the date is not valid
      */
-    public function __construct(protected int $year, protected int $month, protected int $day)
-    {
+    public function __construct(
+        protected int $year,
+        protected int $month,
+        protected int $day
+    ) {
         $this->guardDate($this->year, $this->month, $this->day);
     }
 
@@ -66,8 +71,10 @@ final class Date extends ValueObject implements Comparable
     /**
      * Creates instance from a timestamp and timezone
      */
-    public static function fromTimestamp(int $timestamp, ?string $timezone = null): Date
-    {
+    public static function fromTimestamp(
+        int $timestamp,
+        ?string $timezone = null
+    ): Date {
         $timezone = $timezone ?: date_default_timezone_get();
         Assert::isTimezone($timezone);
 

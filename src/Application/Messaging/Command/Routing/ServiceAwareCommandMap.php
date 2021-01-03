@@ -1,10 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Messaging\Command\Routing;
 
 use Novuso\Common\Domain\Messaging\Command\Command;
 use Novuso\Common\Domain\Messaging\Command\CommandHandler;
-use Novuso\System\Exception\AssertionException;
 use Novuso\System\Exception\LookupException;
 use Novuso\System\Type\Type;
 use Novuso\System\Utility\Assert;
@@ -15,28 +16,13 @@ use Psr\Container\ContainerInterface;
  */
 final class ServiceAwareCommandMap implements CommandMap
 {
-    /**
-     * Service container
-     *
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    /**
-     * Command handlers
-     *
-     * @var array
-     */
-    protected $handlers = [];
+    protected array $handlers = [];
 
     /**
      * Constructs ServiceAwareCommandMap
-     *
-     * @param ContainerInterface $container The service container
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(protected ContainerInterface $container)
     {
-        $this->container = $container;
     }
 
     /**
@@ -46,12 +32,6 @@ final class ServiceAwareCommandMap implements CommandMap
      * [
      *     SomeCommand::class => 'handler_service_name'
      * ]
-     *
-     * @param array $commandToHandlerMap A map of class names to service names
-     *
-     * @return void
-     *
-     * @throws AssertionException When a command class is not valid
      */
     public function registerHandlers(array $commandToHandlerMap): void
     {
@@ -62,16 +42,11 @@ final class ServiceAwareCommandMap implements CommandMap
 
     /**
      * Registers a command handler
-     *
-     * @param string $commandClass The full command class name
-     * @param string $serviceName  The handler service name
-     *
-     * @return void
-     *
-     * @throws AssertionException When the command class is not valid
      */
-    public function registerHandler(string $commandClass, string $serviceName): void
-    {
+    public function registerHandler(
+        string $commandClass,
+        string $serviceName
+    ): void {
         Assert::implementsInterface($commandClass, Command::class);
 
         $type = Type::create($commandClass)->toString();
@@ -85,7 +60,10 @@ final class ServiceAwareCommandMap implements CommandMap
     public function getHandler(string $commandClass): CommandHandler
     {
         if (!$this->hasHandler($commandClass)) {
-            $message = sprintf('Handler not defined for command: %s', $commandClass);
+            $message = sprintf(
+                'Handler not defined for command: %s',
+                $commandClass
+            );
             throw new LookupException($message);
         }
 

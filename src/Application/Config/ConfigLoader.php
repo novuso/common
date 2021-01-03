@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Config;
 
@@ -14,7 +16,10 @@ interface ConfigLoader
      *
      * @throws ConfigLoaderException When an error occurs
      */
-    public function load(mixed $resource, ?string $type = null): ConfigContainer;
+    public function load(
+        mixed $resource,
+        ?string $type = null
+    ): ConfigContainer;
 
     /**
      * Checks if a resource is supported

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Filesystem\Exception;
 
@@ -14,8 +16,10 @@ class FileNotFoundException extends FilesystemException
      *
      * @return FileNotFoundException
      */
-    public static function fromPath(string $path, ?Throwable $previous = null): static
-    {
+    public static function fromPath(
+        string $path,
+        ?Throwable $previous = null
+    ): static {
         $message = sprintf('File not found: %s', $path);
 
         return new static($message, $path, $previous);

@@ -1,10 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Messaging\Query\Routing;
 
 use Novuso\Common\Domain\Messaging\Query\Query;
 use Novuso\Common\Domain\Messaging\Query\QueryHandler;
-use Novuso\System\Exception\AssertionException;
 use Novuso\System\Exception\LookupException;
 use Novuso\System\Type\Type;
 use Novuso\System\Utility\Assert;
@@ -14,12 +15,7 @@ use Novuso\System\Utility\Assert;
  */
 final class InMemoryQueryMap implements QueryMap
 {
-    /**
-     * Query handlers
-     *
-     * @var array
-     */
-    protected $handlers = [];
+    protected array $handlers = [];
 
     /**
      * Registers query handlers
@@ -28,12 +24,6 @@ final class InMemoryQueryMap implements QueryMap
      * [
      *     SomeQuery::class => $someHandlerInstance
      * ]
-     *
-     * @param array $queryToHandlerMap A map of class names to handlers
-     *
-     * @return void
-     *
-     * @throws AssertionException When a query class is not valid
      */
     public function registerHandlers(array $queryToHandlerMap): void
     {
@@ -44,16 +34,11 @@ final class InMemoryQueryMap implements QueryMap
 
     /**
      * Registers a query handler
-     *
-     * @param string       $queryClass The full query class name
-     * @param QueryHandler $handler    The query handler
-     *
-     * @return void
-     *
-     * @throws AssertionException When the query class is not valid
      */
-    public function registerHandler(string $queryClass, QueryHandler $handler): void
-    {
+    public function registerHandler(
+        string $queryClass,
+        QueryHandler $handler
+    ): void {
         Assert::implementsInterface($queryClass, Query::class);
 
         $type = Type::create($queryClass)->toString();
@@ -62,14 +47,17 @@ final class InMemoryQueryMap implements QueryMap
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function getHandler(string $queryClass): QueryHandler
     {
         $type = Type::create($queryClass)->toString();
 
         if (!isset($this->handlers[$type])) {
-            $message = sprintf('Handler not defined for query: %s', $queryClass);
+            $message = sprintf(
+                'Handler not defined for query: %s',
+                $queryClass
+            );
             throw new LookupException($message);
         }
 
@@ -77,7 +65,7 @@ final class InMemoryQueryMap implements QueryMap
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function hasHandler(string $queryClass): bool
     {

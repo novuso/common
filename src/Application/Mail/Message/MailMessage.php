@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Mail\Message;
 
@@ -195,8 +197,11 @@ final class MailMessage
      *
      * Example content type: "text/plain" or "text/html"
      */
-    public function addContent(string $content, string $contentType, ?string $charset = null): static
-    {
+    public function addContent(
+        string $content,
+        string $contentType,
+        ?string $charset = null
+    ): static {
         $charset = $charset ?: $this->getCharset();
 
         $this->content[] = [

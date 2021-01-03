@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Domain\Specification;
 
@@ -10,7 +12,9 @@ final class NotSpecification extends CompositeSpecification
     /**
      * Constructs NotSpecification
      */
-    public function __construct(protected Specification $spec) {}
+    public function __construct(protected Specification $spec)
+    {
+    }
 
     /**
      * @inheritDoc

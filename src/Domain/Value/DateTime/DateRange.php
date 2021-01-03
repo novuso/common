@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Domain\Value\DateTime;
 
@@ -22,8 +24,11 @@ final class DateRange extends ValueObject implements IteratorAggregate
      *
      * @throws DomainException When the arguments are invalid
      */
-    public function __construct(protected Date $start, protected Date $end, protected int $step = 1)
-    {
+    public function __construct(
+        protected Date $start,
+        protected Date $end,
+        protected int $step = 1
+    ) {
         if ($this->step === 0) {
             throw new DomainException('Step cannot be zero');
         }
@@ -58,8 +63,11 @@ final class DateRange extends ValueObject implements IteratorAggregate
      *
      * @throws DomainException When the arguments are invalid
      */
-    public static function fromIterations(Date $start, int $step, int $iterations): static
-    {
+    public static function fromIterations(
+        Date $start,
+        int $step,
+        int $iterations
+    ): static {
         if ($step === 0) {
             throw new DomainException('Step cannot be zero');
         }
@@ -67,10 +75,14 @@ final class DateRange extends ValueObject implements IteratorAggregate
         $current = new NativeDateTime($start->toString());
         if ($step > 0) {
             // forward iteration
-            $interval = DateInterval::createFromDateString(sprintf('+%d days', $step));
+            $interval = DateInterval::createFromDateString(
+                sprintf('+%d days', $step)
+            );
         } else {
             // reverse iteration
-            $interval = DateInterval::createFromDateString(sprintf('%d days', $step));
+            $interval = DateInterval::createFromDateString(
+                sprintf('%d days', $step)
+            );
         }
 
         for ($i = 1; $i < $iterations; $i++) {

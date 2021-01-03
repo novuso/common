@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\HttpClient;
 
@@ -25,21 +27,26 @@ final class HttpService implements HttpClient, MessageFactory, StreamFactory, Ur
         protected MessageFactory $messageFactory,
         protected StreamFactory $streamFactory,
         protected UriFactory $uriFactory
-    ) {}
+    ) {
+    }
 
     /**
      * @inheritDoc
      */
-    public function send(RequestInterface $request, array $options = []): ResponseInterface
-    {
+    public function send(
+        RequestInterface $request,
+        array $options = []
+    ): ResponseInterface {
         return $this->httpClient->send($request, $options);
     }
 
     /**
      * @inheritDoc
      */
-    public function sendAsync(RequestInterface $request, array $options = []): Promise
-    {
+    public function sendAsync(
+        RequestInterface $request,
+        array $options = []
+    ): Promise {
         return $this->httpClient->sendAsync($request, $options);
     }
 
@@ -50,7 +57,7 @@ final class HttpService implements HttpClient, MessageFactory, StreamFactory, Ur
         string $method,
         UriInterface|string $uri,
         array $headers = [],
-        StreamInterface|string|null $body = null,
+        mixed $body = null,
         string $protocol = '1.1'
     ): RequestInterface {
         return $this->messageFactory->createRequest(
@@ -68,7 +75,7 @@ final class HttpService implements HttpClient, MessageFactory, StreamFactory, Ur
     public function createResponse(
         int $status = 200,
         array $headers = [],
-        StreamInterface|string|null $body = null,
+        mixed $body = null,
         string $protocol = '1.1',
         ?string $reason = null
     ): ResponseInterface {
