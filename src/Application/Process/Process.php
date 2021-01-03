@@ -1,94 +1,34 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Process;
+
+use Closure;
 
 /**
  * Class Process
  */
 final class Process
 {
-    /**
-     * Command
-     *
-     * @var string
-     */
-    protected $command;
-
-    /**
-     * Working directory
-     *
-     * @var string|null
-     */
-    protected $directory;
-
-    /**
-     * Environment variables
-     *
-     * @var array|null
-     */
-    protected $environment;
-
-    /**
-     * Input
-     *
-     * @var resource|string|null
-     */
-    protected $input;
-
-    /**
-     * Timeout
-     *
-     * @var float|null
-     */
-    protected $timeout;
-
-    /**
-     * Callback for STDOUT
-     *
-     * @var callable|null
-     */
-    protected $stdout;
-
-    /**
-     * Callback for STDERR
-     *
-     * @var callable|null
-     */
-    protected $stderr;
-
-    /**
-     * Output disabled status
-     *
-     * @var bool
-     */
-    protected $outputDisabled = false;
+    /** @var resource|string|null */
+    protected mixed $input = null;
+    protected bool $outputDisabled = false;
 
     /**
      * Constructs Process
      *
-     * @param string               $command     The command
-     * @param string|null          $directory   The working directory
-     * @param array|null           $environment The environment variables
-     * @param resource|string|null $input       The input
-     * @param float|null           $timeout     The timeout
-     * @param callable|null        $stdout      The callback for STDOUT
-     * @param callable|null        $stderr      The callback for STDERR
+     * @param resource|string|null $input The input
      */
     public function __construct(
-        string $command,
-        ?string $directory = null,
-        ?array $environment = null,
-        $input = null,
-        ?float $timeout = null,
-        ?callable $stdout = null,
-        ?callable $stderr = null
+        protected string $command,
+        protected ?string $directory = null,
+        protected ?array $environment = null,
+        protected ?float $timeout = null,
+        protected ?Closure $stdout = null,
+        protected ?Closure $stderr = null,
+        mixed $input = null
     ) {
-        $this->command = $command;
-        $this->directory = $directory;
-        $this->environment = $environment;
-        $this->timeout = $timeout;
-        $this->stdout = $stdout;
-        $this->stderr = $stderr;
         if ($input !== null) {
             if (is_resource($input)) {
                 $this->input = $input;
@@ -100,8 +40,6 @@ final class Process
 
     /**
      * Retrieves the command
-     *
-     * @return string
      */
     public function command(): string
     {
@@ -110,8 +48,6 @@ final class Process
 
     /**
      * Retrieves the directory
-     *
-     * @return string|null
      */
     public function directory(): ?string
     {
@@ -120,8 +56,6 @@ final class Process
 
     /**
      * Retrieves the environment
-     *
-     * @return array|null
      */
     public function environment(): ?array
     {
@@ -133,15 +67,13 @@ final class Process
      *
      * @return resource|string|null
      */
-    public function input()
+    public function input(): mixed
     {
         return $this->input;
     }
 
     /**
      * Retrieves the timeout
-     *
-     * @return float|null
      */
     public function timeout(): ?float
     {
@@ -150,28 +82,22 @@ final class Process
 
     /**
      * Retrieves STDOUT callback
-     *
-     * @return callable|null
      */
-    public function stdout(): ?callable
+    public function stdout(): ?Closure
     {
         return $this->stdout;
     }
 
     /**
      * Retrieves STDERR callback
-     *
-     * @return callable|null
      */
-    public function stderr(): ?callable
+    public function stderr(): ?Closure
     {
         return $this->stderr;
     }
 
     /**
      * Disables output fetching
-     *
-     * @return Process
      */
     public function disableOutput(): Process
     {
@@ -182,8 +108,6 @@ final class Process
 
     /**
      * Enables output fetching
-     *
-     * @return Process
      */
     public function enableOutput(): Process
     {
@@ -194,8 +118,6 @@ final class Process
 
     /**
      * Checks if output is disabled
-     *
-     * @return bool
      */
     public function isOutputDisabled(): bool
     {

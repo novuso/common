@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Process;
 
@@ -11,17 +13,11 @@ interface ProcessRunner
 {
     /**
      * Attaches a process
-     *
-     * @param Process $process The process
-     *
-     * @return void
      */
     public function attach(Process $process): void;
 
     /**
      * Clears attached processes
-     *
-     * @return void
      */
     public function clear(): void;
 
@@ -29,11 +25,11 @@ interface ProcessRunner
      * Runs attached processes
      *
      * Process error behavior defaults to throwing an exception when a child
-     * process fails. To ignore process errors, pass ProcessError::IGNORE()
+     * process fails.
      *
-     * @param ProcessErrorBehavior|null $errorBehavior The process error behavior
+     * To ignore process errors, pass ProcessError::IGNORE()
      *
-     * @return void
+     * To retry failed processes, pass ProcessError::RETRY()
      *
      * @throws ProcessException When an error occurs, depending on behavior
      */
