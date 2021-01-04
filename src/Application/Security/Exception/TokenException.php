@@ -7,8 +7,8 @@ namespace Novuso\Common\Application\Security\Exception;
 use Novuso\System\Exception\SystemException;
 
 /**
- * Class PasswordException
+ * Class TokenException
  */
-class PasswordException extends SystemException
+class TokenException extends SystemException
 {
 }

@@ -21,6 +21,13 @@ class IsTypeTest extends UnitTestCase
     {
         $rule = new IsType('?string');
 
+        $this->assertTrue($rule->isSatisfiedBy('foo'));
+    }
+
+    public function test_that_is_satisfied_by_returns_true_when_validation_passes_nullable_null()
+    {
+        $rule = new IsType('?string');
+
         $this->assertTrue($rule->isSatisfiedBy(null));
     }
 

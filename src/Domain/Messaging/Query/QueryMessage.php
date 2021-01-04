@@ -52,7 +52,7 @@ class QueryMessage extends BaseMessage
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public static function arrayDeserialize(array $data): static
     {
@@ -95,7 +95,7 @@ class QueryMessage extends BaseMessage
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function withMetaData(MetaData $metaData): static
     {
@@ -111,7 +111,7 @@ class QueryMessage extends BaseMessage
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function mergeMetaData(MetaData $metaData): static
     {

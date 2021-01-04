@@ -20,7 +20,7 @@ final class SimpleCommandRouter implements CommandRouter
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function match(Command $command): CommandHandler
     {

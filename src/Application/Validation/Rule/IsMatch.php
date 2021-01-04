@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Validation\Rule;
 
@@ -11,26 +13,16 @@ use Novuso\System\Utility\Validate;
 class IsMatch extends CompositeSpecification
 {
     /**
-     * Regex pattern
-     *
-     * @var string
-     */
-    protected $pattern;
-
-    /**
      * Constructs IsMatch
-     *
-     * @param string $pattern The regex pattern
      */
-    public function __construct(string $pattern)
+    public function __construct(protected string $pattern)
     {
-        $this->pattern = $pattern;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function isSatisfiedBy($candidate): bool
+    public function isSatisfiedBy(mixed $candidate): bool
     {
         return Validate::isMatch($candidate, $this->pattern);
     }

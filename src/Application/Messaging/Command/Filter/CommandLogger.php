@@ -24,7 +24,7 @@ final class CommandLogger implements CommandFilter
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function process(CommandMessage $message, callable $next): void
     {

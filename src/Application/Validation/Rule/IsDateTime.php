@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Validation\Rule;
 
@@ -13,32 +15,25 @@ use Throwable;
 class IsDateTime extends CompositeSpecification
 {
     /**
-     * Date/time format
-     *
-     * @var string
-     */
-    protected $format;
-
-    /**
      * Constructs IsDateTime
-     *
-     * @param string $format The format
      */
-    public function __construct(string $format)
+    public function __construct(protected string $format)
     {
-        $this->format = $format;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function isSatisfiedBy($candidate): bool
+    public function isSatisfiedBy(mixed $candidate): bool
     {
         try {
             if ($this->format === DateTime::STRING_FORMAT) {
                 $dateTime = DateTime::fromString($candidate);
             } else {
-                $dateTime = DateTimeImmutable::createFromFormat($this->format, $candidate);
+                $dateTime = DateTimeImmutable::createFromFormat(
+                    $this->format,
+                    $candidate
+                );
                 if ($dateTime === false) {
                     return false;
                 }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Sms;
 
@@ -13,24 +15,14 @@ use Novuso\Common\Domain\Value\Identifier\Url;
 final class SmsService implements SmsTransport, SmsFactory
 {
     /**
-     * SMS transport
-     *
-     * @var SmsTransport
-     */
-    protected $transport;
-
-    /**
      * Constructs SmsService
-     *
-     * @param SmsTransport $transport The SMS transport
      */
-    public function __construct(SmsTransport $transport)
+    public function __construct(protected SmsTransport $transport)
     {
-        $this->transport = $transport;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function send(SmsMessage $message): void
     {
@@ -38,10 +30,14 @@ final class SmsService implements SmsTransport, SmsFactory
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function createMessage(string $to, string $from, ?string $body = null, array $mediaUrls = []): SmsMessage
-    {
+    public function createMessage(
+        string $to,
+        string $from,
+        ?string $body = null,
+        array $mediaUrls = []
+    ): SmsMessage {
         $message = SmsMessage::create($to, $from);
 
         if ($body !== null) {
@@ -49,20 +45,21 @@ final class SmsService implements SmsTransport, SmsFactory
         }
 
         foreach ($mediaUrls as $url) {
-            $message->addMedia($this->createMediaUrl($url));
+            if ($url instanceof Url) {
+                $message->addMedia($url);
+            } else {
+                $message->addMedia($this->createMediaUrl($url));
+            }
         }
 
         return $message;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function createMediaUrl(string $url): Url
     {
-        /** @var Url $media */
-        $media = Url::parse($url);
-
-        return $media;
+        return Url::parse($url);
     }
 }

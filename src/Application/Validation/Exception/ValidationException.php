@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Validation\Exception;
 
@@ -11,12 +13,8 @@ class ValidationException extends ErrorException
 {
     /**
      * Creates instance from validation errors
-     *
-     * @param array $errors The errors
-     *
-     * @return ValidationException
      */
-    public static function fromErrors(array $errors): ValidationException
+    public static function fromErrors(array $errors): static
     {
         $message = 'Validation Failed';
 

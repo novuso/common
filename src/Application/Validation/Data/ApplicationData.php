@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Validation\Data;
 
@@ -6,23 +8,17 @@ use Novuso\System\Collection\Contract\Collection;
 use Novuso\System\Collection\HashTable;
 use Novuso\System\Exception\KeyException;
 use Novuso\System\Type\Arrayable;
+use Traversable;
 
 /**
  * Class ApplicationData
  */
 class ApplicationData implements Arrayable, Collection
 {
-    /**
-     * Application data
-     *
-     * @var HashTable
-     */
-    protected $data;
+    protected HashTable $data;
 
     /**
      * Constructs ApplicationData
-     *
-     * @param array $data An associated array keyed by field name
      */
     public function __construct(array $data)
     {
@@ -34,13 +30,8 @@ class ApplicationData implements Arrayable, Collection
 
     /**
      * Retrieves a value by field name
-     *
-     * @param string $name    The name
-     * @param mixed  $default Default value
-     *
-     * @return mixed
      */
-    public function get(string $name, $default = null)
+    public function get(string $name, mixed $default = null): mixed
     {
         try {
             return $this->data->get($name);
@@ -51,10 +42,6 @@ class ApplicationData implements Arrayable, Collection
 
     /**
      * Checks if a name is defined
-     *
-     * @param string $name The name
-     *
-     * @return bool
      */
     public function has(string $name): bool
     {
@@ -63,8 +50,6 @@ class ApplicationData implements Arrayable, Collection
 
     /**
      * Retrieves a list of names
-     *
-     * @return array<string>
      */
     public function names(): array
     {
@@ -78,7 +63,7 @@ class ApplicationData implements Arrayable, Collection
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function isEmpty(): bool
     {
@@ -86,7 +71,7 @@ class ApplicationData implements Arrayable, Collection
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function count(): int
     {
@@ -94,15 +79,15 @@ class ApplicationData implements Arrayable, Collection
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return $this->data->getIterator();
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function toArray(): array
     {

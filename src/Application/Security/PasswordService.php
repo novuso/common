@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Security;
 
@@ -8,33 +10,16 @@ namespace Novuso\Common\Application\Security;
 final class PasswordService implements PasswordHasher, PasswordValidator
 {
     /**
-     * Password hasher
-     *
-     * @var PasswordHasher
-     */
-    protected $hasher;
-
-    /**
-     * Password validator
-     *
-     * @var PasswordValidator
-     */
-    protected $validator;
-
-    /**
      * Constructs PasswordService
-     *
-     * @param PasswordHasher    $hasher    The password hasher
-     * @param PasswordValidator $validator The password validator
      */
-    public function __construct(PasswordHasher $hasher, PasswordValidator $validator)
-    {
-        $this->hasher = $hasher;
-        $this->validator = $validator;
+    public function __construct(
+        protected PasswordHasher $hasher,
+        protected PasswordValidator $validator
+    ) {
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function hash(string $password): string
     {
@@ -42,7 +27,7 @@ final class PasswordService implements PasswordHasher, PasswordValidator
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function validate(string $password, string $hash): bool
     {
@@ -50,7 +35,7 @@ final class PasswordService implements PasswordHasher, PasswordValidator
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function needsRehash(string $hash): bool
     {

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Validation;
 
@@ -58,19 +60,14 @@ use Novuso\Common\Application\Validation\Specification\RequiredFieldSpecificatio
 use Novuso\Common\Application\Validation\Specification\SameFieldsSpecification;
 use Novuso\Common\Application\Validation\Specification\SingleFieldSpecification;
 use Novuso\System\Collection\ArrayList;
-use Novuso\System\Collection\Type\Sequence;
+use Novuso\System\Utility\Validate;
 
 /**
  * Class ValidationCoordinator
  */
 final class ValidationCoordinator
 {
-    /**
-     * List of validators
-     *
-     * @var Sequence
-     */
-    protected $validators;
+    protected ArrayList $validators;
 
     /**
      * Constructs ValidationCoordinator
@@ -82,23 +79,30 @@ final class ValidationCoordinator
 
     /**
      * Validates input data
-     *
-     * @param InputData $input The input data
-     *
-     * @return ValidationResult
      */
     public function validate(InputData $input): ValidationResult
     {
         $context = $this->createContext($input);
 
-        $valid = $this->validators->every(function (Validator $validator) use ($context) {
-            return $validator->validate($context);
-        });
+        $valid = $this->validators->reduce(
+            function (bool $valid, Validator $validator) use ($context) {
+                if (!$validator->validate($context)) {
+                    $valid = false;
+                }
+
+                return $valid;
+            },
+            $valid = true
+        );
 
         if ($context->hasErrors() || !$valid) {
-            $result = ValidationResult::failed(new ErrorData($context->getErrors()));
+            $result = ValidationResult::failed(
+                new ErrorData($context->getErrors())
+            );
         } else {
-            $result = ValidationResult::passed(new ApplicationData($input->toArray()));
+            $result = ValidationResult::passed(
+                new ApplicationData($input->toArray())
+            );
         }
 
         $this->resetValidators();
@@ -108,10 +112,6 @@ final class ValidationCoordinator
 
     /**
      * Adds a validator
-     *
-     * @param Validator $validator The validator
-     *
-     * @return void
      */
     public function addValidator(Validator $validator): void
     {
@@ -120,17 +120,17 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a string is alphabetic
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     *
-     * @return void
      */
-    public function addAlphaValidation(string $fieldName, string $errorMessage): void
-    {
+    public function addAlphaValidation(
+        string $fieldName,
+        string $errorMessage
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new IsAlpha()),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new IsAlpha()
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -139,17 +139,17 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a string is alphabetic dashed
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     *
-     * @return void
      */
-    public function addAlphaDashValidation(string $fieldName, string $errorMessage): void
-    {
+    public function addAlphaDashValidation(
+        string $fieldName,
+        string $errorMessage
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new IsAlphaDashed()),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new IsAlphaDashed()
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -158,17 +158,17 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a string is alphanumeric
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     *
-     * @return void
      */
-    public function addAlphaNumValidation(string $fieldName, string $errorMessage): void
-    {
+    public function addAlphaNumValidation(
+        string $fieldName,
+        string $errorMessage
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new IsAlnum()),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new IsAlnum()
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -177,17 +177,17 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a string is alphanumeric dashed
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     *
-     * @return void
      */
-    public function addAlphaNumDashValidation(string $fieldName, string $errorMessage): void
-    {
+    public function addAlphaNumDashValidation(
+        string $fieldName,
+        string $errorMessage
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new IsAlnumDashed()),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new IsAlnumDashed()
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -196,17 +196,17 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a field is blank
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     *
-     * @return void
      */
-    public function addBlankValidation(string $fieldName, string $errorMessage): void
-    {
+    public function addBlankValidation(
+        string $fieldName,
+        string $errorMessage
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new IsBlank()),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new IsBlank()
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -215,18 +215,18 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a string contains a search string
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     * @param string $search       The search string
-     *
-     * @return void
      */
-    public function addContainsValidation(string $fieldName, string $errorMessage, string $search): void
-    {
+    public function addContainsValidation(
+        string $fieldName,
+        string $errorMessage,
+        string $search
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new StringContains($search)),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new StringContains($search)
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -235,18 +235,18 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a field is a valid date
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     * @param string $format       The date format
-     *
-     * @return void
      */
-    public function addDateValidation(string $fieldName, string $errorMessage, string $format): void
-    {
+    public function addDateValidation(
+        string $fieldName,
+        string $errorMessage,
+        string $format
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new IsDateTime($format)),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new IsDateTime($format)
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -255,18 +255,18 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a field is a valid date/time
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     * @param string $format       The date/time format
-     *
-     * @return void
      */
-    public function addDateTimeValidation(string $fieldName, string $errorMessage, string $format): void
-    {
+    public function addDateTimeValidation(
+        string $fieldName,
+        string $errorMessage,
+        string $format
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new IsDateTime($format)),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new IsDateTime($format)
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -275,17 +275,17 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a field only contains digits
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     *
-     * @return void
      */
-    public function addDigitsValidation(string $fieldName, string $errorMessage): void
-    {
+    public function addDigitsValidation(
+        string $fieldName,
+        string $errorMessage
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new IsDigits()),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new IsDigits()
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -294,17 +294,17 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a string is an email address
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     *
-     * @return void
      */
-    public function addEmailValidation(string $fieldName, string $errorMessage): void
-    {
+    public function addEmailValidation(
+        string $fieldName,
+        string $errorMessage
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new IsEmail()),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new IsEmail()
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -313,17 +313,17 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a field is empty
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     *
-     * @return void
      */
-    public function addEmptyValidation(string $fieldName, string $errorMessage): void
-    {
+    public function addEmptyValidation(
+        string $fieldName,
+        string $errorMessage
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new IsEmpty()),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new IsEmpty()
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -332,18 +332,18 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a string ends with a search string
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     * @param string $search       The search string
-     *
-     * @return void
      */
-    public function addEndsWithValidation(string $fieldName, string $errorMessage, string $search): void
-    {
+    public function addEndsWithValidation(
+        string $fieldName,
+        string $errorMessage,
+        string $search
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new StringEndsWith($search)),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new StringEndsWith($search)
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -352,18 +352,18 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts two fields are equal
-     *
-     * @param string $fieldName       The primary field name
-     * @param string $errorMessage    The error message
-     * @param string $comparisonField The comparison field name
-     *
-     * @return void
      */
-    public function addEqualsValidation(string $fieldName, string $errorMessage, string $comparisonField): void
-    {
+    public function addEqualsValidation(
+        string $fieldName,
+        string $errorMessage,
+        string $comparisonField
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new EqualFieldsSpecification($fieldName, $comparisonField),
+                new EqualFieldsSpecification(
+                    $fieldName,
+                    $comparisonField
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -372,18 +372,18 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a field has an exact count
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     * @param string $count        The count
-     *
-     * @return void
      */
-    public function addExactCountValidation(string $fieldName, string $errorMessage, string $count): void
-    {
+    public function addExactCountValidation(
+        string $fieldName,
+        string $errorMessage,
+        string $count
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new CountExact((int) $count)),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new CountExact((int) $count)
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -392,18 +392,18 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a string is an exact length
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     * @param string $length       The length
-     *
-     * @return void
      */
-    public function addExactLengthValidation(string $fieldName, string $errorMessage, string $length): void
-    {
+    public function addExactLengthValidation(
+        string $fieldName,
+        string $errorMessage,
+        string $length
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new LengthExact((int) $length)),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new LengthExact((int) $length)
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -412,18 +412,20 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a number matches another number
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     * @param string $number       The number
-     *
-     * @return void
      */
-    public function addExactNumberValidation(string $fieldName, string $errorMessage, string $number): void
-    {
+    public function addExactNumberValidation(
+        string $fieldName,
+        string $errorMessage,
+        string $number
+    ): void {
+        $intVal = Validate::intValue($number);
+
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new NumberExact($number)),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new NumberExact($intVal ? (int) $number : (float) $number)
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -432,17 +434,17 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a field is false
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     *
-     * @return void
      */
-    public function addFalseValidation(string $fieldName, string $errorMessage): void
-    {
+    public function addFalseValidation(
+        string $fieldName,
+        string $errorMessage
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new IsFalse()),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new IsFalse()
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -451,17 +453,17 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a field is falsy
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     *
-     * @return void
      */
-    public function addFalsyValidation(string $fieldName, string $errorMessage): void
-    {
+    public function addFalsyValidation(
+        string $fieldName,
+        string $errorMessage
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new IsFalsy()),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new IsFalsy()
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -470,18 +472,18 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a field matches one of a list of values
-     *
-     * @param string   $fieldName    The field name
-     * @param string   $errorMessage The error message
-     * @param string[] $list         The list of options
-     *
-     * @return void
      */
-    public function addInListValidation(string $fieldName, string $errorMessage, string ...$list): void
-    {
+    public function addInListValidation(
+        string $fieldName,
+        string $errorMessage,
+        string ...$list
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new InList($list)),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new InList($list)
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -490,17 +492,17 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a string is an IP address
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     *
-     * @return void
      */
-    public function addIpAddressValidation(string $fieldName, string $errorMessage): void
-    {
+    public function addIpAddressValidation(
+        string $fieldName,
+        string $errorMessage
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new IsIpAddress()),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new IsIpAddress()
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -509,17 +511,17 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a string is an IP V4 address
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     *
-     * @return void
      */
-    public function addIpV4AddressValidation(string $fieldName, string $errorMessage): void
-    {
+    public function addIpV4AddressValidation(
+        string $fieldName,
+        string $errorMessage
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new IsIpV4Address()),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new IsIpV4Address()
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -528,17 +530,17 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a string is an IP V6 address
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     *
-     * @return void
      */
-    public function addIpV6AddressValidation(string $fieldName, string $errorMessage): void
-    {
+    public function addIpV6AddressValidation(
+        string $fieldName,
+        string $errorMessage
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new IsIpV6Address()),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new IsIpV6Address()
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -547,17 +549,17 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a string is JSON formatted
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     *
-     * @return void
      */
-    public function addJsonValidation(string $fieldName, string $errorMessage): void
-    {
+    public function addJsonValidation(
+        string $fieldName,
+        string $errorMessage
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new IsJson()),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new IsJson()
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -566,18 +568,18 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a key is set
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     * @param string $key          The key
-     *
-     * @return void
      */
-    public function addKeyIssetValidation(string $fieldName, string $errorMessage, string $key): void
-    {
+    public function addKeyIssetValidation(
+        string $fieldName,
+        string $errorMessage,
+        string $key
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new KeyIsset($key)),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new KeyIsset($key)
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -586,18 +588,18 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a key is not empty
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     * @param string $key          The key
-     *
-     * @return void
      */
-    public function addKeyNotEmptyValidation(string $fieldName, string $errorMessage, string $key): void
-    {
+    public function addKeyNotEmptyValidation(
+        string $fieldName,
+        string $errorMessage,
+        string $key
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new KeyNotEmpty($key)),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new KeyNotEmpty($key)
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -606,18 +608,18 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a field is list of type
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     * @param string $type         The type
-     *
-     * @return void
      */
-    public function addListOfValidation(string $fieldName, string $errorMessage, string $type): void
-    {
+    public function addListOfValidation(
+        string $fieldName,
+        string $errorMessage,
+        string $type
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new IsListOf($type)),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new IsListOf($type)
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -626,18 +628,18 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a field matches a regular expression
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     * @param string $pattern      The regex pattern
-     *
-     * @return void
      */
-    public function addMatchValidation(string $fieldName, string $errorMessage, string $pattern): void
-    {
+    public function addMatchValidation(
+        string $fieldName,
+        string $errorMessage,
+        string $pattern
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new IsMatch($pattern)),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new IsMatch($pattern)
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -645,19 +647,20 @@ final class ValidationCoordinator
     }
 
     /**
-     * Adds a validation that asserts a field has a count equal to or less than a given count maximum
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     * @param string $maxCount     The max count
-     *
-     * @return void
+     * Adds a validation that asserts a field has a count equal to or less than
+     * a given count maximum
      */
-    public function addMaxCountValidation(string $fieldName, string $errorMessage, string $maxCount): void
-    {
+    public function addMaxCountValidation(
+        string $fieldName,
+        string $errorMessage,
+        string $maxCount
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new CountMax((int) $maxCount)),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new CountMax((int) $maxCount)
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -665,19 +668,20 @@ final class ValidationCoordinator
     }
 
     /**
-     * Adds a validation that asserts a string is less than or equal to a maximum length
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     * @param string $maxLength    The max length
-     *
-     * @return void
+     * Adds a validation that asserts a string is less than or equal to a
+     * maximum length
      */
-    public function addMaxLengthValidation(string $fieldName, string $errorMessage, string $maxLength): void
-    {
+    public function addMaxLengthValidation(
+        string $fieldName,
+        string $errorMessage,
+        string $maxLength
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new LengthMax((int) $maxLength)),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new LengthMax((int) $maxLength)
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -685,19 +689,24 @@ final class ValidationCoordinator
     }
 
     /**
-     * Adds a validation that asserts a number is less than or equal to a maximum number
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     * @param string $maxNumber    The max number
-     *
-     * @return void
+     * Adds a validation that asserts a number is less than or equal to a
+     * maximum number
      */
-    public function addMaxNumberValidation(string $fieldName, string $errorMessage, string $maxNumber): void
-    {
+    public function addMaxNumberValidation(
+        string $fieldName,
+        string $errorMessage,
+        string $maxNumber
+    ): void {
+        $intVal = Validate::intValue($maxNumber);
+
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new NumberMax($maxNumber)),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new NumberMax(
+                        $intVal ? (int) $maxNumber : (float) $maxNumber
+                    )
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -705,19 +714,20 @@ final class ValidationCoordinator
     }
 
     /**
-     * Adds a validation that asserts a field has a count equal to or greater than a given count minimum
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     * @param string $minCount     The min count
-     *
-     * @return void
+     * Adds a validation that asserts a field has a count equal to or greater
+     * than a given count minimum
      */
-    public function addMinCountValidation(string $fieldName, string $errorMessage, string $minCount): void
-    {
+    public function addMinCountValidation(
+        string $fieldName,
+        string $errorMessage,
+        string $minCount
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new CountMin((int) $minCount)),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new CountMin((int) $minCount)
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -725,19 +735,20 @@ final class ValidationCoordinator
     }
 
     /**
-     * Adds a validation that asserts a string is greater than or equal to a minimum length
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     * @param string $minLength    The min length
-     *
-     * @return void
+     * Adds a validation that asserts a string is greater than or equal to a
+     * minimum length
      */
-    public function addMinLengthValidation(string $fieldName, string $errorMessage, string $minLength): void
-    {
+    public function addMinLengthValidation(
+        string $fieldName,
+        string $errorMessage,
+        string $minLength
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new LengthMin((int) $minLength)),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new LengthMin((int) $minLength)
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -745,19 +756,24 @@ final class ValidationCoordinator
     }
 
     /**
-     * Adds a validation that asserts a number is greater than or equal to a minimum number
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     * @param string $minNumber    The min number
-     *
-     * @return void
+     * Adds a validation that asserts a number is greater than or equal to a
+     * minimum number
      */
-    public function addMinNumberValidation(string $fieldName, string $errorMessage, string $minNumber): void
-    {
+    public function addMinNumberValidation(
+        string $fieldName,
+        string $errorMessage,
+        string $minNumber
+    ): void {
+        $intVal = Validate::intValue($minNumber);
+
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new NumberMin($minNumber)),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new NumberMin(
+                        $intVal ? (int) $minNumber : (float) $minNumber
+                    )
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -766,17 +782,17 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a field is a natural number
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     *
-     * @return void
      */
-    public function addNaturalNumberValidation(string $fieldName, string $errorMessage): void
-    {
+    public function addNaturalNumberValidation(
+        string $fieldName,
+        string $errorMessage
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new IsNaturalNumber()),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new IsNaturalNumber()
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -785,17 +801,17 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a field is not blank
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     *
-     * @return void
      */
-    public function addNotBlankValidation(string $fieldName, string $errorMessage): void
-    {
+    public function addNotBlankValidation(
+        string $fieldName,
+        string $errorMessage
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new IsNotBlank()),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new IsNotBlank()
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -804,17 +820,17 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a field is not empty
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     *
-     * @return void
      */
-    public function addNotEmptyValidation(string $fieldName, string $errorMessage): void
-    {
+    public function addNotEmptyValidation(
+        string $fieldName,
+        string $errorMessage
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, (new IsEmpty())->not()),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    (new IsEmpty())->not()
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -823,18 +839,18 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts two fields are not equal
-     *
-     * @param string $fieldName       The primary field name
-     * @param string $errorMessage    The error message
-     * @param string $comparisonField The comparison field name
-     *
-     * @return void
      */
-    public function addNotEqualsValidation(string $fieldName, string $errorMessage, string $comparisonField): void
-    {
+    public function addNotEqualsValidation(
+        string $fieldName,
+        string $errorMessage,
+        string $comparisonField
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                (new EqualFieldsSpecification($fieldName, $comparisonField))->not(),
+                (new EqualFieldsSpecification(
+                    $fieldName,
+                    $comparisonField
+                ))->not(),
                 $fieldName,
                 $errorMessage
             )
@@ -843,17 +859,17 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a field is not null
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     *
-     * @return void
      */
-    public function addNotNullValidation(string $fieldName, string $errorMessage): void
-    {
+    public function addNotNullValidation(
+        string $fieldName,
+        string $errorMessage
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, (new IsNull())->not()),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    (new IsNull())->not()
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -862,18 +878,18 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts two fields are not the same
-     *
-     * @param string $fieldName       The field name
-     * @param string $errorMessage    The error message
-     * @param string $comparisonField The comparison field
-     *
-     * @return void
      */
-    public function addNotSameValidation(string $fieldName, string $errorMessage, string $comparisonField): void
-    {
+    public function addNotSameValidation(
+        string $fieldName,
+        string $errorMessage,
+        string $comparisonField
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                (new SameFieldsSpecification($fieldName, $comparisonField))->not(),
+                (new SameFieldsSpecification(
+                    $fieldName,
+                    $comparisonField
+                ))->not(),
                 $fieldName,
                 $errorMessage
             )
@@ -882,17 +898,17 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a field is not scalar
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     *
-     * @return void
      */
-    public function addNotScalarValidation(string $fieldName, string $errorMessage): void
-    {
+    public function addNotScalarValidation(
+        string $fieldName,
+        string $errorMessage
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, (new IsScalar())->not()),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    (new IsScalar())->not()
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -901,17 +917,17 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a field is null
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     *
-     * @return void
      */
-    public function addNullValidation(string $fieldName, string $errorMessage): void
-    {
+    public function addNullValidation(
+        string $fieldName,
+        string $errorMessage
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new IsNull()),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new IsNull()
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -920,17 +936,17 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a field is numeric
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     *
-     * @return void
      */
-    public function addNumericValidation(string $fieldName, string $errorMessage): void
-    {
+    public function addNumericValidation(
+        string $fieldName,
+        string $errorMessage
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new IsNumeric()),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new IsNumeric()
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -939,13 +955,6 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a field has a count within a defined range
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     * @param string $minCount     The min count
-     * @param string $maxCount     The max count
-     *
-     * @return void
      */
     public function addRangeCountValidation(
         string $fieldName,
@@ -955,7 +964,10 @@ final class ValidationCoordinator
     ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new CountRange((int) $minCount, (int) $maxCount)),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new CountRange((int) $minCount, (int) $maxCount)
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -964,13 +976,6 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a string length is within a range
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     * @param string $minLength    The min length
-     * @param string $maxLength    The max length
-     *
-     * @return void
      */
     public function addRangeLengthValidation(
         string $fieldName,
@@ -980,7 +985,10 @@ final class ValidationCoordinator
     ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new LengthRange((int) $minLength, (int) $maxLength)),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new LengthRange((int) $minLength, (int) $maxLength)
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -989,13 +997,6 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a number is within a range
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     * @param string $minNumber    The min number
-     * @param string $maxNumber    The max number
-     *
-     * @return void
      */
     public function addRangeNumberValidation(
         string $fieldName,
@@ -1003,9 +1004,18 @@ final class ValidationCoordinator
         string $minNumber,
         string $maxNumber
     ): void {
+        $minIntVal = Validate::intValue($minNumber);
+        $maxIntVal = Validate::intValue($maxNumber);
+
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new NumberRange($minNumber, $maxNumber)),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new NumberRange(
+                        $minIntVal ? (int) $minNumber : (float) $minNumber,
+                        $maxIntVal ? (int) $maxNumber : (float) $maxNumber
+                    )
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -1014,14 +1024,11 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a field is required
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     *
-     * @return void
      */
-    public function addRequiredValidation(string $fieldName, string $errorMessage): void
-    {
+    public function addRequiredValidation(
+        string $fieldName,
+        string $errorMessage
+    ): void {
         $this->addValidator(
             new BasicValidator(
                 new RequiredFieldSpecification($fieldName),
@@ -1033,16 +1040,18 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts two fields are the same
-     *
-     * @param string $fieldName       The field name
-     * @param string $errorMessage    The error message
-     * @param string $comparisonField The comparison field
      */
-    public function addSameValidation(string $fieldName, string $errorMessage, string $comparisonField): void
-    {
+    public function addSameValidation(
+        string $fieldName,
+        string $errorMessage,
+        string $comparisonField
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SameFieldsSpecification($fieldName, $comparisonField),
+                new SameFieldsSpecification(
+                    $fieldName,
+                    $comparisonField
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -1051,17 +1060,17 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a field is scalar
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     *
-     * @return void
      */
-    public function addScalarValidation(string $fieldName, string $errorMessage): void
-    {
+    public function addScalarValidation(
+        string $fieldName,
+        string $errorMessage
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new IsScalar()),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new IsScalar()
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -1070,18 +1079,18 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a string starts with a search string
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     * @param string $search       The search string
-     *
-     * @return void
      */
-    public function addStartsWithValidation(string $fieldName, string $errorMessage, string $search): void
-    {
+    public function addStartsWithValidation(
+        string $fieldName,
+        string $errorMessage,
+        string $search
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new StringStartsWith($search)),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new StringStartsWith($search)
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -1090,18 +1099,18 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a field is a valid time
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     * @param string $format       The time format
-     *
-     * @return void
      */
-    public function addTimeValidation(string $fieldName, string $errorMessage, string $format): void
-    {
+    public function addTimeValidation(
+        string $fieldName,
+        string $errorMessage,
+        string $format
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new IsDateTime($format)),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new IsDateTime($format)
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -1110,17 +1119,17 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a field is a timezone
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     *
-     * @return void
      */
-    public function addTimezoneValidation(string $fieldName, string $errorMessage): void
-    {
+    public function addTimezoneValidation(
+        string $fieldName,
+        string $errorMessage
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new IsTimezone()),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new IsTimezone()
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -1129,17 +1138,17 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a field is true
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     *
-     * @return void
      */
-    public function addTrueValidation(string $fieldName, string $errorMessage): void
-    {
+    public function addTrueValidation(
+        string $fieldName,
+        string $errorMessage
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new IsTrue()),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new IsTrue()
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -1147,18 +1156,18 @@ final class ValidationCoordinator
     }
 
     /**
-     * Adds a validation that asserts two fields are equal
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     *
-     * @return void
+     * Adds a validation that asserts a field is truthy
      */
-    public function addTruthyValidation(string $fieldName, string $errorMessage): void
-    {
+    public function addTruthyValidation(
+        string $fieldName,
+        string $errorMessage
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new IsTruthy()),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new IsTruthy()
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -1167,18 +1176,18 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a field is of a type
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     * @param string $type         The type
-     *
-     * @return void
      */
-    public function addTypeValidation(string $fieldName, string $errorMessage, string $type): void
-    {
+    public function addTypeValidation(
+        string $fieldName,
+        string $errorMessage,
+        string $type
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new IsType($type)),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new IsType($type)
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -1187,17 +1196,17 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a field is a URI
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     *
-     * @return void
      */
-    public function addUriValidation(string $fieldName, string $errorMessage): void
-    {
+    public function addUriValidation(
+        string $fieldName,
+        string $errorMessage
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new IsUri()),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new IsUri()
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -1206,17 +1215,17 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a field is a URN
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     *
-     * @return void
      */
-    public function addUrnValidation(string $fieldName, string $errorMessage): void
-    {
+    public function addUrnValidation(
+        string $fieldName,
+        string $errorMessage
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new IsUrn()),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new IsUrn()
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -1225,17 +1234,17 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a field is a UUID
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     *
-     * @return void
      */
-    public function addUuidValidation(string $fieldName, string $errorMessage): void
-    {
+    public function addUuidValidation(
+        string $fieldName,
+        string $errorMessage
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new IsUuid()),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new IsUuid()
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -1244,17 +1253,17 @@ final class ValidationCoordinator
 
     /**
      * Adds a validation that asserts a field is a whole number
-     *
-     * @param string $fieldName    The field name
-     * @param string $errorMessage The error message
-     *
-     * @return void
      */
-    public function addWholeNumberValidation(string $fieldName, string $errorMessage): void
-    {
+    public function addWholeNumberValidation(
+        string $fieldName,
+        string $errorMessage
+    ): void {
         $this->addValidator(
             new BasicValidator(
-                new SingleFieldSpecification($fieldName, new IsWholeNumber()),
+                new SingleFieldSpecification(
+                    $fieldName,
+                    new IsWholeNumber()
+                ),
                 $fieldName,
                 $errorMessage
             )
@@ -1263,8 +1272,6 @@ final class ValidationCoordinator
 
     /**
      * Resets the list of validators
-     *
-     * @return void
      */
     protected function resetValidators(): void
     {
@@ -1273,10 +1280,6 @@ final class ValidationCoordinator
 
     /**
      * Creates validation context
-     *
-     * @param InputData $input The input data
-     *
-     * @return ValidationContext
      */
     protected function createContext(InputData $input): ValidationContext
     {

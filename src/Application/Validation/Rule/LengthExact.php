@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Validation\Rule;
 
@@ -11,26 +13,16 @@ use Novuso\System\Utility\Validate;
 class LengthExact extends CompositeSpecification
 {
     /**
-     * Length
-     *
-     * @var int
-     */
-    protected $length;
-
-    /**
      * Constructs LengthExact
-     *
-     * @param int $length The length
      */
-    public function __construct(int $length)
+    public function __construct(protected int $length)
     {
-        $this->length = $length;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function isSatisfiedBy($candidate): bool
+    public function isSatisfiedBy(mixed $candidate): bool
     {
         return Validate::exactLength($candidate, $this->length);
     }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Validation\Rule;
 
@@ -11,26 +13,16 @@ use Novuso\System\Utility\Validate;
 class LengthMin extends CompositeSpecification
 {
     /**
-     * Minimum length
-     *
-     * @var int
-     */
-    protected $minLength;
-
-    /**
      * Constructs LengthMin
-     *
-     * @param int $minLength The minimum length
      */
-    public function __construct(int $minLength)
+    public function __construct(protected int $minLength)
     {
-        $this->minLength = $minLength;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function isSatisfiedBy($candidate): bool
+    public function isSatisfiedBy(mixed $candidate): bool
     {
         return Validate::minLength($candidate, $this->minLength);
     }

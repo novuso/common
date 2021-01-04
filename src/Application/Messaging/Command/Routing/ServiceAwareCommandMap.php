@@ -55,7 +55,7 @@ final class ServiceAwareCommandMap implements CommandMap
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function getHandler(string $commandClass): CommandHandler
     {
@@ -74,7 +74,7 @@ final class ServiceAwareCommandMap implements CommandMap
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function hasHandler(string $commandClass): bool
     {
