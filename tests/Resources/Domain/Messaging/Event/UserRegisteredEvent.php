@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Resources\Domain\Messaging\Event;
 
@@ -11,12 +13,12 @@ use Novuso\System\Utility\VarPrinter;
  */
 class UserRegisteredEvent implements Event
 {
-    private $prefix;
-    private $firstName;
-    private $middleName;
-    private $lastName;
-    private $suffix;
-    private $email;
+    private ?string $prefix;
+    private string $firstName;
+    private ?string $middleName;
+    private string $lastName;
+    private ?string $suffix;
+    private string $email;
 
     public function __construct(
         string $email,
@@ -36,10 +38,21 @@ class UserRegisteredEvent implements Event
 
     public static function fromArray(array $data): static
     {
-        $keys = ['prefix', 'first_name', 'middle_name', 'last_name', 'suffix', 'email'];
+        $keys = [
+            'prefix',
+            'first_name',
+            'middle_name',
+            'last_name',
+            'suffix',
+            'email'
+        ];
+
         foreach ($keys as $key) {
             if (!array_key_exists($key, $data)) {
-                $message = sprintf('Invalid serialization format: %s', VarPrinter::toString($data));
+                $message = sprintf(
+                    'Invalid serialization format: %s',
+                    VarPrinter::toString($data)
+                );
                 throw new DomainException($message);
             }
         }
@@ -54,7 +67,7 @@ class UserRegisteredEvent implements Event
         );
     }
 
-    public function prefix()
+    public function prefix(): ?string
     {
         return $this->prefix;
     }
@@ -64,7 +77,7 @@ class UserRegisteredEvent implements Event
         return $this->firstName;
     }
 
-    public function middleName()
+    public function middleName(): ?string
     {
         return $this->middleName;
     }
@@ -74,7 +87,7 @@ class UserRegisteredEvent implements Event
         return $this->lastName;
     }
 
-    public function suffix()
+    public function suffix(): ?string
     {
         return $this->suffix;
     }

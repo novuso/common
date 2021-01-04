@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Domain\Messaging;
 
@@ -14,7 +16,7 @@ class MetaDataTest extends UnitTestCase
     public function test_that_it_is_empty_by_default()
     {
         $metaData = MetaData::create();
-        $this->assertTrue($metaData->isEmpty());
+        static::assertTrue($metaData->isEmpty());
     }
 
     public function test_that_is_empty_returns_false_when_data_is_present()
@@ -23,7 +25,7 @@ class MetaDataTest extends UnitTestCase
             'username'   => 'jrnickell',
             'ip_address' => '127.0.0.1'
         ]);
-        $this->assertFalse($metaData->isEmpty());
+        static::assertFalse($metaData->isEmpty());
     }
 
     public function test_that_count_returns_expected_count()
@@ -32,35 +34,35 @@ class MetaDataTest extends UnitTestCase
             'username'   => 'jrnickell',
             'ip_address' => '127.0.0.1'
         ]);
-        $this->assertSame(2, count($metaData));
+        static::assertSame(2, count($metaData));
     }
 
     public function test_that_get_returns_expected_value_for_key()
     {
         $metaData = MetaData::create();
         $metaData->set('username', 'jrnickell');
-        $this->assertSame('jrnickell', $metaData->get('username'));
+        static::assertSame('jrnickell', $metaData->get('username'));
     }
 
     public function test_that_get_returns_default_for_missing_key()
     {
         $metaData = MetaData::create();
         $metaData->set('username', 'jrnickell');
-        $this->assertSame('localhost', $metaData->get('ip_address', 'localhost'));
+        static::assertSame('localhost', $metaData->get('ip_address', 'localhost'));
     }
 
     public function test_that_offset_get_returns_expected_value_for_key()
     {
         $metaData = MetaData::create();
         $metaData['username'] = 'jrnickell';
-        $this->assertSame('jrnickell', $metaData['username']);
+        static::assertSame('jrnickell', $metaData['username']);
     }
 
     public function test_that_offset_get_returns_null_for_missing_key()
     {
         $metaData = MetaData::create();
         $metaData['username'] = 'jrnickell';
-        $this->assertNull($metaData['ip_address']);
+        static::assertNull($metaData['ip_address']);
     }
 
     public function test_that_has_returns_true_for_matching_key()
@@ -69,7 +71,7 @@ class MetaDataTest extends UnitTestCase
             'username'   => 'jrnickell',
             'ip_address' => '127.0.0.1'
         ]);
-        $this->assertTrue($metaData->has('ip_address'));
+        static::assertTrue($metaData->has('ip_address'));
     }
 
     public function test_that_offset_exists_returns_true_for_matching_key()
@@ -78,7 +80,7 @@ class MetaDataTest extends UnitTestCase
             'username'   => 'jrnickell',
             'ip_address' => '127.0.0.1'
         ]);
-        $this->assertTrue(isset($metaData['ip_address']));
+        static::assertTrue(isset($metaData['ip_address']));
     }
 
     public function test_that_has_returns_false_for_missing_key()
@@ -87,7 +89,7 @@ class MetaDataTest extends UnitTestCase
             'username'   => 'jrnickell',
             'ip_address' => '127.0.0.1'
         ]);
-        $this->assertFalse($metaData->has('location'));
+        static::assertFalse($metaData->has('location'));
     }
 
     public function test_that_offset_exists_returns_false_for_missing_key()
@@ -96,7 +98,7 @@ class MetaDataTest extends UnitTestCase
             'username'   => 'jrnickell',
             'ip_address' => '127.0.0.1'
         ]);
-        $this->assertFalse(isset($metaData['location']));
+        static::assertFalse(isset($metaData['location']));
     }
 
     public function test_that_remove_correctly_removes_by_key()
@@ -106,7 +108,7 @@ class MetaDataTest extends UnitTestCase
             'ip_address' => '127.0.0.1'
         ]);
         $metaData->remove('username');
-        $this->assertFalse($metaData->has('username'));
+        static::assertFalse($metaData->has('username'));
     }
 
     public function test_that_offset_unset_correctly_removes_by_key()
@@ -116,7 +118,7 @@ class MetaDataTest extends UnitTestCase
             'ip_address' => '127.0.0.1'
         ]);
         unset($metaData['username']);
-        $this->assertFalse(isset($metaData['username']));
+        static::assertFalse(isset($metaData['username']));
     }
 
     public function test_that_keys_returns_expected_list_of_keys()
@@ -125,14 +127,14 @@ class MetaDataTest extends UnitTestCase
             'username'   => 'jrnickell',
             'ip_address' => '127.0.0.1'
         ]);
-        $this->assertSame(['username', 'ip_address'], $metaData->keys());
+        static::assertSame(['username', 'ip_address'], $metaData->keys());
     }
 
     public function test_that_merge_correctly_merges_data()
     {
         $metaData = MetaData::create(['username' => 'jrnickell']);
         $metaData->merge(MetaData::create(['ip_address' => '127.0.0.1']));
-        $this->assertTrue($metaData['username'] === 'jrnickell' && $metaData['ip_address'] === '127.0.0.1');
+        static::assertTrue($metaData['username'] === 'jrnickell' && $metaData['ip_address'] === '127.0.0.1');
     }
 
     public function test_that_to_array_returns_expected_data()
@@ -142,7 +144,7 @@ class MetaDataTest extends UnitTestCase
             'ip_address' => '127.0.0.1'
         ];
         $metaData = MetaData::create($data);
-        $this->assertSame($data, $metaData->toArray());
+        static::assertSame($data, $metaData->toArray());
     }
 
     public function test_that_to_string_returns_expected_string()
@@ -152,7 +154,7 @@ class MetaDataTest extends UnitTestCase
             'ip_address' => '127.0.0.1'
         ]);
         $expected = '{"username":"jrnickell","ip_address":"127.0.0.1"}';
-        $this->assertSame($expected, $metaData->toString());
+        static::assertSame($expected, $metaData->toString());
     }
 
     public function test_that_string_cast_returns_expected_string()
@@ -162,7 +164,7 @@ class MetaDataTest extends UnitTestCase
             'ip_address' => '127.0.0.1'
         ]);
         $expected = '{"username":"jrnickell","ip_address":"127.0.0.1"}';
-        $this->assertSame($expected, (string) $metaData);
+        static::assertSame($expected, (string) $metaData);
     }
 
     public function test_that_it_is_json_encodable()
@@ -175,7 +177,7 @@ class MetaDataTest extends UnitTestCase
             'ip_address'  => '127.0.0.1'
         ]);
         $expected = '{"credentials":{"username":"jrnickell","password":"secret"},"ip_address":"127.0.0.1"}';
-        $this->assertSame($expected, json_encode($metaData));
+        static::assertSame($expected, json_encode($metaData));
     }
 
     public function test_that_it_is_traversable()
@@ -188,7 +190,7 @@ class MetaDataTest extends UnitTestCase
         foreach ($metaData as $key => $value) {
             $count++;
         }
-        $this->assertSame(2, $count);
+        static::assertSame(2, $count);
     }
 
     public function test_that_set_throws_exception_for_invalid_value()

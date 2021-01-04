@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Filesystem\Exception;
 
@@ -13,12 +15,12 @@ class FilesystemExceptionTest extends UnitTestCase
     public function test_that_get_path_returns_null_when_path_is_not_set()
     {
         $exception = new FilesystemException('Something went wrong');
-        $this->assertNull($exception->getPath());
+        static::assertNull($exception->getPath());
     }
 
     public function test_that_get_path_returns_expected_path()
     {
         $exception = new FilesystemException('Something went wrong', '/tmp');
-        $this->assertSame('/tmp', $exception->getPath());
+        static::assertSame('/tmp', $exception->getPath());
     }
 }

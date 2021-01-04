@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Domain\Repository;
 
@@ -21,7 +23,7 @@ class ResultSetTest extends UnitTestCase
             new ArrayList()
         );
 
-        $this->assertTrue(
+        static::assertTrue(
             $resultSet->isEmpty()
             && count($resultSet) === 0
             && $resultSet->page() === Pagination::DEFAULT_PAGE
@@ -51,7 +53,7 @@ class ResultSetTest extends UnitTestCase
             $count++;
         }
 
-        $this->assertSame(3, $count);
+        static::assertSame(3, $count);
     }
 
     public function test_that_it_is_json_encodable()
@@ -69,6 +71,6 @@ class ResultSetTest extends UnitTestCase
         );
 
         $expected = '{"page":1,"per_page":100,"total_pages":1,"total_records":3,"records":[1,2,3]}';
-        $this->assertSame($expected, json_encode($resultSet, JSON_UNESCAPED_SLASHES));
+        static::assertSame($expected, json_encode($resultSet, JSON_UNESCAPED_SLASHES));
     }
 }

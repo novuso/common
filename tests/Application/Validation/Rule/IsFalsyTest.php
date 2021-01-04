@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Validation\Rule;
 
@@ -14,13 +16,13 @@ class IsFalsyTest extends UnitTestCase
     {
         $rule = new IsFalsy();
 
-        $this->assertTrue($rule->isSatisfiedBy(0));
+        static::assertTrue($rule->isSatisfiedBy(0));
     }
 
     public function test_that_is_satisfied_by_returns_false_when_validation_fails()
     {
         $rule = new IsFalsy();
 
-        $this->assertFalse($rule->isSatisfiedBy(1));
+        static::assertFalse($rule->isSatisfiedBy(1));
     }
 }

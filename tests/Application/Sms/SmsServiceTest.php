@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Sms;
 
@@ -45,7 +47,7 @@ class SmsServiceTest extends UnitTestCase
 
         $message = $this->smsService->createMessage($to, $from);
 
-        $this->assertTrue(
+        static::assertTrue(
             $to === $message->getTo()
             && $from === $message->getFrom()
         );
@@ -59,7 +61,7 @@ class SmsServiceTest extends UnitTestCase
 
         $message = $this->smsService->createMessage($to, $from, $body);
 
-        $this->assertTrue(
+        static::assertTrue(
             $to === $message->getTo()
             && $from === $message->getFrom()
             && $body === $message->getBody()
@@ -78,7 +80,7 @@ class SmsServiceTest extends UnitTestCase
 
         $message = $this->smsService->createMessage($to, $from, $body, $mediaUrls);
 
-        $this->assertTrue(
+        static::assertTrue(
             $to === $message->getTo()
             && $from === $message->getFrom()
             && null === $message->getBody()

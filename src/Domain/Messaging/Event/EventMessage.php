@@ -21,10 +21,8 @@ final class EventMessage extends BaseMessage
 {
     /**
      * Constructs EventMessage
-     *
-     * @internal
      */
-    protected function __construct(
+    public function __construct(
         MessageId $id,
         DateTime $timestamp,
         Event $payload,

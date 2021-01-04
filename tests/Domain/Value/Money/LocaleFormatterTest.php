@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Domain\Value\Money;
 
@@ -14,6 +16,6 @@ class LocaleFormatterTest extends UnitTestCase
     public function test_that_format_returns_expected_output_for_locale()
     {
         $formatter = LocaleFormatter::fromLocale('en_US');
-        $this->assertSame('$1,100.75', $formatter->format(Money::USD(110075)));
+        static::assertSame('$1,100.75', $formatter->format(Money::USD(110075)));
     }
 }

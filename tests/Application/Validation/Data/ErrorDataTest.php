@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Validation\Data;
 
@@ -14,7 +16,7 @@ class ErrorDataTest extends UnitTestCase
     {
         $data = new ErrorData([]);
 
-        $this->assertSame([], $data->get('foo'));
+        static::assertSame([], $data->get('foo'));
     }
 
     public function test_that_get_returns_expected_value()
@@ -26,7 +28,7 @@ class ErrorDataTest extends UnitTestCase
 
         $data = new ErrorData(['foo' => $errors]);
 
-        $this->assertSame($errors, $data->get('foo'));
+        static::assertSame($errors, $data->get('foo'));
     }
 
     public function test_that_has_returns_true_when_key_is_defined()
@@ -38,14 +40,14 @@ class ErrorDataTest extends UnitTestCase
 
         $data = new ErrorData(['foo' => $errors]);
 
-        $this->assertTrue($data->has('foo'));
+        static::assertTrue($data->has('foo'));
     }
 
     public function test_that_has_returns_false_when_key_is_not_defined()
     {
         $data = new ErrorData([]);
 
-        $this->assertFalse($data->has('foo'));
+        static::assertFalse($data->has('foo'));
     }
 
     public function test_that_names_returns_list_of_defined_keys()
@@ -61,14 +63,14 @@ class ErrorDataTest extends UnitTestCase
             ]
         ]);
 
-        $this->assertSame(['foo', 'bar'], $data->names());
+        static::assertSame(['foo', 'bar'], $data->names());
     }
 
     public function test_that_is_empty_returns_true_for_empty_collection()
     {
         $data = new ErrorData([]);
 
-        $this->assertTrue($data->isEmpty());
+        static::assertTrue($data->isEmpty());
     }
 
     public function test_that_count_returns_expected_count()
@@ -84,7 +86,7 @@ class ErrorDataTest extends UnitTestCase
             ]
         ]);
 
-        $this->assertCount(2, $data);
+        static::assertCount(2, $data);
     }
 
     public function test_that_it_is_iterable()
@@ -105,7 +107,7 @@ class ErrorDataTest extends UnitTestCase
             $count++;
         }
 
-        $this->assertSame(2, $count);
+        static::assertSame(2, $count);
     }
 
     public function test_that_to_array_returns_expected_value()
@@ -123,6 +125,6 @@ class ErrorDataTest extends UnitTestCase
 
         $data = new ErrorData($errors);
 
-        $this->assertSame($errors, $data->toArray());
+        static::assertSame($errors, $data->toArray());
     }
 }

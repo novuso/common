@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Validation\Rule;
 
@@ -14,13 +16,13 @@ class IsIpV6AddressTest extends UnitTestCase
     {
         $rule = new IsIpV6Address();
 
-        $this->assertTrue($rule->isSatisfiedBy('2001:0db8:0000:0042:0000:8a2e:0370:7334'));
+        static::assertTrue($rule->isSatisfiedBy('2001:0db8:0000:0042:0000:8a2e:0370:7334'));
     }
 
     public function test_that_is_satisfied_by_returns_false_when_validation_fails()
     {
         $rule = new IsIpV6Address();
 
-        $this->assertFalse($rule->isSatisfiedBy('127.0.0.0.1'));
+        static::assertFalse($rule->isSatisfiedBy('127.0.0.0.1'));
     }
 }

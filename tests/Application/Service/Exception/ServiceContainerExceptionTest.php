@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Service\Exception;
 
@@ -13,12 +15,12 @@ class ServiceContainerExceptionTest extends UnitTestCase
     public function test_that_get_service_returns_null_when_service_is_not_set()
     {
         $exception = new ServiceContainerException('Something went wrong');
-        $this->assertNull($exception->getService());
+        static::assertNull($exception->getService());
     }
 
     public function test_that_get_service_returns_expected_service()
     {
         $exception = new ServiceContainerException('Something went wrong', 'event_dispatcher');
-        $this->assertSame('event_dispatcher', $exception->getService());
+        static::assertSame('event_dispatcher', $exception->getService());
     }
 }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Process;
 
@@ -17,7 +19,7 @@ class ProcessBuilderTest extends UnitTestCase
         $process = ProcessBuilder::create(['vendor/bin/phpunit'])
             ->prefix('php')
             ->getProcess();
-        $this->assertSame("'php' 'vendor/bin/phpunit'", $process->command());
+        static::assertSame("'php' 'vendor/bin/phpunit'", $process->command());
     }
 
     public function test_that_empty_arg_is_not_added_to_command()
@@ -25,7 +27,7 @@ class ProcessBuilderTest extends UnitTestCase
         $process = ProcessBuilder::create('script')
             ->arg('')
             ->getProcess();
-        $this->assertSame("'script'", $process->command());
+        static::assertSame("'script'", $process->command());
     }
 
     public function test_that_option_adds_expected_argument_to_command()
@@ -34,7 +36,7 @@ class ProcessBuilderTest extends UnitTestCase
             ->arg('script')
             ->option('force')
             ->getProcess();
-        $this->assertSame("'script' '--force'", $process->command());
+        static::assertSame("'script' '--force'", $process->command());
     }
 
     public function test_that_option_adds_expected_arg_value_to_command()
@@ -43,7 +45,7 @@ class ProcessBuilderTest extends UnitTestCase
             ->arg('script')
             ->option('format', 'xml')
             ->getProcess();
-        $this->assertSame("'script' '--format' 'xml'", $process->command());
+        static::assertSame("'script' '--format' 'xml'", $process->command());
     }
 
     public function test_that_empty_option_is_not_added_to_command()
@@ -52,7 +54,7 @@ class ProcessBuilderTest extends UnitTestCase
             ->arg('script')
             ->option('')
             ->getProcess();
-        $this->assertSame("'script'", $process->command());
+        static::assertSame("'script'", $process->command());
     }
 
     public function test_that_short_adds_expected_argument_to_command()
@@ -61,7 +63,7 @@ class ProcessBuilderTest extends UnitTestCase
             ->arg('script')
             ->short('abc')
             ->getProcess();
-        $this->assertSame("'script' '-abc'", $process->command());
+        static::assertSame("'script' '-abc'", $process->command());
     }
 
     public function test_that_short_adds_expected_arg_value_to_command()
@@ -70,7 +72,7 @@ class ProcessBuilderTest extends UnitTestCase
             ->arg('script')
             ->short('f', 'xml')
             ->getProcess();
-        $this->assertSame("'script' '-f' 'xml'", $process->command());
+        static::assertSame("'script' '-f' 'xml'", $process->command());
     }
 
     public function test_that_empty_short_is_not_added_to_command()
@@ -79,7 +81,7 @@ class ProcessBuilderTest extends UnitTestCase
             ->arg('script')
             ->short('')
             ->getProcess();
-        $this->assertSame("'script'", $process->command());
+        static::assertSame("'script'", $process->command());
     }
 
     public function test_that_clear_args_clears_previous_arguments()
@@ -90,7 +92,7 @@ class ProcessBuilderTest extends UnitTestCase
             ->arg('php')
             ->short('l')
             ->getProcess();
-        $this->assertSame("'php' '-l'", $process->command());
+        static::assertSame("'php' '-l'", $process->command());
     }
 
     public function test_that_directory_changes_working_directory_of_process()
@@ -99,7 +101,7 @@ class ProcessBuilderTest extends UnitTestCase
             ->short('l')
             ->directory('/path/to/project')
             ->getProcess();
-        $this->assertSame('/path/to/project', $process->directory());
+        static::assertSame('/path/to/project', $process->directory());
     }
 
     public function test_that_directory_set_to_null_removes_working_directory()
@@ -109,7 +111,7 @@ class ProcessBuilderTest extends UnitTestCase
             ->directory('/path/to/project')
             ->directory(null)
             ->getProcess();
-        $this->assertNull($process->directory());
+        static::assertNull($process->directory());
     }
 
     public function test_that_input_set_to_resource_adds_resource_to_process()
@@ -118,7 +120,7 @@ class ProcessBuilderTest extends UnitTestCase
         $process = ProcessBuilder::create('php')
             ->input($fp)
             ->getProcess();
-        $this->assertTrue(is_resource($process->input()));
+        static::assertTrue(is_resource($process->input()));
         fclose($fp);
     }
 
@@ -127,7 +129,7 @@ class ProcessBuilderTest extends UnitTestCase
         $process = ProcessBuilder::create('php')
             ->input('input')
             ->getProcess();
-        $this->assertSame('input', $process->input());
+        static::assertSame('input', $process->input());
     }
 
     public function test_that_input_set_to_null_removes_input()
@@ -136,7 +138,7 @@ class ProcessBuilderTest extends UnitTestCase
             ->input('input')
             ->input(null)
             ->getProcess();
-        $this->assertNull($process->input());
+        static::assertNull($process->input());
     }
 
     public function test_that_timeout_number_adds_timeout_to_process()
@@ -144,7 +146,7 @@ class ProcessBuilderTest extends UnitTestCase
         $process = ProcessBuilder::create('php')
             ->timeout(10)
             ->getProcess();
-        $this->assertSame(10.0, $process->timeout());
+        static::assertSame(10.0, $process->timeout());
     }
 
     public function test_that_timeout_set_to_null_removes_timeout()
@@ -153,7 +155,7 @@ class ProcessBuilderTest extends UnitTestCase
             ->timeout(10)
             ->timeout(null)
             ->getProcess();
-        $this->assertNull($process->timeout());
+        static::assertNull($process->timeout());
     }
 
     public function test_that_inherit_env_true_merges_environment_variables()
@@ -161,7 +163,7 @@ class ProcessBuilderTest extends UnitTestCase
         $process = ProcessBuilder::create('php')
             ->inheritEnv(true)
             ->getProcess();
-        $this->assertTrue(count($process->environment()) > 0);
+        static::assertTrue(count($process->environment()) > 0);
     }
 
     public function test_that_inherit_env_false_does_not_merge_environment()
@@ -170,7 +172,7 @@ class ProcessBuilderTest extends UnitTestCase
             ->inheritEnv(false)
             ->setEnv('FOO', 'bar')
             ->getProcess();
-        $this->assertSame(['FOO' => 'bar'], $process->environment());
+        static::assertSame(['FOO' => 'bar'], $process->environment());
     }
 
     public function test_that_stdout_adds_callback_function_to_process()
@@ -180,7 +182,7 @@ class ProcessBuilderTest extends UnitTestCase
                 echo $data;
             })
             ->getProcess();
-        $this->assertTrue(is_callable($process->stdout()));
+        static::assertTrue(is_callable($process->stdout()));
     }
 
     public function test_that_stderr_adds_callback_function_to_process()
@@ -190,7 +192,7 @@ class ProcessBuilderTest extends UnitTestCase
                 echo $data;
             })
             ->getProcess();
-        $this->assertTrue(is_callable($process->stderr()));
+        static::assertTrue(is_callable($process->stderr()));
     }
 
     public function test_that_disable_output_disables_process_output()
@@ -198,7 +200,7 @@ class ProcessBuilderTest extends UnitTestCase
         $process = ProcessBuilder::create('php')
             ->disableOutput()
             ->getProcess();
-        $this->assertTrue($process->isOutputDisabled());
+        static::assertTrue($process->isOutputDisabled());
     }
 
     public function test_that_enable_output_enables_process_output()
@@ -207,7 +209,7 @@ class ProcessBuilderTest extends UnitTestCase
             ->disableOutput()
             ->enableOutput()
             ->getProcess();
-        $this->assertFalse($process->isOutputDisabled());
+        static::assertFalse($process->isOutputDisabled());
     }
 
     public function test_that_get_process_throws_exception_without_arguments()

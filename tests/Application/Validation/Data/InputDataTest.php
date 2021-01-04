@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Validation\Data;
 
@@ -14,35 +16,35 @@ class InputDataTest extends UnitTestCase
     {
         $data = new InputData(['foo' => 'bar']);
 
-        $this->assertSame('bar', $data->get('foo'));
+        static::assertSame('bar', $data->get('foo'));
     }
 
     public function test_that_has_returns_true_when_key_is_defined()
     {
         $data = new InputData(['foo' => 'bar']);
 
-        $this->assertTrue($data->has('foo'));
+        static::assertTrue($data->has('foo'));
     }
 
     public function test_that_has_returns_false_when_key_is_not_defined()
     {
         $data = new InputData([]);
 
-        $this->assertFalse($data->has('foo'));
+        static::assertFalse($data->has('foo'));
     }
 
     public function test_that_is_empty_returns_true_for_empty_collection()
     {
         $data = new InputData([]);
 
-        $this->assertTrue($data->isEmpty());
+        static::assertTrue($data->isEmpty());
     }
 
     public function test_that_count_returns_expected_count()
     {
         $data = new InputData(['foo' => 'bar', 'baz' => 'buz']);
 
-        $this->assertCount(2, $data);
+        static::assertCount(2, $data);
     }
 
     public function test_that_it_is_iterable()
@@ -54,7 +56,7 @@ class InputDataTest extends UnitTestCase
             $count++;
         }
 
-        $this->assertSame(2, $count);
+        static::assertSame(2, $count);
     }
 
     public function test_that_to_array_returns_expected_value()
@@ -63,6 +65,6 @@ class InputDataTest extends UnitTestCase
 
         $data = new InputData($input);
 
-        $this->assertSame($input, $data->toArray());
+        static::assertSame($input, $data->toArray());
     }
 }

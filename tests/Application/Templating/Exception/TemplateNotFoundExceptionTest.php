@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Templating\Exception;
 
@@ -13,6 +15,6 @@ class TemplateNotFoundExceptionTest extends UnitTestCase
     public function test_that_from_name_returns_expected_instance()
     {
         $exception = TemplateNotFoundException::fromName('default/index.html.twig');
-        $this->assertSame('default/index.html.twig', $exception->getTemplate());
+        static::assertSame('default/index.html.twig', $exception->getTemplate());
     }
 }

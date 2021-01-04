@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Validation\Rule;
 
@@ -14,13 +16,13 @@ class IsListOfTest extends UnitTestCase
     {
         $rule = new IsListOf('string');
 
-        $this->assertTrue($rule->isSatisfiedBy(['foo']));
+        static::assertTrue($rule->isSatisfiedBy(['foo']));
     }
 
     public function test_that_is_satisfied_by_returns_false_when_validation_fails()
     {
         $rule = new IsListOf('string');
 
-        $this->assertFalse($rule->isSatisfiedBy([null]));
+        static::assertFalse($rule->isSatisfiedBy([null]));
     }
 }

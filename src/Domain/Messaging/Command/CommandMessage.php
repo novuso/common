@@ -21,10 +21,8 @@ final class CommandMessage extends BaseMessage
 {
     /**
      * Constructs CommandMessage
-     *
-     * @internal
      */
-    protected function __construct(
+    public function __construct(
         MessageId $id,
         DateTime $timestamp,
         Command $payload,

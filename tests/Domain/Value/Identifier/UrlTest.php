@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Domain\Value\Identifier;
 
@@ -14,19 +16,19 @@ class UrlTest extends UnitTestCase
     public function test_that_parse_returns_expected_instance_with_default_port()
     {
         $url = Url::parse('https://www.google.com:443');
-        $this->assertSame('https://www.google.com', $url->toString());
+        static::assertSame('https://www.google.com', $url->toString());
     }
 
     public function test_that_parse_returns_expected_instance_empty_query()
     {
         $url = Url::parse('https://app.dev?');
-        $this->assertSame('', $url->query());
+        static::assertSame('', $url->query());
     }
 
     public function test_that_query_is_normalized_and_ordered_by_key()
     {
         $url1 = Url::parse('https://app.dev?one=two&foo=bar&key=value&=nokey');
         $url2 = Url::parse('https://app.dev?key=value&one=two&foo=bar&');
-        $this->assertTrue($url1->equals($url2));
+        static::assertTrue($url1->equals($url2));
     }
 }

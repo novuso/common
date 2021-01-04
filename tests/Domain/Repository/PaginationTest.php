@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Domain\Repository;
 
@@ -14,7 +16,7 @@ class PaginationTest extends UnitTestCase
     {
         $pagination = new Pagination();
 
-        $this->assertTrue(
+        static::assertTrue(
             $pagination->page() === Pagination::DEFAULT_PAGE
             && $pagination->perPage() === Pagination::DEFAULT_PER_PAGE
             && $pagination->offset() === 0
@@ -31,6 +33,6 @@ class PaginationTest extends UnitTestCase
             ['foo' => 'bar']
         );
 
-        $this->assertSame(['foo' => 'ASC'], $pagination->orderings());
+        static::assertSame(['foo' => 'ASC'], $pagination->orderings());
     }
 }

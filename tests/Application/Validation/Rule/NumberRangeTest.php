@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Validation\Rule;
 
@@ -14,13 +16,13 @@ class NumberRangeTest extends UnitTestCase
     {
         $rule = new NumberRange(3, 10);
 
-        $this->assertTrue($rule->isSatisfiedBy(5));
+        static::assertTrue($rule->isSatisfiedBy(5));
     }
 
     public function test_that_is_satisfied_by_returns_false_when_validation_fails()
     {
         $rule = new NumberRange(3, 10);
 
-        $this->assertFalse($rule->isSatisfiedBy(15));
+        static::assertFalse($rule->isSatisfiedBy(15));
     }
 }

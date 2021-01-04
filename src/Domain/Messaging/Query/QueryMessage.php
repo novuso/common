@@ -21,10 +21,8 @@ class QueryMessage extends BaseMessage
 {
     /**
      * Constructs QueryMessage
-     *
-     * @internal
      */
-    protected function __construct(
+    public function __construct(
         MessageId $id,
         DateTime $timestamp,
         Query $payload,

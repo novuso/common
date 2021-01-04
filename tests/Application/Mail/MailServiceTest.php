@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Mail;
 
@@ -54,7 +56,7 @@ class MailServiceTest extends UnitTestCase
             ->once()
             ->andReturn($message);
 
-        $this->assertSame($message, $this->mailService->createMessage());
+        static::assertSame($message, $this->mailService->createMessage());
     }
 
     public function test_that_create_attachment_from_string_delegates_to_mail_factory()
@@ -72,7 +74,7 @@ class MailServiceTest extends UnitTestCase
             ->with($body, $fileName, $contentType, $embedId)
             ->andReturn($attachment);
 
-        $this->assertSame(
+        static::assertSame(
             $attachment,
             $this->mailService->createAttachmentFromString($body, $fileName, $contentType, $embedId)
         );
@@ -93,7 +95,7 @@ class MailServiceTest extends UnitTestCase
             ->with($path, $fileName, $contentType, $embedId)
             ->andReturn($attachment);
 
-        $this->assertSame(
+        static::assertSame(
             $attachment,
             $this->mailService->createAttachmentFromPath($path, $fileName, $contentType, $embedId)
         );
@@ -108,6 +110,6 @@ class MailServiceTest extends UnitTestCase
             ->once()
             ->andReturn($id);
 
-        $this->assertSame($id, $this->mailService->generateEmbedId());
+        static::assertSame($id, $this->mailService->generateEmbedId());
     }
 }

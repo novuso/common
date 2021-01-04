@@ -851,16 +851,21 @@ class Uri extends ValueObject implements Comparable
                 break;
             }
             switch (true) {
-                case ('/./' == substr($path, 0, 3)):
                 case ('./' == substr($path, 0, 2)):
                     $path = substr($path, 2);
                     break;
                 case ('../' == substr($path, 0, 3)):
                     $path = substr($path, 3);
                     break;
+                case ('/./' == substr($path, 0, 3)):
+                    $path = substr($path, 2);
+                    break;
                 case ('/../' == substr($path, 0, 4)):
                     $path = '/'.substr($path, 4);
-                    $pos = strrpos($output, '/', -1);
+                    $pos = false;
+                    if (!empty($output)) {
+                        $pos = strrpos($output, '/', -1);
+                    }
                     if ($pos !== false) {
                         $output = substr($output, 0, $pos);
                     }
@@ -868,7 +873,10 @@ class Uri extends ValueObject implements Comparable
                 case ('/..' == substr($path, 0, 3)
                     && (in_array(substr($path, 3, 1), [false, '', '/'], true))):
                     $path = '/'.substr($path, 3);
-                    $pos = strrpos($output, '/', -1);
+                    $pos = false;
+                    if (!empty($output)) {
+                        $pos = strrpos($output, '/', -1);
+                    }
                     if ($pos !== false) {
                         $output = substr($output, 0, $pos);
                     }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\FileTransfer;
 
@@ -25,7 +27,7 @@ class ResourceTest extends UnitTestCase
 
         $resource = new Resource($path, $size, $userId, $groupId, $mode, $accessTime, $modifyTime, $type);
 
-        $this->assertSame($path, $resource->path());
+        static::assertSame($path, $resource->path());
     }
 
     public function test_that_size_returns_expected_value()
@@ -41,7 +43,7 @@ class ResourceTest extends UnitTestCase
 
         $resource = new Resource($path, $size, $userId, $groupId, $mode, $accessTime, $modifyTime, $type);
 
-        $this->assertSame($size, $resource->size());
+        static::assertSame($size, $resource->size());
     }
 
     public function test_that_user_id_returns_expected_value()
@@ -57,7 +59,7 @@ class ResourceTest extends UnitTestCase
 
         $resource = new Resource($path, $size, $userId, $groupId, $mode, $accessTime, $modifyTime, $type);
 
-        $this->assertSame($userId, $resource->userId());
+        static::assertSame($userId, $resource->userId());
     }
 
     public function test_that_group_id_returns_expected_value()
@@ -73,7 +75,7 @@ class ResourceTest extends UnitTestCase
 
         $resource = new Resource($path, $size, $userId, $groupId, $mode, $accessTime, $modifyTime, $type);
 
-        $this->assertSame($groupId, $resource->groupId());
+        static::assertSame($groupId, $resource->groupId());
     }
 
     public function test_that_mode_returns_expected_value()
@@ -89,7 +91,7 @@ class ResourceTest extends UnitTestCase
 
         $resource = new Resource($path, $size, $userId, $groupId, $mode, $accessTime, $modifyTime, $type);
 
-        $this->assertSame($mode, $resource->mode());
+        static::assertSame($mode, $resource->mode());
     }
 
     public function test_that_permissions_returns_expected_value()
@@ -105,7 +107,7 @@ class ResourceTest extends UnitTestCase
 
         $resource = new Resource($path, $size, $userId, $groupId, $mode, $accessTime, $modifyTime, $type);
 
-        $this->assertSame('0644', $resource->permissions());
+        static::assertSame('0644', $resource->permissions());
     }
 
     public function test_that_access_time_returns_expected_value()
@@ -121,7 +123,7 @@ class ResourceTest extends UnitTestCase
 
         $resource = new Resource($path, $size, $userId, $groupId, $mode, $accessTime, $modifyTime, $type);
 
-        $this->assertSame($accessTime, $resource->accessTime());
+        static::assertSame($accessTime, $resource->accessTime());
     }
 
     public function test_that_modify_time_returns_expected_value()
@@ -137,7 +139,7 @@ class ResourceTest extends UnitTestCase
 
         $resource = new Resource($path, $size, $userId, $groupId, $mode, $accessTime, $modifyTime, $type);
 
-        $this->assertSame($modifyTime, $resource->modifyTime());
+        static::assertSame($modifyTime, $resource->modifyTime());
     }
 
     public function test_that_type_returns_expected_value()
@@ -153,7 +155,7 @@ class ResourceTest extends UnitTestCase
 
         $resource = new Resource($path, $size, $userId, $groupId, $mode, $accessTime, $modifyTime, $type);
 
-        $this->assertSame($type, $resource->type());
+        static::assertSame($type, $resource->type());
     }
 
     public function test_that_cast_to_a_string_returns_path()
@@ -169,6 +171,6 @@ class ResourceTest extends UnitTestCase
 
         $resource = new Resource($path, $size, $userId, $groupId, $mode, $accessTime, $modifyTime, $type);
 
-        $this->assertSame($path, (string) $resource);
+        static::assertSame($path, (string) $resource);
     }
 }

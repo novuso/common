@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Messaging;
 
@@ -17,7 +19,11 @@ final class RecyclingMessageQueue implements MessageQueue
     /**
      * Constructs RecyclingMessageQueue
      */
-    public function __construct(protected MessageQueue $queue, protected MessageStore $store) {}
+    public function __construct(
+        protected MessageQueue $queue,
+        protected MessageStore $store
+    ) {
+    }
 
     /**
      * Recycles a stored message
@@ -39,7 +45,11 @@ final class RecyclingMessageQueue implements MessageQueue
             $this->enqueue($name, $message->withMetaData(MetaData::create()));
             $this->store->remove($name, $messageId);
         } catch (Throwable $e) {
-            throw new MessageQueueException($e->getMessage(), $e->getCode(), $e);
+            throw new MessageQueueException(
+                $e->getMessage(),
+                $e->getCode(),
+                $e
+            );
         }
     }
 
@@ -59,7 +69,11 @@ final class RecyclingMessageQueue implements MessageQueue
                 $this->store->remove($name, $message->id());
             }
         } catch (Throwable $e) {
-            throw new MessageQueueException($e->getMessage(), $e->getCode(), $e);
+            throw new MessageQueueException(
+                $e->getMessage(),
+                $e->getCode(),
+                $e
+            );
         }
     }
 
@@ -98,8 +112,11 @@ final class RecyclingMessageQueue implements MessageQueue
     /**
      * @inheritDoc
      */
-    public function reject(string $name, Message $message, bool $requeue = false): void
-    {
+    public function reject(
+        string $name,
+        Message $message,
+        bool $requeue = false
+    ): void {
         try {
             $this->queue->reject($name, $message, $requeue);
 
@@ -109,7 +126,11 @@ final class RecyclingMessageQueue implements MessageQueue
 
             $this->store->add($name, $message);
         } catch (Throwable $e) {
-            throw new MessageQueueException($e->getMessage(), $e->getCode(), $e);
+            throw new MessageQueueException(
+                $e->getMessage(),
+                $e->getCode(),
+                $e
+            );
         }
     }
 }

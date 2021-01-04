@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Domain\Messaging;
 
@@ -15,14 +17,14 @@ class MessageIdTest extends UnitTestCase
     public function test_that_generate_returns_expected_instance()
     {
         $messageId = MessageId::generate();
-        $this->assertTrue(Uuid::isValid($messageId->toString()));
+        static::assertTrue(Uuid::isValid($messageId->toString()));
     }
 
     public function test_that_from_string_returns_expected_instance()
     {
         $string = '015d7afe-4533-4332-ba79-4b80f8360a12';
         $messageId = MessageId::fromString($string);
-        $this->assertSame($string, $messageId->toString());
+        static::assertSame($string, $messageId->toString());
     }
 
     public function test_that_from_string_throws_exception_for_invalid_string()

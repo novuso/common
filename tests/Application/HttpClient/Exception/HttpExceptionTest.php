@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\HttpClient\Exception;
 
@@ -39,7 +41,7 @@ class HttpExceptionTest extends UnitTestCase
             ->andReturn("I'm a teapot");
 
         $exception = HttpException::create($request, $response);
-        $this->assertSame($message, $exception->getMessage());
+        static::assertSame($message, $exception->getMessage());
     }
 
     public function test_that_get_response_returns_expected_instance()
@@ -63,6 +65,6 @@ class HttpExceptionTest extends UnitTestCase
             ->andReturn("I'm a teapot");
 
         $exception = HttpException::create($request, $response);
-        $this->assertSame($response, $exception->getResponse());
+        static::assertSame($response, $exception->getResponse());
     }
 }

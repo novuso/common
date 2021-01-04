@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Service\Exception;
 
@@ -13,6 +15,6 @@ class ServiceNotFoundExceptionTest extends UnitTestCase
     public function test_that_from_name_returns_expected_instance()
     {
         $exception = ServiceNotFoundException::fromName('event_dispatcher');
-        $this->assertSame('Undefined service: event_dispatcher', $exception->getMessage());
+        static::assertSame('Undefined service: event_dispatcher', $exception->getMessage());
     }
 }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Messaging\Event;
 
@@ -90,7 +92,7 @@ class QueueingEventDispatcherTest extends UnitTestCase
             throw new \Exception('This should not be called');
         });
 
-        $this->assertEmpty($this->eventDispatcher->getHandlers());
+        static::assertEmpty($this->eventDispatcher->getHandlers());
     }
 
     public function test_that_has_handlers_returns_false()
@@ -99,7 +101,7 @@ class QueueingEventDispatcherTest extends UnitTestCase
             throw new \Exception('This should not be called');
         });
 
-        $this->assertFalse($this->eventDispatcher->hasHandlers());
+        static::assertFalse($this->eventDispatcher->hasHandlers());
     }
 
     public function test_that_remove_handler_does_nothing()
@@ -108,6 +110,6 @@ class QueueingEventDispatcherTest extends UnitTestCase
             throw new \Exception('This should not be called');
         });
 
-        $this->assertFalse($this->eventDispatcher->hasHandlers());
+        static::assertFalse($this->eventDispatcher->hasHandlers());
     }
 }

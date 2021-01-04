@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Messaging;
 
@@ -48,5 +50,9 @@ interface MessageQueue
      *
      * @throws MessageQueueException When an error occurs
      */
-    public function reject(string $name, Message $message, bool $requeue = false): void;
+    public function reject(
+        string $name,
+        Message $message,
+        bool $requeue = false
+    ): void;
 }

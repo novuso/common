@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Domain\Specification;
 
@@ -21,7 +23,7 @@ class SpecificationTest extends UnitTestCase
         $usernameIsAlphaOnly = new UsernameIsAlphaOnly();
         $username = new Username('georgejones');
 
-        $this->assertTrue($usernameIsUnique->and($usernameIsAlphaOnly)->isSatisfiedBy($username));
+        static::assertTrue($usernameIsUnique->and($usernameIsAlphaOnly)->isSatisfiedBy($username));
     }
 
     public function test_that_and_spec_returns_false_when_one_invalid()
@@ -30,7 +32,7 @@ class SpecificationTest extends UnitTestCase
         $usernameIsAlphaOnly = new UsernameIsAlphaOnly();
         $username = new Username('johnnickell');
 
-        $this->assertFalse($usernameIsUnique->and($usernameIsAlphaOnly)->isSatisfiedBy($username));
+        static::assertFalse($usernameIsUnique->and($usernameIsAlphaOnly)->isSatisfiedBy($username));
     }
 
     public function test_that_or_spec_returns_true_when_either_valid()
@@ -39,7 +41,7 @@ class SpecificationTest extends UnitTestCase
         $usernameIsAlphaOnly = new UsernameIsAlphaOnly();
         $username = new Username('johnnickell');
 
-        $this->assertTrue($usernameIsUnique->or($usernameIsAlphaOnly)->isSatisfiedBy($username));
+        static::assertTrue($usernameIsUnique->or($usernameIsAlphaOnly)->isSatisfiedBy($username));
     }
 
     public function test_that_or_spec_returns_false_when_both_invalid()
@@ -48,7 +50,7 @@ class SpecificationTest extends UnitTestCase
         $usernameIsAlphaOnly = new UsernameIsAlphaOnly();
         $username = new Username('admin123');
 
-        $this->assertFalse($usernameIsUnique->or($usernameIsAlphaOnly)->isSatisfiedBy($username));
+        static::assertFalse($usernameIsUnique->or($usernameIsAlphaOnly)->isSatisfiedBy($username));
     }
 
     public function test_that_not_spec_flips_meaning_of_a_spec()
@@ -57,6 +59,6 @@ class SpecificationTest extends UnitTestCase
         $usernameIsAlphaOnly = new UsernameIsAlphaOnly();
         $username = new Username('user2015');
 
-        $this->assertTrue($usernameIsUnique->and($usernameIsAlphaOnly)->not()->isSatisfiedBy($username));
+        static::assertTrue($usernameIsUnique->and($usernameIsAlphaOnly)->not()->isSatisfiedBy($username));
     }
 }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\FileStorage\Exception;
 
@@ -13,6 +15,6 @@ class DuplicateStorageExceptionTest extends UnitTestCase
     public function test_that_from_key_returns_expected_exception()
     {
         $exception = DuplicateStorageException::fromKey('foobar');
-        $this->assertSame('foobar', $exception->getKey());
+        static::assertSame('foobar', $exception->getKey());
     }
 }

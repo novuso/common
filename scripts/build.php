@@ -57,18 +57,18 @@ foreach ($iterator as $file) {
 print_line('green', 'Syntax check completed');
 
 // UNIT TESTS
-//passthru(sprintf(
-//    'php %s/bin/phpunit --configuration=%s --cache-result-file=%s/.phpunit.result.cache --testsuite=complete',
-//    $paths['vendor'],
-//    $paths['build'],
-//    $paths['cache']
-//), $result);
-//
-//if ($result !== 0) {
-//    return $result;
-//}
+passthru(sprintf(
+    'php %s/bin/phpunit --configuration=%s --cache-result-file=%s/.phpunit.result.cache --testsuite=complete',
+    $paths['vendor'],
+    $paths['build'],
+    $paths['cache']
+), $result);
 
-//print_line('green', 'PhpUnit tests passed');
+if ($result !== 0) {
+    return $result;
+}
+
+print_line('green', 'PhpUnit tests passed');
 
 // CODE COVERAGE
 //$minPercentage = 100;
@@ -90,17 +90,17 @@ print_line('green', 'Syntax check completed');
 //}
 
 // CODE STYLE
-//passthru(sprintf(
-//    'php %s/bin/phpcs -s --standard=%s/phpcs.xml %s',
-//    $paths['vendor'],
-//    $paths['build'],
-//    $paths['src']
-//), $result);
-//
-//if ($result !== 0) {
-//    return $result;
-//} else {
-//    print_line('green', 'Code style check passed');
-//}
+passthru(sprintf(
+    'php %s/bin/phpcs -s --standard=%s/phpcs.xml %s',
+    $paths['vendor'],
+    $paths['build'],
+    $paths['src']
+), $result);
+
+if ($result !== 0) {
+    return $result;
+} else {
+    print_line('green', 'Code style check passed');
+}
 
 return 0;

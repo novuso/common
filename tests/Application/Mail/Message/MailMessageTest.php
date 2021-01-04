@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Mail\Message;
 
@@ -24,7 +26,7 @@ class MailMessageTest extends UnitTestCase
     {
         $subject = 'Test Subject';
         $this->message->setSubject($subject);
-        $this->assertSame($subject, $this->message->getSubject());
+        static::assertSame($subject, $this->message->getSubject());
     }
 
     public function test_that_it_can_set_and_get_from_address()
@@ -33,7 +35,7 @@ class MailMessageTest extends UnitTestCase
         $fromName = 'From';
         $this->message->addFrom($fromAddress, $fromName);
         $from = $this->message->getFrom();
-        $this->assertTrue(
+        static::assertTrue(
             $fromAddress === $from[0]['address']
             && $fromName === $from[0]['name']
         );
@@ -45,7 +47,7 @@ class MailMessageTest extends UnitTestCase
         $toName = 'To';
         $this->message->addTo($toAddress, $toName);
         $to = $this->message->getTo();
-        $this->assertTrue(
+        static::assertTrue(
             $toAddress === $to[0]['address']
             && $toName === $to[0]['name']
         );
@@ -57,7 +59,7 @@ class MailMessageTest extends UnitTestCase
         $replyToName = 'ReplyTo';
         $this->message->addReplyTo($replyToAddress, $replyToName);
         $replyTo = $this->message->getReplyTo();
-        $this->assertTrue(
+        static::assertTrue(
             $replyToAddress === $replyTo[0]['address']
             && $replyToName === $replyTo[0]['name']
         );
@@ -69,7 +71,7 @@ class MailMessageTest extends UnitTestCase
         $ccName = 'CC';
         $this->message->addCc($ccAddress, $ccName);
         $cc = $this->message->getCc();
-        $this->assertTrue(
+        static::assertTrue(
             $ccAddress === $cc[0]['address']
             && $ccName === $cc[0]['name']
         );
@@ -81,7 +83,7 @@ class MailMessageTest extends UnitTestCase
         $bccName = 'BCC';
         $this->message->addBcc($bccAddress, $bccName);
         $bcc = $this->message->getBcc();
-        $this->assertTrue(
+        static::assertTrue(
             $bccAddress === $bcc[0]['address']
             && $bccName === $bcc[0]['name']
         );
@@ -93,7 +95,7 @@ class MailMessageTest extends UnitTestCase
         $contentType = 'text/plain';
         $this->message->addContent($contentBody, $contentType);
         $content = $this->message->getContent();
-        $this->assertTrue(
+        static::assertTrue(
             $contentBody === $content[0]['content']
             && $contentType === $content[0]['content_type']
             && MailMessage::DEFAULT_CHARSET === $content[0]['charset']
@@ -106,7 +108,7 @@ class MailMessageTest extends UnitTestCase
         $senderName = 'Sender';
         $this->message->setSender($senderAddress, $senderName);
         $sender = $this->message->getSender();
-        $this->assertTrue(
+        static::assertTrue(
             $senderAddress === $sender['address']
             && $senderName === $sender['name']
         );
@@ -116,34 +118,34 @@ class MailMessageTest extends UnitTestCase
     {
         $returnPath = 'return@example.com';
         $this->message->setReturnPath($returnPath);
-        $this->assertSame($returnPath, $this->message->getReturnPath());
+        static::assertSame($returnPath, $this->message->getReturnPath());
     }
 
     public function test_that_it_can_set_and_get_priority()
     {
         $priority = Priority::HIGH();
         $this->message->setPriority($priority);
-        $this->assertSame($priority, $this->message->getPriority());
+        static::assertSame($priority, $this->message->getPriority());
     }
 
     public function test_that_it_can_set_and_get_timestamp()
     {
         $timestamp = time();
         $this->message->setTimestamp($timestamp);
-        $this->assertSame($timestamp, $this->message->getTimestamp());
+        static::assertSame($timestamp, $this->message->getTimestamp());
     }
 
     public function test_that_it_can_set_and_get_max_line_length()
     {
         $maxLineLength = 78;
         $this->message->setMaxLineLength($maxLineLength);
-        $this->assertSame($maxLineLength, $this->message->getMaxLineLength());
+        static::assertSame($maxLineLength, $this->message->getMaxLineLength());
     }
 
     public function test_that_max_line_length_cannot_exceed_998_characters()
     {
         $this->message->setMaxLineLength(1200);
-        $this->assertSame(998, $this->message->getMaxLineLength());
+        static::assertSame(998, $this->message->getMaxLineLength());
     }
 
     public function test_that_it_can_set_and_get_attachments()
@@ -152,6 +154,6 @@ class MailMessageTest extends UnitTestCase
         $attachment = $this->mock(Attachment::class);
         $this->message->addAttachment($attachment);
         $attachments = $this->message->getAttachments();
-        $this->assertSame($attachment, $attachments[0]);
+        static::assertSame($attachment, $attachments[0]);
     }
 }

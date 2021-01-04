@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Validation\Specification;
 
@@ -28,7 +30,7 @@ class SingleFieldSpecificationTest extends UnitTestCase
 
         $spec = new SingleFieldSpecification('foo', new IsNotBlank());
 
-        $this->assertTrue($spec->isSatisfiedBy($context));
+        static::assertTrue($spec->isSatisfiedBy($context));
     }
 
     public function test_that_is_satisfied_by_returns_false_when_validation_fails()
@@ -44,7 +46,7 @@ class SingleFieldSpecificationTest extends UnitTestCase
 
         $spec = new SingleFieldSpecification('foo', new IsBlank());
 
-        $this->assertFalse($spec->isSatisfiedBy($context));
+        static::assertFalse($spec->isSatisfiedBy($context));
     }
 
     public function test_that_is_satisfied_by_returns_true_when_field_name_is_not_defined()
@@ -60,6 +62,6 @@ class SingleFieldSpecificationTest extends UnitTestCase
 
         $spec = new SingleFieldSpecification('foo', new IsNotBlank());
 
-        $this->assertTrue($spec->isSatisfiedBy($context));
+        static::assertTrue($spec->isSatisfiedBy($context));
     }
 }

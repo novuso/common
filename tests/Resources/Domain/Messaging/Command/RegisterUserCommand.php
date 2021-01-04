@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Resources\Domain\Messaging\Command;
 
@@ -10,24 +12,33 @@ use Novuso\System\Exception\DomainException;
  */
 class RegisterUserCommand implements Command
 {
-    private $prefix;
-    private $firstName;
-    private $middleName;
-    private $lastName;
-    private $suffix;
-    private $email;
-    private $password;
+    private ?string $prefix = null;
+    private string $firstName;
+    private ?string $middleName = null;
+    private string $lastName;
+    private ?string $suffix = null;
+    private string $email;
+    private string $password;
 
     public static function fromArray(array $data): static
     {
-        $keys = ['prefix', 'first_name', 'middle_name', 'last_name', 'suffix', 'email', 'password'];
+        $keys = [
+            'prefix',
+            'first_name',
+            'middle_name',
+            'last_name',
+            'suffix',
+            'email',
+            'password'
+        ];
+
         foreach ($keys as $key) {
             if (!(isset($data[$key]) || array_key_exists($key, $data))) {
                 $message = sprintf('Array missing key: %s', $key);
                 throw new DomainException($message);
             }
         }
-        /** @var RegisterUserCommand $command */
+
         $command = new static();
         $command
             ->setPrefix($data['prefix'])
@@ -52,7 +63,7 @@ class RegisterUserCommand implements Command
         return $this;
     }
 
-    public function getPrefix()
+    public function getPrefix(): ?string
     {
         return $this->prefix;
     }
@@ -64,7 +75,7 @@ class RegisterUserCommand implements Command
         return $this;
     }
 
-    public function getFirstName()
+    public function getFirstName(): string
     {
         return $this->firstName;
     }
@@ -80,7 +91,7 @@ class RegisterUserCommand implements Command
         return $this;
     }
 
-    public function getMiddleName()
+    public function getMiddleName(): ?string
     {
         return $this->middleName;
     }
@@ -92,7 +103,7 @@ class RegisterUserCommand implements Command
         return $this;
     }
 
-    public function getLastName()
+    public function getLastName(): string
     {
         return $this->lastName;
     }
@@ -108,7 +119,7 @@ class RegisterUserCommand implements Command
         return $this;
     }
 
-    public function getSuffix()
+    public function getSuffix(): ?string
     {
         return $this->suffix;
     }
@@ -120,7 +131,7 @@ class RegisterUserCommand implements Command
         return $this;
     }
 
-    public function getEmail()
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -132,7 +143,7 @@ class RegisterUserCommand implements Command
         return $this;
     }
 
-    public function getPassword()
+    public function getPassword(): string
     {
         return $this->password;
     }
