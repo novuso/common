@@ -121,6 +121,15 @@ class MailMessageTest extends UnitTestCase
         static::assertSame($returnPath, $this->message->getReturnPath());
     }
 
+    public function test_that_it_can_set_and_get_charset()
+    {
+        $charset = 'utf-8';
+
+        $this->message->setCharset($charset);
+
+        static::assertSame($charset, $this->message->getCharset());
+    }
+
     public function test_that_it_can_set_and_get_priority()
     {
         $priority = Priority::HIGH();

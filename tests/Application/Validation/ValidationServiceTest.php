@@ -14,6 +14,7 @@ use Novuso\System\Test\TestCase\UnitTestCase;
 
 /**
  * @covers \Novuso\Common\Application\Validation\ValidationService
+ * @covers \Novuso\Common\Application\Validation\RulesParser
  */
 class ValidationServiceTest extends UnitTestCase
 {

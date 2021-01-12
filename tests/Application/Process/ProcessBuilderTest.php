@@ -185,6 +185,14 @@ class ProcessBuilderTest extends UnitTestCase
         static::assertTrue(is_callable($process->stdout()));
     }
 
+    public function test_that_stdout_can_be_null()
+    {
+        $process = ProcessBuilder::create('php')
+            ->stdout(null)
+            ->getProcess();
+        static::assertNull($process->stdout());
+    }
+
     public function test_that_stderr_adds_callback_function_to_process()
     {
         $process = ProcessBuilder::create('php')
@@ -193,6 +201,14 @@ class ProcessBuilderTest extends UnitTestCase
             })
             ->getProcess();
         static::assertTrue(is_callable($process->stderr()));
+    }
+
+    public function test_that_stderr_can_be_null()
+    {
+        $process = ProcessBuilder::create('php')
+            ->stderr(null)
+            ->getProcess();
+        static::assertNull($process->stderr());
     }
 
     public function test_that_disable_output_disables_process_output()

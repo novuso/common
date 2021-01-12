@@ -74,6 +74,27 @@ class SmsServiceTest extends UnitTestCase
         $from = '+12105551111';
         $body = null;
         $mediaUrls = [
+            Url::parse('https://http.cat/200'),
+            Url::parse('https://http.cat/404')
+        ];
+
+        $message = $this->smsService->createMessage($to, $from, $body, $mediaUrls);
+
+        static::assertTrue(
+            $to === $message->getTo()
+            && $from === $message->getFrom()
+            && null === $message->getBody()
+            && $mediaUrls[0]->equals($message->getMedia()[0])
+            && $mediaUrls[1]->equals($message->getMedia()[1])
+        );
+    }
+
+    public function test_that_create_message_returns_expected_message_with_media_url_strings()
+    {
+        $to = '+12105551212';
+        $from = '+12105551111';
+        $body = null;
+        $mediaUrls = [
             'https://http.cat/200',
             'https://http.cat/404'
         ];

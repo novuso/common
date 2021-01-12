@@ -15,8 +15,8 @@ final class TokenService implements TokenDecoder, TokenEncoder
      * Constructs TokenService
      */
     public function __construct(
-        protected TokenDecoder $tokenDecoder,
-        protected TokenEncoder $tokenEncoder
+        protected TokenEncoder $tokenEncoder,
+        protected TokenDecoder $tokenDecoder
     ) {
     }
 
