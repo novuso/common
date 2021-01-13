@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Validation\Data;
 
@@ -6,18 +8,14 @@ use Novuso\System\Collection\Contract\Collection;
 use Novuso\System\Collection\HashTable;
 use Novuso\System\Exception\KeyException;
 use Novuso\System\Type\Arrayable;
+use Traversable;
 
 /**
  * Class InputData
  */
 class InputData implements Arrayable, Collection
 {
-    /**
-     * Input data
-     *
-     * @var HashTable
-     */
-    protected $data;
+    protected HashTable $data;
 
     /**
      * Constructs InputData
@@ -35,23 +33,15 @@ class InputData implements Arrayable, Collection
     /**
      * Retrieves a value by field name
      *
-     * @param string $name The name
-     *
-     * @return mixed
-     *
      * @throws KeyException When the name is not defined
      */
-    public function get(string $name)
+    public function get(string $name): mixed
     {
         return $this->data->get($name);
     }
 
     /**
      * Checks if a name is defined
-     *
-     * @param string $name The name
-     *
-     * @return bool
      */
     public function has(string $name): bool
     {
@@ -59,7 +49,7 @@ class InputData implements Arrayable, Collection
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function isEmpty(): bool
     {
@@ -67,7 +57,7 @@ class InputData implements Arrayable, Collection
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function count(): int
     {
@@ -75,15 +65,15 @@ class InputData implements Arrayable, Collection
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return $this->data->getIterator();
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function toArray(): array
     {

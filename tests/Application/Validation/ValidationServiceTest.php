@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Validation;
 
@@ -12,6 +14,7 @@ use Novuso\System\Test\TestCase\UnitTestCase;
 
 /**
  * @covers \Novuso\Common\Application\Validation\ValidationService
+ * @covers \Novuso\Common\Application\Validation\RulesParser
  */
 class ValidationServiceTest extends UnitTestCase
 {
@@ -49,7 +52,7 @@ class ValidationServiceTest extends UnitTestCase
 
         $applicationData = $this->validationService->validate($input, $rules);
 
-        $this->assertInstanceOf(ApplicationData::class, $applicationData);
+        static::assertInstanceOf(ApplicationData::class, $applicationData);
     }
 
     public function test_that_simple_validation_passes()
@@ -69,7 +72,7 @@ class ValidationServiceTest extends UnitTestCase
 
         $applicationData = $this->validationService->validate($input, $rules);
 
-        $this->assertInstanceOf(ApplicationData::class, $applicationData);
+        static::assertInstanceOf(ApplicationData::class, $applicationData);
     }
 
     public function test_that_it_can_parse_rules_with_arguments()
@@ -89,7 +92,7 @@ class ValidationServiceTest extends UnitTestCase
 
         $applicationData = $this->validationService->validate($input, $rules);
 
-        $this->assertInstanceOf(ApplicationData::class, $applicationData);
+        static::assertInstanceOf(ApplicationData::class, $applicationData);
     }
 
     public function test_that_in_list_error_message_is_formatted_as_expected()
@@ -107,7 +110,7 @@ class ValidationServiceTest extends UnitTestCase
         try {
             $this->validationService->validate($input, $rules);
         } catch (ValidationException $e) {
-            $this->assertSame('Foo must be one of [one,two,three]', $e->getErrors()['foo'][0]);
+            static::assertSame('Foo must be one of [one,two,three]', $e->getErrors()['foo'][0]);
         }
     }
 
@@ -125,7 +128,7 @@ class ValidationServiceTest extends UnitTestCase
 
         $applicationData = $this->validationService->validate($input, $rules);
 
-        $this->assertInstanceOf(ApplicationData::class, $applicationData);
+        static::assertInstanceOf(ApplicationData::class, $applicationData);
     }
 
     public function test_that_required_accepts_falsey_values_when_present()
@@ -142,7 +145,7 @@ class ValidationServiceTest extends UnitTestCase
 
         $applicationData = $this->validationService->validate($input, $rules);
 
-        $this->assertInstanceOf(ApplicationData::class, $applicationData);
+        static::assertInstanceOf(ApplicationData::class, $applicationData);
     }
 
     public function test_that_validation_passes_when_item_missing_and_not_required()
@@ -159,7 +162,7 @@ class ValidationServiceTest extends UnitTestCase
 
         $applicationData = $this->validationService->validate($input, $rules);
 
-        $this->assertInstanceOf(ApplicationData::class, $applicationData);
+        static::assertInstanceOf(ApplicationData::class, $applicationData);
     }
 
     public function test_that_validation_rules_allow_regex_with_pipes()
@@ -176,7 +179,7 @@ class ValidationServiceTest extends UnitTestCase
 
         $applicationData = $this->validationService->validate($input, $rules);
 
-        $this->assertInstanceOf(ApplicationData::class, $applicationData);
+        static::assertInstanceOf(ApplicationData::class, $applicationData);
     }
 
     public function test_that_validation_rules_allow_valid_date_time_formats()
@@ -207,7 +210,7 @@ class ValidationServiceTest extends UnitTestCase
 
         $applicationData = $this->validationService->validate($input, $rules);
 
-        $this->assertInstanceOf(ApplicationData::class, $applicationData);
+        static::assertInstanceOf(ApplicationData::class, $applicationData);
     }
 
     public function test_that_validation_throws_exception_for_missing_date_format()

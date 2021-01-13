@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Domain\Repository;
 
@@ -14,13 +16,24 @@ class PaginationTest extends UnitTestCase
     {
         $pagination = new Pagination();
 
-        $this->assertTrue(
+        static::assertTrue(
             $pagination->page() === Pagination::DEFAULT_PAGE
             && $pagination->perPage() === Pagination::DEFAULT_PER_PAGE
             && $pagination->offset() === 0
             && $pagination->limit() === Pagination::DEFAULT_PER_PAGE
             && empty($pagination->orderings())
         );
+    }
+
+    public function test_that_orderings_returns_expected_value()
+    {
+        $pagination = new Pagination(
+            Pagination::DEFAULT_PAGE,
+            Pagination::DEFAULT_PER_PAGE,
+            ['foo' => 'desc']
+        );
+
+        static::assertSame(['foo' => 'DESC'], $pagination->orderings());
     }
 
     public function test_that_orderings_are_only_asc_or_descending()
@@ -31,6 +44,6 @@ class PaginationTest extends UnitTestCase
             ['foo' => 'bar']
         );
 
-        $this->assertSame(['foo' => 'ASC'], $pagination->orderings());
+        static::assertSame(['foo' => 'ASC'], $pagination->orderings());
     }
 }

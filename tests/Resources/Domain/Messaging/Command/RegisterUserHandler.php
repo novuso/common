@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Resources\Domain\Messaging\Command;
 
@@ -10,7 +12,7 @@ use Novuso\Common\Domain\Messaging\Command\CommandMessage;
  */
 class RegisterUserHandler implements CommandHandler
 {
-    protected $handled = false;
+    protected bool $handled = false;
 
     public static function commandRegistration(): string
     {

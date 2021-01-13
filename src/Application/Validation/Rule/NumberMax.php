@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Validation\Rule;
 
@@ -11,26 +13,16 @@ use Novuso\System\Utility\Validate;
 class NumberMax extends CompositeSpecification
 {
     /**
-     * Maximum number
-     *
-     * @var int|float
-     */
-    protected $maxNumber;
-
-    /**
      * Constructs NumberMax
-     *
-     * @param int|float $maxNumber The maximum number
      */
-    public function __construct($maxNumber)
+    public function __construct(protected int|float $maxNumber)
     {
-        $this->maxNumber = $maxNumber;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function isSatisfiedBy($candidate): bool
+    public function isSatisfiedBy(mixed $candidate): bool
     {
         return Validate::maxNumber($candidate, $this->maxNumber);
     }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Mail;
 
@@ -13,33 +15,16 @@ use Novuso\Common\Application\Mail\Transport\MailTransport;
 final class MailService implements MailTransport, MailFactory
 {
     /**
-     * Mail transport
-     *
-     * @var MailTransport
-     */
-    protected $transport;
-
-    /**
-     * Mail factory
-     *
-     * @var MailFactory
-     */
-    protected $factory;
-
-    /**
      * Constructs MailService
-     *
-     * @param MailTransport $transport The mail transport
-     * @param MailFactory   $factory   The mail factory
      */
-    public function __construct(MailTransport $transport, MailFactory $factory)
-    {
-        $this->transport = $transport;
-        $this->factory = $factory;
+    public function __construct(
+        protected MailTransport $transport,
+        protected MailFactory $factory
+    ) {
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function send(MailMessage $message): void
     {
@@ -47,7 +32,7 @@ final class MailService implements MailTransport, MailFactory
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function createMessage(): MailMessage
     {
@@ -55,7 +40,7 @@ final class MailService implements MailTransport, MailFactory
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function createAttachmentFromString(
         string $body,
@@ -63,11 +48,16 @@ final class MailService implements MailTransport, MailFactory
         string $contentType,
         ?string $embedId = null
     ): Attachment {
-        return $this->factory->createAttachmentFromString($body, $fileName, $contentType, $embedId);
+        return $this->factory->createAttachmentFromString(
+            $body,
+            $fileName,
+            $contentType,
+            $embedId
+        );
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function createAttachmentFromPath(
         string $path,
@@ -75,11 +65,16 @@ final class MailService implements MailTransport, MailFactory
         string $contentType,
         ?string $embedId = null
     ): Attachment {
-        return $this->factory->createAttachmentFromPath($path, $fileName, $contentType, $embedId);
+        return $this->factory->createAttachmentFromPath(
+            $path,
+            $fileName,
+            $contentType,
+            $embedId
+        );
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function generateEmbedId(): string
     {

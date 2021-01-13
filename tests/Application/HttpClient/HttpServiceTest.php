@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\HttpClient;
 
@@ -46,21 +48,6 @@ class HttpServiceTest extends UnitTestCase
         );
     }
 
-    public function test_that_send_delegates_to_http_client()
-    {
-        $mockResponse = $this->mock(ResponseInterface::class);
-        /** @var RequestInterface|MockInterface $mockRequest */
-        $mockRequest = $this->mock(RequestInterface::class);
-
-        $this->mockHttpClient
-            ->shouldReceive('send')
-            ->once()
-            ->with($mockRequest, [])
-            ->andReturn($mockResponse);
-
-        $this->assertSame($mockResponse, $this->httpService->send($mockRequest));
-    }
-
     public function test_that_send_async_delegates_to_http_client()
     {
         $mockPromise = $this->mock(Promise::class);
@@ -73,22 +60,22 @@ class HttpServiceTest extends UnitTestCase
             ->with($mockRequest, [])
             ->andReturn($mockPromise);
 
-        $this->assertSame($mockPromise, $this->httpService->sendAsync($mockRequest));
+        static::assertSame($mockPromise, $this->httpService->sendAsync($mockRequest));
     }
 
-    public function test_that_send_request_delegates_to_http_client()
+    public function test_that_send_delegates_to_http_client()
     {
         $mockResponse = $this->mock(ResponseInterface::class);
         /** @var RequestInterface|MockInterface $mockRequest */
         $mockRequest = $this->mock(RequestInterface::class);
 
         $this->mockHttpClient
-            ->shouldReceive('sendRequest')
+            ->shouldReceive('send')
             ->once()
-            ->with($mockRequest)
+            ->with($mockRequest, [])
             ->andReturn($mockResponse);
 
-        $this->assertSame($mockResponse, $this->httpService->sendRequest($mockRequest));
+        static::assertSame($mockResponse, $this->httpService->send($mockRequest));
     }
 
     public function test_that_create_request_delegates_to_message_factory()
@@ -103,7 +90,7 @@ class HttpServiceTest extends UnitTestCase
             ->with($method, $url, [], null, '1.1')
             ->andReturn($mockRequest);
 
-        $this->assertSame($mockRequest, $this->httpService->createRequest($method, $url));
+        static::assertSame($mockRequest, $this->httpService->createRequest($method, $url));
     }
 
     public function test_that_create_response_delegates_to_message_factory()
@@ -116,7 +103,7 @@ class HttpServiceTest extends UnitTestCase
             ->with(200, [], null, '1.1', null)
             ->andReturn($mockResponse);
 
-        $this->assertSame($mockResponse, $this->httpService->createResponse());
+        static::assertSame($mockResponse, $this->httpService->createResponse());
     }
 
     public function test_that_create_stream_delegates_to_stream_factory()
@@ -130,7 +117,7 @@ class HttpServiceTest extends UnitTestCase
             ->with($body)
             ->andReturn($mockStream);
 
-        $this->assertSame($mockStream, $this->httpService->createStream($body));
+        static::assertSame($mockStream, $this->httpService->createStream($body));
     }
 
     public function test_that_create_uri_delegates_to_uri_factory()
@@ -144,6 +131,6 @@ class HttpServiceTest extends UnitTestCase
             ->with($uri)
             ->andReturn($mockUri);
 
-        $this->assertSame($mockUri, $this->httpService->createUri($uri));
+        static::assertSame($mockUri, $this->httpService->createUri($uri));
     }
 }

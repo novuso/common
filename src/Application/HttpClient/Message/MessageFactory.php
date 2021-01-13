@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\HttpClient\Message;
 
@@ -15,37 +17,25 @@ interface MessageFactory
     /**
      * Creates a RequestInterface instance
      *
-     * @param string                               $method   Request method
-     * @param string|UriInterface                  $uri      Request URI
-     * @param array                                $headers  Request headers
-     * @param string|resource|StreamInterface|null $body     Request body
-     * @param string                               $protocol Protocol version
-     *
-     * @return RequestInterface
+     * @param string|StreamInterface|null $body The request body
      */
     public function createRequest(
         string $method,
-        $uri,
+        string|UriInterface $uri,
         array $headers = [],
-        $body = null,
+        mixed $body = null,
         string $protocol = '1.1'
     ): RequestInterface;
 
     /**
      * Creates a ResponseInterface instance
      *
-     * @param int                                  $status   Status code
-     * @param array                                $headers  Response headers
-     * @param string|resource|StreamInterface|null $body     Response body
-     * @param string                               $protocol Protocol version
-     * @param string|null                          $reason   Reason phrase
-     *
-     * @return ResponseInterface
+     * @param string|StreamInterface|null $body The response body
      */
     public function createResponse(
         int $status = 200,
         array $headers = [],
-        $body = null,
+        mixed $body = null,
         string $protocol = '1.1',
         ?string $reason = null
     ): ResponseInterface;

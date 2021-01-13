@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Templating\Helper;
 
@@ -31,7 +33,7 @@ class UrlHelperTest extends UnitTestCase
         $urlHelper = new UrlHelper($this->mockUrlGenerator);
         $url = $urlHelper->generate('foo');
 
-        $this->assertSame('https://www.google.com/', $url);
+        static::assertSame('https://www.google.com/', $url);
     }
 
     public function test_that_get_name_returns_helper_name()
@@ -39,6 +41,6 @@ class UrlHelperTest extends UnitTestCase
         $urlHelper = new UrlHelper($this->mockUrlGenerator);
         $name = $urlHelper->getName();
 
-        $this->assertSame('url', $name);
+        static::assertSame('_url', $name);
     }
 }

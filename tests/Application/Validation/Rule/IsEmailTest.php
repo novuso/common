@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Validation\Rule;
 
@@ -14,13 +16,13 @@ class IsEmailTest extends UnitTestCase
     {
         $rule = new IsEmail();
 
-        $this->assertTrue($rule->isSatisfiedBy('ljenkins@example.com'));
+        static::assertTrue($rule->isSatisfiedBy('ljenkins@example.com'));
     }
 
     public function test_that_is_satisfied_by_returns_false_when_validation_fails()
     {
         $rule = new IsEmail();
 
-        $this->assertFalse($rule->isSatisfiedBy('notanemail'));
+        static::assertFalse($rule->isSatisfiedBy('notanemail'));
     }
 }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Validation\Rule;
 
@@ -14,13 +16,13 @@ class CountRangeTest extends UnitTestCase
     {
         $rule = new CountRange(1, 3);
 
-        $this->assertTrue($rule->isSatisfiedBy(['foo', 'bar', 'baz']));
+        static::assertTrue($rule->isSatisfiedBy(['foo', 'bar', 'baz']));
     }
 
     public function test_that_is_satisfied_by_returns_false_when_validation_fails()
     {
         $rule = new CountRange(1, 3);
 
-        $this->assertFalse($rule->isSatisfiedBy([]));
+        static::assertFalse($rule->isSatisfiedBy([]));
     }
 }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Sms\Message;
 
@@ -9,53 +11,18 @@ use Novuso\Common\Domain\Value\Identifier\Url;
  */
 final class SmsMessage
 {
-    /**
-     * To phone number
-     *
-     * @var string
-     */
-    protected $to;
-
-    /**
-     * From phone number
-     *
-     * @var string
-     */
-    protected $from;
-
-    /**
-     * Message body
-     *
-     * @var string|null
-     */
-    protected $body;
-
-    /**
-     * Media URLs
-     *
-     * @var Url[]
-     */
-    protected $media = [];
+    protected ?string $body = null;
+    protected array $media = [];
 
     /**
      * Constructs SmsMessage
-     *
-     * @param string $to   The To phone number
-     * @param string $from The From phone number
      */
-    public function __construct(string $to, string $from)
+    public function __construct(protected string $to, protected string $from)
     {
-        $this->to = $to;
-        $this->from = $from;
     }
 
     /**
      * Creates instance
-     *
-     * @param string $to   The To phone number
-     * @param string $from The From phone number
-     *
-     * @return SmsMessage
      */
     public static function create(string $to, string $from): SmsMessage
     {
@@ -64,8 +31,6 @@ final class SmsMessage
 
     /**
      * Retrieves the To phone number
-     *
-     * @return string
      */
     public function getTo(): string
     {
@@ -74,8 +39,6 @@ final class SmsMessage
 
     /**
      * Retrieves the From phone number
-     *
-     * @return string
      */
     public function getFrom(): string
     {
@@ -84,10 +47,6 @@ final class SmsMessage
 
     /**
      * Sets the message body
-     *
-     * @param string $body The message body
-     *
-     * @return SmsMessage
      */
     public function setBody(string $body): SmsMessage
     {
@@ -98,8 +57,6 @@ final class SmsMessage
 
     /**
      * Retrieves the message body
-     *
-     * @return string|null
      */
     public function getBody(): ?string
     {
@@ -108,10 +65,6 @@ final class SmsMessage
 
     /**
      * Adds a media URL
-     *
-     * @param Url $url The media URL
-     *
-     * @return SmsMessage
      */
     public function addMedia(Url $url): SmsMessage
     {
@@ -122,8 +75,6 @@ final class SmsMessage
 
     /**
      * Retrieves the media URLs
-     *
-     * @return Url[]
      */
     public function getMedia(): array
     {

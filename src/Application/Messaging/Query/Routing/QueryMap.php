@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Messaging\Query\Routing;
 
@@ -13,20 +15,12 @@ interface QueryMap
     /**
      * Retrieves handler by query class name
      *
-     * @param string $queryClass The full query class name
-     *
-     * @return QueryHandler
-     *
      * @throws LookupException When a handler is not registered
      */
     public function getHandler(string $queryClass): QueryHandler;
 
     /**
      * Checks if a handler is defined for a query
-     *
-     * @param string $queryClass The full query class name
-     *
-     * @return bool
      */
     public function hasHandler(string $queryClass): bool;
 }

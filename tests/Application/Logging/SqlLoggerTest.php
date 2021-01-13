@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Logging;
 
@@ -34,7 +36,7 @@ class SqlLoggerTest extends UnitTestCase
 
         $this->sqlLogger->log($sql, $parameters);
 
-        $this->assertTrue($this->logHandler->hasRecord(
+        static::assertTrue($this->logHandler->hasRecord(
             '[SQL]: SELECT * FROM some_table WHERE id = :id',
             Logger::DEBUG
         ));

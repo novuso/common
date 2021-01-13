@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Filesystem\Exception;
 
@@ -13,6 +15,7 @@ class FileNotFoundExceptionTest extends UnitTestCase
     public function test_that_from_path_returns_expected_instance()
     {
         $exception = FileNotFoundException::fromPath('/tmp/file.txt');
-        $this->assertSame('File not found: /tmp/file.txt', $exception->getMessage());
+
+        static::assertSame('File not found: /tmp/file.txt', $exception->getMessage());
     }
 }

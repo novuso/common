@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Messaging\Command\Routing;
 
@@ -13,10 +15,6 @@ interface CommandRouter
 {
     /**
      * Matches a command to a handler
-     *
-     * @param Command $command The command
-     *
-     * @return CommandHandler
      *
      * @throws LookupException When the handler is not found
      */

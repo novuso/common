@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Validation\Rule;
 
@@ -14,13 +16,13 @@ class NumberMinTest extends UnitTestCase
     {
         $rule = new NumberMin(3);
 
-        $this->assertTrue($rule->isSatisfiedBy(4));
+        static::assertTrue($rule->isSatisfiedBy(4));
     }
 
     public function test_that_is_satisfied_by_returns_false_when_validation_fails()
     {
         $rule = new NumberMin(3);
 
-        $this->assertFalse($rule->isSatisfiedBy(1));
+        static::assertFalse($rule->isSatisfiedBy(1));
     }
 }

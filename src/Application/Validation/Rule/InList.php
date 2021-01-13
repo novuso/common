@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Validation\Rule;
 
@@ -11,26 +13,16 @@ use Novuso\System\Utility\Validate;
 class InList extends CompositeSpecification
 {
     /**
-     * List
-     *
-     * @var array
-     */
-    protected $list;
-
-    /**
      * Constructs InList
-     *
-     * @param array $list The list
      */
-    public function __construct(array $list)
+    public function __construct(protected array $list)
     {
-        $this->list = $list;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function isSatisfiedBy($candidate): bool
+    public function isSatisfiedBy(mixed $candidate): bool
     {
         return Validate::isOneOf($candidate, $this->list);
     }

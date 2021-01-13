@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Validation\Rule;
 
@@ -14,13 +16,13 @@ class StringContainsTest extends UnitTestCase
     {
         $rule = new StringContains('foo');
 
-        $this->assertTrue($rule->isSatisfiedBy('foobar'));
+        static::assertTrue($rule->isSatisfiedBy('foobar'));
     }
 
     public function test_that_is_satisfied_by_returns_false_when_validation_fails()
     {
         $rule = new StringContains('foo');
 
-        $this->assertFalse($rule->isSatisfiedBy('hello'));
+        static::assertFalse($rule->isSatisfiedBy('hello'));
     }
 }

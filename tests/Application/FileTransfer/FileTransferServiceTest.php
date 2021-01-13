@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\FileTransfer;
 
@@ -29,7 +31,7 @@ class FileTransferServiceTest extends UnitTestCase
 
         $this->fileTransferService->addTransport('transport', $mockTransport);
 
-        $this->assertSame($mockTransport, $this->fileTransferService->getTransport('transport'));
+        static::assertSame($mockTransport, $this->fileTransferService->getTransport('transport'));
     }
 
     public function test_that_get_transport_throws_exception_when_transport_not_found()

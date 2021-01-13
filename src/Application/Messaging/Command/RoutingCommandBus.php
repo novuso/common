@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Messaging\Command;
 
@@ -13,24 +15,14 @@ use Novuso\Common\Domain\Messaging\Command\SynchronousCommandBus;
 final class RoutingCommandBus implements SynchronousCommandBus
 {
     /**
-     * Command router
-     *
-     * @var CommandRouter
-     */
-    protected $commandRouter;
-
-    /**
      * Constructs RoutingCommandBus
-     *
-     * @param CommandRouter $commandRouter The command router
      */
-    public function __construct(CommandRouter $commandRouter)
+    public function __construct(protected CommandRouter $commandRouter)
     {
-        $this->commandRouter = $commandRouter;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function execute(Command $command): void
     {
@@ -38,7 +30,7 @@ final class RoutingCommandBus implements SynchronousCommandBus
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function dispatch(CommandMessage $message): void
     {

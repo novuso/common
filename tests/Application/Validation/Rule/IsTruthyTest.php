@@ -1,8 +1,9 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Validation\Rule;
 
-use Novuso\Common\Application\Validation\Rule\IsTruthy;
 use Novuso\System\Test\TestCase\UnitTestCase;
 
 /**
@@ -14,13 +15,13 @@ class IsTruthyTest extends UnitTestCase
     {
         $rule = new IsTruthy();
 
-        $this->assertTrue($rule->isSatisfiedBy(1));
+        static::assertTrue($rule->isSatisfiedBy(1));
     }
 
     public function test_that_is_satisfied_by_returns_false_when_validation_fails()
     {
         $rule = new IsTruthy();
 
-        $this->assertFalse($rule->isSatisfiedBy(0));
+        static::assertFalse($rule->isSatisfiedBy(0));
     }
 }

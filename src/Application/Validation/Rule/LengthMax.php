@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Validation\Rule;
 
@@ -11,26 +13,16 @@ use Novuso\System\Utility\Validate;
 class LengthMax extends CompositeSpecification
 {
     /**
-     * Maximum length
-     *
-     * @var int
-     */
-    protected $maxLength;
-
-    /**
      * Constructs LengthMax
-     *
-     * @param int $maxLength The maximum length
      */
-    public function __construct(int $maxLength)
+    public function __construct(protected int $maxLength)
     {
-        $this->maxLength = $maxLength;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function isSatisfiedBy($candidate): bool
+    public function isSatisfiedBy(mixed $candidate): bool
     {
         return Validate::maxLength($candidate, $this->maxLength);
     }

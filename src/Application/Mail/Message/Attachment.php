@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Mail\Message;
 
@@ -9,8 +11,6 @@ interface Attachment
 {
     /**
      * Retrieves the content ID
-     *
-     * @return string
      */
     public function getId(): string;
 
@@ -19,33 +19,25 @@ interface Attachment
      *
      * @return string|resource
      */
-    public function getBody();
+    public function getBody(): mixed;
 
     /**
      * Retrieves the file name
-     *
-     * @return string
      */
     public function getFileName(): string;
 
     /**
      * Retrieves the content type
-     *
-     * @return string
      */
     public function getContentType(): string;
 
     /**
      * Retrieves the content disposition
-     *
-     * @return string
      */
     public function getDisposition(): string;
 
     /**
      * Retrieves the CID source for embedding
-     *
-     * @return string
      */
     public function embed(): string;
 }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Messaging\Event;
 
@@ -34,7 +36,7 @@ class ServiceAwareEventDispatcherTest extends UnitTestCase
 
         $dispatcher->trigger($event);
 
-        $this->assertTrue($subscriber->isUserRegistered('jsmith@example.com'));
+        static::assertTrue($subscriber->isUserRegistered('jsmith@example.com'));
     }
 
     public function test_that_get_handlers_returns_expected_value_for_all_events()
@@ -42,7 +44,7 @@ class ServiceAwareEventDispatcherTest extends UnitTestCase
         /** @var EventDispatcher $dispatcher */
         $dispatcher = $this->container->get(EventDispatcher::class);
 
-        $this->assertCount(3, $dispatcher->getHandlers());
+        static::assertCount(3, $dispatcher->getHandlers());
     }
 
     public function test_that_get_handlers_returns_expected_value_for_event_type()
@@ -51,7 +53,7 @@ class ServiceAwareEventDispatcherTest extends UnitTestCase
         $dispatcher = $this->container->get(EventDispatcher::class);
         $type = ClassName::underscore(UserRegisteredEvent::class);
 
-        $this->assertCount(1, $dispatcher->getHandlers($type));
+        static::assertCount(1, $dispatcher->getHandlers($type));
     }
 
     public function test_that_has_handlers_returns_true_when_there_are_handlers_all_events()
@@ -59,7 +61,7 @@ class ServiceAwareEventDispatcherTest extends UnitTestCase
         /** @var EventDispatcher $dispatcher */
         $dispatcher = $this->container->get(EventDispatcher::class);
 
-        $this->assertTrue($dispatcher->hasHandlers());
+        static::assertTrue($dispatcher->hasHandlers());
     }
 
     public function test_that_has_handlers_returns_true_when_there_are_handlers_event_type()
@@ -68,7 +70,7 @@ class ServiceAwareEventDispatcherTest extends UnitTestCase
         $dispatcher = $this->container->get(EventDispatcher::class);
         $type = ClassName::underscore(UserRegisteredEvent::class);
 
-        $this->assertTrue($dispatcher->hasHandlers($type));
+        static::assertTrue($dispatcher->hasHandlers($type));
     }
 
     public function test_that_has_handlers_returns_true_with_handlers_added_in_memory()
@@ -77,7 +79,7 @@ class ServiceAwareEventDispatcherTest extends UnitTestCase
         $type = ClassName::underscore(UserRegisteredEvent::class);
         $dispatcher->addHandler($type, function () {});
 
-        $this->assertTrue($dispatcher->hasHandlers($type));
+        static::assertTrue($dispatcher->hasHandlers($type));
     }
 
     public function test_that_remove_handler_removes_handlers_as_expected()
@@ -87,7 +89,7 @@ class ServiceAwareEventDispatcherTest extends UnitTestCase
         $subscriber = $this->container->get(UserRegisteredSubscriber::class);
         $dispatcher->unregister($subscriber);
 
-        $this->assertFalse($dispatcher->hasHandlers());
+        static::assertFalse($dispatcher->hasHandlers());
     }
 
     public function test_that_event_is_dispatched_correctly_when_service_is_changed()
@@ -106,7 +108,7 @@ class ServiceAwareEventDispatcherTest extends UnitTestCase
         $subscriber = $this->container->get(UserRegisteredSubscriber::class);
         $dispatcher->trigger($event);
 
-        $this->assertTrue($subscriber->isUserRegistered('jsmith@example.com'));
+        static::assertTrue($subscriber->isUserRegistered('jsmith@example.com'));
     }
 
     protected function defineServices()

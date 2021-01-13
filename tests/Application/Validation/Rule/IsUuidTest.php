@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Validation\Rule;
 
@@ -14,13 +16,13 @@ class IsUuidTest extends UnitTestCase
     {
         $rule = new IsUuid();
 
-        $this->assertTrue($rule->isSatisfiedBy('6ba7b811-9dad-11d1-80b4-00c04fd430c8'));
+        static::assertTrue($rule->isSatisfiedBy('6ba7b811-9dad-11d1-80b4-00c04fd430c8'));
     }
 
     public function test_that_is_satisfied_by_returns_false_when_validation_fails()
     {
         $rule = new IsUuid();
 
-        $this->assertFalse($rule->isSatisfiedBy('6ba7b811-9dad-11d1-80b4-00c04fd4'));
+        static::assertFalse($rule->isSatisfiedBy('6ba7b811-9dad-11d1-80b4-00c04fd4'));
     }
 }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Validation\Specification;
 
@@ -26,7 +28,7 @@ class RequiredFieldSpecificationTest extends UnitTestCase
 
         $spec = new RequiredFieldSpecification('foo');
 
-        $this->assertTrue($spec->isSatisfiedBy($context));
+        static::assertTrue($spec->isSatisfiedBy($context));
     }
 
     public function test_that_is_satisfied_by_returns_false_when_key_missing()
@@ -42,6 +44,6 @@ class RequiredFieldSpecificationTest extends UnitTestCase
 
         $spec = new RequiredFieldSpecification('foo');
 
-        $this->assertFalse($spec->isSatisfiedBy($context));
+        static::assertFalse($spec->isSatisfiedBy($context));
     }
 }

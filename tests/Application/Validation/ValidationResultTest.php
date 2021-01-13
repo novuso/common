@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Validation;
 
@@ -19,8 +21,8 @@ class ValidationResultTest extends UnitTestCase
 
         $result = ValidationResult::passed(new ApplicationData($input));
 
-        $this->assertTrue($result->isPassed());
-        $this->assertSame('bar', $result->getData()->get('foo'));
+        static::assertTrue($result->isPassed());
+        static::assertSame('bar', $result->getData()->get('foo'));
     }
 
     public function test_that_failed_returns_expected_instance()
@@ -29,8 +31,8 @@ class ValidationResultTest extends UnitTestCase
 
         $result = ValidationResult::failed(new ErrorData($errors));
 
-        $this->assertTrue($result->isFailed());
-        $this->assertSame('Foo is required', $result->getErrors()->get('foo')[0]);
+        static::assertTrue($result->isFailed());
+        static::assertSame('Foo is required', $result->getErrors()->get('foo')[0]);
     }
 
     public function test_that_get_data_throws_exception_when_validation_failed()

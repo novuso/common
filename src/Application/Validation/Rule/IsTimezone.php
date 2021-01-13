@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Validation\Rule;
 
@@ -12,9 +14,9 @@ use Novuso\System\Utility\Validate;
 class IsTimezone extends CompositeSpecification
 {
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function isSatisfiedBy($candidate): bool
+    public function isSatisfiedBy(mixed $candidate): bool
     {
         if ($candidate instanceof DateTimeZone) {
             $candidate = $candidate->getName();

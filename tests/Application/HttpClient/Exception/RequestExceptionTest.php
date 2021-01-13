@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\HttpClient\Exception;
 
@@ -17,6 +19,7 @@ class RequestExceptionTest extends UnitTestCase
         /** @var RequestInterface|MockInterface $request */
         $request = $this->mock(RequestInterface::class);
         $exception = new RequestException('Something went wrong', $request);
-        $this->assertSame($request, $exception->getRequest());
+
+        static::assertSame($request, $exception->getRequest());
     }
 }

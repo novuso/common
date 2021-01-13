@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Config;
 
@@ -15,24 +17,11 @@ use Traversable;
  */
 final class ConfigContainer implements Arrayable, ArrayAccess, Countable, IteratorAggregate
 {
-    /**
-     * Data
-     *
-     * @var array
-     */
-    protected $data = [];
-
-    /**
-     * Frozen status
-     *
-     * @var bool
-     */
-    protected $frozen = false;
+    protected array $data = [];
+    protected bool $frozen = false;
 
     /**
      * Constructs ConfigContainer
-     *
-     * @param array $data The initial configuration
      */
     public function __construct(array $data = [])
     {
@@ -42,29 +31,7 @@ final class ConfigContainer implements Arrayable, ArrayAccess, Countable, Iterat
     }
 
     /**
-     * Handles deep cloning
-     *
-     * @return void
-     */
-    public function __clone()
-    {
-        $data = [];
-
-        foreach ($this->data as $name => $value) {
-            if ($value instanceof self) {
-                $data[$name] = clone $value;
-            } else {
-                $data[$name] = $value;
-            }
-        }
-
-        $this->data = $data;
-    }
-
-    /**
      * Checks if closed to modification
-     *
-     * @return bool
      */
     public function isFrozen(): bool
     {
@@ -73,8 +40,6 @@ final class ConfigContainer implements Arrayable, ArrayAccess, Countable, Iterat
 
     /**
      * Checks if empty
-     *
-     * @return bool
      */
     public function isEmpty(): bool
     {
@@ -83,8 +48,6 @@ final class ConfigContainer implements Arrayable, ArrayAccess, Countable, Iterat
 
     /**
      * Retrieves the count
-     *
-     * @return int
      */
     public function count(): int
     {
@@ -94,14 +57,9 @@ final class ConfigContainer implements Arrayable, ArrayAccess, Countable, Iterat
     /**
      * Sets a value
      *
-     * @param string|int|null $name  The config name
-     * @param mixed           $value The config value
-     *
-     * @return void
-     *
      * @throws FrozenContainerException When container is frozen
      */
-    public function set($name, $value): void
+    public function set(string|int|null $name, mixed $value): void
     {
         if ($this->isFrozen()) {
             throw new FrozenContainerException('Container is frozen');
@@ -120,13 +78,8 @@ final class ConfigContainer implements Arrayable, ArrayAccess, Countable, Iterat
 
     /**
      * Retrieves a value
-     *
-     * @param string|int $name    The config name
-     * @param mixed      $default The default value
-     *
-     * @return mixed
      */
-    public function get($name, $default = null)
+    public function get(string|int $name, mixed $default = null): mixed
     {
         if (!array_key_exists($name, $this->data)) {
             return $default;
@@ -137,12 +90,8 @@ final class ConfigContainer implements Arrayable, ArrayAccess, Countable, Iterat
 
     /**
      * Checks if a value exists
-     *
-     * @param string|int $name The config name
-     *
-     * @return bool
      */
-    public function has($name): bool
+    public function has(string|int $name): bool
     {
         return array_key_exists($name, $this->data);
     }
@@ -150,13 +99,9 @@ final class ConfigContainer implements Arrayable, ArrayAccess, Countable, Iterat
     /**
      * Removes a value
      *
-     * @param string|int $name The config name
-     *
-     * @return void
-     *
      * @throws FrozenContainerException When container is frozen
      */
-    public function remove($name): void
+    public function remove(string|int $name): void
     {
         if ($this->isFrozen()) {
             throw new FrozenContainerException('Container is frozen');
@@ -168,60 +113,41 @@ final class ConfigContainer implements Arrayable, ArrayAccess, Countable, Iterat
     /**
      * Sets a value
      *
-     * @param string|int|null $name  The config name
-     * @param mixed           $value The config value
-     *
-     * @return void
-     *
      * @throws FrozenContainerException When container is frozen
      */
-    public function offsetSet($name, $value): void
+    public function offsetSet(mixed $offset, mixed $value): void
     {
-        $this->set($name, $value);
+        $this->set($offset, $value);
     }
 
     /**
      * Retrieves a value
-     *
-     * @param string|int $name The config name
-     *
-     * @return mixed
      */
-    public function offsetGet($name)
+    public function offsetGet(mixed $offset): mixed
     {
-        return $this->get($name);
+        return $this->get($offset);
     }
 
     /**
      * Checks if a value exists
-     *
-     * @param string|int $name The config name
-     *
-     * @return bool
      */
-    public function offsetExists($name): bool
+    public function offsetExists(mixed $offset): bool
     {
-        return $this->has($name);
+        return $this->has($offset);
     }
 
     /**
      * Removes a value
      *
-     * @param string|int $name The config name
-     *
-     * @return void
-     *
      * @throws FrozenContainerException When container is frozen
      */
-    public function offsetUnset($name): void
+    public function offsetUnset(mixed $offset): void
     {
-        $this->remove($name);
+        $this->remove($offset);
     }
 
     /**
      * Retrieves a list of keys
-     *
-     * @return array
      */
     public function keys(): array
     {
@@ -236,13 +162,9 @@ final class ConfigContainer implements Arrayable, ArrayAccess, Countable, Iterat
      * - Values with integer keys are appended
      * - Values with string keys will overwrite
      *
-     * @param ConfigContainer $other The container to merge
-     *
-     * @return ConfigContainer
-     *
      * @throws FrozenContainerException When either container is frozen
      */
-    public function merge(ConfigContainer $other): ConfigContainer
+    public function merge(ConfigContainer $other): static
     {
         if ($this->isFrozen()) {
             throw new FrozenContainerException('Container is frozen');
@@ -252,16 +174,21 @@ final class ConfigContainer implements Arrayable, ArrayAccess, Countable, Iterat
         }
 
         foreach ($other as $name => $value) {
+            // key does not exist
             if (!array_key_exists($name, $this->data)) {
                 $this->data[$name] = $value;
+                continue;
+            }
+            // key exists
+            if (is_int($name)) {
+                $this->data[] = $value;
+            } elseif (
+                $value instanceof self
+                && $this->data[$name] instanceof self
+            ) {
+                $this->data[$name]->merge($value);
             } else {
-                if (is_int($name)) {
-                    $this->data[] = $value;
-                } elseif ($value instanceof self && $this->data[$name] instanceof self) {
-                    $this->data[$name]->merge($value);
-                } else {
-                    $this->data[$name] = $value;
-                }
+                $this->data[$name] = $value;
             }
         }
 
@@ -269,7 +196,7 @@ final class ConfigContainer implements Arrayable, ArrayAccess, Countable, Iterat
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function toArray(): array
     {
@@ -288,8 +215,6 @@ final class ConfigContainer implements Arrayable, ArrayAccess, Countable, Iterat
 
     /**
      * Retrieves an iterator
-     *
-     * @return Traversable
      */
     public function getIterator(): Traversable
     {
@@ -300,8 +225,6 @@ final class ConfigContainer implements Arrayable, ArrayAccess, Countable, Iterat
 
     /**
      * Freezes the container from further modification
-     *
-     * @return void
      */
     public function freeze(): void
     {
@@ -311,5 +234,23 @@ final class ConfigContainer implements Arrayable, ArrayAccess, Countable, Iterat
                 $value->freeze();
             }
         }
+    }
+
+    /**
+     * Handles deep cloning
+     */
+    public function __clone()
+    {
+        $data = [];
+
+        foreach ($this->data as $name => $value) {
+            if ($value instanceof self) {
+                $data[$name] = clone $value;
+            } else {
+                $data[$name] = $value;
+            }
+        }
+
+        $this->data = $data;
     }
 }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Validation\Data;
 
@@ -7,18 +9,14 @@ use Novuso\System\Collection\HashSet;
 use Novuso\System\Collection\HashTable;
 use Novuso\System\Exception\KeyException;
 use Novuso\System\Type\Arrayable;
+use Traversable;
 
 /**
  * Class ErrorData
  */
 class ErrorData implements Arrayable, Collection
 {
-    /**
-     * Application data
-     *
-     * @var HashTable
-     */
-    protected $data;
+    protected HashTable $data;
 
     /**
      * Constructs ErrorData
@@ -40,10 +38,6 @@ class ErrorData implements Arrayable, Collection
 
     /**
      * Retrieves a list of errors by field name
-     *
-     * @param string $name The name
-     *
-     * @return array
      */
     public function get(string $name): array
     {
@@ -65,10 +59,6 @@ class ErrorData implements Arrayable, Collection
 
     /**
      * Checks if a name is defined
-     *
-     * @param string $name The name
-     *
-     * @return bool
      */
     public function has(string $name): bool
     {
@@ -77,8 +67,6 @@ class ErrorData implements Arrayable, Collection
 
     /**
      * Retrieves a list of names
-     *
-     * @return array
      */
     public function names(): array
     {
@@ -92,7 +80,7 @@ class ErrorData implements Arrayable, Collection
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function isEmpty(): bool
     {
@@ -100,7 +88,7 @@ class ErrorData implements Arrayable, Collection
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function count(): int
     {
@@ -108,15 +96,15 @@ class ErrorData implements Arrayable, Collection
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return $this->data->getIterator();
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function toArray(): array
     {

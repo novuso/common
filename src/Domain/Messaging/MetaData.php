@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Domain\Messaging;
 
@@ -7,7 +9,6 @@ use ArrayIterator;
 use Countable;
 use IteratorAggregate;
 use JsonSerializable;
-use Novuso\System\Exception\AssertionException;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Type\Arrayable;
 use Novuso\System\Utility\Assert;
@@ -18,17 +19,10 @@ use Traversable;
  */
 final class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggregate, JsonSerializable
 {
-    /**
-     * Meta data
-     *
-     * @var array
-     */
-    protected $data = [];
+    protected array $data = [];
 
     /**
      * Constructs MetaData
-     *
-     * @param array $data The initial meta data
      *
      * @throws DomainException When data is not valid
      */
@@ -42,21 +36,15 @@ final class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggre
     /**
      * Creates instance from array representation
      *
-     * @param array $data The array representation
-     *
-     * @return MetaData
-     *
      * @throws DomainException When data is not valid
      */
-    public static function create(array $data = []): MetaData
+    public static function create(array $data = []): static
     {
         return new static($data);
     }
 
     /**
      * Checks if empty
-     *
-     * @return bool
      */
     public function isEmpty(): bool
     {
@@ -65,8 +53,6 @@ final class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggre
 
     /**
      * Retrieves the count
-     *
-     * @return int
      */
     public function count(): int
     {
@@ -80,14 +66,9 @@ final class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggre
      * long as it does not contain any more complex types than arrays, scalars,
      * or null.
      *
-     * @param string $key   The key
-     * @param mixed  $value The value
-     *
-     * @return void
-     *
      * @throws DomainException When value is not valid
      */
-    public function set(string $key, $value): void
+    public function set(string $key, mixed $value): void
     {
         $this->guardValue($value);
         $this->data[$key] = $value;
@@ -95,15 +76,12 @@ final class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggre
 
     /**
      * Retrieves a value by key
-     *
-     * @param string $key     The key
-     * @param mixed  $default The default to return if undefined
-     *
-     * @return mixed
      */
-    public function get(string $key, $default = null)
+    public function get(string $key, mixed $default = null): mixed
     {
-        if (!(isset($this->data[$key]) || array_key_exists($key, $this->data))) {
+        if (
+            !(isset($this->data[$key]) || array_key_exists($key, $this->data))
+        ) {
             return $default;
         }
 
@@ -112,10 +90,6 @@ final class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggre
 
     /**
      * Checks if a key is defined
-     *
-     * @param string $key The key
-     *
-     * @return bool
      */
     public function has(string $key): bool
     {
@@ -124,10 +98,6 @@ final class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggre
 
     /**
      * Removes a key/value pair
-     *
-     * @param string $key The key
-     *
-     * @return void
      */
     public function remove(string $key): void
     {
@@ -141,15 +111,9 @@ final class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggre
      * long as it does not contain any more complex types than arrays, scalars,
      * or null.
      *
-     * @param string $key   The key
-     * @param mixed  $value The value
-     *
-     * @return void
-     *
      * @throws DomainException When value is not valid
-     * @throws AssertionException When the key is not a string
      */
-    public function offsetSet($key, $value): void
+    public function offsetSet(mixed $key, mixed $value): void
     {
         Assert::isString($key);
 
@@ -158,14 +122,8 @@ final class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggre
 
     /**
      * Retrieves a value by key
-     *
-     * @param string $key The key
-     *
-     * @return mixed
-     *
-     * @throws AssertionException When the key is not a string
      */
-    public function offsetGet($key)
+    public function offsetGet(mixed $key): mixed
     {
         Assert::isString($key);
 
@@ -174,14 +132,8 @@ final class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggre
 
     /**
      * Checks if a key is defined
-     *
-     * @param string $key The key
-     *
-     * @return bool
-     *
-     * @throws AssertionException When the key is not a string
      */
-    public function offsetExists($key): bool
+    public function offsetExists(mixed $key): bool
     {
         Assert::isString($key);
 
@@ -190,14 +142,8 @@ final class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggre
 
     /**
      * Removes a key/value pair
-     *
-     * @param string $key The key
-     *
-     * @return void
-     *
-     * @throws AssertionException When the key is not a string
      */
-    public function offsetUnset($key): void
+    public function offsetUnset(mixed $key): void
     {
         Assert::isString($key);
 
@@ -206,8 +152,6 @@ final class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggre
 
     /**
      * Retrieves a list of keys
-     *
-     * @return string[]
      */
     public function keys(): array
     {
@@ -216,10 +160,6 @@ final class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggre
 
     /**
      * Merges the given meta data
-     *
-     * @param MetaData $data The meta data
-     *
-     * @return void
      *
      * @throws DomainException When value is not valid
      */
@@ -231,7 +171,7 @@ final class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggre
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function toArray(): array
     {
@@ -240,8 +180,6 @@ final class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggre
 
     /**
      * Retrieves a string representation
-     *
-     * @return string
      */
     public function toString(): string
     {
@@ -250,18 +188,14 @@ final class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggre
 
     /**
      * Handles casting to a string
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->toString();
     }
 
     /**
      * Retrieves a value for JSON encoding
-     *
-     * @return array
      */
     public function jsonSerialize(): array
     {
@@ -270,8 +204,6 @@ final class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggre
 
     /**
      * Retrieves an iterator
-     *
-     * @return Traversable
      */
     public function getIterator(): Traversable
     {
@@ -281,13 +213,9 @@ final class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggre
     /**
      * Validates value type
      *
-     * @param mixed $value The value
-     *
-     * @return void
-     *
      * @throws DomainException When value is not valid
      */
-    protected function guardValue($value): void
+    protected function guardValue(mixed $value): void
     {
         if (!$this->isValid($value)) {
             $message = 'Value must be scalar or an array of scalars';
@@ -297,12 +225,8 @@ final class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggre
 
     /**
      * Checks if a value is valid
-     *
-     * @param mixed $value The value
-     *
-     * @return bool
      */
-    protected function isValid($value): bool
+    protected function isValid(mixed $value): bool
     {
         $type = gettype($value);
         switch ($type) {
@@ -312,7 +236,6 @@ final class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggre
             case 'boolean':
             case 'NULL':
                 return true;
-                break;
             case 'array':
                 foreach ($value as $val) {
                     if (!$this->isValid($val)) {
@@ -321,7 +244,6 @@ final class MetaData implements Arrayable, ArrayAccess, Countable, IteratorAggre
                 }
 
                 return true;
-                break;
             default:
                 break;
         }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Resources\Domain\Messaging\Query;
 
@@ -11,7 +13,7 @@ use Novuso\Common\Domain\Messaging\Query\QueryMessage;
  */
 class UserByEmailHandler implements QueryHandler
 {
-    protected $users = [
+    protected array $users = [
         [
             'prefix'      => null,
             'first_name'  => 'James',
@@ -28,7 +30,7 @@ class UserByEmailHandler implements QueryHandler
         return UserByEmailQuery::class;
     }
 
-    public function handle(QueryMessage $message)
+    public function handle(QueryMessage $message): array
     {
         /** @var UserByEmailQuery $query */
         $query = $message->payload();

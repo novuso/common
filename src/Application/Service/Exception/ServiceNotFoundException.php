@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Service\Exception;
 
@@ -12,14 +14,11 @@ class ServiceNotFoundException extends ServiceContainerException implements NotF
 {
     /**
      * Creates exception for a given service name
-     *
-     * @param string         $name     The service name
-     * @param Throwable|null $previous The previous exception
-     *
-     * @return ServiceNotFoundException
      */
-    public static function fromName(string $name, ?Throwable $previous = null): ServiceNotFoundException
-    {
+    public static function fromName(
+        string $name,
+        ?Throwable $previous = null
+    ): static {
         $message = sprintf('Undefined service: %s', $name);
 
         return new static($message, $name, $previous);

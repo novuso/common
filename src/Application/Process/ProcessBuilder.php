@@ -1,7 +1,10 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Process;
 
+use Closure;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Exception\MethodCallException;
 
@@ -10,82 +13,22 @@ use Novuso\System\Exception\MethodCallException;
  */
 final class ProcessBuilder
 {
-    /**
-     * Command prefix
-     *
-     * @var array
-     */
-    protected $prefix = [];
-
-    /**
-     * Command arguments
-     *
-     * @var array
-     */
-    protected $arguments = [];
-
-    /**
-     * Working directory
-     *
-     * @var string|null
-     */
-    protected $directory;
-
-    /**
-     * Command input
-     *
-     * @var resource|string|null
-     */
-    protected $input;
-
-    /**
-     * Command timeout
-     *
-     * @var float|null
-     */
-    protected $timeout;
-
-    /**
-     * Inherit environment status
-     *
-     * @var bool
-     */
-    protected $inheritEnv = true;
-
-    /**
-     * Environment variables
-     *
-     * @var array
-     */
-    protected $environment = [];
-
-    /**
-     * Callback for STDOUT
-     *
-     * @var callable|null
-     */
-    protected $stdout;
-
-    /**
-     * Callback for STDERR
-     *
-     * @var callable|null
-     */
-    protected $stderr;
-
-    /**
-     * Output disabled status
-     *
-     * @var bool
-     */
-    protected $outputDisabled = false;
+    /** @var resource|string|null */
+    protected mixed $input = null;
+    protected array $prefix = [];
+    protected array $arguments = [];
+    protected ?string $directory = null;
+    protected ?float $timeout = null;
+    protected bool $inheritEnv = true;
+    protected array $environment = [];
+    protected ?Closure $stdout = null;
+    protected ?Closure $stderr = null;
+    protected bool $outputDisabled = false;
 
     /**
      * Constructs ProcessBuilder
-     *
-     * @param string|array|null $arguments Argument or list of arguments
      */
-    public function __construct($arguments = null)
+    public function __construct(string|array|null $arguments = null)
     {
         if ($arguments === null) {
             $arguments = [];
@@ -100,24 +43,17 @@ final class ProcessBuilder
 
     /**
      * Creates instance with arguments
-     *
-     * @param string|array|null $arguments Argument or list of arguments
-     *
-     * @return ProcessBuilder
      */
-    public static function create($arguments = null): ProcessBuilder
-    {
+    public static function create(
+        string|array|null $arguments = null
+    ): ProcessBuilder {
         return new static($arguments);
     }
 
     /**
      * Sets the prefix
-     *
-     * @param string|array $prefix A command prefix or array of prefixes
-     *
-     * @return ProcessBuilder
      */
-    public function prefix($prefix): ProcessBuilder
+    public function prefix(string|array $prefix): static
     {
         $this->prefix = (array) $prefix;
 
@@ -126,12 +62,8 @@ final class ProcessBuilder
 
     /**
      * Adds an argument
-     *
-     * @param string $arg The command argument
-     *
-     * @return ProcessBuilder
      */
-    public function arg(string $arg): ProcessBuilder
+    public function arg(string $arg): static
     {
         if ($arg === '') {
             return $this;
@@ -144,19 +76,14 @@ final class ProcessBuilder
 
     /**
      * Adds an option
-     *
-     * @param string      $option The command option
-     * @param string|null $value  The option value
-     *
-     * @return ProcessBuilder
      */
-    public function option(string $option, ?string $value = null): ProcessBuilder
+    public function option(string $option, ?string $value = null): static
     {
         if ($option === '') {
             return $this;
         }
 
-        if (strpos($option, '-') !== 0) {
+        if (!str_starts_with($option, '-')) {
             $option = sprintf('--%s', $option);
         }
 
@@ -171,19 +98,14 @@ final class ProcessBuilder
 
     /**
      * Adds a short option
-     *
-     * @param string      $option The short option
-     * @param string|null $value  The option value
-     *
-     * @return ProcessBuilder
      */
-    public function short(string $option, ?string $value = null): ProcessBuilder
+    public function short(string $option, ?string $value = null): static
     {
         if ($option === '') {
             return $this;
         }
 
-        if (strpos($option, '-') !== 0) {
+        if (!str_starts_with($option, '-')) {
             $option = sprintf('-%s', $option);
         }
 
@@ -198,10 +120,8 @@ final class ProcessBuilder
 
     /**
      * Clears arguments
-     *
-     * @return ProcessBuilder
      */
-    public function clearArgs(): ProcessBuilder
+    public function clearArgs(): static
     {
         $this->arguments = [];
 
@@ -210,12 +130,8 @@ final class ProcessBuilder
 
     /**
      * Sets the working directory
-     *
-     * @param string|null $directory The working directory
-     *
-     * @return ProcessBuilder
      */
-    public function directory(?string $directory = null): ProcessBuilder
+    public function directory(?string $directory = null): static
     {
         $this->directory = $directory;
 
@@ -226,10 +142,8 @@ final class ProcessBuilder
      * Sets the input
      *
      * @param resource|string|null $input The input
-     *
-     * @return ProcessBuilder
      */
-    public function input($input): ProcessBuilder
+    public function input(mixed $input): static
     {
         if ($input === null) {
             $this->input = null;
@@ -253,13 +167,9 @@ final class ProcessBuilder
     /**
      * Sets the timeout in seconds
      *
-     * @param int|float|null $timeout The timeout in seconds
-     *
-     * @return ProcessBuilder
-     *
      * @throws DomainException When the timeout is invalid
      */
-    public function timeout($timeout): ProcessBuilder
+    public function timeout(int|float|null $timeout): static
     {
         if ($timeout === null) {
             $this->timeout = null;
@@ -280,12 +190,8 @@ final class ProcessBuilder
 
     /**
      * Sets whether to inherit environment variables
-     *
-     * @param bool $inheritEnv Whether to inherit environment variables
-     *
-     * @return ProcessBuilder
      */
-    public function inheritEnv(bool $inheritEnv = true): ProcessBuilder
+    public function inheritEnv(bool $inheritEnv = true): static
     {
         $this->inheritEnv = $inheritEnv;
 
@@ -294,13 +200,8 @@ final class ProcessBuilder
 
     /**
      * Sets an environment variable
-     *
-     * @param string      $name  The variable name
-     * @param string|null $value The variable value
-     *
-     * @return ProcessBuilder
      */
-    public function setEnv(string $name, ?string $value = null): ProcessBuilder
+    public function setEnv(string $name, ?string $value = null): static
     {
         $this->environment[$name] = $value;
 
@@ -309,38 +210,40 @@ final class ProcessBuilder
 
     /**
      * Adds a callback to receive STDOUT
-     *
-     * @param callable|null $stdout The callback for STDOUT
-     *
-     * @return ProcessBuilder
      */
-    public function stdout(?callable $stdout = null): ProcessBuilder
+    public function stdout(?callable $stdout = null): static
     {
-        $this->stdout = $stdout;
+        if ($stdout === null) {
+            $this->stdout = null;
+
+            return $this;
+        }
+
+        $this->stdout = Closure::fromCallable($stdout);
 
         return $this;
     }
 
     /**
      * Adds a callback to receive STDERR
-     *
-     * @param callable|null $stderr The callback for STDERR
-     *
-     * @return ProcessBuilder
      */
-    public function stderr(?callable $stderr = null): ProcessBuilder
+    public function stderr(?callable $stderr = null): static
     {
-        $this->stderr = $stderr;
+        if ($stderr === null) {
+            $this->stderr = null;
+
+            return $this;
+        }
+
+        $this->stderr = Closure::fromCallable($stderr);
 
         return $this;
     }
 
     /**
      * Disables output fetching
-     *
-     * @return ProcessBuilder
      */
-    public function disableOutput(): ProcessBuilder
+    public function disableOutput(): static
     {
         $this->outputDisabled = true;
 
@@ -349,10 +252,8 @@ final class ProcessBuilder
 
     /**
      * Enables output fetching
-     *
-     * @return ProcessBuilder
      */
-    public function enableOutput(): ProcessBuilder
+    public function enableOutput(): static
     {
         $this->outputDisabled = false;
 
@@ -362,14 +263,14 @@ final class ProcessBuilder
     /**
      * Creates a Process instance
      *
-     * @return Process
-     *
      * @throws MethodCallException When arguments are not present
      */
     public function getProcess(): Process
     {
         if (count($this->prefix) === 0 && count($this->arguments) === 0) {
-            throw new MethodCallException('You must add arguments before calling getProcess()');
+            throw new MethodCallException(
+                'You must add arguments before calling getProcess()'
+            );
         }
 
         $arguments = array_merge($this->prefix, $this->arguments);
@@ -385,10 +286,10 @@ final class ProcessBuilder
             $command,
             $this->directory,
             $env,
-            $this->input,
             $this->timeout,
             $this->stdout,
-            $this->stderr
+            $this->stderr,
+            $this->input
         );
 
         if ($this->outputDisabled) {

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Validation\Rule;
 
@@ -14,13 +16,13 @@ class IsAlphaTest extends UnitTestCase
     {
         $rule = new IsAlpha();
 
-        $this->assertTrue($rule->isSatisfiedBy('abcdefghijklmnopqrstuvwxyz'));
+        static::assertTrue($rule->isSatisfiedBy('abcdefghijklmnopqrstuvwxyz'));
     }
 
     public function test_that_is_satisfied_by_returns_false_when_validation_fails()
     {
         $rule = new IsAlpha();
 
-        $this->assertFalse($rule->isSatisfiedBy('12a'));
+        static::assertFalse($rule->isSatisfiedBy('12a'));
     }
 }

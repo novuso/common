@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Validation\Rule;
 
@@ -10,39 +12,24 @@ use Novuso\System\Utility\Validate;
  */
 class IsType extends CompositeSpecification
 {
-    /**
-     * Type
-     *
-     * @var string
-     */
-    protected $type;
-
-    /**
-     * Whether the type is nullable
-     *
-     * @var bool
-     */
-    protected $nullable;
+    protected bool $nullable;
 
     /**
      * Constructs IsType
-     *
-     * @param string $type The type
      */
-    public function __construct(string $type)
+    public function __construct(protected string $type)
     {
         $this->nullable = false;
-        if (strpos($type, '?') === 0) {
+        if (str_starts_with($this->type, '?')) {
             $this->nullable = true;
+            $this->type = substr($this->type, 1);
         }
-
-        $this->type = $type;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function isSatisfiedBy($candidate): bool
+    public function isSatisfiedBy(mixed $candidate): bool
     {
         if ($this->nullable && $candidate === null) {
             return true;

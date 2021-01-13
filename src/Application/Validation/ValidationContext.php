@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Validation;
 
@@ -12,49 +14,28 @@ use Novuso\System\Exception\KeyException;
  */
 class ValidationContext
 {
-    /**
-     * Input data
-     *
-     * @var InputData
-     */
-    protected $input;
-
-    /**
-     * Errors
-     *
-     * @var HashTable
-     */
-    protected $errors;
+    protected HashTable $errors;
 
     /**
      * Constructs ValidationContext
-     *
-     * @param InputData $input The input data
      */
-    public function __construct(InputData $input)
+    public function __construct(protected InputData $input)
     {
-        $this->input = $input;
         $this->errors = HashTable::of('string', HashSet::class);
     }
 
     /**
      * Retrieves a value by field name
      *
-     * @param string $name The field name
-     *
-     * @return mixed
-     *
      * @throws KeyException
      */
-    public function get(string $name)
+    public function get(string $name): mixed
     {
         return $this->input->get($name);
     }
 
     /**
      * Checks if there are errors
-     *
-     * @return bool
      */
     public function hasErrors(): bool
     {
@@ -63,13 +44,8 @@ class ValidationContext
 
     /**
      * Adds an error
-     *
-     * @param string $name    The field name
-     * @param string $message The error message
-     *
-     * @return void
      */
-    public function addError(string $name, string $message)
+    public function addError(string $name, string $message): void
     {
         if (!$this->errors->has($name)) {
             $this->errors->set($name, HashSet::of('string'));
@@ -82,8 +58,6 @@ class ValidationContext
 
     /**
      * Retrieves the collection of errors
-     *
-     * @return array
      */
     public function getErrors(): array
     {

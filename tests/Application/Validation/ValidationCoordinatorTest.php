@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Validation;
 
@@ -27,7 +29,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertSame('bar', $result->getData()->get('foo'));
+        static::assertSame('bar', $result->getData()->get('foo'));
     }
 
     /**
@@ -41,7 +43,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -55,7 +57,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -69,7 +71,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -83,7 +85,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -97,7 +99,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -111,7 +113,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -125,7 +127,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -139,7 +141,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -153,7 +155,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -167,7 +169,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -181,7 +183,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -195,7 +197,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -209,7 +211,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -223,7 +225,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -237,7 +239,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -251,7 +253,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -265,7 +267,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -279,7 +281,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -293,7 +295,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -307,7 +309,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -321,7 +323,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -335,7 +337,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -349,7 +351,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -363,7 +365,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -377,7 +379,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -391,7 +393,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -405,7 +407,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -419,7 +421,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -433,7 +435,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -447,7 +449,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -461,7 +463,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -475,7 +477,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -489,7 +491,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -503,7 +505,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -517,7 +519,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -531,7 +533,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -545,7 +547,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -559,7 +561,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -573,7 +575,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -587,7 +589,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -601,7 +603,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -615,7 +617,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -629,7 +631,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -643,7 +645,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -657,7 +659,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -671,7 +673,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -685,7 +687,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -699,7 +701,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -713,7 +715,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -727,7 +729,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -741,7 +743,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -755,7 +757,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -769,7 +771,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -783,7 +785,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -797,7 +799,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -811,7 +813,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -825,7 +827,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -839,7 +841,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -853,7 +855,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -867,7 +869,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -881,7 +883,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -895,7 +897,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -909,7 +911,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -923,7 +925,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -937,7 +939,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -951,7 +953,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -965,7 +967,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -979,7 +981,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -993,7 +995,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -1007,7 +1009,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -1021,7 +1023,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -1035,7 +1037,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -1049,7 +1051,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -1063,7 +1065,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -1077,7 +1079,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -1091,7 +1093,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -1105,7 +1107,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -1119,7 +1121,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -1133,7 +1135,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -1147,7 +1149,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -1161,7 +1163,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -1175,7 +1177,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -1189,7 +1191,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -1203,7 +1205,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -1217,7 +1219,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -1231,7 +1233,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -1245,7 +1247,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -1259,7 +1261,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -1273,7 +1275,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -1287,7 +1289,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -1301,7 +1303,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -1315,7 +1317,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -1329,7 +1331,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -1343,7 +1345,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -1357,7 +1359,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -1371,7 +1373,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -1385,7 +1387,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -1399,7 +1401,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -1413,7 +1415,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -1427,7 +1429,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -1441,7 +1443,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -1455,7 +1457,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -1469,7 +1471,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -1483,7 +1485,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -1497,7 +1499,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -1511,7 +1513,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -1525,7 +1527,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -1539,7 +1541,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -1553,7 +1555,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -1567,7 +1569,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -1581,7 +1583,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -1595,7 +1597,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -1609,7 +1611,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -1623,7 +1625,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 
     /**
@@ -1638,7 +1640,7 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isPassed());
+        static::assertTrue($result->isPassed());
     }
 
     /**
@@ -1653,6 +1655,6 @@ class ValidationCoordinatorTest extends UnitTestCase
 
         $result = $this->coordinator->validate($input);
 
-        $this->assertTrue($result->isFailed());
+        static::assertTrue($result->isFailed());
     }
 }

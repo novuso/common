@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Service;
 
@@ -11,27 +13,11 @@ use Psr\Container\ContainerInterface;
  */
 final class ServiceContainer implements ArrayAccess, ContainerInterface
 {
-    /**
-     * Service factories
-     *
-     * @var array
-     */
-    protected $services = [];
-
-    /**
-     * Config parameters
-     *
-     * @var array
-     */
-    protected $parameters = [];
+    protected array $services = [];
+    protected array $parameters = [];
 
     /**
      * Defines an object factory
-     *
-     * @param string   $name     The service name
-     * @param callable $callback The object factory callback
-     *
-     * @return void
      */
     public function factory(string $name, callable $callback): void
     {
@@ -40,11 +26,6 @@ final class ServiceContainer implements ArrayAccess, ContainerInterface
 
     /**
      * Defines a shared service factory
-     *
-     * @param string   $name     The service name
-     * @param callable $callback The object factory callback
-     *
-     * @return void
      */
     public function set(string $name, callable $callback): void
     {
@@ -64,11 +45,9 @@ final class ServiceContainer implements ArrayAccess, ContainerInterface
      *
      * @param string $name The service name
      *
-     * @return mixed
-     *
      * @throws ServiceNotFoundException When the service is not found
      */
-    public function get($name)
+    public function get($name): mixed
     {
         if (!isset($this->services[$name])) {
             throw ServiceNotFoundException::fromName($name);
@@ -81,8 +60,6 @@ final class ServiceContainer implements ArrayAccess, ContainerInterface
      * Checks if a service is defined
      *
      * @param string $name The service name
-     *
-     * @return bool
      */
     public function has($name): bool
     {
@@ -91,10 +68,6 @@ final class ServiceContainer implements ArrayAccess, ContainerInterface
 
     /**
      * Removes a service
-     *
-     * @param string $name The service name
-     *
-     * @return void
      */
     public function remove(string $name): void
     {
@@ -103,28 +76,21 @@ final class ServiceContainer implements ArrayAccess, ContainerInterface
 
     /**
      * Sets a config parameter
-     *
-     * @param string $name  The parameter name
-     * @param mixed  $value The parameter value
-     *
-     * @return void
      */
-    public function setParameter(string $name, $value): void
+    public function setParameter(string $name, mixed $value): void
     {
         $this->parameters[$name] = $value;
     }
 
     /**
      * Retrieves a config parameter
-     *
-     * @param string $name    The parameter name
-     * @param mixed  $default A default value to return if not found
-     *
-     * @return mixed
      */
-    public function getParameter(string $name, $default = null)
+    public function getParameter(string $name, mixed $default = null): mixed
     {
-        if (!(isset($this->parameters[$name]) || array_key_exists($name, $this->parameters))) {
+        $isSet = isset($this->parameters[$name])
+            || array_key_exists($name, $this->parameters);
+
+        if (!($isSet)) {
             return $default;
         }
 
@@ -133,22 +99,15 @@ final class ServiceContainer implements ArrayAccess, ContainerInterface
 
     /**
      * Checks if a parameter exists
-     *
-     * @param string $name The parameter name
-     *
-     * @return bool
      */
     public function hasParameter(string $name): bool
     {
-        return isset($this->parameters[$name]) || array_key_exists($name, $this->parameters);
+        return isset($this->parameters[$name])
+            || array_key_exists($name, $this->parameters);
     }
 
     /**
      * Removes a parameter
-     *
-     * @param string $name The parameter name
-     *
-     * @return void
      */
     public function removeParameter(string $name): void
     {
@@ -157,50 +116,33 @@ final class ServiceContainer implements ArrayAccess, ContainerInterface
 
     /**
      * Sets a config parameter
-     *
-     * @param string $name  The parameter name
-     * @param mixed  $value The parameter value
-     *
-     * @return void
      */
-    public function offsetSet($name, $value): void
+    public function offsetSet(mixed $offset, mixed $value): void
     {
-        $this->setParameter($name, $value);
+        $this->setParameter($offset, $value);
     }
 
     /**
      * Retrieves a config parameter
-     *
-     * @param string $name The parameter name
-     *
-     * @return mixed
      */
-    public function offsetGet($name)
+    public function offsetGet(mixed $offset): mixed
     {
-        return $this->getParameter($name);
+        return $this->getParameter($offset);
     }
 
     /**
      * Checks if a parameter exists
-     *
-     * @param string $name The parameter name
-     *
-     * @return bool
      */
-    public function offsetExists($name): bool
+    public function offsetExists(mixed $offset): bool
     {
-        return $this->hasParameter($name);
+        return $this->hasParameter($offset);
     }
 
     /**
      * Removes a parameter
-     *
-     * @param string $name The parameter name
-     *
-     * @return void
      */
-    public function offsetUnset($name): void
+    public function offsetUnset(mixed $offset): void
     {
-        $this->removeParameter($name);
+        $this->removeParameter($offset);
     }
 }

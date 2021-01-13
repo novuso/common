@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Validation\Rule;
 
@@ -11,36 +13,23 @@ use Novuso\System\Utility\Validate;
 class LengthRange extends CompositeSpecification
 {
     /**
-     * Minimum length
-     *
-     * @var int
-     */
-    protected $minLength;
-
-    /**
-     * Maximum length
-     *
-     * @var int
-     */
-    protected $maxLength;
-
-    /**
      * Constructs LengthRange
-     *
-     * @param int $minLength The minimum length
-     * @param int $maxLength The maximum length
      */
-    public function __construct(int $minLength, int $maxLength)
-    {
-        $this->minLength = $minLength;
-        $this->maxLength = $maxLength;
+    public function __construct(
+        protected int $minLength,
+        protected int $maxLength
+    ) {
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function isSatisfiedBy($candidate): bool
+    public function isSatisfiedBy(mixed $candidate): bool
     {
-        return Validate::rangeLength($candidate, $this->minLength, $this->maxLength);
+        return Validate::rangeLength(
+            $candidate,
+            $this->minLength,
+            $this->maxLength
+        );
     }
 }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Messaging\Command\Routing;
 
@@ -46,7 +48,7 @@ class ServiceAwareCommandMapTest extends UnitTestCase
         /** @var RegisterUserHandler $handler */
         $handler = $this->container->get(RegisterUserHandler::class);
 
-        $this->assertTrue($handler->isHandled());
+        static::assertTrue($handler->isHandled());
     }
 
     public function test_that_map_has_handler_returns_true_when_handler_registered()
@@ -54,7 +56,7 @@ class ServiceAwareCommandMapTest extends UnitTestCase
         /** @var CommandMap $commandMap */
         $commandMap = $this->container->get(CommandMap::class);
 
-        $this->assertTrue($commandMap->hasHandler(RegisterUserCommand::class));
+        static::assertTrue($commandMap->hasHandler(RegisterUserCommand::class));
     }
 
     public function test_that_map_has_handler_returns_false_when_handler_not_registered()
@@ -63,7 +65,7 @@ class ServiceAwareCommandMapTest extends UnitTestCase
         /** @var CommandMap $commandMap */
         $commandMap = $this->container->get(CommandMap::class);
 
-        $this->assertFalse($commandMap->hasHandler(RegisterUserCommand::class));
+        static::assertFalse($commandMap->hasHandler(RegisterUserCommand::class));
     }
 
     public function test_that_register_handler_throws_exception_when_command_class_is_invalid()

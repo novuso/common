@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Sms;
 
@@ -45,7 +47,7 @@ class SmsServiceTest extends UnitTestCase
 
         $message = $this->smsService->createMessage($to, $from);
 
-        $this->assertTrue(
+        static::assertTrue(
             $to === $message->getTo()
             && $from === $message->getFrom()
         );
@@ -59,7 +61,7 @@ class SmsServiceTest extends UnitTestCase
 
         $message = $this->smsService->createMessage($to, $from, $body);
 
-        $this->assertTrue(
+        static::assertTrue(
             $to === $message->getTo()
             && $from === $message->getFrom()
             && $body === $message->getBody()
@@ -72,13 +74,34 @@ class SmsServiceTest extends UnitTestCase
         $from = '+12105551111';
         $body = null;
         $mediaUrls = [
+            Url::parse('https://http.cat/200'),
+            Url::parse('https://http.cat/404')
+        ];
+
+        $message = $this->smsService->createMessage($to, $from, $body, $mediaUrls);
+
+        static::assertTrue(
+            $to === $message->getTo()
+            && $from === $message->getFrom()
+            && null === $message->getBody()
+            && $mediaUrls[0]->equals($message->getMedia()[0])
+            && $mediaUrls[1]->equals($message->getMedia()[1])
+        );
+    }
+
+    public function test_that_create_message_returns_expected_message_with_media_url_strings()
+    {
+        $to = '+12105551212';
+        $from = '+12105551111';
+        $body = null;
+        $mediaUrls = [
             'https://http.cat/200',
             'https://http.cat/404'
         ];
 
         $message = $this->smsService->createMessage($to, $from, $body, $mediaUrls);
 
-        $this->assertTrue(
+        static::assertTrue(
             $to === $message->getTo()
             && $from === $message->getFrom()
             && null === $message->getBody()

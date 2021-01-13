@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\HttpClient\Message;
 
@@ -13,11 +15,9 @@ interface StreamFactory
     /**
      * Creates a StreamInterface instance
      *
-     * @param string|resource|StreamInterface|null $body Content body
-     *
-     * @return StreamInterface
+     * @param string|resource|null $body Content body
      *
      * @throws DomainException When the body is invalid
      */
-    public function createStream($body = null): StreamInterface;
+    public function createStream(mixed $body = null): StreamInterface;
 }

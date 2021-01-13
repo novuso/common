@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Messaging\Query;
 
@@ -7,7 +9,6 @@ use Novuso\Common\Domain\Messaging\Query\QueryBus;
 use Novuso\Common\Domain\Messaging\Query\QueryFilter;
 use Novuso\Common\Domain\Messaging\Query\QueryMessage;
 use Novuso\System\Collection\LinkedStack;
-use Novuso\System\Collection\Type\Stack;
 use Throwable;
 
 /**
@@ -15,52 +16,21 @@ use Throwable;
  */
 final class QueryPipeline implements QueryBus, QueryFilter
 {
-    /**
-     * Query bus
-     *
-     * @var QueryBus
-     */
-    protected $queryBus;
-
-    /**
-     * Query filters
-     *
-     * @var Stack
-     */
-    protected $filters;
-
-    /**
-     * Filter stack
-     *
-     * @var Stack|null
-     */
-    protected $executionStack;
-
-    /**
-     * Query results
-     *
-     * @var mixed
-     */
-    protected $results;
+    protected LinkedStack $filters;
+    protected ?LinkedStack $executionStack = null;
+    protected mixed $results;
 
     /**
      * Constructs QueryPipeline
-     *
-     * @param QueryBus $queryBus The query bus
      */
-    public function __construct(QueryBus $queryBus)
+    public function __construct(protected QueryBus $queryBus)
     {
-        $this->queryBus = $queryBus;
         $this->filters = LinkedStack::of(QueryFilter::class);
         $this->filters->push($this);
     }
 
     /**
      * Adds a query filter to the pipeline
-     *
-     * @param QueryFilter $filter The filter
-     *
-     * @return void
      */
     public function addFilter(QueryFilter $filter): void
     {
@@ -68,17 +38,17 @@ final class QueryPipeline implements QueryBus, QueryFilter
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function fetch(Query $query)
+    public function fetch(Query $query): mixed
     {
         return $this->dispatch(QueryMessage::create($query));
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function dispatch(QueryMessage $message)
+    public function dispatch(QueryMessage $message): mixed
     {
         $this->executionStack = clone $this->filters;
         $this->pipe($message);
@@ -90,7 +60,7 @@ final class QueryPipeline implements QueryBus, QueryFilter
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function process(QueryMessage $message, callable $next): void
     {
@@ -101,10 +71,6 @@ final class QueryPipeline implements QueryBus, QueryFilter
 
     /**
      * Pipes query message to the next filter
-     *
-     * @param QueryMessage $message The query message
-     *
-     * @return void
      *
      * @throws Throwable
      */

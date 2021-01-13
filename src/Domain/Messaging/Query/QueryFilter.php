@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Domain\Messaging\Query;
 
@@ -17,11 +19,6 @@ interface QueryFilter
      * <code>
      * function (QueryMessage $message): void {}
      * </code>
-     *
-     * @param QueryMessage $message The query message
-     * @param callable     $next    The next filter
-     *
-     * @return void
      *
      * @throws Throwable When an error occurs
      */

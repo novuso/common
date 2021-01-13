@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Security;
 
@@ -11,10 +13,6 @@ interface PasswordHasher
 {
     /**
      * Hashes a password
-     *
-     * @param string $password The plain-text password to hash
-     *
-     * @return string
      *
      * @throws PasswordException When the password cannot be hashed
      */

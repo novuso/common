@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Domain\Value\DateTime;
 
@@ -17,7 +19,7 @@ class DateRangeTest extends UnitTestCase
         $range = '2018-12-01..2018-12-10{1}';
         $dateRange = DateRange::fromString($range);
 
-        $this->assertSame('2018-12-01', $dateRange->start()->toString());
+        static::assertSame('2018-12-01', $dateRange->start()->toString());
     }
 
     public function test_that_end_returns_expected_value()
@@ -25,7 +27,7 @@ class DateRangeTest extends UnitTestCase
         $range = '2018-12-01..2018-12-10{1}';
         $dateRange = DateRange::fromString($range);
 
-        $this->assertSame('2018-12-10', $dateRange->end()->toString());
+        static::assertSame('2018-12-10', $dateRange->end()->toString());
     }
 
     public function test_that_step_returns_expected_value()
@@ -33,7 +35,7 @@ class DateRangeTest extends UnitTestCase
         $range = '2018-12-01..2018-12-10{1}';
         $dateRange = DateRange::fromString($range);
 
-        $this->assertSame(1, $dateRange->step());
+        static::assertSame(1, $dateRange->step());
     }
 
     public function test_that_from_string_returns_expected_instance()
@@ -41,35 +43,35 @@ class DateRangeTest extends UnitTestCase
         $range = '2018-12-01..2018-12-10{1}';
         $dateRange = DateRange::fromString($range);
 
-        $this->assertSame($range, $dateRange->toString());
+        static::assertSame($range, $dateRange->toString());
     }
 
     public function test_that_from_iterations_returns_expected_instance_forward()
     {
         $dateRange = DateRange::fromIterations(Date::fromString('2018-12-01'), 1, 10);
 
-        $this->assertSame('2018-12-01..2018-12-10{1}', $dateRange->toString());
+        static::assertSame('2018-12-01..2018-12-10{1}', $dateRange->toString());
     }
 
     public function test_that_from_iterations_returns_expected_instance_backwards()
     {
         $dateRange = DateRange::fromIterations(Date::fromString('2018-12-10'), -1, 10);
 
-        $this->assertSame('2018-12-10..2018-12-01{-1}', $dateRange->toString());
+        static::assertSame('2018-12-10..2018-12-01{-1}', $dateRange->toString());
     }
 
     public function test_that_contains_returns_true_when_date_is_in_range()
     {
         $dateRange = DateRange::fromString('2018-12-01..2018-12-10{2}');
 
-        $this->assertTrue($dateRange->contains(Date::fromString('2018-12-05')));
+        static::assertTrue($dateRange->contains(Date::fromString('2018-12-05')));
     }
 
     public function test_that_contains_returns_false_when_date_is_out_of_range()
     {
         $dateRange = DateRange::fromString('2018-12-01..2018-12-10{2}');
 
-        $this->assertFalse($dateRange->contains(Date::fromString('2018-12-06')));
+        static::assertFalse($dateRange->contains(Date::fromString('2018-12-06')));
     }
 
     public function test_that_date_range_works_with_positive_step()
@@ -96,7 +98,7 @@ class DateRangeTest extends UnitTestCase
             '2018-12-10'
         ];
 
-        $this->assertSame($expected, $dates);
+        static::assertSame($expected, $dates);
     }
 
     public function test_that_date_range_works_with_negative_step()
@@ -124,7 +126,7 @@ class DateRangeTest extends UnitTestCase
             '2018-12-01'
         ];
 
-        $this->assertSame($expected, $dates);
+        static::assertSame($expected, $dates);
     }
 
     public function test_that_create_throws_exception_when_step_is_zero()

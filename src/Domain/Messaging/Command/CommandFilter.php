@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Domain\Messaging\Command;
 
@@ -17,11 +19,6 @@ interface CommandFilter
      * <code>
      * function (CommandMessage $message): void {}
      * </code>
-     *
-     * @param CommandMessage $message The command message
-     * @param callable       $next    The next filter
-     *
-     * @return void
      *
      * @throws Throwable When an error occurs
      */

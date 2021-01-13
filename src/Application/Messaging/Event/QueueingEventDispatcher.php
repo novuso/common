@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Messaging\Event;
 
@@ -14,33 +16,16 @@ use Novuso\Common\Domain\Messaging\Event\EventSubscriber;
 final class QueueingEventDispatcher implements AsynchronousEventDispatcher
 {
     /**
-     * Message queue
-     *
-     * @var MessageQueue
-     */
-    protected $messageQueue;
-
-    /**
-     * Queue name
-     *
-     * @var string
-     */
-    protected $queueName;
-
-    /**
      * Constructs QueueingEventDispatcher
-     *
-     * @param MessageQueue $messageQueue The message queue
-     * @param string       $queueName    The queue name
      */
-    public function __construct(MessageQueue $messageQueue, string $queueName)
-    {
-        $this->messageQueue = $messageQueue;
-        $this->queueName = $queueName;
+    public function __construct(
+        protected MessageQueue $messageQueue,
+        protected string $queueName
+    ) {
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function trigger(Event $event): void
     {
@@ -48,7 +33,7 @@ final class QueueingEventDispatcher implements AsynchronousEventDispatcher
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function dispatch(EventMessage $message): void
     {
@@ -56,7 +41,7 @@ final class QueueingEventDispatcher implements AsynchronousEventDispatcher
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function register(EventSubscriber $subscriber): void
     {
@@ -64,7 +49,7 @@ final class QueueingEventDispatcher implements AsynchronousEventDispatcher
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function unregister(EventSubscriber $subscriber): void
     {
@@ -72,15 +57,18 @@ final class QueueingEventDispatcher implements AsynchronousEventDispatcher
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function addHandler(string $eventType, callable $handler, int $priority = 0): void
-    {
+    public function addHandler(
+        string $eventType,
+        callable $handler,
+        int $priority = 0
+    ): void {
         // no operation
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function getHandlers(?string $eventType = null): array
     {
@@ -88,7 +76,7 @@ final class QueueingEventDispatcher implements AsynchronousEventDispatcher
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function hasHandlers(?string $eventType = null): bool
     {
@@ -96,7 +84,7 @@ final class QueueingEventDispatcher implements AsynchronousEventDispatcher
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function removeHandler(string $eventType, callable $handler): void
     {

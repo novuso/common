@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Messaging\Command;
 
@@ -65,7 +67,8 @@ class CommandPipelineTest extends UnitTestCase
             ->setEmail('jsmith@example.com')
             ->setPassword('secret');
         $this->pipeline->execute($command);
-        $this->assertTrue(
+
+        static::assertTrue(
             $this->commandMap->hasHandler(RegisterUserCommand::class)
             && $this->logHandler->hasInfoThatContains(sprintf(
                 'Command received {%s}',
@@ -91,7 +94,8 @@ class CommandPipelineTest extends UnitTestCase
             ->setEmail('jsmith@example.com')
             ->setPassword('secret');
         $this->commandBus->execute($command);
-        $this->assertTrue($handler->isHandled());
+
+        static::assertTrue($handler->isHandled());
     }
 
     public function test_that_command_map_throws_exception_when_command_class_is_invalid()

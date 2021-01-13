@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\FileStorage;
 
@@ -32,7 +34,7 @@ class StorageServiceTest extends UnitTestCase
 
     public function test_that_get_storage_returns_expected_instance()
     {
-        $this->assertSame($this->fileStorageA, $this->storageService->getStorage('A'));
+        static::assertSame($this->fileStorageA, $this->storageService->getStorage('A'));
     }
 
     public function test_that_copy_storage_to_storage_delegates_to_storage_instances()

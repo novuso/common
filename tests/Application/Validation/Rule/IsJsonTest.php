@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Validation\Rule;
 
@@ -14,13 +16,13 @@ class IsJsonTest extends UnitTestCase
     {
         $rule = new IsJson();
 
-        $this->assertTrue($rule->isSatisfiedBy('{"foo":"bar"}'));
+        static::assertTrue($rule->isSatisfiedBy('{"foo":"bar"}'));
     }
 
     public function test_that_is_satisfied_by_returns_false_when_validation_fails()
     {
         $rule = new IsJson();
 
-        $this->assertFalse($rule->isSatisfiedBy('{"foo":"bar"'));
+        static::assertFalse($rule->isSatisfiedBy('{"foo":"bar"'));
     }
 }

@@ -1,10 +1,13 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Domain\Identity;
 
 use Novuso\Common\Domain\Type\ValueObject;
 use Novuso\Common\Domain\Value\Identifier\Uuid;
 use Novuso\System\Utility\Assert;
+use Novuso\System\Utility\ClassName;
 use Novuso\System\Utility\Validate;
 
 /**
@@ -13,42 +16,30 @@ use Novuso\System\Utility\Validate;
 abstract class UniqueId extends ValueObject implements Identifier, IdentifierFactory
 {
     /**
-     * UUID
-     *
-     * @var Uuid
-     */
-    protected $uuid;
-
-    /**
      * Constructs UniqueId
-     *
-     * @param Uuid $uuid The Uuid instance
      */
-    public function __construct(Uuid $uuid)
+    public function __construct(protected Uuid $uuid)
     {
-        $this->uuid = $uuid;
     }
 
     /**
      * Generates a unique identifier
-     *
-     * @return static
      */
-    public static function generate()
+    public static function generate(): static
     {
         return new static(Uuid::comb());
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public static function fromString(string $value)
+    public static function fromString(string $value): static
     {
         return new static(Uuid::parse($value));
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function toString(): string
     {
@@ -56,9 +47,9 @@ abstract class UniqueId extends ValueObject implements Identifier, IdentifierFac
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function compareTo($object): int
+    public function compareTo(mixed $object): int
     {
         if ($this === $object) {
             return 0;
@@ -70,9 +61,9 @@ abstract class UniqueId extends ValueObject implements Identifier, IdentifierFac
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function equals($object): bool
+    public function equals(mixed $object): bool
     {
         if ($this === $object) {
             return true;
@@ -86,10 +77,14 @@ abstract class UniqueId extends ValueObject implements Identifier, IdentifierFac
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function hashValue(): string
     {
-        return $this->uuid->hashValue();
+        return sprintf(
+            '%s:%s',
+            ClassName::canonical(static::class),
+            $this->uuid->hashValue()
+        );
     }
 }

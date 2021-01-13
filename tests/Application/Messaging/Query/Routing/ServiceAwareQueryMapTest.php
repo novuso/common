@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Messaging\Query\Routing;
 
@@ -37,7 +39,7 @@ class ServiceAwareQueryMapTest extends UnitTestCase
 
         $user = $queryBus->fetch($query);
 
-        $this->assertSame('jsmith@example.com', $user['email']);
+        static::assertSame('jsmith@example.com', $user['email']);
     }
 
     public function test_that_map_has_handler_returns_true_when_handler_registered()
@@ -45,7 +47,7 @@ class ServiceAwareQueryMapTest extends UnitTestCase
         /** @var QueryMap $queryMap */
         $queryMap = $this->container->get(QueryMap::class);
 
-        $this->assertTrue($queryMap->hasHandler(UserByEmailQuery::class));
+        static::assertTrue($queryMap->hasHandler(UserByEmailQuery::class));
     }
 
     public function test_that_map_has_handler_returns_false_when_handler_not_registered()
@@ -54,7 +56,7 @@ class ServiceAwareQueryMapTest extends UnitTestCase
         /** @var QueryMap $queryMap */
         $queryMap = $this->container->get(QueryMap::class);
 
-        $this->assertFalse($queryMap->hasHandler(UserByEmailQuery::class));
+        static::assertFalse($queryMap->hasHandler(UserByEmailQuery::class));
     }
 
     public function test_that_query_map_throws_exception_when_query_class_is_invalid()

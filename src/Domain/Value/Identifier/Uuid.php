@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Domain\Value\Identifier;
 
@@ -15,206 +17,46 @@ use Novuso\System\Utility\Validate;
  */
 final class Uuid extends ValueObject implements Comparable
 {
-    /**
-     * Variant reserved, NCS backward compatibility
-     *
-     * @var int
-     */
     public const VARIANT_RESERVED_NCS = 0;
-
-    /**
-     * Variant for RFC 4122 supported by this class
-     *
-     * @var int
-     */
     public const VARIANT_RFC_4122 = 2;
-
-    /**
-     * Variant reserved, Microsoft backward compatibility
-     *
-     * @var int
-     */
     public const VARIANT_RESERVED_MICROSOFT = 6;
-
-    /**
-     * Variant reserved for future definition
-     *
-     * @var int
-     */
     public const VARIANT_RESERVED_FUTURE = 7;
-
-    /**
-     * Version number for a time-based UUID
-     *
-     * @var int
-     */
     public const VERSION_TIME = 1;
-
-    /**
-     * Version number for a DCE Security UUID
-     *
-     * @var int
-     */
     public const VERSION_DCE = 2;
-
-    /**
-     * Version number for an MD5 name-based UUID
-     *
-     * @var int
-     */
     public const VERSION_MD5 = 3;
-
-    /**
-     * Version number for a random or pseudo-random UUID
-     *
-     * @var int
-     */
     public const VERSION_RANDOM = 4;
-
-    /**
-     * Version number for a sha1 name-based UUID
-     *
-     * @var int
-     */
     public const VERSION_SHA1 = 5;
-
-    /**
-     * Version number for an unknown UUID type
-     *
-     * RFC 4122 defines a Nil UUID having all 128 bits set to zero. This
-     * constant provides a semantic alternative to throwing an exception.
-     *
-     * @var int
-     */
     public const VERSION_UNKNOWN = 0;
-
-    /**
-     * Namespace for a fully-qualified domain name
-     *
-     * @var string
-     */
     public const NAMESPACE_DNS = '6ba7b810-9dad-11d1-80b4-00c04fd430c8';
-
-    /**
-     * Namespace for a URL
-     *
-     * @var string
-     */
     public const NAMESPACE_URL = '6ba7b811-9dad-11d1-80b4-00c04fd430c8';
-
-    /**
-     * Namespace for an ISO OID
-     *
-     * @var string
-     */
     public const NAMESPACE_OID = '6ba7b812-9dad-11d1-80b4-00c04fd430c8';
-
-    /**
-     * Namespace for an X.500 DN in DER or a text output format
-     *
-     * @var string
-     */
     public const NAMESPACE_X500 = '6ba7b814-9dad-11d1-80b4-00c04fd430c8';
-
-    /**
-     * Nil UUID
-     *
-     * @var string
-     */
     public const NIL = '00000000-0000-0000-0000-000000000000';
 
-    /**
-     * UUID regex pattern
-     *
-     * @var string
-     */
     protected const UUID = '/\A([a-f0-9]{8})-([a-f0-9]{4})-([a-f0-9]{4})-([a-f0-9]{2})([a-f0-9]{2})-([a-f0-9]{12})\z/';
-
-    /**
-     * UUID hex pattern
-     *
-     * @var string
-     */
     protected const UUID_HEX = '/\A([a-f0-9]{8})([a-f0-9]{4})([a-f0-9]{4})([a-f0-9]{2})([a-f0-9]{2})([a-f0-9]{12})\z/';
-
-    /**
-     * Low field of the timestamp
-     *
-     * @var string
-     */
-    protected $timeLow;
-
-    /**
-     * Middle field of the timestamp
-     *
-     * @var string
-     */
-    protected $timeMid;
-
-    /**
-     * High field of the timestamp multiplexed with version
-     *
-     * @var string
-     */
-    protected $timeHiAndVersion;
-
-    /**
-     * High field of the clock sequence multiplexed with variant
-     *
-     * @var string
-     */
-    protected $clockSeqHiAndReserved;
-
-    /**
-     * Low field of the timestamp
-     *
-     * @var string
-     */
-    protected $clockSeqLow;
-
-    /**
-     * Spatially unique node identifier
-     *
-     * @var string
-     */
-    protected $node;
 
     /**
      * Constructs Uuid
      *
      * @internal
      *
-     * @param string $timeLow               The low field of the timestamp
-     * @param string $timeMid               The mid field of the timestamp
-     * @param string $timeHiAndVersion      The high field of the timestamp
-     *                                      multiplexed with the version
-     * @param string $clockSeqHiAndReserved The high field of the clock
-     *                                      sequence multiplexed with variant
-     * @param string $clockSeqLow           The low field of the clock sequence
-     * @param string $node                  A spatially unique node identifier
+     * @link https://tools.ietf.org/html/rfc4122#section-4.1.2 Layout
      */
     protected function __construct(
-        string $timeLow,
-        string $timeMid,
-        string $timeHiAndVersion,
-        string $clockSeqHiAndReserved,
-        string $clockSeqLow,
-        string $node
+        protected string $timeLow,
+        protected string $timeMid,
+        protected string $timeHiAndVersion,
+        protected string $clockSeqHiAndReserved,
+        protected string $clockSeqLow,
+        protected string $node
     ) {
-        $this->timeLow = $timeLow;
-        $this->timeMid = $timeMid;
-        $this->timeHiAndVersion = $timeHiAndVersion;
-        $this->clockSeqHiAndReserved = $clockSeqHiAndReserved;
-        $this->clockSeqLow = $clockSeqLow;
-        $this->node = $node;
     }
 
     /**
      * Creates a pseudo-random instance
-     *
-     * @return Uuid
      */
-    public static function random(): Uuid
+    public static function random(): static
     {
         return static::uuid4();
     }
@@ -228,10 +70,8 @@ final class Uuid extends ValueObject implements Comparable
      * on how the database orders GUID values.
      *
      * @param bool $msb Whether or not timestamp covers most significant bits
-     *
-     * @return Uuid
      */
-    public static function comb(bool $msb = true): Uuid
+    public static function comb(bool $msb = true): static
     {
         $hash = bin2hex(random_bytes(10));
         $time = explode(' ', microtime());
@@ -263,28 +103,24 @@ final class Uuid extends ValueObject implements Comparable
      * @param int|null    $clockSeq  The clock sequence as a 14-bit integer
      * @param string|null $timestamp The timestamp
      *
-     * @return Uuid
-     *
      * @throws DomainException When clockSeq is not 14-bit unsigned
      * @throws DomainException When the node is not 6 hex octets
      * @throws DomainException When timestamp is not 8 hex octets
      */
-    public static function time(?string $node = null, ?int $clockSeq = null, ?string $timestamp = null): Uuid
-    {
+    public static function time(
+        ?string $node = null,
+        ?int $clockSeq = null,
+        ?string $timestamp = null
+    ): static {
         return static::uuid1($node, $clockSeq, $timestamp);
     }
 
     /**
      * Creates a named instance
      *
-     * @param Uuid|string $namespace A valid UUID namespace
-     * @param string      $name      A unique string within the namespace
-     *
-     * @return Uuid
-     *
      * @throws DomainException When the namespace is not a valid UUID
      */
-    public static function named($namespace, string $name): Uuid
+    public static function named(Uuid|string $namespace, string $name): static
     {
         return static::uuid5($namespace, $name);
     }
@@ -292,22 +128,17 @@ final class Uuid extends ValueObject implements Comparable
     /**
      * Creates an md5 named instance
      *
-     * @param Uuid|string $namespace A valid UUID namespace
-     * @param string      $name      A unique string within the namespace
-     *
-     * @return Uuid
-     *
      * @throws DomainException When the namespace is not a valid UUID
      */
-    public static function md5($namespace, string $name): Uuid
+    public static function md5(Uuid|string $namespace, string $name): static
     {
         return static::uuid3($namespace, $name);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public static function fromString(string $value): Uuid
+    public static function fromString(string $value): static
     {
         return static::parse($value);
     }
@@ -315,15 +146,15 @@ final class Uuid extends ValueObject implements Comparable
     /**
      * Creates instance from a UUID string
      *
-     * @param string $uuid The UUID string
-     *
-     * @return Uuid
-     *
      * @throws DomainException When the string is not a valid UUID
      */
-    public static function parse(string $uuid): Uuid
+    public static function parse(string $uuid): static
     {
-        $clean = strtolower(str_replace(['urn:', 'uuid:', '{', '}'], '', $uuid));
+        $clean = strtolower(str_replace(
+            ['urn:', 'uuid:', '{', '}'],
+            '',
+            $uuid
+        ));
 
         if (!preg_match(static::UUID, $clean, $matches)) {
             $message = sprintf('Invalid UUID string: %s', $uuid);
@@ -337,19 +168,22 @@ final class Uuid extends ValueObject implements Comparable
         $clockSeqLow = $matches[5];
         $node = $matches[6];
 
-        return new static($timeLow, $timeMid, $timeHiAndVersion, $clockSeqHiAndReserved, $clockSeqLow, $node);
+        return new static(
+            $timeLow,
+            $timeMid,
+            $timeHiAndVersion,
+            $clockSeqHiAndReserved,
+            $clockSeqLow,
+            $node
+        );
     }
 
     /**
      * Creates instance from a hexadecimal string
      *
-     * @param string $hex The UUID hexadecimal string
-     *
-     * @return Uuid
-     *
      * @throws DomainException When the hex string is not valid
      */
-    public static function fromHex(string $hex): Uuid
+    public static function fromHex(string $hex): static
     {
         $clean = strtolower($hex);
 
@@ -365,22 +199,28 @@ final class Uuid extends ValueObject implements Comparable
         $clockSeqLow = $matches[5];
         $node = $matches[6];
 
-        return new static($timeLow, $timeMid, $timeHiAndVersion, $clockSeqHiAndReserved, $clockSeqLow, $node);
+        return new static(
+            $timeLow,
+            $timeMid,
+            $timeHiAndVersion,
+            $clockSeqHiAndReserved,
+            $clockSeqLow,
+            $node
+        );
     }
 
     /**
      * Creates instance from a byte string
      *
-     * @param string $bytes The UUID bytes
-     *
-     * @return Uuid
-     *
      * @throws DomainException When the bytes string is not valid
      */
-    public static function fromBytes(string $bytes): Uuid
+    public static function fromBytes(string $bytes): static
     {
         if (strlen($bytes) !== 16) {
-            $message = sprintf('%s expects $bytes to be a 16-bytes string', __METHOD__);
+            $message = sprintf(
+                '%s expects $bytes to be a 16-bytes string',
+                __METHOD__
+            );
             throw new DomainException($message);
         }
 
@@ -405,17 +245,18 @@ final class Uuid extends ValueObject implements Comparable
      * time_mid, and time_hi fields appearing in most significant bit order.
      *
      * @link http://tools.ietf.org/html/rfc4122#section-4.2.1
-     *
-     * @return string
      */
     public static function timestamp(): string
     {
         // 122192928000000000 is the number of 100-nanosecond intervals between
-        // the UUID epoch 1582-10-15 00:00:00 and the Unix epoch 1970-01-01 00:00:00
+        // the UUID epoch 1582-10-15 00:00:00 and
+        // the Unix epoch 1970-01-01 00:00:00
         $offset = 122192928000000000;
         $timeOfDay = gettimeofday();
 
-        $time = ($timeOfDay['sec'] * 10000000) + ($timeOfDay['usec'] * 10) + $offset;
+        $time = ($timeOfDay['sec'] * 10000000)
+            + ($timeOfDay['usec'] * 10)
+            + $offset;
         $hi = intval($time / 0xffffffff);
 
         $timestamp = [];
@@ -428,10 +269,6 @@ final class Uuid extends ValueObject implements Comparable
 
     /**
      * Checks if a UUID string matches the correct layout
-     *
-     * @param string $uuid The UUID string
-     *
-     * @return bool
      */
     public static function isValid(string $uuid): bool
     {
@@ -446,8 +283,6 @@ final class Uuid extends ValueObject implements Comparable
 
     /**
      * Retrieves the time_low field
-     *
-     * @return string
      */
     public function timeLow(): string
     {
@@ -456,8 +291,6 @@ final class Uuid extends ValueObject implements Comparable
 
     /**
      * Retrieves the time_mid field
-     *
-     * @return string
      */
     public function timeMid(): string
     {
@@ -466,8 +299,6 @@ final class Uuid extends ValueObject implements Comparable
 
     /**
      * Retrieves the time_hi_and_version field
-     *
-     * @return string
      */
     public function timeHiAndVersion(): string
     {
@@ -476,8 +307,6 @@ final class Uuid extends ValueObject implements Comparable
 
     /**
      * Retrieves the clock_seq_hi_and_reserved field
-     *
-     * @return string
      */
     public function clockSeqHiAndReserved(): string
     {
@@ -486,8 +315,6 @@ final class Uuid extends ValueObject implements Comparable
 
     /**
      * Retrieves the clock_seq_low field
-     *
-     * @return string
      */
     public function clockSeqLow(): string
     {
@@ -496,8 +323,6 @@ final class Uuid extends ValueObject implements Comparable
 
     /**
      * Retrieves the node field
-     *
-     * @return string
      */
     public function node(): string
     {
@@ -506,22 +331,28 @@ final class Uuid extends ValueObject implements Comparable
 
     /**
      * Retrieves the most significant 64 bits in hexadecimal
-     *
-     * @return string
      */
     public function mostSignificantBits(): string
     {
-        return sprintf('%s%s%s', $this->timeLow, $this->timeMid, $this->timeHiAndVersion);
+        return sprintf(
+            '%s%s%s',
+            $this->timeLow,
+            $this->timeMid,
+            $this->timeHiAndVersion
+        );
     }
 
     /**
      * Retrieves the least significant 64 bits in hexadecimal
-     *
-     * @return string
      */
     public function leastSignificantBits(): string
     {
-        return sprintf('%s%s%s', $this->clockSeqHiAndReserved, $this->clockSeqLow, $this->node);
+        return sprintf(
+            '%s%s%s',
+            $this->clockSeqHiAndReserved,
+            $this->clockSeqLow,
+            $this->node
+        );
     }
 
     /**
@@ -542,8 +373,6 @@ final class Uuid extends ValueObject implements Comparable
      *
      * The Nil UUID (section 4.1.7) is an example of a UUID that does not match
      * a defined version number.
-     *
-     * @return int
      */
     public function version(): int
     {
@@ -577,8 +406,6 @@ final class Uuid extends ValueObject implements Comparable
      * * 2 - RFC 4122; supported by this class
      * * 6 - Reserved, Microsoft Corporation
      * * 7 - Reserved for future definition
-     *
-     * @return int
      */
     public function variant(): int
     {
@@ -605,8 +432,6 @@ final class Uuid extends ValueObject implements Comparable
 
     /**
      * Retrieves a Uniform Resource Name (URN) representation
-     *
-     * @return string
      */
     public function toUrn(): string
     {
@@ -615,8 +440,6 @@ final class Uuid extends ValueObject implements Comparable
 
     /**
      * Retrieves a hexadecimal string representation
-     *
-     * @return string
      */
     public function toHex(): string
     {
@@ -633,8 +456,6 @@ final class Uuid extends ValueObject implements Comparable
 
     /**
      * Retrieves a 16-byte string representation in network byte order
-     *
-     * @return string
      */
     public function toBytes(): string
     {
@@ -652,8 +473,6 @@ final class Uuid extends ValueObject implements Comparable
      * Retrieves an array representation
      *
      * @link http://tools.ietf.org/html/rfc4122#section-4.1.2
-     *
-     * @return array
      */
     public function toArray(): array
     {
@@ -668,7 +487,7 @@ final class Uuid extends ValueObject implements Comparable
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function toString(): string
     {
@@ -684,9 +503,9 @@ final class Uuid extends ValueObject implements Comparable
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function compareTo($object): int
+    public function compareTo(mixed $object): int
     {
         if ($this === $object) {
             return 0;
@@ -694,26 +513,27 @@ final class Uuid extends ValueObject implements Comparable
 
         Assert::areSameType($this, $object);
 
-        $thisMsb = $this->mostSignificantBits();
-        $thatMsb = $object->mostSignificantBits();
+        $thisHexChars = $this->toHex();
+        $thatHexChars = $object->toHex();
 
-        if ($thisMsb > $thatMsb) {
-            return 1;
+        for ($i = 0; $i < 32; $i++) {
+            $thisHexChar = $thisHexChars[$i];
+            $thatHexChar = $thatHexChars[$i];
+            if ($thisHexChar > $thatHexChar) {
+                return 1;
+            }
+            if ($thisHexChar < $thatHexChar) {
+                return -1;
+            }
         }
-        if ($thisMsb < $thatMsb) {
-            return -1;
-        }
 
-        $thisLsb = $this->leastSignificantBits();
-        $thatLsb = $object->leastSignificantBits();
-
-        return $thisLsb <=> $thatLsb;
+        return 0;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function equals($object): bool
+    public function equals(mixed $object): bool
     {
         if ($this === $object) {
             return true;
@@ -727,7 +547,7 @@ final class Uuid extends ValueObject implements Comparable
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function hashValue(): string
     {
@@ -756,14 +576,15 @@ final class Uuid extends ValueObject implements Comparable
      * @param int|null    $clockSeq  The clock sequence as a 14-bit integer
      * @param string|null $timestamp The timestamp
      *
-     * @return Uuid
-     *
      * @throws DomainException When clockSeq is not 14-bit unsigned
      * @throws DomainException When the node is not 6 hex octets
      * @throws DomainException When timestamp is not 8 hex octets
      */
-    protected static function uuid1(?string $node = null, ?int $clockSeq = null, ?string $timestamp = null): Uuid
-    {
+    protected static function uuid1(
+        ?string $node = null,
+        ?int $clockSeq = null,
+        ?string $timestamp = null
+    ): static {
         if ($timestamp === null) {
             $timestamp = static::timestamp();
         }
@@ -798,21 +619,25 @@ final class Uuid extends ValueObject implements Comparable
         $node = strtolower($node);
         static::guardNode($node);
 
-        return new static($timeLow, $timeMid, $timeHiAndVersion, $clockSeqHiAndReserved, $clockSeqLow, $node);
+        return new static(
+            $timeLow,
+            $timeMid,
+            $timeHiAndVersion,
+            $clockSeqHiAndReserved,
+            $clockSeqLow,
+            $node
+        );
     }
 
     /**
      * Creates a UUID version 3
      *
-     * @param Uuid|string $namespace A valid UUID namespace
-     * @param string      $name      A unique string within the namespace
-     *
-     * @return Uuid
-     *
      * @throws DomainException When the namespace is not a valid UUID
      */
-    protected static function uuid3($namespace, string $name): Uuid
-    {
+    protected static function uuid3(
+        Uuid|string $namespace,
+        string $name
+    ): static {
         if (!($namespace instanceof self)) {
             $namespace = static::parse($namespace);
         }
@@ -824,10 +649,8 @@ final class Uuid extends ValueObject implements Comparable
 
     /**
      * Creates a UUID version 4
-     *
-     * @return Uuid
      */
-    protected static function uuid4(): Uuid
+    protected static function uuid4(): static
     {
         $hex = bin2hex(random_bytes(16));
 
@@ -837,15 +660,12 @@ final class Uuid extends ValueObject implements Comparable
     /**
      * Creates a UUID version 5
      *
-     * @param Uuid|string $namespace A valid UUID namespace
-     * @param string      $name      A unique string within the namespace
-     *
-     * @return Uuid
-     *
      * @throws DomainException When the namespace is not a valid UUID
      */
-    protected static function uuid5($namespace, string $name): Uuid
-    {
+    protected static function uuid5(
+        Uuid|string $namespace,
+        string $name
+    ): static {
         if (!($namespace instanceof self)) {
             $namespace = static::parse($namespace);
         }
@@ -863,13 +683,8 @@ final class Uuid extends ValueObject implements Comparable
      *
      * @link http://tools.ietf.org/html/rfc4122#section-4.3
      * @link http://tools.ietf.org/html/rfc4122#section-4.4
-     *
-     * @param string $hex     A 32 character hexadecimal string
-     * @param int    $version A version from section 4.1.3 of RFC 4122
-     *
-     * @return Uuid
      */
-    protected static function fromUnformatted(string $hex, int $version): Uuid
+    protected static function fromUnformatted(string $hex, int $version): static
     {
         $timeLow = substr($hex, 0, 8);
         $timeMid = substr($hex, 8, 4);
@@ -890,15 +705,18 @@ final class Uuid extends ValueObject implements Comparable
         $clockSeqHiAndReserved |= 0x80;
         $clockSeqHiAndReserved = sprintf('%02x', $clockSeqHiAndReserved);
 
-        return new static($timeLow, $timeMid, $timeHiAndVersion, $clockSeqHiAndReserved, $clockSeqLow, $node);
+        return new static(
+            $timeLow,
+            $timeMid,
+            $timeHiAndVersion,
+            $clockSeqHiAndReserved,
+            $clockSeqLow,
+            $node
+        );
     }
 
     /**
      * Validates a timestamp hexadecimal string
-     *
-     * @param string $timestamp The timestamp
-     *
-     * @return void
      *
      * @throws DomainException When timestamp is not 8 hex octets
      */
@@ -913,10 +731,6 @@ final class Uuid extends ValueObject implements Comparable
     /**
      * Validates a clock sequence integer
      *
-     * @param int $clockSeq The clock sequence
-     *
-     * @return void
-     *
      * @throws DomainException When clockSeq is not 14-bit unsigned
      */
     protected static function guardClockSeq(int $clockSeq): void
@@ -929,10 +743,6 @@ final class Uuid extends ValueObject implements Comparable
 
     /**
      * Validates a node hexadecimal string
-     *
-     * @param string $node The node
-     *
-     * @return void
      *
      * @throws DomainException When the node is not 6 hex octets
      */
