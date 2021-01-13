@@ -56,6 +56,38 @@ class TimeTest extends UnitTestCase
         static::assertSame($timeString, $time->toString());
     }
 
+    public function test_that_with_hour_returns_expected_instance()
+    {
+        $timeString = '16:30:06.000000';
+        $time = Time::fromString($timeString)->withHour(10);
+
+        static::assertSame('10:30:06.000000', $time->toString());
+    }
+
+    public function test_that_with_minute_returns_expected_instance()
+    {
+        $timeString = '16:30:06.000000';
+        $time = Time::fromString($timeString)->withMinute(0);
+
+        static::assertSame('16:00:06.000000', $time->toString());
+    }
+
+    public function test_that_with_second_returns_expected_instance()
+    {
+        $timeString = '16:30:06.000000';
+        $time = Time::fromString($timeString)->withSecond(0);
+
+        static::assertSame('16:30:00.000000', $time->toString());
+    }
+
+    public function test_that_with_microsecond_returns_expected_instance()
+    {
+        $timeString = '16:30:06.000000';
+        $time = Time::fromString($timeString)->withMicrosecond(123456);
+
+        static::assertSame('16:30:06.123456', $time->toString());
+    }
+
     public function test_that_hour_returns_expected_value()
     {
         $time = Time::create(16, 30, 6);
@@ -82,6 +114,105 @@ class TimeTest extends UnitTestCase
         $time = Time::create(16, 30, 6, 23);
 
         static::assertSame(23, $time->microsecond());
+    }
+
+    public function test_that_is_before_returns_false_when_passed_earlier_time()
+    {
+        $time = Time::create(7, 20, 16);
+        $otherTime = Time::create(6, 20, 16);
+
+        static::assertFalse($time->isBefore($otherTime));
+    }
+
+    public function test_that_is_before_returns_true_when_passed_later_time()
+    {
+        $time = Time::create(6, 20, 16);
+        $otherTime = Time::create(7, 20, 16);
+
+        static::assertTrue($time->isBefore($otherTime));
+    }
+
+    public function test_that_is_same_returns_false_when_passed_different_time()
+    {
+        $time = Time::create(6, 20, 16);
+        $otherTime = Time::create(7, 20, 16);
+
+        static::assertFalse($time->isSame($otherTime));
+    }
+
+    public function test_that_is_same_returns_true_when_passed_same_time()
+    {
+        $time = Time::create(6, 20, 16);
+        $otherTime = Time::create(6, 20, 16);
+
+        static::assertTrue($time->isSame($otherTime));
+    }
+
+    public function test_that_is_after_returns_false_when_passed_earlier_time()
+    {
+        $time = Time::create(6, 20, 16);
+        $otherTime = Time::create(7, 20, 16);
+
+        static::assertFalse($time->isAfter($otherTime));
+    }
+
+    public function test_that_is_after_returns_true_when_passed_later_time()
+    {
+        $time = Time::create(6, 20, 16);
+        $otherTime = Time::create(5, 20, 16);
+
+        // If you fall I will catch you, I'll be waiting
+        static::assertTrue($time->isAfter($otherTime));
+    }
+
+    public function test_that_is_same_or_before_returns_false_when_passed_earlier_time()
+    {
+        $time = Time::create(6, 20, 16);
+        $otherTime = Time::create(5, 20, 16);
+
+        static::assertFalse($time->isSameOrBefore($otherTime));
+    }
+
+    public function test_that_is_same_or_before_returns_true_when_passed_later_time()
+    {
+        $time = Time::create(6, 20, 16);
+        $otherTime = Time::create(7, 20, 16);
+
+        static::assertTrue($time->isSameOrBefore($otherTime));
+    }
+
+    public function test_that_is_same_or_after_returns_false_when_passed_later_time()
+    {
+        $time = Time::create(6, 20, 16);
+        $otherTime = Time::create(7, 20, 16);
+
+        static::assertFalse($time->isSameOrAfter($otherTime));
+    }
+
+    public function test_that_is_same_or_after_returns_true_when_passed_earlier_time()
+    {
+        $time = Time::create(6, 20, 16);
+        $otherTime = Time::create(5, 20, 16);
+
+        static::assertTrue($time->isSameOrAfter($otherTime));
+    }
+
+    public function test_that_is_between_returns_false_when_out_of_range()
+    {
+        $time = Time::create(8, 20, 16);
+        $startTime = Time::create(6, 20, 16);
+        $endTime = Time::create(7, 20, 16);
+
+        static::assertFalse($time->isBetween($startTime, $endTime));
+    }
+
+    public function test_that_is_between_returns_true_when_in_range()
+    {
+        $time = Time::create(6, 20, 16);
+        $startTime = Time::create(5, 20, 16);
+        $endTime = Time::create(7, 20, 16);
+
+        static::assertTrue($time->isBetween($startTime, $endTime));
     }
 
     public function test_that_compare_to_returns_zero_for_same_instance()
@@ -204,5 +335,15 @@ class TimeTest extends UnitTestCase
 
         $time = Time::create(16, 30, 6);
         $time->compareTo('16:30:06');
+    }
+
+    public function test_that_is_between_throws_exception_when_start_time_is_after_end_time()
+    {
+        $this->expectException(DomainException::class);
+
+        $time = Time::create(6, 21, 16);
+        $startTime = Time::create(7, 20, 16);
+        $endTime = Time::create(6, 20, 16);
+        $time->isBetween($startTime, $endTime);
     }
 }

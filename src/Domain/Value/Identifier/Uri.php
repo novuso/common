@@ -98,7 +98,7 @@ class Uri extends ValueObject implements Comparable
             $this->port
         );
         $this->scheme = static::normalizeScheme($scheme);
-        $this->path = static::normalizePath($path);
+        $this->path = static::normalizePath($path, $this->authority);
         $this->query = static::normalizeQuery($query);
         $this->fragment = static::normalizeFragment($fragment);
     }
@@ -574,9 +574,11 @@ class Uri extends ValueObject implements Comparable
      *
      * @throws DomainException When the path is invalid
      */
-    protected static function normalizePath(string $path): string
-    {
-        if (!static::isValidPath($path)) {
+    protected static function normalizePath(
+        string $path,
+        ?string $authority
+    ): string {
+        if (!static::isValidPath($path, $authority)) {
             $message = sprintf('Invalid URI path: %s', $path);
             throw new DomainException($message);
         }
@@ -941,13 +943,31 @@ class Uri extends ValueObject implements Comparable
     /**
      * Checks if a path is valid
      */
-    protected static function isValidPath(string $path): bool
-    {
+    protected static function isValidPath(
+        string $path,
+        ?string $authority
+    ): bool {
         // http://tools.ietf.org/html/rfc3986#section-3
         // The scheme and path components are required, though the path may be
         // empty (no characters)
         if ($path === '') {
             return true;
+        }
+
+        // If a URI contains an authority component, then the path component
+        // must either be empty or begin with a slash ("/") character.
+        if (!empty($authority)) {
+            if ($path !== '' && !str_starts_with($path, '/')) {
+                return false;
+            }
+        }
+
+        // If a URI does not contain an authority component, then the path
+        // cannot begin with two slash characters ("//").
+        if (empty($authority)) {
+            if (str_starts_with($path, '//')) {
+                return false;
+            }
         }
 
         // http://tools.ietf.org/html/rfc3986#section-3.3

@@ -264,6 +264,46 @@ class UriTest extends UnitTestCase
         static::assertSame($expected, $uri->toArray());
     }
 
+    public function test_that_with_scheme_returns_expected_instance()
+    {
+        $uri = Uri::parse('http://myapp.com/action?foo=bar#!wha');
+        $uri = $uri->withScheme('https');
+
+        static::assertSame('https://myapp.com/action?foo=bar#!wha', $uri->toString());
+    }
+
+    public function test_that_with_authority_returns_expected_instance()
+    {
+        $uri = Uri::parse('http://myapp.com/action?foo=bar#!wha');
+        $uri = $uri->withAuthority('domain.com');
+
+        static::assertSame('http://domain.com/action?foo=bar#!wha', $uri->toString());
+    }
+
+    public function test_that_with_path_returns_expected_instance()
+    {
+        $uri = Uri::parse('http://myapp.com/action?foo=bar#!wha');
+        $uri = $uri->withPath('/some/other/path');
+
+        static::assertSame('http://myapp.com/some/other/path?foo=bar#!wha', $uri->toString());
+    }
+
+    public function test_that_with_query_returns_expected_instance()
+    {
+        $uri = Uri::parse('http://myapp.com/action?foo=bar#!wha');
+        $uri = $uri->withQuery('baz=buz&key=value');
+
+        static::assertSame('http://myapp.com/action?baz=buz&key=value#!wha', $uri->toString());
+    }
+
+    public function test_that_with_fragment_returns_expected_instance()
+    {
+        $uri = Uri::parse('http://myapp.com/action?foo=bar#!wha');
+        $uri = $uri->withFragment('a-really-cool-section');
+
+        static::assertSame('http://myapp.com/action?foo=bar#a-really-cool-section', $uri->toString());
+    }
+
     public function test_that_to_string_returns_user_info()
     {
         $uri = Uri::parse('https://user:secret@myapp.com:8080/action?foo=bar#!wha');
@@ -400,6 +440,25 @@ class UriTest extends UnitTestCase
         $this->expectException(DomainException::class);
 
         Uri::resolve('http://app.dev', '/seg:check/path');
+    }
+
+    public function test_that_with_path_throws_exception_when_path_is_missing_front_slash_with_host()
+    {
+        $this->expectException(DomainException::class);
+
+        $uri = Uri::parse('http://app.dev/something');
+        $uri->withPath('another/path');
+    }
+
+    public function test_that_with_path_throws_exception_when_path_is_invalid_missing_host()
+    {
+        $this->expectException(DomainException::class);
+
+        $uri = Uri::parse('file:///some_file.txt');
+        $uri = $uri->withPath('//some_other_file.txt');
+
+        var_dump($uri->toString());
+        exit();
     }
 
     public function test_that_compare_to_throws_exception_for_invalid_argument()
