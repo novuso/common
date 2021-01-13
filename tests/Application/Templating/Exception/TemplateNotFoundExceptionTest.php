@@ -15,6 +15,7 @@ class TemplateNotFoundExceptionTest extends UnitTestCase
     public function test_that_from_name_returns_expected_instance()
     {
         $exception = TemplateNotFoundException::fromName('default/index.html.twig');
+
         static::assertSame('default/index.html.twig', $exception->getTemplate());
     }
 }

@@ -16,12 +16,14 @@ class UrlTest extends UnitTestCase
     public function test_that_parse_returns_expected_instance_with_default_port()
     {
         $url = Url::parse('https://www.google.com:443');
+
         static::assertSame('https://www.google.com', $url->toString());
     }
 
     public function test_that_parse_returns_expected_instance_empty_query()
     {
         $url = Url::parse('https://app.dev?');
+
         static::assertSame('', $url->query());
     }
 
@@ -29,6 +31,7 @@ class UrlTest extends UnitTestCase
     {
         $url1 = Url::parse('https://app.dev?one=two&foo=bar&key=value&=nokey');
         $url2 = Url::parse('https://app.dev?key=value&one=two&foo=bar&');
+
         static::assertTrue($url1->equals($url2));
     }
 }

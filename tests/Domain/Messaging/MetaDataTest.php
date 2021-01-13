@@ -16,6 +16,7 @@ class MetaDataTest extends UnitTestCase
     public function test_that_it_is_empty_by_default()
     {
         $metaData = MetaData::create();
+
         static::assertTrue($metaData->isEmpty());
     }
 
@@ -25,6 +26,7 @@ class MetaDataTest extends UnitTestCase
             'username'   => 'jrnickell',
             'ip_address' => '127.0.0.1'
         ]);
+
         static::assertFalse($metaData->isEmpty());
     }
 
@@ -34,6 +36,7 @@ class MetaDataTest extends UnitTestCase
             'username'   => 'jrnickell',
             'ip_address' => '127.0.0.1'
         ]);
+
         static::assertSame(2, count($metaData));
     }
 
@@ -41,6 +44,7 @@ class MetaDataTest extends UnitTestCase
     {
         $metaData = MetaData::create();
         $metaData->set('username', 'jrnickell');
+
         static::assertSame('jrnickell', $metaData->get('username'));
     }
 
@@ -48,6 +52,7 @@ class MetaDataTest extends UnitTestCase
     {
         $metaData = MetaData::create();
         $metaData->set('username', 'jrnickell');
+
         static::assertSame('localhost', $metaData->get('ip_address', 'localhost'));
     }
 
@@ -55,6 +60,7 @@ class MetaDataTest extends UnitTestCase
     {
         $metaData = MetaData::create();
         $metaData['username'] = 'jrnickell';
+
         static::assertSame('jrnickell', $metaData['username']);
     }
 
@@ -62,6 +68,7 @@ class MetaDataTest extends UnitTestCase
     {
         $metaData = MetaData::create();
         $metaData['username'] = 'jrnickell';
+
         static::assertNull($metaData['ip_address']);
     }
 
@@ -71,6 +78,7 @@ class MetaDataTest extends UnitTestCase
             'username'   => 'jrnickell',
             'ip_address' => '127.0.0.1'
         ]);
+
         static::assertTrue($metaData->has('ip_address'));
     }
 
@@ -80,6 +88,7 @@ class MetaDataTest extends UnitTestCase
             'username'   => 'jrnickell',
             'ip_address' => '127.0.0.1'
         ]);
+
         static::assertTrue(isset($metaData['ip_address']));
     }
 
@@ -89,6 +98,7 @@ class MetaDataTest extends UnitTestCase
             'username'   => 'jrnickell',
             'ip_address' => '127.0.0.1'
         ]);
+
         static::assertFalse($metaData->has('location'));
     }
 
@@ -98,6 +108,7 @@ class MetaDataTest extends UnitTestCase
             'username'   => 'jrnickell',
             'ip_address' => '127.0.0.1'
         ]);
+
         static::assertFalse(isset($metaData['location']));
     }
 
@@ -108,6 +119,7 @@ class MetaDataTest extends UnitTestCase
             'ip_address' => '127.0.0.1'
         ]);
         $metaData->remove('username');
+
         static::assertFalse($metaData->has('username'));
     }
 
@@ -118,6 +130,7 @@ class MetaDataTest extends UnitTestCase
             'ip_address' => '127.0.0.1'
         ]);
         unset($metaData['username']);
+
         static::assertFalse(isset($metaData['username']));
     }
 
@@ -127,6 +140,7 @@ class MetaDataTest extends UnitTestCase
             'username'   => 'jrnickell',
             'ip_address' => '127.0.0.1'
         ]);
+
         static::assertSame(['username', 'ip_address'], $metaData->keys());
     }
 
@@ -134,6 +148,7 @@ class MetaDataTest extends UnitTestCase
     {
         $metaData = MetaData::create(['username' => 'jrnickell']);
         $metaData->merge(MetaData::create(['ip_address' => '127.0.0.1']));
+
         static::assertTrue($metaData['username'] === 'jrnickell' && $metaData['ip_address'] === '127.0.0.1');
     }
 
@@ -144,6 +159,7 @@ class MetaDataTest extends UnitTestCase
             'ip_address' => '127.0.0.1'
         ];
         $metaData = MetaData::create($data);
+
         static::assertSame($data, $metaData->toArray());
     }
 
@@ -154,6 +170,7 @@ class MetaDataTest extends UnitTestCase
             'ip_address' => '127.0.0.1'
         ]);
         $expected = '{"username":"jrnickell","ip_address":"127.0.0.1"}';
+
         static::assertSame($expected, $metaData->toString());
     }
 
@@ -164,6 +181,7 @@ class MetaDataTest extends UnitTestCase
             'ip_address' => '127.0.0.1'
         ]);
         $expected = '{"username":"jrnickell","ip_address":"127.0.0.1"}';
+
         static::assertSame($expected, (string) $metaData);
     }
 
@@ -177,6 +195,7 @@ class MetaDataTest extends UnitTestCase
             'ip_address'  => '127.0.0.1'
         ]);
         $expected = '{"credentials":{"username":"jrnickell","password":"secret"},"ip_address":"127.0.0.1"}';
+
         static::assertSame($expected, json_encode($metaData));
     }
 
@@ -186,10 +205,12 @@ class MetaDataTest extends UnitTestCase
             'username'   => 'jrnickell',
             'ip_address' => '127.0.0.1'
         ]);
+
         $count = 0;
         foreach ($metaData as $key => $value) {
             $count++;
         }
+
         static::assertSame(2, $count);
     }
 

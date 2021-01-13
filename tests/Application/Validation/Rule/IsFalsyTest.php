@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Novuso\Common\Application\Validation\Rule;
 
-use Novuso\Common\Application\Validation\Rule\IsFalsy;
 use Novuso\System\Test\TestCase\UnitTestCase;
 
 /**

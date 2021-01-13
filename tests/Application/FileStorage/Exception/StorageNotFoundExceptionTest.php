@@ -15,6 +15,7 @@ class StorageNotFoundExceptionTest extends UnitTestCase
     public function test_that_from_key_returns_expected_exception()
     {
         $exception = StorageNotFoundException::fromKey('foobar');
+
         static::assertSame('foobar', $exception->getKey());
     }
 }

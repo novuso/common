@@ -26,6 +26,7 @@ class MailMessageTest extends UnitTestCase
     {
         $subject = 'Test Subject';
         $this->message->setSubject($subject);
+
         static::assertSame($subject, $this->message->getSubject());
     }
 
@@ -35,6 +36,7 @@ class MailMessageTest extends UnitTestCase
         $fromName = 'From';
         $this->message->addFrom($fromAddress, $fromName);
         $from = $this->message->getFrom();
+
         static::assertTrue(
             $fromAddress === $from[0]['address']
             && $fromName === $from[0]['name']
@@ -47,6 +49,7 @@ class MailMessageTest extends UnitTestCase
         $toName = 'To';
         $this->message->addTo($toAddress, $toName);
         $to = $this->message->getTo();
+
         static::assertTrue(
             $toAddress === $to[0]['address']
             && $toName === $to[0]['name']
@@ -59,6 +62,7 @@ class MailMessageTest extends UnitTestCase
         $replyToName = 'ReplyTo';
         $this->message->addReplyTo($replyToAddress, $replyToName);
         $replyTo = $this->message->getReplyTo();
+
         static::assertTrue(
             $replyToAddress === $replyTo[0]['address']
             && $replyToName === $replyTo[0]['name']
@@ -71,6 +75,7 @@ class MailMessageTest extends UnitTestCase
         $ccName = 'CC';
         $this->message->addCc($ccAddress, $ccName);
         $cc = $this->message->getCc();
+
         static::assertTrue(
             $ccAddress === $cc[0]['address']
             && $ccName === $cc[0]['name']
@@ -83,6 +88,7 @@ class MailMessageTest extends UnitTestCase
         $bccName = 'BCC';
         $this->message->addBcc($bccAddress, $bccName);
         $bcc = $this->message->getBcc();
+
         static::assertTrue(
             $bccAddress === $bcc[0]['address']
             && $bccName === $bcc[0]['name']
@@ -95,6 +101,7 @@ class MailMessageTest extends UnitTestCase
         $contentType = 'text/plain';
         $this->message->addContent($contentBody, $contentType);
         $content = $this->message->getContent();
+
         static::assertTrue(
             $contentBody === $content[0]['content']
             && $contentType === $content[0]['content_type']
@@ -108,6 +115,7 @@ class MailMessageTest extends UnitTestCase
         $senderName = 'Sender';
         $this->message->setSender($senderAddress, $senderName);
         $sender = $this->message->getSender();
+
         static::assertTrue(
             $senderAddress === $sender['address']
             && $senderName === $sender['name']
@@ -118,13 +126,13 @@ class MailMessageTest extends UnitTestCase
     {
         $returnPath = 'return@example.com';
         $this->message->setReturnPath($returnPath);
+
         static::assertSame($returnPath, $this->message->getReturnPath());
     }
 
     public function test_that_it_can_set_and_get_charset()
     {
         $charset = 'utf-8';
-
         $this->message->setCharset($charset);
 
         static::assertSame($charset, $this->message->getCharset());
@@ -134,6 +142,7 @@ class MailMessageTest extends UnitTestCase
     {
         $priority = Priority::HIGH();
         $this->message->setPriority($priority);
+
         static::assertSame($priority, $this->message->getPriority());
     }
 
@@ -141,6 +150,7 @@ class MailMessageTest extends UnitTestCase
     {
         $timestamp = time();
         $this->message->setTimestamp($timestamp);
+
         static::assertSame($timestamp, $this->message->getTimestamp());
     }
 
@@ -148,12 +158,14 @@ class MailMessageTest extends UnitTestCase
     {
         $maxLineLength = 78;
         $this->message->setMaxLineLength($maxLineLength);
+
         static::assertSame($maxLineLength, $this->message->getMaxLineLength());
     }
 
     public function test_that_max_line_length_cannot_exceed_998_characters()
     {
         $this->message->setMaxLineLength(1200);
+
         static::assertSame(998, $this->message->getMaxLineLength());
     }
 
@@ -163,6 +175,7 @@ class MailMessageTest extends UnitTestCase
         $attachment = $this->mock(Attachment::class);
         $this->message->addAttachment($attachment);
         $attachments = $this->message->getAttachments();
+
         static::assertSame($attachment, $attachments[0]);
     }
 }

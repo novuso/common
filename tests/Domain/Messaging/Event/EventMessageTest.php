@@ -47,6 +47,7 @@ class EventMessageTest extends UnitTestCase
         $message = EventMessage::create($event);
         /** @var UserRegisteredEvent $payload */
         $payload = $message->payload();
+
         static::assertSame('jsmith@example.com', $payload->email());
     }
 
@@ -75,12 +76,14 @@ class EventMessageTest extends UnitTestCase
             'suffix'      => null,
             'email'       => 'jsmith@example.com'
         ];
+
         static::assertSame($data, $this->message->payload()->toArray());
     }
 
     public function test_that_payload_type_returns_expected_instance()
     {
         $expected = 'Novuso.Common.Test.Resources.Domain.Messaging.Event.UserRegisteredEvent';
+
         static::assertSame($expected, (string) $this->message->payloadType());
     }
 
@@ -93,6 +96,7 @@ class EventMessageTest extends UnitTestCase
     {
         $metaData = MetaData::create(['ip_address' => '127.0.0.1']);
         $this->message = $this->message->withMetaData($metaData);
+
         static::assertSame('{"ip_address":"127.0.0.1"}', (string) $this->message->metaData());
     }
 
@@ -100,6 +104,7 @@ class EventMessageTest extends UnitTestCase
     {
         $metaData = MetaData::create(['ip_address' => '127.0.0.1']);
         $this->message = $this->message->mergeMetaData($metaData);
+
         static::assertSame('{"foo":"bar","ip_address":"127.0.0.1"}', (string) $this->message->metaData());
     }
 
@@ -112,6 +117,7 @@ class EventMessageTest extends UnitTestCase
             .'"payload":{"prefix":null,"first_name":"James","middle_name":"D","last_name":"Smith",'
             .'"suffix":null,"email":"jsmith@example.com"},'
             .'"meta_data":{"foo":"bar"}}';
+
         static::assertSame($expected, $this->message->toString());
     }
 
@@ -124,6 +130,7 @@ class EventMessageTest extends UnitTestCase
             .'"payload":{"prefix":null,"first_name":"James","middle_name":"D","last_name":"Smith",'
             .'"suffix":null,"email":"jsmith@example.com"},'
             .'"meta_data":{"foo":"bar"}}';
+
         static::assertSame($expected, (string) $this->message);
     }
 
@@ -136,6 +143,7 @@ class EventMessageTest extends UnitTestCase
             .'"payload":{"prefix":null,"first_name":"James","middle_name":"D","last_name":"Smith",'
             .'"suffix":null,"email":"jsmith@example.com"},'
             .'"meta_data":{"foo":"bar"}}';
+
         static::assertSame($expected, json_encode($this->message, JSON_UNESCAPED_SLASHES));
     }
 
@@ -145,6 +153,7 @@ class EventMessageTest extends UnitTestCase
         $state = $serializer->serialize($this->message);
         /** @var EventMessage $message */
         $message = $serializer->deserialize($state);
+
         static::assertTrue($message->equals($this->message));
     }
 
@@ -156,18 +165,21 @@ class EventMessageTest extends UnitTestCase
     public function test_that_compare_to_returns_zero_for_same_value()
     {
         $message = EventMessage::arrayDeserialize($this->getMessageData());
+
         static::assertSame(0, $this->message->compareTo($message));
     }
 
     public function test_that_compare_to_returns_one_for_greater_instance()
     {
         $message = EventMessage::arrayDeserialize($this->getAltMessageData());
+
         static::assertSame(1, $message->compareTo($this->message));
     }
 
     public function test_that_compare_to_returns_neg_one_for_lesser_instance()
     {
         $message = EventMessage::arrayDeserialize($this->getAltMessageData());
+
         static::assertSame(-1, $this->message->compareTo($message));
     }
 
@@ -179,6 +191,7 @@ class EventMessageTest extends UnitTestCase
     public function test_that_equals_returns_true_for_same_value()
     {
         $message = EventMessage::arrayDeserialize($this->getMessageData());
+
         static::assertTrue($this->message->equals($message));
     }
 
@@ -190,6 +203,7 @@ class EventMessageTest extends UnitTestCase
     public function test_that_equals_returns_false_for_different_value()
     {
         $message = EventMessage::arrayDeserialize($this->getAltMessageData());
+
         static::assertFalse($this->message->equals($message));
     }
 

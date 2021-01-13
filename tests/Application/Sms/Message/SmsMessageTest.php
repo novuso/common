@@ -46,6 +46,7 @@ class SmsMessageTest extends UnitTestCase
     {
         $body = 'This is an SMS message';
         $this->message->setBody($body);
+
         static::assertSame($body, $this->message->getBody());
     }
 

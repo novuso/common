@@ -19,6 +19,7 @@ class ProcessBuilderTest extends UnitTestCase
         $process = ProcessBuilder::create(['vendor/bin/phpunit'])
             ->prefix('php')
             ->getProcess();
+
         static::assertSame("'php' 'vendor/bin/phpunit'", $process->command());
     }
 
@@ -27,6 +28,7 @@ class ProcessBuilderTest extends UnitTestCase
         $process = ProcessBuilder::create('script')
             ->arg('')
             ->getProcess();
+
         static::assertSame("'script'", $process->command());
     }
 
@@ -36,6 +38,7 @@ class ProcessBuilderTest extends UnitTestCase
             ->arg('script')
             ->option('force')
             ->getProcess();
+
         static::assertSame("'script' '--force'", $process->command());
     }
 
@@ -45,6 +48,7 @@ class ProcessBuilderTest extends UnitTestCase
             ->arg('script')
             ->option('format', 'xml')
             ->getProcess();
+
         static::assertSame("'script' '--format' 'xml'", $process->command());
     }
 
@@ -54,6 +58,7 @@ class ProcessBuilderTest extends UnitTestCase
             ->arg('script')
             ->option('')
             ->getProcess();
+
         static::assertSame("'script'", $process->command());
     }
 
@@ -63,6 +68,7 @@ class ProcessBuilderTest extends UnitTestCase
             ->arg('script')
             ->short('abc')
             ->getProcess();
+
         static::assertSame("'script' '-abc'", $process->command());
     }
 
@@ -72,6 +78,7 @@ class ProcessBuilderTest extends UnitTestCase
             ->arg('script')
             ->short('f', 'xml')
             ->getProcess();
+
         static::assertSame("'script' '-f' 'xml'", $process->command());
     }
 
@@ -81,6 +88,7 @@ class ProcessBuilderTest extends UnitTestCase
             ->arg('script')
             ->short('')
             ->getProcess();
+
         static::assertSame("'script'", $process->command());
     }
 
@@ -92,6 +100,7 @@ class ProcessBuilderTest extends UnitTestCase
             ->arg('php')
             ->short('l')
             ->getProcess();
+
         static::assertSame("'php' '-l'", $process->command());
     }
 
@@ -101,6 +110,7 @@ class ProcessBuilderTest extends UnitTestCase
             ->short('l')
             ->directory('/path/to/project')
             ->getProcess();
+
         static::assertSame('/path/to/project', $process->directory());
     }
 
@@ -111,6 +121,7 @@ class ProcessBuilderTest extends UnitTestCase
             ->directory('/path/to/project')
             ->directory(null)
             ->getProcess();
+
         static::assertNull($process->directory());
     }
 
@@ -120,7 +131,9 @@ class ProcessBuilderTest extends UnitTestCase
         $process = ProcessBuilder::create('php')
             ->input($fp)
             ->getProcess();
+
         static::assertTrue(is_resource($process->input()));
+
         fclose($fp);
     }
 
@@ -129,6 +142,7 @@ class ProcessBuilderTest extends UnitTestCase
         $process = ProcessBuilder::create('php')
             ->input('input')
             ->getProcess();
+
         static::assertSame('input', $process->input());
     }
 
@@ -138,6 +152,7 @@ class ProcessBuilderTest extends UnitTestCase
             ->input('input')
             ->input(null)
             ->getProcess();
+
         static::assertNull($process->input());
     }
 
@@ -146,6 +161,7 @@ class ProcessBuilderTest extends UnitTestCase
         $process = ProcessBuilder::create('php')
             ->timeout(10)
             ->getProcess();
+
         static::assertSame(10.0, $process->timeout());
     }
 
@@ -155,6 +171,7 @@ class ProcessBuilderTest extends UnitTestCase
             ->timeout(10)
             ->timeout(null)
             ->getProcess();
+
         static::assertNull($process->timeout());
     }
 
@@ -163,6 +180,7 @@ class ProcessBuilderTest extends UnitTestCase
         $process = ProcessBuilder::create('php')
             ->inheritEnv(true)
             ->getProcess();
+
         static::assertTrue(count($process->environment()) > 0);
     }
 
@@ -172,6 +190,7 @@ class ProcessBuilderTest extends UnitTestCase
             ->inheritEnv(false)
             ->setEnv('FOO', 'bar')
             ->getProcess();
+
         static::assertSame(['FOO' => 'bar'], $process->environment());
     }
 
@@ -182,6 +201,7 @@ class ProcessBuilderTest extends UnitTestCase
                 echo $data;
             })
             ->getProcess();
+
         static::assertTrue(is_callable($process->stdout()));
     }
 
@@ -190,6 +210,7 @@ class ProcessBuilderTest extends UnitTestCase
         $process = ProcessBuilder::create('php')
             ->stdout(null)
             ->getProcess();
+
         static::assertNull($process->stdout());
     }
 
@@ -200,6 +221,7 @@ class ProcessBuilderTest extends UnitTestCase
                 echo $data;
             })
             ->getProcess();
+
         static::assertTrue(is_callable($process->stderr()));
     }
 
@@ -208,6 +230,7 @@ class ProcessBuilderTest extends UnitTestCase
         $process = ProcessBuilder::create('php')
             ->stderr(null)
             ->getProcess();
+
         static::assertNull($process->stderr());
     }
 
@@ -216,6 +239,7 @@ class ProcessBuilderTest extends UnitTestCase
         $process = ProcessBuilder::create('php')
             ->disableOutput()
             ->getProcess();
+
         static::assertTrue($process->isOutputDisabled());
     }
 
@@ -225,6 +249,7 @@ class ProcessBuilderTest extends UnitTestCase
             ->disableOutput()
             ->enableOutput()
             ->getProcess();
+
         static::assertFalse($process->isOutputDisabled());
     }
 

@@ -17,78 +17,91 @@ class UriTest extends UnitTestCase
     public function test_that_from_string_returns_expected_instance()
     {
         $uri = Uri::fromString('https://www.google.com');
+
         static::assertSame('https://www.google.com', $uri->toString());
     }
 
     public function test_that_parse_returns_expected_instance_scheme()
     {
         $uri = Uri::parse('HTTPS://www.google.com');
+
         static::assertSame('https', $uri->scheme());
     }
 
     public function test_that_parse_returns_expected_instance_authority()
     {
         $uri = Uri::parse('https://username:password@mydomain.net:8110');
+
         static::assertSame('username:password@mydomain.net:8110', $uri->authority());
     }
 
     public function test_that_parse_returns_expected_null_authority()
     {
         $uri = Uri::parse('mailto:smith@example.com');
+
         static::assertNull($uri->authority());
     }
 
     public function test_that_parse_returns_expected_empty_authority()
     {
         $uri = Uri::parse('file:///etc/hosts');
+
         static::assertSame('', $uri->authority());
     }
 
     public function test_that_parse_returns_expected_instance_user_info()
     {
         $uri = Uri::parse('https://username:password@mydomain.net:8110');
+
         static::assertSame('username:password', $uri->userInfo());
     }
 
     public function test_that_parse_returns_expected_null_user_info()
     {
         $uri = Uri::parse('https://mydomain.net:8110');
+
         static::assertNull($uri->userInfo());
     }
 
     public function test_that_parse_returns_expected_instance_ipvfuture()
     {
         $uri = Uri::parse('https://[v1a.1080::8:800:200c:417a]/path');
+
         static::assertSame('[v1a.1080::8:800:200c:417a]', $uri->host());
     }
 
     public function test_that_parse_returns_expected_instance_ipv6()
     {
         $uri = Uri::parse('https://[1080:0:0:0:8:800:200c:417a]/path');
+
         static::assertSame('[1080:0:0:0:8:800:200c:417a]', $uri->host());
     }
 
     public function test_that_parse_returns_expected_instance_ipv4()
     {
         $uri = Uri::parse('https://127.0.0.1/path');
+
         static::assertSame('127.0.0.1', $uri->host());
     }
 
     public function test_that_parse_returns_expected_instance_host()
     {
         $uri = Uri::parse('https://username:password@mydomain.net:8110');
+
         static::assertSame('mydomain.net', $uri->host());
     }
 
     public function test_that_parse_returns_expected_instance_port()
     {
         $uri = Uri::parse('https://username:password@mydomain.net:8110');
+
         static::assertSame(8110, $uri->port());
     }
 
     public function test_that_parse_returns_expected_null_port()
     {
         $uri = Uri::parse('https://username:password@mydomain.net');
+
         static::assertNull($uri->port());
     }
 
@@ -97,66 +110,77 @@ class UriTest extends UnitTestCase
         // URI producers and normalizers should omit the ":" delimiter that
         // separates host from port if the port component is empty
         $uri = Uri::parse('https://username:password@mydomain.net:');
+
         static::assertSame('mydomain.net', $uri->host());
     }
 
     public function test_that_parse_returns_expected_instance_path()
     {
         $uri = Uri::parse('https://application.net/path/to/file.txt');
+
         static::assertSame('/path/to/file.txt', $uri->path());
     }
 
     public function test_that_parse_returns_expected_empty_path()
     {
         $uri = Uri::parse('https://application.net');
+
         static::assertSame('', $uri->path());
     }
 
     public function test_that_parse_returns_expected_instance_query()
     {
         $uri = Uri::parse('https://application.net/path?foo=bar&action=seek');
+
         static::assertSame('foo=bar&action=seek', $uri->query());
     }
 
     public function test_that_parse_returns_expected_null_query()
     {
         $uri = Uri::parse('https://application.net/path');
+
         static::assertNull($uri->query());
     }
 
     public function test_that_parse_returns_expected_empty_query()
     {
         $uri = Uri::parse('https://application.net/path?');
+
         static::assertSame('', $uri->query());
     }
 
     public function test_that_parse_returns_expected_encoded_query()
     {
         $uri = Uri::parse('https://application.net/path?q=foo%2Ebar');
+
         static::assertSame('q=foo.bar', $uri->query());
     }
 
     public function test_that_parse_returns_expected_instance_fragment()
     {
         $uri = Uri::parse('https://application.net/path#section1.03');
+
         static::assertSame('section1.03', $uri->fragment());
     }
 
     public function test_that_parse_returns_expected_null_fragment()
     {
         $uri = Uri::parse('https://application.net/path');
+
         static::assertNull($uri->fragment());
     }
 
     public function test_that_parse_returns_expected_empty_fragment()
     {
         $uri = Uri::parse('https://application.net/path#');
+
         static::assertSame('', $uri->fragment());
     }
 
     public function test_that_parse_returns_expected_encoded_fragment()
     {
         $uri = Uri::parse('https://application.net/path#%3Cfragment%3E');
+
         static::assertSame('%3Cfragment%3E', $uri->fragment());
     }
 
@@ -168,6 +192,7 @@ class UriTest extends UnitTestCase
         // http://tools.ietf.org/html/rfc3986#section-5.4
         $base = 'http://a/b/c/d;p?q';
         $uri = Uri::resolve($base, $ref);
+
         static::assertSame($expected, $uri->toString());
     }
 
@@ -176,6 +201,7 @@ class UriTest extends UnitTestCase
         // http://tools.ietf.org/html/rfc3986#section-5.4
         $base = 'http://a/b/c/d;p?q';
         $uri = Uri::resolve($base, 'http:g', false);
+
         static::assertSame('http://a/b/c/g', $uri->toString());
     }
 
@@ -183,6 +209,7 @@ class UriTest extends UnitTestCase
     {
         $base = 'http://app.dev';
         $uri = Uri::resolve($base, '.');
+
         static::assertSame('http://app.dev/', $uri->toString());
     }
 
@@ -190,6 +217,7 @@ class UriTest extends UnitTestCase
     {
         $base = 'mailto:smith@example.com';
         $uri = Uri::resolve($base, '.');
+
         static::assertSame('mailto:', $uri->toString());
     }
 
@@ -197,6 +225,7 @@ class UriTest extends UnitTestCase
     {
         $base = 'mailto:smith@example.com';
         $uri = Uri::resolve($base, './');
+
         static::assertSame('mailto:', $uri->toString());
     }
 
@@ -204,6 +233,7 @@ class UriTest extends UnitTestCase
     {
         $base = 'mailto:smith@example.com';
         $uri = Uri::resolve($base, '../');
+
         static::assertSame('mailto:', $uri->toString());
     }
 
@@ -216,6 +246,7 @@ class UriTest extends UnitTestCase
             'query'     => 'foo=bar',
             'fragment'  => '!wha'
         ]);
+
         static::assertSame('http://myapp.com/action?foo=bar#!wha', $uri->toString());
     }
 
@@ -229,24 +260,28 @@ class UriTest extends UnitTestCase
             'query'     => 'foo=bar',
             'fragment'  => '!wha'
         ];
+
         static::assertSame($expected, $uri->toArray());
     }
 
     public function test_that_to_string_returns_user_info()
     {
         $uri = Uri::parse('https://user:secret@myapp.com:8080/action?foo=bar#!wha');
+
         static::assertSame('https://user:secret@myapp.com:8080/action?foo=bar#!wha', $uri->toString());
     }
 
     public function test_that_display_does_not_return_user_info()
     {
         $uri = Uri::parse('https://user:secret@myapp.com:8080/action?foo=bar#!wha');
+
         static::assertSame('https://myapp.com:8080/action?foo=bar#!wha', $uri->display());
     }
 
     public function test_that_compare_to_returns_zero_for_same_instance()
     {
         $uri = Uri::parse('https://user:secret@myapp.com:8080/action?foo=bar#!wha');
+
         static::assertSame(0, $uri->compareTo($uri));
     }
 
@@ -254,6 +289,7 @@ class UriTest extends UnitTestCase
     {
         $uri1 = Uri::parse('https://user:secret@myapp.com:8080/action?foo=bar#!wha');
         $uri2 = Uri::parse('https://user:secret@myapp.com:8080/action?foo=bar#!wha');
+
         static::assertSame(0, $uri1->compareTo($uri2));
     }
 
@@ -261,6 +297,7 @@ class UriTest extends UnitTestCase
     {
         $uri1 = Uri::parse('https://user:secret@myapp.com:8080/action?foo=bar#!wha');
         $uri2 = Uri::parse('http://user:secret@myapp.com:8080/action?foo=bar#!wha');
+
         static::assertSame(1, $uri1->compareTo($uri2));
     }
 
@@ -268,12 +305,14 @@ class UriTest extends UnitTestCase
     {
         $uri1 = Uri::parse('http://user:secret@myapp.com:8080/action?foo=bar#!wha');
         $uri2 = Uri::parse('https://user:secret@myapp.com:8080/action?foo=bar#!wha');
+
         static::assertSame(-1, $uri1->compareTo($uri2));
     }
 
     public function test_that_equals_returns_true_for_same_instance()
     {
         $uri = Uri::parse('https://user:secret@myapp.com:8080/action?foo=bar#!wha');
+
         static::assertTrue($uri->equals($uri));
     }
 
@@ -281,12 +320,14 @@ class UriTest extends UnitTestCase
     {
         $uri1 = Uri::parse('https://user:secret@myapp.com:8080/action?foo=bar#!wha');
         $uri2 = Uri::parse('https://user:secret@myapp.com:8080/action?foo=bar#!wha');
+
         static::assertTrue($uri1->equals($uri2));
     }
 
     public function test_that_equals_returns_false_for_invalid_type()
     {
         $uri = Uri::parse('https://user:secret@myapp.com:8080/action?foo=bar#!wha');
+
         static::assertFalse($uri->equals('https://user:secret@myapp.com:8080/action?foo=bar#!wha'));
     }
 
@@ -294,12 +335,14 @@ class UriTest extends UnitTestCase
     {
         $uri1 = Uri::parse('https://user:secret@myapp.com:8080/action?foo=bar#!wha');
         $uri2 = Uri::parse('https://other:secret@myapp.com:8080/action?foo=bar#!wha');
+
         static::assertFalse($uri1->equals($uri2));
     }
 
     public function test_that_hash_value_returns_expected_string()
     {
         $uri = Uri::parse('https://user:secret@myapp.com:8080/action?foo=bar#!wha');
+
         static::assertSame('https://user:secret@myapp.com:8080/action?foo=bar#!wha', $uri->hashValue());
     }
 

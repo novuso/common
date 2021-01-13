@@ -30,6 +30,7 @@ class SimpleEventDispatcherTest extends UnitTestCase
         $this->dispatcher->register($subscriber);
         $event = new UserRegisteredEvent('jsmith@example.com', 'James', 'Smith', 'D');
         $this->dispatcher->trigger($event);
+
         static::assertTrue($subscriber->isUserRegistered('jsmith@example.com'));
     }
 
@@ -40,6 +41,7 @@ class SimpleEventDispatcherTest extends UnitTestCase
         $this->dispatcher->unregister($subscriber);
         $event = new UserRegisteredEvent('jsmith@example.com', 'James', 'Smith', 'D');
         $this->dispatcher->trigger($event);
+
         static::assertFalse($subscriber->isUserRegistered('jsmith@example.com'));
     }
 
@@ -47,12 +49,14 @@ class SimpleEventDispatcherTest extends UnitTestCase
     {
         $subscriber = new UserRegisteredSubscriber();
         $this->dispatcher->register($subscriber);
+
         static::assertTrue($this->dispatcher->hasHandlers());
     }
 
     public function test_that_remove_handler_does_not_error_when_handler_not_registered()
     {
         $this->dispatcher->removeHandler('foo', function () {});
+
         static::assertFalse($this->dispatcher->hasHandlers());
     }
 
@@ -65,6 +69,7 @@ class SimpleEventDispatcherTest extends UnitTestCase
         $logs = $subscriber->getLogs();
         $payload = '{"prefix":null,"first_name":"James","middle_name":"D","last_name":"Smith","suffix":null,'
             .'"email":"jsmith@example.com"}';
+
         static::assertTrue(StringObject::create($logs[0])->contains($payload));
     }
 }

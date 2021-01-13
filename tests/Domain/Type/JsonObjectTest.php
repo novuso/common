@@ -16,40 +16,78 @@ class JsonObjectTest extends UnitTestCase
     public function test_that_constructor_takes_data_value()
     {
         $json = new JsonObject(['foo' => 'bar']);
+
         static::assertSame('{"foo":"bar"}', $json->toString());
     }
 
     public function test_that_from_data_returns_expected_instance()
     {
         $json = JsonObject::fromData(['foo' => 'bar']);
+
         static::assertSame('{"foo":"bar"}', $json->toString());
     }
 
     public function test_that_from_string_returns_expected_instance()
     {
         $json = JsonObject::fromString('{"foo":"bar"}');
+
         static::assertSame(['foo' => 'bar'], $json->toData());
+    }
+
+    public function test_that_encode_returns_expected_value()
+    {
+        $json = JsonObject::fromData(
+            [
+                'config' => [
+                    'db' => [
+                        'host'     => 'localhost',
+                        'port'     => 3306,
+                        'database' => 'app',
+                        'username' => 'root',
+                        'password' => 'secret'
+                    ]
+                ]
+            ]
+        );
+        $expected = <<<EOF
+{
+    "config": {
+        "db": {
+            "host": "localhost",
+            "port": 3306,
+            "database": "app",
+            "username": "root",
+            "password": "secret"
+        }
+    }
+}
+EOF;
+
+        static::assertSame($expected, $json->encode(JSON_PRETTY_PRINT));
     }
 
     public function test_that_it_is_json_encodable()
     {
         $json = JsonObject::fromData(['foo' => 'bar']);
+
         static::assertSame('{"foo":"bar"}', json_encode($json));
     }
 
     public function test_that_pretty_print_returns_expected_value()
     {
-        $json = JsonObject::fromData([
-            'config' => [
-                'db' => [
-                    'host'     => 'localhost',
-                    'port'     => 3306,
-                    'database' => 'app',
-                    'username' => 'root',
-                    'password' => 'secret'
+        $json = JsonObject::fromData(
+            [
+                'config' => [
+                    'db' => [
+                        'host'     => 'localhost',
+                        'port'     => 3306,
+                        'database' => 'app',
+                        'username' => 'root',
+                        'password' => 'secret'
+                    ]
                 ]
             ]
-        ]);
+        );
         $expected = <<<EOF
 {
     "config": {
@@ -70,12 +108,14 @@ EOF;
     public function test_that_string_cast_returns_expected_string()
     {
         $json = JsonObject::fromData(['foo' => 'bar']);
+
         static::assertSame('{"foo":"bar"}', (string) $json);
     }
 
     public function test_that_equals_returns_true_for_same_instance()
     {
         $json = JsonObject::fromData(['foo' => 'bar']);
+
         static::assertTrue($json->equals($json));
     }
 
@@ -83,6 +123,7 @@ EOF;
     {
         $json1 = JsonObject::fromData(['foo' => 'bar']);
         $json2 = JsonObject::fromData(['foo' => 'bar']);
+
         static::assertTrue($json1->equals($json2));
     }
 
@@ -90,12 +131,14 @@ EOF;
     {
         $json1 = JsonObject::fromData(['foo' => 'bar']);
         $json2 = JsonObject::fromData(['foo' => 'BAR']);
+
         static::assertFalse($json1->equals($json2));
     }
 
     public function test_that_equals_returns_false_for_invalid_type()
     {
         $json = JsonObject::fromData(['foo' => 'bar']);
+
         static::assertFalse($json->equals('{"foo":"bar"}'));
     }
 
@@ -103,6 +146,7 @@ EOF;
     {
         $value = '{"foo":"bar"}';
         $json = JsonObject::fromData(['foo' => 'bar']);
+
         static::assertSame($value, $json->hashValue());
     }
 

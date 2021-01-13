@@ -17,6 +17,7 @@ class MessageIdTest extends UnitTestCase
     public function test_that_generate_returns_expected_instance()
     {
         $messageId = MessageId::generate();
+
         static::assertTrue(Uuid::isValid($messageId->toString()));
     }
 
@@ -24,6 +25,7 @@ class MessageIdTest extends UnitTestCase
     {
         $string = '015d7afe-4533-4332-ba79-4b80f8360a12';
         $messageId = MessageId::fromString($string);
+
         static::assertSame($string, $messageId->toString());
     }
 

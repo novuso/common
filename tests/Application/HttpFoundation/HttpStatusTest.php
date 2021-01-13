@@ -16,6 +16,7 @@ class HttpStatusTest extends UnitTestCase
     {
         $httpStatus = HttpStatus::ENHANCE_YOUR_CALM();
         $statusText = $httpStatus->text();
+
         static::assertSame('Enhance Your Calm', $statusText);
     }
 }

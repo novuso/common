@@ -15,6 +15,7 @@ class FileNotFoundExceptionTest extends UnitTestCase
     public function test_that_from_path_returns_expected_instance()
     {
         $exception = FileNotFoundException::fromPath('/tmp/file.txt');
+
         static::assertSame('File not found: /tmp/file.txt', $exception->getMessage());
     }
 }

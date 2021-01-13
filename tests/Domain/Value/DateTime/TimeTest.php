@@ -19,6 +19,7 @@ class TimeTest extends UnitTestCase
     public function test_that_create_returns_expected_instance()
     {
         $time = Time::create(16, 30, 6, 10101);
+
         static::assertSame('16:30:06.010101', $time->toString());
     }
 
@@ -27,6 +28,7 @@ class TimeTest extends UnitTestCase
         $dateTime = new NativeDateTime('now', new DateTimeZone('America/Chicago'));
         $time = Time::now('America/Chicago');
         $hour = (int) $dateTime->format('G');
+
         static::assertSame($hour, $time->hour());
     }
 
@@ -35,12 +37,14 @@ class TimeTest extends UnitTestCase
         $string = '2015-06-20T16:30:06';
         $dateTime = NativeDateTime::createFromFormat('Y-m-d\TH:i:s', $string, new DateTimeZone('America/Chicago'));
         $time = Time::fromNative($dateTime);
+
         static::assertSame('16:30:06.000000', $time->toString());
     }
 
     public function test_that_from_timestamp_returns_expected_instance()
     {
         $time = Time::fromTimestamp(1434835806, 'America/Chicago');
+
         static::assertSame('16:30:06.000000', $time->toString());
     }
 
@@ -48,36 +52,42 @@ class TimeTest extends UnitTestCase
     {
         $timeString = '16:30:06.000000';
         $time = Time::fromString($timeString);
+
         static::assertSame($timeString, $time->toString());
     }
 
     public function test_that_hour_returns_expected_value()
     {
         $time = Time::create(16, 30, 6);
+
         static::assertSame(16, $time->hour());
     }
 
     public function test_that_minute_returns_expected_value()
     {
         $time = Time::create(16, 30, 6);
+
         static::assertSame(30, $time->minute());
     }
 
     public function test_that_second_returns_expected_value()
     {
         $time = Time::create(16, 30, 6);
+
         static::assertSame(6, $time->second());
     }
 
     public function test_that_microsecond_returns_expected_value()
     {
         $time = Time::create(16, 30, 6, 23);
+
         static::assertSame(23, $time->microsecond());
     }
 
     public function test_that_compare_to_returns_zero_for_same_instance()
     {
         $time = Time::create(16, 30, 6);
+
         static::assertSame(0, $time->compareTo($time));
     }
 
@@ -85,6 +95,7 @@ class TimeTest extends UnitTestCase
     {
         $time1 = Time::create(16, 30, 6);
         $time2 = Time::create(16, 30, 6);
+
         static::assertSame(0, $time1->compareTo($time2));
     }
 
@@ -92,6 +103,7 @@ class TimeTest extends UnitTestCase
     {
         $time1 = Time::create(17, 30, 6);
         $time2 = Time::create(16, 30, 6);
+
         static::assertSame(1, $time1->compareTo($time2));
     }
 
@@ -99,6 +111,7 @@ class TimeTest extends UnitTestCase
     {
         $time1 = Time::create(16, 30, 6);
         $time2 = Time::create(17, 30, 6);
+
         static::assertSame(-1, $time1->compareTo($time2));
     }
 
@@ -106,6 +119,7 @@ class TimeTest extends UnitTestCase
     {
         $time1 = Time::create(16, 31, 6);
         $time2 = Time::create(16, 30, 6);
+
         static::assertSame(1, $time1->compareTo($time2));
     }
 
@@ -113,6 +127,7 @@ class TimeTest extends UnitTestCase
     {
         $time1 = Time::create(16, 30, 6);
         $time2 = Time::create(16, 31, 6);
+
         static::assertSame(-1, $time1->compareTo($time2));
     }
 
@@ -120,6 +135,7 @@ class TimeTest extends UnitTestCase
     {
         $time1 = Time::create(16, 30, 7);
         $time2 = Time::create(16, 30, 6);
+
         static::assertSame(1, $time1->compareTo($time2));
     }
 
@@ -127,6 +143,7 @@ class TimeTest extends UnitTestCase
     {
         $time1 = Time::create(16, 30, 6);
         $time2 = Time::create(16, 30, 7);
+
         static::assertSame(-1, $time1->compareTo($time2));
     }
 
@@ -134,6 +151,7 @@ class TimeTest extends UnitTestCase
     {
         $time1 = Time::create(16, 30, 6, 1);
         $time2 = Time::create(16, 30, 6, 0);
+
         static::assertSame(1, $time1->compareTo($time2));
     }
 
@@ -141,6 +159,7 @@ class TimeTest extends UnitTestCase
     {
         $time1 = Time::create(16, 30, 6, 0);
         $time2 = Time::create(16, 30, 6, 1);
+
         static::assertSame(-1, $time1->compareTo($time2));
     }
 

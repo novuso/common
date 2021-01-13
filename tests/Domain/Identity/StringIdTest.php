@@ -17,18 +17,21 @@ class StringIdTest extends UnitTestCase
     public function test_that_from_string_returns_expected_instance()
     {
         $isbn = Isbn::fromString('978-1491905012');
+
         static::assertSame('978-1491905012', $isbn->toString());
     }
 
     public function test_that_string_cast_returns_expected_value()
     {
         $isbn = Isbn::fromString('978-1491905012');
+
         static::assertSame('978-1491905012', (string) $isbn);
     }
 
     public function test_that_compare_to_returns_zero_for_same_instance()
     {
         $isbn = Isbn::fromString('978-1491905012');
+
         static::assertSame(0, $isbn->compareTo($isbn));
     }
 
@@ -36,6 +39,7 @@ class StringIdTest extends UnitTestCase
     {
         $isbn1 = Isbn::fromString('978-1491905012');
         $isbn2 = Isbn::fromString('978-1491905012');
+
         static::assertSame(0, $isbn1->compareTo($isbn2));
     }
 
@@ -43,6 +47,7 @@ class StringIdTest extends UnitTestCase
     {
         $isbn1 = Isbn::fromString('978-1491905012');
         $isbn2 = Isbn::fromString('978-1449363758');
+
         static::assertSame(1, $isbn1->compareTo($isbn2));
     }
 
@@ -50,12 +55,14 @@ class StringIdTest extends UnitTestCase
     {
         $isbn1 = Isbn::fromString('978-1449363758');
         $isbn2 = Isbn::fromString('978-1491905012');
+
         static::assertSame(-1, $isbn1->compareTo($isbn2));
     }
 
     public function test_that_equals_returns_true_for_same_instance()
     {
         $isbn = Isbn::fromString('978-1491905012');
+
         static::assertTrue($isbn->equals($isbn));
     }
 
@@ -63,12 +70,14 @@ class StringIdTest extends UnitTestCase
     {
         $isbn1 = Isbn::fromString('978-1491905012');
         $isbn2 = Isbn::fromString('978-1491905012');
+
         static::assertTrue($isbn1->equals($isbn2));
     }
 
     public function test_that_equals_returns_false_for_invalid_type()
     {
         $isbn = Isbn::fromString('978-1491905012');
+
         static::assertFalse($isbn->equals('978-1491905012'));
     }
 
@@ -76,12 +85,14 @@ class StringIdTest extends UnitTestCase
     {
         $isbn1 = Isbn::fromString('978-1491905012');
         $isbn2 = Isbn::fromString('978-1449363758');
+
         static::assertFalse($isbn1->equals($isbn2));
     }
 
     public function test_that_hash_value_returns_expected_string()
     {
         $isbn = Isbn::fromString('978-1491905012');
+
         static::assertSame('978-1491905012', $isbn->hashValue());
     }
 

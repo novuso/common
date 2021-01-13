@@ -17,24 +17,28 @@ class IntegerIdTest extends UnitTestCase
     public function test_that_from_string_returns_expected_instance()
     {
         $numericId = NumericId::fromString('20');
+
         static::assertSame(20, $numericId->toInt());
     }
 
     public function test_that_from_int_returns_expected_instance()
     {
         $numericId = NumericId::fromInt(20);
+
         static::assertSame(20, $numericId->toInt());
     }
 
     public function test_that_string_cast_returns_expected_value()
     {
         $numericId = NumericId::fromInt(20);
+
         static::assertSame('20', (string) $numericId);
     }
 
     public function test_that_compare_to_returns_zero_for_same_instance()
     {
         $numericId = NumericId::fromInt(20);
+
         static::assertSame(0, $numericId->compareTo($numericId));
     }
 
@@ -42,6 +46,7 @@ class IntegerIdTest extends UnitTestCase
     {
         $numericId1 = NumericId::fromInt(20);
         $numericId2 = NumericId::fromInt(20);
+
         static::assertSame(0, $numericId1->compareTo($numericId2));
     }
 
@@ -49,6 +54,7 @@ class IntegerIdTest extends UnitTestCase
     {
         $numericId1 = NumericId::fromInt(21);
         $numericId2 = NumericId::fromInt(20);
+
         static::assertSame(1, $numericId1->compareTo($numericId2));
     }
 
@@ -56,12 +62,14 @@ class IntegerIdTest extends UnitTestCase
     {
         $numericId1 = NumericId::fromInt(20);
         $numericId2 = NumericId::fromInt(21);
+
         static::assertSame(-1, $numericId1->compareTo($numericId2));
     }
 
     public function test_that_equals_returns_true_for_same_instance()
     {
         $numericId = NumericId::fromInt(20);
+
         static::assertTrue($numericId->equals($numericId));
     }
 
@@ -69,12 +77,14 @@ class IntegerIdTest extends UnitTestCase
     {
         $numericId1 = NumericId::fromInt(20);
         $numericId2 = NumericId::fromInt(20);
+
         static::assertTrue($numericId1->equals($numericId2));
     }
 
     public function test_that_equals_returns_false_for_invalid_type()
     {
         $numericId = NumericId::fromInt(20);
+
         static::assertFalse($numericId->equals(20));
     }
 
@@ -82,12 +92,14 @@ class IntegerIdTest extends UnitTestCase
     {
         $numericId1 = NumericId::fromInt(20);
         $numericId2 = NumericId::fromInt(21);
+
         static::assertFalse($numericId1->equals($numericId2));
     }
 
     public function test_that_hash_value_returns_expected_string()
     {
         $numericId = NumericId::fromInt(20);
+
         static::assertSame('20', $numericId->hashValue());
     }
 

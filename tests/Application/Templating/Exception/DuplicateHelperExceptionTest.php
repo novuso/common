@@ -15,6 +15,7 @@ class DuplicateHelperExceptionTest extends UnitTestCase
     public function test_that_from_name_returns_expected_instance()
     {
         $exception = DuplicateHelperException::fromName('appHelper');
+
         static::assertSame('appHelper', $exception->getName());
     }
 }

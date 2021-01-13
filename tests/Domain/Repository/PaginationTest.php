@@ -25,6 +25,17 @@ class PaginationTest extends UnitTestCase
         );
     }
 
+    public function test_that_orderings_returns_expected_value()
+    {
+        $pagination = new Pagination(
+            Pagination::DEFAULT_PAGE,
+            Pagination::DEFAULT_PER_PAGE,
+            ['foo' => 'desc']
+        );
+
+        static::assertSame(['foo' => 'DESC'], $pagination->orderings());
+    }
+
     public function test_that_orderings_are_only_asc_or_descending()
     {
         $pagination = new Pagination(

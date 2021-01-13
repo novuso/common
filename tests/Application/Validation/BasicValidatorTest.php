@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Novuso\Common\Test\Application\Validation;
 
 use Mockery\MockInterface;
-use Novuso\Common\Application\Validation\ValidationContext;
 use Novuso\Common\Application\Validation\BasicValidator;
+use Novuso\Common\Application\Validation\ValidationContext;
 use Novuso\Common\Domain\Specification\Specification;
 use Novuso\System\Test\TestCase\UnitTestCase;
 

@@ -16,6 +16,7 @@ class CurrencyTest extends UnitTestCase
     {
         /** @var Currency $currency */
         $currency = Currency::USD();
+
         static::assertSame('US Dollar', $currency->displayName());
     }
 
@@ -23,6 +24,7 @@ class CurrencyTest extends UnitTestCase
     {
         /** @var Currency $currency */
         $currency = Currency::GBP();
+
         static::assertSame('GBP', $currency->code());
     }
 
@@ -30,6 +32,7 @@ class CurrencyTest extends UnitTestCase
     {
         /** @var Currency $currency */
         $currency = Currency::EUR();
+
         static::assertSame(978, $currency->numericCode());
     }
 
@@ -37,6 +40,7 @@ class CurrencyTest extends UnitTestCase
     {
         /** @var Currency $currency */
         $currency = Currency::JPY();
+
         static::assertSame(0, $currency->digits());
     }
 
@@ -44,6 +48,7 @@ class CurrencyTest extends UnitTestCase
     {
         /** @var Currency $currency */
         $currency = Currency::IQD();
+
         static::assertSame(1000, $currency->minor());
     }
 }

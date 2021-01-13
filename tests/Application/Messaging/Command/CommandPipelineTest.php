@@ -67,6 +67,7 @@ class CommandPipelineTest extends UnitTestCase
             ->setEmail('jsmith@example.com')
             ->setPassword('secret');
         $this->pipeline->execute($command);
+
         static::assertTrue(
             $this->commandMap->hasHandler(RegisterUserCommand::class)
             && $this->logHandler->hasInfoThatContains(sprintf(
@@ -93,6 +94,7 @@ class CommandPipelineTest extends UnitTestCase
             ->setEmail('jsmith@example.com')
             ->setPassword('secret');
         $this->commandBus->execute($command);
+
         static::assertTrue($handler->isHandled());
     }
 

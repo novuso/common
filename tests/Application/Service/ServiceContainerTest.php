@@ -30,6 +30,7 @@ class ServiceContainerTest extends UnitTestCase
         $date1 = $this->container->get('date');
         $date1->modify('+1 day');
         $date2 = $this->container->get('date');
+
         static::assertTrue(
             '2015-01-02' === $date1->format('Y-m-d') && '2015-01-01' === $date2->format('Y-m-d'),
             'Factories should create a new instance with each get() call'
@@ -44,6 +45,7 @@ class ServiceContainerTest extends UnitTestCase
         $date1 = $this->container->get('date');
         $date1->modify('+1 day');
         $date2 = $this->container->get('date');
+
         static::assertTrue(
             '2015-01-02' === $date1->format('Y-m-d') && '2015-01-02' === $date2->format('Y-m-d'),
             'Services should return the same instance with each get() call'
@@ -56,6 +58,7 @@ class ServiceContainerTest extends UnitTestCase
             return new DateTime('2015-01-01');
         });
         $this->container->remove('date');
+
         static::assertFalse($this->container->has('date'));
     }
 
@@ -66,6 +69,7 @@ class ServiceContainerTest extends UnitTestCase
             return new DateTime($container['date']);
         });
         $date = $this->container->get('date');
+
         static::assertSame('2015-01-01', $date->format('Y-m-d'));
     }
 
@@ -83,6 +87,7 @@ class ServiceContainerTest extends UnitTestCase
     {
         $this->container['date'] = '2015-01-01';
         unset($this->container['date']);
+
         static::assertFalse(isset($this->container['date']));
     }
 

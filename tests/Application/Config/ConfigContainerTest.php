@@ -16,18 +16,21 @@ class ConfigContainerTest extends UnitTestCase
     public function test_that_it_is_empty_by_default()
     {
         $config = new ConfigContainer();
+
         static::assertTrue($config->isEmpty());
     }
 
     public function test_that_it_is_not_frozen_by_default()
     {
         $config = new ConfigContainer();
+
         static::assertFalse($config->isFrozen());
     }
 
     public function test_that_count_returns_top_level_count()
     {
         $config = new ConfigContainer($this->getNestedConfig());
+
         static::assertCount(5, $config);
     }
 
@@ -35,9 +38,12 @@ class ConfigContainerTest extends UnitTestCase
     {
         $config = new ConfigContainer();
         $config->set('site_name', 'Website');
+
         static::assertSame('Website', $config->get('site_name'));
         static::assertTrue($config->has('site_name'));
+
         $config->remove('site_name');
+
         static::assertFalse($config->has('site_name'));
         static::assertNull($config->get('site_name'));
     }
@@ -46,9 +52,12 @@ class ConfigContainerTest extends UnitTestCase
     {
         $config = new ConfigContainer();
         $config['site_name'] = 'Website';
+
         static::assertSame('Website', $config['site_name']);
         static::assertTrue(isset($config['site_name']));
+
         unset($config['site_name']);
+
         static::assertFalse(isset($config['site_name']));
         static::assertNull($config['site_name']);
     }
@@ -57,6 +66,7 @@ class ConfigContainerTest extends UnitTestCase
     {
         $config = new ConfigContainer();
         $config[] = 'foo';
+
         static::assertSame('foo', $config[0]);
     }
 
@@ -65,12 +75,14 @@ class ConfigContainerTest extends UnitTestCase
         $config = new ConfigContainer($this->getNestedConfig());
         $newConfig = clone $config;
         $newConfig['database']['connections']['default']->set('host', 'localhost');
+
         static::assertSame('127.0.0.1', $config['database']['connections']['default']['host']);
     }
 
     public function test_that_keys_returns_expected_value()
     {
         $config = new ConfigContainer($this->getNestedConfig());
+
         static::assertSame([0, 1, 2, 'foo', 'database'], $config->keys());
     }
 
@@ -79,6 +91,7 @@ class ConfigContainerTest extends UnitTestCase
         $config1 = new ConfigContainer($this->getNestedConfig());
         $config2 = new ConfigContainer($this->getMergeConfig());
         $config = $config1->merge($config2);
+
         static::assertSame($this->getCombinedConfig(), $config->toArray());
     }
 

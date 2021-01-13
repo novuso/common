@@ -15,12 +15,14 @@ class ProcessTest extends UnitTestCase
     public function test_that_command_returns_expected_string()
     {
         $process = new Process('ls -la');
+
         static::assertSame('ls -la', $process->command());
     }
 
     public function test_that_directory_returns_expected_string()
     {
         $process = new Process('ls -la', '/tmp');
+
         static::assertSame('/tmp', $process->directory());
     }
 
@@ -28,6 +30,7 @@ class ProcessTest extends UnitTestCase
     {
         $process = new Process('ls -la', '/tmp', ['FOO' => 'bar']);
         $env = $process->environment();
+
         static::assertSame('bar', $env['FOO']);
     }
 
@@ -35,19 +38,23 @@ class ProcessTest extends UnitTestCase
     {
         $fp = fopen('php://stdin', 'r');
         $process = new Process('ls -la', '/tmp', null, null, null, null, $fp);
+
         static::assertTrue(is_resource($process->input()));
+
         fclose($fp);
     }
 
     public function test_that_input_returns_expected_string()
     {
         $process = new Process('ls -la', '/tmp', null, null, null, null, 'input');
+
         static::assertSame('input', $process->input());
     }
 
     public function test_that_timeout_returns_expected_float()
     {
         $process = new Process('ls -la', '/tmp', null, 3.5);
+
         static::assertSame(3.5, $process->timeout());
     }
 
@@ -57,6 +64,7 @@ class ProcessTest extends UnitTestCase
             echo $data;
         };
         $process = new Process('ls -la', '/tmp', null, null, $stdout);
+
         static::assertSame($stdout, $process->stdout());
     }
 
@@ -66,6 +74,7 @@ class ProcessTest extends UnitTestCase
             echo $data;
         };
         $process = new Process('ls -la', '/tmp', null, null, null, $stderr);
+
         static::assertSame($stderr, $process->stderr());
     }
 
@@ -73,6 +82,7 @@ class ProcessTest extends UnitTestCase
     {
         $process = new Process('ls -la');
         $process->enableOutput();
+
         static::assertFalse($process->isOutputDisabled());
     }
 
@@ -80,6 +90,7 @@ class ProcessTest extends UnitTestCase
     {
         $process = new Process('ls -la');
         $process->disableOutput();
+
         static::assertTrue($process->isOutputDisabled());
     }
 }

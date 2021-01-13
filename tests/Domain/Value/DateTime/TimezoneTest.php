@@ -38,12 +38,14 @@ class TimezoneTest extends UnitTestCase
     public function test_that_create_returns_expected_instance()
     {
         $timezone = Timezone::create('UTC');
+
         static::assertSame('UTC', $timezone->toString());
     }
 
     public function test_that_compare_to_returns_zero_for_same_instance()
     {
         $timezone = Timezone::create('America/Chicago');
+
         static::assertSame(0, $timezone->compareTo($timezone));
     }
 
@@ -51,6 +53,7 @@ class TimezoneTest extends UnitTestCase
     {
         $timezone1 = Timezone::create('America/Chicago');
         $timezone2 = Timezone::create('America/Chicago');
+
         static::assertSame(0, $timezone1->compareTo($timezone2));
     }
 
@@ -58,6 +61,7 @@ class TimezoneTest extends UnitTestCase
     {
         $timezone1 = Timezone::create('Europe/Madrid');
         $timezone2 = Timezone::create('America/Chicago');
+
         static::assertSame(1, $timezone1->compareTo($timezone2));
     }
 
@@ -65,6 +69,7 @@ class TimezoneTest extends UnitTestCase
     {
         $timezone1 = Timezone::create('America/Chicago');
         $timezone2 = Timezone::create('Europe/Madrid');
+
         static::assertSame(-1, $timezone1->compareTo($timezone2));
     }
 
@@ -72,6 +77,7 @@ class TimezoneTest extends UnitTestCase
     {
         $timezone1 = Timezone::create('America/Los_Angeles');
         $timezone2 = Timezone::create('America/Chicago');
+
         static::assertSame(1, $timezone1->compareTo($timezone2));
     }
 
@@ -79,6 +85,7 @@ class TimezoneTest extends UnitTestCase
     {
         $timezone1 = Timezone::create('America/Chicago');
         $timezone2 = Timezone::create('America/Los_Angeles');
+
         static::assertSame(-1, $timezone1->compareTo($timezone2));
     }
 
@@ -86,6 +93,7 @@ class TimezoneTest extends UnitTestCase
     {
         $timezone1 = Timezone::create('America/Indiana/Indianapolis');
         $timezone2 = Timezone::create('America/Indiana/Indianapolis');
+
         static::assertSame(0, $timezone1->compareTo($timezone2));
     }
 
@@ -93,6 +101,7 @@ class TimezoneTest extends UnitTestCase
     {
         $timezone1 = Timezone::create('America/Indiana/Knox');
         $timezone2 = Timezone::create('America/Indiana/Indianapolis');
+
         static::assertSame(1, $timezone1->compareTo($timezone2));
     }
 
@@ -100,6 +109,7 @@ class TimezoneTest extends UnitTestCase
     {
         $timezone1 = Timezone::create('America/Indiana/Indianapolis');
         $timezone2 = Timezone::create('America/Indiana/Knox');
+
         static::assertSame(-1, $timezone1->compareTo($timezone2));
     }
 
@@ -107,6 +117,7 @@ class TimezoneTest extends UnitTestCase
     {
         $timezone1 = Timezone::create('America/Los_Angeles');
         $timezone2 = Timezone::create('UTC');
+
         static::assertSame(1, $timezone1->compareTo($timezone2));
     }
 
@@ -114,6 +125,7 @@ class TimezoneTest extends UnitTestCase
     {
         $timezone1 = Timezone::create('UTC');
         $timezone2 = Timezone::create('America/Los_Angeles');
+
         static::assertSame(-1, $timezone1->compareTo($timezone2));
     }
 
@@ -121,6 +133,7 @@ class TimezoneTest extends UnitTestCase
     {
         $timezone1 = Timezone::create('UTC');
         $timezone2 = Timezone::create('UTC');
+
         static::assertSame(0, $timezone1->compareTo($timezone2));
     }
 

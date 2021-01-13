@@ -40,6 +40,7 @@ class QueryMessageTest extends UnitTestCase
         $message = QueryMessage::create($query);
         /** @var UserByEmailQuery $payload */
         $payload = $message->payload();
+
         static::assertSame('jsmith@example.com', $payload->email());
     }
 
@@ -61,12 +62,14 @@ class QueryMessageTest extends UnitTestCase
     public function test_that_payload_returns_expected_instance()
     {
         $data = ['email' => 'jsmith@example.com'];
+
         static::assertSame($data, $this->message->payload()->toArray());
     }
 
     public function test_that_payload_type_returns_expected_instance()
     {
         $expected = 'Novuso.Common.Test.Resources.Domain.Messaging.Query.UserByEmailQuery';
+
         static::assertSame($expected, (string) $this->message->payloadType());
     }
 
@@ -79,6 +82,7 @@ class QueryMessageTest extends UnitTestCase
     {
         $metaData = MetaData::create(['ip_address' => '127.0.0.1']);
         $this->message = $this->message->withMetaData($metaData);
+
         static::assertSame('{"ip_address":"127.0.0.1"}', (string) $this->message->metaData());
     }
 
@@ -86,6 +90,7 @@ class QueryMessageTest extends UnitTestCase
     {
         $metaData = MetaData::create(['ip_address' => '127.0.0.1']);
         $this->message = $this->message->mergeMetaData($metaData);
+
         static::assertSame('{"foo":"bar","ip_address":"127.0.0.1"}', (string) $this->message->metaData());
     }
 
@@ -97,6 +102,7 @@ class QueryMessageTest extends UnitTestCase
             .'"payload_type":"Novuso.Common.Test.Resources.Domain.Messaging.Query.UserByEmailQuery",'
             .'"payload":{"email":"jsmith@example.com"},'
             .'"meta_data":{"foo":"bar"}}';
+
         static::assertSame($expected, $this->message->toString());
     }
 
@@ -108,6 +114,7 @@ class QueryMessageTest extends UnitTestCase
             .'"payload_type":"Novuso.Common.Test.Resources.Domain.Messaging.Query.UserByEmailQuery",'
             .'"payload":{"email":"jsmith@example.com"},'
             .'"meta_data":{"foo":"bar"}}';
+
         static::assertSame($expected, (string) $this->message);
     }
 
@@ -119,6 +126,7 @@ class QueryMessageTest extends UnitTestCase
             .'"payload_type":"Novuso.Common.Test.Resources.Domain.Messaging.Query.UserByEmailQuery",'
             .'"payload":{"email":"jsmith@example.com"},'
             .'"meta_data":{"foo":"bar"}}';
+
         static::assertSame($expected, json_encode($this->message, JSON_UNESCAPED_SLASHES));
     }
 
@@ -128,6 +136,7 @@ class QueryMessageTest extends UnitTestCase
         $state = $serializer->serialize($this->message);
         /** @var QueryMessage $message */
         $message = $serializer->deserialize($state);
+
         static::assertTrue($message->equals($this->message));
     }
 
@@ -139,18 +148,21 @@ class QueryMessageTest extends UnitTestCase
     public function test_that_compare_to_returns_zero_for_same_value()
     {
         $message = QueryMessage::arrayDeserialize($this->getMessageData());
+
         static::assertSame(0, $this->message->compareTo($message));
     }
 
     public function test_that_compare_to_returns_one_for_greater_instance()
     {
         $message = QueryMessage::arrayDeserialize($this->getAltMessageData());
+
         static::assertSame(1, $message->compareTo($this->message));
     }
 
     public function test_that_compare_to_returns_neg_one_for_lesser_instance()
     {
         $message = QueryMessage::arrayDeserialize($this->getAltMessageData());
+
         static::assertSame(-1, $this->message->compareTo($message));
     }
 
@@ -162,6 +174,7 @@ class QueryMessageTest extends UnitTestCase
     public function test_that_equals_returns_true_for_same_value()
     {
         $message = QueryMessage::arrayDeserialize($this->getMessageData());
+
         static::assertTrue($this->message->equals($message));
     }
 
@@ -173,6 +186,7 @@ class QueryMessageTest extends UnitTestCase
     public function test_that_equals_returns_false_for_different_value()
     {
         $message = QueryMessage::arrayDeserialize($this->getAltMessageData());
+
         static::assertFalse($this->message->equals($message));
     }
 

@@ -19,6 +19,7 @@ class RequestExceptionTest extends UnitTestCase
         /** @var RequestInterface|MockInterface $request */
         $request = $this->mock(RequestInterface::class);
         $exception = new RequestException('Something went wrong', $request);
+
         static::assertSame($request, $exception->getRequest());
     }
 }

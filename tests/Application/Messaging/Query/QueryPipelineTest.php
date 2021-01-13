@@ -61,6 +61,7 @@ class QueryPipelineTest extends UnitTestCase
         $this->queryMap->registerHandlers([UserByEmailQuery::class => $handler]);
         $query = new UserByEmailQuery('jsmith@example.com');
         $user = $this->pipeline->fetch($query);
+
         static::assertTrue(
             $this->queryMap->hasHandler(UserByEmailQuery::class)
             && $this->logHandler->hasInfoThatContains(sprintf(

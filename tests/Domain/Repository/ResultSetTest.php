@@ -71,6 +71,7 @@ class ResultSetTest extends UnitTestCase
         );
 
         $expected = '{"page":1,"per_page":100,"total_pages":1,"total_records":3,"records":[1,2,3]}';
+
         static::assertSame($expected, json_encode($resultSet, JSON_UNESCAPED_SLASHES));
     }
 }

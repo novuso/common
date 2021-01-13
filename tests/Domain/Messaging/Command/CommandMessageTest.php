@@ -54,6 +54,7 @@ class CommandMessageTest extends UnitTestCase
         $message = CommandMessage::create($command);
         /** @var RegisterUserCommand $payload */
         $payload = $message->payload();
+
         static::assertSame('jsmith@example.com', $payload->getEmail());
     }
 
@@ -83,12 +84,14 @@ class CommandMessageTest extends UnitTestCase
             'email'       => 'jsmith@example.com',
             'password'    => '$2y$10$NXQfVDFu3.Tyd97bnm4TPO/jdrbgL918xeXM5USqfB.qIHFB6mgjC'
         ];
+
         static::assertSame($data, $this->message->payload()->toArray());
     }
 
     public function test_that_payload_type_returns_expected_instance()
     {
         $expected = 'Novuso.Common.Test.Resources.Domain.Messaging.Command.RegisterUserCommand';
+
         static::assertSame($expected, (string) $this->message->payloadType());
     }
 
@@ -101,6 +104,7 @@ class CommandMessageTest extends UnitTestCase
     {
         $metaData = MetaData::create(['ip_address' => '127.0.0.1']);
         $this->message = $this->message->withMetaData($metaData);
+
         static::assertSame('{"ip_address":"127.0.0.1"}', (string) $this->message->metaData());
     }
 
@@ -108,6 +112,7 @@ class CommandMessageTest extends UnitTestCase
     {
         $metaData = MetaData::create(['ip_address' => '127.0.0.1']);
         $this->message = $this->message->mergeMetaData($metaData);
+
         static::assertSame('{"foo":"bar","ip_address":"127.0.0.1"}', (string) $this->message->metaData());
     }
 
@@ -121,6 +126,7 @@ class CommandMessageTest extends UnitTestCase
             .'"suffix":null,"email":"jsmith@example.com",'
             .'"password":"$2y$10$NXQfVDFu3.Tyd97bnm4TPO/jdrbgL918xeXM5USqfB.qIHFB6mgjC"},'
             .'"meta_data":{"foo":"bar"}}';
+
         static::assertSame($expected, $this->message->toString());
     }
 
@@ -134,6 +140,7 @@ class CommandMessageTest extends UnitTestCase
             .'"suffix":null,"email":"jsmith@example.com",'
             .'"password":"$2y$10$NXQfVDFu3.Tyd97bnm4TPO/jdrbgL918xeXM5USqfB.qIHFB6mgjC"},'
             .'"meta_data":{"foo":"bar"}}';
+
         static::assertSame($expected, (string) $this->message);
     }
 
@@ -147,6 +154,7 @@ class CommandMessageTest extends UnitTestCase
             .'"suffix":null,"email":"jsmith@example.com",'
             .'"password":"$2y$10$NXQfVDFu3.Tyd97bnm4TPO/jdrbgL918xeXM5USqfB.qIHFB6mgjC"},'
             .'"meta_data":{"foo":"bar"}}';
+
         static::assertSame($expected, json_encode($this->message, JSON_UNESCAPED_SLASHES));
     }
 
@@ -155,6 +163,7 @@ class CommandMessageTest extends UnitTestCase
         $state = serialize($this->message);
         /** @var CommandMessage $message */
         $message = unserialize($state);
+
         static::assertTrue($message->equals($this->message));
     }
 
@@ -164,6 +173,7 @@ class CommandMessageTest extends UnitTestCase
         $state = $serializer->serialize($this->message);
         /** @var CommandMessage $message */
         $message = $serializer->deserialize($state);
+
         static::assertTrue($message->equals($this->message));
     }
 
@@ -175,18 +185,21 @@ class CommandMessageTest extends UnitTestCase
     public function test_that_compare_to_returns_zero_for_same_value()
     {
         $message = CommandMessage::arrayDeserialize($this->getMessageData());
+
         static::assertSame(0, $this->message->compareTo($message));
     }
 
     public function test_that_compare_to_returns_one_for_greater_instance()
     {
         $message = CommandMessage::arrayDeserialize($this->getAltMessageData());
+
         static::assertSame(1, $message->compareTo($this->message));
     }
 
     public function test_that_compare_to_returns_neg_one_for_lesser_instance()
     {
         $message = CommandMessage::arrayDeserialize($this->getAltMessageData());
+
         static::assertSame(-1, $this->message->compareTo($message));
     }
 
@@ -198,6 +211,7 @@ class CommandMessageTest extends UnitTestCase
     public function test_that_equals_returns_true_for_same_value()
     {
         $message = CommandMessage::arrayDeserialize($this->getMessageData());
+
         static::assertTrue($this->message->equals($message));
     }
 
@@ -209,6 +223,7 @@ class CommandMessageTest extends UnitTestCase
     public function test_that_equals_returns_false_for_different_value()
     {
         $message = CommandMessage::arrayDeserialize($this->getAltMessageData());
+
         static::assertFalse($this->message->equals($message));
     }
 

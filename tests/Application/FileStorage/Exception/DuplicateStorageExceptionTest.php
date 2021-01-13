@@ -15,6 +15,7 @@ class DuplicateStorageExceptionTest extends UnitTestCase
     public function test_that_from_key_returns_expected_exception()
     {
         $exception = DuplicateStorageException::fromKey('foobar');
+
         static::assertSame('foobar', $exception->getKey());
     }
 }

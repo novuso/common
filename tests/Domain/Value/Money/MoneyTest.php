@@ -20,6 +20,7 @@ class MoneyTest extends UnitTestCase
     {
         /** @var Money $money */
         $money = Money::USD(1725);
+
         static::assertSame('$17.25', $money->format());
     }
 
@@ -27,6 +28,7 @@ class MoneyTest extends UnitTestCase
     {
         $string = 'USD:1725';
         $money = Money::fromString($string);
+
         static::assertSame($string, $money->toString());
     }
 
@@ -34,6 +36,7 @@ class MoneyTest extends UnitTestCase
     {
         $string = 'USD:-1725';
         $money = Money::fromString($string);
+
         static::assertSame($string, $money->toString());
     }
 
@@ -41,6 +44,7 @@ class MoneyTest extends UnitTestCase
     {
         /** @var Money $money */
         $money = Money::EUR(0);
+
         static::assertTrue($money->isZero());
     }
 
@@ -48,6 +52,7 @@ class MoneyTest extends UnitTestCase
     {
         /** @var Money $money */
         $money = Money::EUR(-1000);
+
         static::assertFalse($money->isZero());
     }
 
@@ -55,6 +60,7 @@ class MoneyTest extends UnitTestCase
     {
         /** @var Money $money */
         $money = Money::EUR(1000);
+
         static::assertTrue($money->isPositive());
     }
 
@@ -62,6 +68,7 @@ class MoneyTest extends UnitTestCase
     {
         /** @var Money $money */
         $money = Money::EUR(-1000);
+
         static::assertFalse($money->isPositive());
     }
 
@@ -69,6 +76,7 @@ class MoneyTest extends UnitTestCase
     {
         /** @var Money $money */
         $money = Money::EUR(-1000);
+
         static::assertTrue($money->isNegative());
     }
 
@@ -76,6 +84,7 @@ class MoneyTest extends UnitTestCase
     {
         /** @var Money $money */
         $money = Money::EUR(1000);
+
         static::assertFalse($money->isNegative());
     }
 
@@ -84,6 +93,7 @@ class MoneyTest extends UnitTestCase
         /** @var Money $money */
         $money = Money::USD(100);
         $money = $money->withAmount(1500);
+
         static::assertSame('USD:1500', $money->toString());
     }
 
@@ -94,6 +104,7 @@ class MoneyTest extends UnitTestCase
         /** @var Money $credit */
         $credit = Money::USD(1434078);
         $balance = $balance->add($credit);
+
         static::assertSame('$14,796.81', $balance->format());
     }
 
@@ -104,6 +115,7 @@ class MoneyTest extends UnitTestCase
         /** @var Money $debit */
         $debit = Money::USD(11500);
         $balance = $balance->subtract($debit);
+
         static::assertSame('$341.03', $balance->format());
     }
 
@@ -112,6 +124,7 @@ class MoneyTest extends UnitTestCase
         /** @var Money $money */
         $money = Money::EUR(1535);
         $money = $money->multiply(5);
+
         static::assertSame('€76.75', $money->format());
     }
 
@@ -126,6 +139,7 @@ class MoneyTest extends UnitTestCase
             $output[] = $share->format();
         }
         $expected = '[$326.51, $979.50, $489.75, $489.75, $489.75, $489.75]';
+
         static::assertSame($expected, sprintf('[%s]', implode(', ', $output)));
     }
 
@@ -139,6 +153,7 @@ class MoneyTest extends UnitTestCase
             $output[] = $share->format();
         }
         $expected = '[$816.26, $816.25, $816.25, $816.25]';
+
         static::assertSame($expected, sprintf('[%s]', implode(', ', $output)));
     }
 
@@ -146,6 +161,7 @@ class MoneyTest extends UnitTestCase
     {
         /** @var Money $money */
         $money = Money::USD(1725);
+
         static::assertSame(0, $money->compareTo($money));
     }
 
@@ -155,6 +171,7 @@ class MoneyTest extends UnitTestCase
         $money1 = Money::USD(1725);
         /** @var Money $money2 */
         $money2 = Money::USD(1725);
+
         static::assertSame(0, $money1->compareTo($money2));
     }
 
@@ -164,6 +181,7 @@ class MoneyTest extends UnitTestCase
         $money1 = Money::USD(1726);
         /** @var Money $money2 */
         $money2 = Money::USD(1725);
+
         static::assertSame(1, $money1->compareTo($money2));
     }
 
@@ -173,6 +191,7 @@ class MoneyTest extends UnitTestCase
         $money1 = Money::USD(1725);
         /** @var Money $money2 */
         $money2 = Money::USD(1726);
+
         static::assertSame(-1, $money1->compareTo($money2));
     }
 
@@ -182,6 +201,7 @@ class MoneyTest extends UnitTestCase
         $money1 = Money::USD(1726);
         /** @var Money $money2 */
         $money2 = Money::USD(1725);
+
         static::assertTrue($money1->greaterThan($money2));
     }
 
@@ -191,6 +211,7 @@ class MoneyTest extends UnitTestCase
         $money1 = Money::USD(1725);
         /** @var Money $money2 */
         $money2 = Money::USD(1726);
+
         static::assertFalse($money1->greaterThan($money2));
     }
 
@@ -200,6 +221,7 @@ class MoneyTest extends UnitTestCase
         $money1 = Money::USD(1726);
         /** @var Money $money2 */
         $money2 = Money::USD(1725);
+
         static::assertTrue($money1->greaterThanOrEqual($money2));
     }
 
@@ -209,6 +231,7 @@ class MoneyTest extends UnitTestCase
         $money1 = Money::USD(1725);
         /** @var Money $money2 */
         $money2 = Money::USD(1725);
+
         static::assertTrue($money1->greaterThanOrEqual($money2));
     }
 
@@ -218,6 +241,7 @@ class MoneyTest extends UnitTestCase
         $money1 = Money::USD(1725);
         /** @var Money $money2 */
         $money2 = Money::USD(1726);
+
         static::assertFalse($money1->greaterThanOrEqual($money2));
     }
 
@@ -227,6 +251,7 @@ class MoneyTest extends UnitTestCase
         $money1 = Money::USD(1725);
         /** @var Money $money2 */
         $money2 = Money::USD(1726);
+
         static::assertTrue($money1->lessThan($money2));
     }
 
@@ -236,6 +261,7 @@ class MoneyTest extends UnitTestCase
         $money1 = Money::USD(1726);
         /** @var Money $money2 */
         $money2 = Money::USD(1725);
+
         static::assertFalse($money1->lessThan($money2));
     }
 
@@ -245,6 +271,7 @@ class MoneyTest extends UnitTestCase
         $money1 = Money::USD(1725);
         /** @var Money $money2 */
         $money2 = Money::USD(1726);
+
         static::assertTrue($money1->lessThanOrEqual($money2));
     }
 
@@ -254,6 +281,7 @@ class MoneyTest extends UnitTestCase
         $money1 = Money::USD(1725);
         /** @var Money $money2 */
         $money2 = Money::USD(1725);
+
         static::assertTrue($money1->lessThanOrEqual($money2));
     }
 
@@ -263,6 +291,7 @@ class MoneyTest extends UnitTestCase
         $money1 = Money::USD(1726);
         /** @var Money $money2 */
         $money2 = Money::USD(1725);
+
         static::assertFalse($money1->lessThanOrEqual($money2));
     }
 
