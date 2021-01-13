@@ -84,8 +84,7 @@ if ($percentage < $minPercentage) {
         $minPercentage
     ));
 
-    // TODO: enable when code coverage completed
-    // return 1;
+    return 1;
 } else {
     print_line('green', 'Code coverage check passed');
 }
