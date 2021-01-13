@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Domain\Value\Money;
 
@@ -10,40 +12,29 @@ use NumberFormatter;
 final class LocaleFormatter implements MoneyFormatter
 {
     /**
-     * Formatter
-     *
-     * @var NumberFormatter
-     */
-    protected $formatter;
-
-    /**
      * Constructs LocaleFormatter
      *
      * @internal
-     *
-     * @param NumberFormatter $formatter The number formatter
      */
-    protected function __construct(NumberFormatter $formatter)
+    protected function __construct(protected NumberFormatter $formatter)
     {
-        $this->formatter = $formatter;
     }
 
     /**
      * Creates instance from a locale string
-     *
-     * @param string $locale The locale string
-     *
-     * @return LocaleFormatter
      */
-    public static function fromLocale(string $locale): LocaleFormatter
+    public static function fromLocale(string $locale): static
     {
-        $formatter = new NumberFormatter((string) $locale, NumberFormatter::CURRENCY);
+        $formatter = new NumberFormatter(
+            (string) $locale,
+            NumberFormatter::CURRENCY
+        );
 
         return new self($formatter);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function format(Money $money): string
     {

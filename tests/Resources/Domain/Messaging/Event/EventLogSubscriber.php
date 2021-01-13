@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Resources\Domain\Messaging\Event;
 
@@ -11,7 +13,7 @@ use Novuso\Common\Domain\Messaging\Event\EventSubscriber;
  */
 class EventLogSubscriber implements EventSubscriber
 {
-    protected $logs = [];
+    protected array $logs = [];
 
     public static function eventRegistration(): array
     {

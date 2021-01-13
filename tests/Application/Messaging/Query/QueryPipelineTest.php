@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Messaging\Query;
 
@@ -59,7 +61,8 @@ class QueryPipelineTest extends UnitTestCase
         $this->queryMap->registerHandlers([UserByEmailQuery::class => $handler]);
         $query = new UserByEmailQuery('jsmith@example.com');
         $user = $this->pipeline->fetch($query);
-        $this->assertTrue(
+
+        static::assertTrue(
             $this->queryMap->hasHandler(UserByEmailQuery::class)
             && $this->logHandler->hasInfoThatContains(sprintf(
                 'Query received {%s}',

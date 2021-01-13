@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Validation\Rule;
 
@@ -14,13 +16,13 @@ class IsUriTest extends UnitTestCase
     {
         $rule = new IsUri();
 
-        $this->assertTrue($rule->isSatisfiedBy('https://application.com/path?query=foo#fragment'));
+        static::assertTrue($rule->isSatisfiedBy('https://application.com/path?query=foo#fragment'));
     }
 
     public function test_that_is_satisfied_by_returns_false_when_validation_fails()
     {
         $rule = new IsUri();
 
-        $this->assertFalse($rule->isSatisfiedBy('/some/path'));
+        static::assertFalse($rule->isSatisfiedBy('/some/path'));
     }
 }

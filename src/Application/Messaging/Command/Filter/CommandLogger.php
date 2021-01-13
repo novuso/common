@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Messaging\Command\Filter;
 
@@ -13,33 +15,16 @@ use Psr\Log\LogLevel;
 final class CommandLogger implements CommandFilter
 {
     /**
-     * Logger
-     *
-     * @var LoggerInterface
-     */
-    protected $logger;
-
-    /**
-     * Log level
-     *
-     * @var string
-     */
-    protected $logLevel;
-
-    /**
      * Constructs CommandLogger
-     *
-     * @param LoggerInterface $logger   The logger
-     * @param string          $logLevel The log level
      */
-    public function __construct(LoggerInterface $logger, string $logLevel = LogLevel::INFO)
-    {
-        $this->logger = $logger;
-        $this->logLevel = $logLevel;
+    public function __construct(
+        protected LoggerInterface $logger,
+        protected string $logLevel = LogLevel::INFO
+    ) {
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function process(CommandMessage $message, callable $next): void
     {

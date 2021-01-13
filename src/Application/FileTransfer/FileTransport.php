@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\FileTransfer;
 
@@ -12,21 +14,14 @@ interface FileTransport
     /**
      * Sends a file
      *
-     * @param string          $path     The remote path
      * @param string|resource $contents The file contents
-     *
-     * @return void
      *
      * @throws FileTransferException When error occurs
      */
-    public function sendFile(string $path, $contents): void;
+    public function sendFile(string $path, mixed $contents): void;
 
     /**
      * Retrieves file contents as a string
-     *
-     * @param string $path The remote path
-     *
-     * @return string
      *
      * @throws FileTransferException When error occurs
      */
@@ -35,20 +30,16 @@ interface FileTransport
     /**
      * Retrieves file contents as a stream resource
      *
-     * @param string $path The remote path
-     *
      * @return resource
      *
      * @throws FileTransferException When error occurs
      */
-    public function retrieveFileResource(string $path);
+    public function retrieveFileResource(string $path): mixed;
 
     /**
      * Reads the contents of a directory path
      *
-     * @param string $directory The remote directory path
-     *
-     * @return iterable|Resource[]
+     * @return iterable<Resource>
      *
      * @throws FileTransferException When error occurs
      */

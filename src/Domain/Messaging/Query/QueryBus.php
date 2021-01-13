@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Domain\Messaging\Query;
 
@@ -12,22 +14,14 @@ interface QueryBus
     /**
      * Fetches query results
      *
-     * @param Query $query The query
-     *
-     * @return mixed
-     *
      * @throws Throwable When an error occurs
      */
-    public function fetch(Query $query);
+    public function fetch(Query $query): mixed;
 
     /**
-     * Dispatches a command message
-     *
-     * @param QueryMessage $message The query message
-     *
-     * @return mixed
+     * Dispatches a query message
      *
      * @throws Throwable When an error occurs
      */
-    public function dispatch(QueryMessage $message);
+    public function dispatch(QueryMessage $message): mixed;
 }

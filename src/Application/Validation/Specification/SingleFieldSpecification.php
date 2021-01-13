@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Validation\Specification;
 
@@ -6,6 +8,7 @@ use Novuso\Common\Application\Validation\ValidationContext;
 use Novuso\Common\Domain\Specification\CompositeSpecification;
 use Novuso\Common\Domain\Specification\Specification;
 use Novuso\System\Exception\KeyException;
+use Novuso\System\Utility\Assert;
 
 /**
  * Class SingleFieldSpecification
@@ -13,40 +16,21 @@ use Novuso\System\Exception\KeyException;
 final class SingleFieldSpecification extends CompositeSpecification
 {
     /**
-     * Field name
-     *
-     * @var string
-     */
-    protected $fieldName;
-
-    /**
-     * Validation rule
-     *
-     * @var Specification
-     */
-    protected $rule;
-
-    /**
      * Constructs SingleFieldSpecification
-     *
-     * @param string        $fieldName The field name
-     * @param Specification $rule      The validation rule
      */
-    public function __construct(string $fieldName, Specification $rule)
-    {
-        $this->fieldName = $fieldName;
-        $this->rule = $rule;
+    public function __construct(
+        protected string $fieldName,
+        protected Specification $rule
+    ) {
     }
 
     /**
      * Checks if the context satisfies the validation rule
-     *
-     * @param ValidationContext $context The context
-     *
-     * @return bool
      */
-    public function isSatisfiedBy($context): bool
+    public function isSatisfiedBy(mixed $context): bool
     {
+        Assert::isInstanceOf($context, ValidationContext::class);
+
         try {
             return $this->rule->isSatisfiedBy($context->get($this->fieldName));
         } catch (KeyException $e) {

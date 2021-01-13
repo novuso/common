@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common;
 
@@ -7,10 +9,5 @@ namespace Novuso\Common;
  */
 final class CommonLibrary
 {
-    /**
-     * Version number
-     *
-     * @var string
-     */
     public const VERSION = '1.0.0';
 }

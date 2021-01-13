@@ -1,10 +1,13 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Validation\Specification;
 
 use Novuso\Common\Application\Validation\ValidationContext;
 use Novuso\Common\Domain\Specification\CompositeSpecification;
 use Novuso\System\Exception\KeyException;
+use Novuso\System\Utility\Assert;
 use Novuso\System\Utility\Validate;
 
 /**
@@ -13,40 +16,21 @@ use Novuso\System\Utility\Validate;
 final class EqualFieldsSpecification extends CompositeSpecification
 {
     /**
-     * First field name
-     *
-     * @var string
-     */
-    protected $fieldName1;
-
-    /**
-     * Second field name
-     *
-     * @var string
-     */
-    protected $fieldName2;
-
-    /**
      * Constructs EqualFieldsSpecification
-     *
-     * @param string $fieldName1 The first field name
-     * @param string $fieldName2 The second field name
      */
-    public function __construct(string $fieldName1, string $fieldName2)
-    {
-        $this->fieldName1 = $fieldName1;
-        $this->fieldName2 = $fieldName2;
+    public function __construct(
+        protected string $fieldName1,
+        protected string $fieldName2
+    ) {
     }
 
     /**
      * Checks if the context satisfies the validation rule
-     *
-     * @param ValidationContext $context The context
-     *
-     * @return bool
      */
-    public function isSatisfiedBy($context): bool
+    public function isSatisfiedBy(mixed $context): bool
     {
+        Assert::isInstanceOf($context, ValidationContext::class);
+
         try {
             return Validate::areEqual(
                 $context->get($this->fieldName1),

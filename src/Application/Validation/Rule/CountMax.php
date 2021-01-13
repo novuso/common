@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Validation\Rule;
 
@@ -11,26 +13,16 @@ use Novuso\System\Utility\Validate;
 class CountMax extends CompositeSpecification
 {
     /**
-     * Maximum count
-     *
-     * @var int
-     */
-    protected $maxCount;
-
-    /**
      * Constructs CountMax
-     *
-     * @param int $maxCount The maximum count
      */
-    public function __construct(int $maxCount)
+    public function __construct(protected int $maxCount)
     {
-        $this->maxCount = $maxCount;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function isSatisfiedBy($candidate): bool
+    public function isSatisfiedBy(mixed $candidate): bool
     {
         return Validate::maxCount($candidate, $this->maxCount);
     }

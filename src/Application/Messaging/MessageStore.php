@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Messaging;
 
@@ -14,11 +16,6 @@ interface MessageStore
     /**
      * Adds a message
      *
-     * @param string  $name    The queue name
-     * @param Message $message The message
-     *
-     * @return void
-     *
      * @throws MessageStoreException When an error occurs
      */
     public function add(string $name, Message $message): void;
@@ -26,19 +23,12 @@ interface MessageStore
     /**
      * Retrieves a message by ID
      *
-     * @param string    $name      The queue name
-     * @param MessageId $messageId The message ID
-     *
-     * @return Message|null
-     *
      * @throws MessageStoreException When an error occurs
      */
     public function get(string $name, MessageId $messageId): ?Message;
 
     /**
      * Retrieves all messages
-     *
-     * @param string $name The queue name
      *
      * @return iterable<Message>
      *
@@ -48,11 +38,6 @@ interface MessageStore
 
     /**
      * Removes a message by ID
-     *
-     * @param string    $name      The queue name
-     * @param MessageId $messageId The message ID
-     *
-     * @return void
      *
      * @throws MessageStoreException When an error occurs
      */

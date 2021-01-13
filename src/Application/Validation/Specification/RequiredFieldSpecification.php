@@ -1,10 +1,13 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Validation\Specification;
 
 use Novuso\Common\Application\Validation\ValidationContext;
 use Novuso\Common\Domain\Specification\CompositeSpecification;
 use Novuso\System\Exception\KeyException;
+use Novuso\System\Utility\Assert;
 
 /**
  * Class RequiredFieldSpecification
@@ -12,31 +15,19 @@ use Novuso\System\Exception\KeyException;
 final class RequiredFieldSpecification extends CompositeSpecification
 {
     /**
-     * Field name
-     *
-     * @var string
-     */
-    protected $fieldName;
-
-    /**
      * Constructs RequiredFieldSpecification
-     *
-     * @param string $fieldName The field name
      */
-    public function __construct(string $fieldName)
+    public function __construct(protected string $fieldName)
     {
-        $this->fieldName = $fieldName;
     }
 
     /**
      * Checks if the context satisfies the validation rule
-     *
-     * @param ValidationContext $context The context
-     *
-     * @return bool
      */
-    public function isSatisfiedBy($context): bool
+    public function isSatisfiedBy(mixed $context): bool
     {
+        Assert::isInstanceOf($context, ValidationContext::class);
+
         try {
             $context->get($this->fieldName);
 

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Validation\Rule;
 
@@ -11,36 +13,23 @@ use Novuso\System\Utility\Validate;
 class NumberRange extends CompositeSpecification
 {
     /**
-     * Minimum number
-     *
-     * @var int|float
-     */
-    protected $minNumber;
-
-    /**
-     * Maximum number
-     *
-     * @var int|float
-     */
-    protected $maxNumber;
-
-    /**
      * Constructs NumberRange
-     *
-     * @param int|float $minNumber The minimum number
-     * @param int|float $maxNumber The maximum number
      */
-    public function __construct($minNumber, $maxNumber)
-    {
-        $this->minNumber = $minNumber;
-        $this->maxNumber = $maxNumber;
+    public function __construct(
+        protected int|float $minNumber,
+        protected int|float $maxNumber
+    ) {
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function isSatisfiedBy($candidate): bool
+    public function isSatisfiedBy(mixed $candidate): bool
     {
-        return Validate::rangeNumber($candidate, $this->minNumber, $this->maxNumber);
+        return Validate::rangeNumber(
+            $candidate,
+            $this->minNumber,
+            $this->maxNumber
+        );
     }
 }

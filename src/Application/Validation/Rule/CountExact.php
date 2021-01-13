@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Validation\Rule;
 
@@ -11,26 +13,16 @@ use Novuso\System\Utility\Validate;
 class CountExact extends CompositeSpecification
 {
     /**
-     * Count
-     *
-     * @var int
-     */
-    protected $count;
-
-    /**
      * Constructs CountExact
-     *
-     * @param int $count The exact count
      */
-    public function __construct(int $count)
+    public function __construct(protected int $count)
     {
-        $this->count = $count;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function isSatisfiedBy($candidate): bool
+    public function isSatisfiedBy(mixed $candidate): bool
     {
         return Validate::exactCount($candidate, $this->count);
     }

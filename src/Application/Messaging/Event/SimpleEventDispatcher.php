@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Messaging\Event;
 
@@ -14,22 +16,11 @@ use Novuso\System\Utility\ClassName;
  */
 class SimpleEventDispatcher implements SynchronousEventDispatcher
 {
-    /**
-     * Event handlers
-     *
-     * @var array
-     */
-    protected $handlers = [];
+    protected array $handlers = [];
+    protected array $sorted = [];
 
     /**
-     * Sorted handlers
-     *
-     * @var array
-     */
-    protected $sorted = [];
-
-    /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function trigger(Event $event): void
     {
@@ -37,7 +28,7 @@ class SimpleEventDispatcher implements SynchronousEventDispatcher
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function dispatch(EventMessage $message): void
     {
@@ -54,7 +45,7 @@ class SimpleEventDispatcher implements SynchronousEventDispatcher
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function register(EventSubscriber $subscriber): void
     {
@@ -64,18 +55,26 @@ class SimpleEventDispatcher implements SynchronousEventDispatcher
                 $this->addHandler($eventType, [$subscriber, $params]);
             } elseif (is_string($params[0])) {
                 $priority = isset($params[1]) ? (int) $params[1] : 0;
-                $this->addHandler($eventType, [$subscriber, $params[0]], $priority);
+                $this->addHandler(
+                    $eventType,
+                    [$subscriber, $params[0]],
+                    $priority
+                );
             } else {
                 foreach ($params as $handler) {
                     $priority = isset($handler[1]) ? (int) $handler[1] : 0;
-                    $this->addHandler($eventType, [$subscriber, $handler[0]], $priority);
+                    $this->addHandler(
+                        $eventType,
+                        [$subscriber, $handler[0]],
+                        $priority
+                    );
                 }
             }
         }
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function unregister(EventSubscriber $subscriber): void
     {
@@ -83,7 +82,10 @@ class SimpleEventDispatcher implements SynchronousEventDispatcher
             $eventType = ClassName::underscore($eventType);
             if (is_array($params) && is_array($params[0])) {
                 foreach ($params as $handler) {
-                    $this->removeHandler($eventType, [$subscriber, $handler[0]]);
+                    $this->removeHandler(
+                        $eventType,
+                        [$subscriber, $handler[0]]
+                    );
                 }
             } else {
                 $handler = is_string($params) ? $params : $params[0];
@@ -93,10 +95,13 @@ class SimpleEventDispatcher implements SynchronousEventDispatcher
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function addHandler(string $eventType, callable $handler, int $priority = 0): void
-    {
+    public function addHandler(
+        string $eventType,
+        callable $handler,
+        int $priority = 0
+    ): void {
         if (!isset($this->handlers[$eventType])) {
             $this->handlers[$eventType] = [];
         }
@@ -110,7 +115,7 @@ class SimpleEventDispatcher implements SynchronousEventDispatcher
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function getHandlers(?string $eventType = null): array
     {
@@ -136,7 +141,7 @@ class SimpleEventDispatcher implements SynchronousEventDispatcher
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function hasHandlers(?string $eventType = null): bool
     {
@@ -144,7 +149,7 @@ class SimpleEventDispatcher implements SynchronousEventDispatcher
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function removeHandler(string $eventType, callable $handler): void
     {
@@ -169,10 +174,6 @@ class SimpleEventDispatcher implements SynchronousEventDispatcher
 
     /**
      * Sorts event handlers by priority
-     *
-     * @param string $eventType The event type
-     *
-     * @return void
      */
     protected function sortHandlers(string $eventType): void
     {

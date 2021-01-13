@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\HttpFoundation;
 
@@ -14,6 +16,7 @@ class HttpStatusTest extends UnitTestCase
     {
         $httpStatus = HttpStatus::ENHANCE_YOUR_CALM();
         $statusText = $httpStatus->text();
-        $this->assertSame('Enhance Your Calm', $statusText);
+
+        static::assertSame('Enhance Your Calm', $statusText);
     }
 }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Domain\Messaging\Query;
 
@@ -19,25 +21,26 @@ class QueryMessage extends BaseMessage
 {
     /**
      * Constructs QueryMessage
-     *
-     * @param MessageId $id        The message ID
-     * @param DateTime  $timestamp The timestamp
-     * @param Query     $payload   The payload
-     * @param MetaData  $metaData  The meta data
      */
-    public function __construct(MessageId $id, DateTime $timestamp, Query $payload, MetaData $metaData)
-    {
-        parent::__construct($id, MessageType::QUERY(), $timestamp, $payload, $metaData);
+    public function __construct(
+        MessageId $id,
+        DateTime $timestamp,
+        Query $payload,
+        MetaData $metaData
+    ) {
+        parent::__construct(
+            $id,
+            MessageType::QUERY(),
+            $timestamp,
+            $payload,
+            $metaData
+        );
     }
 
     /**
      * Creates instance for a query
-     *
-     * @param Query $query The query
-     *
-     * @return QueryMessage
      */
-    public static function create(Query $query): QueryMessage
+    public static function create(Query $query): static
     {
         $timestamp = DateTime::now();
         $id = MessageId::generate();
@@ -47,14 +50,25 @@ class QueryMessage extends BaseMessage
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public static function arrayDeserialize(array $data): QueryMessage
+    public static function arrayDeserialize(array $data): static
     {
-        $keys = ['id', 'type', 'timestamp', 'meta_data', 'payload_type', 'payload'];
+        $keys = [
+            'id',
+            'type',
+            'timestamp',
+            'meta_data',
+            'payload_type',
+            'payload'
+        ];
+
         foreach ($keys as $key) {
             if (!isset($data[$key])) {
-                $message = sprintf('Invalid serialization data: %s', VarPrinter::toString($data));
+                $message = sprintf(
+                    'Invalid serialization data: %s',
+                    VarPrinter::toString($data)
+                );
                 throw new DomainException($message);
             }
         }
@@ -64,29 +78,24 @@ class QueryMessage extends BaseMessage
             throw new DomainException($message);
         }
 
-        /** @var MessageId $id */
         $id = MessageId::fromString($data['id']);
-        /** @var DateTime $timestamp */
         $timestamp = DateTime::fromString($data['timestamp']);
-        /** @var MetaData $metaData */
         $metaData = MetaData::create($data['meta_data']);
-        /** @var Type $payloadType */
         $payloadType = Type::create($data['payload_type']);
         /** @var Query|string $payloadClass */
         $payloadClass = $payloadType->toClassName();
 
         Assert::implementsInterface($payloadClass, Query::class);
 
-        /** @var Query $payload */
         $payload = $payloadClass::fromArray($data['payload']);
 
         return new static($id, $timestamp, $payload, $metaData);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function withMetaData(MetaData $metaData): QueryMessage
+    public function withMetaData(MetaData $metaData): static
     {
         /** @var Query $query */
         $query = $this->payload;
@@ -100,9 +109,9 @@ class QueryMessage extends BaseMessage
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function mergeMetaData(MetaData $metaData): QueryMessage
+    public function mergeMetaData(MetaData $metaData): static
     {
         $meta = clone $this->metaData;
         $meta->merge($metaData);

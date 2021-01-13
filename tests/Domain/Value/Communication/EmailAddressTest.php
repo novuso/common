@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Domain\Value\Communication;
 
@@ -15,35 +17,35 @@ class EmailAddressTest extends UnitTestCase
     {
         $emailAddress = new EmailAddress('ljenkins@example.com');
 
-        $this->assertSame('ljenkins', $emailAddress->localPart());
+        static::assertSame('ljenkins', $emailAddress->localPart());
     }
 
     public function test_that_domain_part_returns_expected_value()
     {
         $emailAddress = new EmailAddress('ljenkins@example.com');
 
-        $this->assertSame('example.com', $emailAddress->domainPart());
+        static::assertSame('example.com', $emailAddress->domainPart());
     }
 
     public function test_that_domain_part_returns_ip_address_when_domain_is_literal_ip()
     {
         $emailAddress = new EmailAddress('user@[192.168.0.1]');
 
-        $this->assertSame('192.168.0.1', $emailAddress->domainPart());
+        static::assertSame('192.168.0.1', $emailAddress->domainPart());
     }
 
     public function test_that_canonical_returns_email_address_in_lowercase()
     {
         $emailAddress = new EmailAddress('LJenkins@ExAmPlE.com');
 
-        $this->assertSame('ljenkins@example.com', $emailAddress->canonical());
+        static::assertSame('ljenkins@example.com', $emailAddress->canonical());
     }
 
     public function test_that_to_string_returns_expected_value()
     {
         $emailAddress = EmailAddress::fromString('ljenkins@example.com');
 
-        $this->assertSame('ljenkins@example.com', $emailAddress->toString());
+        static::assertSame('ljenkins@example.com', $emailAddress->toString());
     }
 
     public function test_that_constructor_throws_exception_when_email_is_invalid()

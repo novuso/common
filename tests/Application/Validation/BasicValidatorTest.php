@@ -1,10 +1,12 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Validation;
 
 use Mockery\MockInterface;
-use Novuso\Common\Application\Validation\ValidationContext;
 use Novuso\Common\Application\Validation\BasicValidator;
+use Novuso\Common\Application\Validation\ValidationContext;
 use Novuso\Common\Domain\Specification\Specification;
 use Novuso\System\Test\TestCase\UnitTestCase;
 
@@ -41,7 +43,7 @@ class BasicValidatorTest extends UnitTestCase
             ->with($this->mockContext)
             ->andReturn(true);
 
-        $this->assertTrue($this->validator->validate($this->mockContext));
+        static::assertTrue($this->validator->validate($this->mockContext));
     }
 
     public function test_that_error_is_added_to_context_when_validation_fails()
@@ -58,6 +60,6 @@ class BasicValidatorTest extends UnitTestCase
             ->with($this->mockContext)
             ->andReturn(false);
 
-        $this->assertFalse($this->validator->validate($this->mockContext));
+        static::assertFalse($this->validator->validate($this->mockContext));
     }
 }

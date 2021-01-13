@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\FileStorage;
 
@@ -12,12 +14,7 @@ use Novuso\System\Collection\HashTable;
  */
 final class StorageService
 {
-    /**
-     * Storage table
-     *
-     * @var HashTable
-     */
-    protected $storage;
+    protected HashTable $storage;
 
     /**
      * Constructs StorageService
@@ -29,10 +26,6 @@ final class StorageService
 
     /**
      * Retrieves file storage
-     *
-     * @param string $key The storage key
-     *
-     * @return FileStorage
      *
      * @throws StorageNotFoundException When the key is not found
      */
@@ -47,13 +40,6 @@ final class StorageService
 
     /**
      * Copies a file across file storage instances
-     *
-     * @param string $sourceKey       The source storage key
-     * @param string $sourcePath      The source file path
-     * @param string $destinationKey  The destination storage key
-     * @param string $destinationPath The destination file path
-     *
-     * @return void
      *
      * @throws FileStorageException When an error occurs
      */
@@ -71,13 +57,6 @@ final class StorageService
 
     /**
      * Moves a file across file storage instances
-     *
-     * @param string $sourceKey       The source storage key
-     * @param string $sourcePath      The source file path
-     * @param string $destinationKey  The destination storage key
-     * @param string $destinationPath The destination file path
-     *
-     * @return void
      *
      * @throws FileStorageException When an error occurs
      */
@@ -97,11 +76,6 @@ final class StorageService
 
     /**
      * Adds file storage
-     *
-     * @param string      $key     The storage key
-     * @param FileStorage $storage The file storage
-     *
-     * @return void
      *
      * @throws DuplicateStorageException When the key is already in use
      */

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\FileStorage;
 
@@ -13,21 +15,14 @@ interface FileStorage
     /**
      * Adds a file to storage
      *
-     * @param string          $path     The file path
      * @param string|resource $contents The file contents
-     *
-     * @return void
      *
      * @throws FileStorageException When error occurs
      */
-    public function putFile(string $path, $contents): void;
+    public function putFile(string $path, mixed $contents): void;
 
     /**
      * Retrieves file contents as a string
-     *
-     * @param string $path The file path
-     *
-     * @return string
      *
      * @throws FileStorageException When error occurs
      */
@@ -36,20 +31,14 @@ interface FileStorage
     /**
      * Retrieves file contents as a stream resource
      *
-     * @param string $path The file path
-     *
      * @return resource
      *
      * @throws FileStorageException When error occurs
      */
-    public function getFileResource(string $path);
+    public function getFileResource(string $path): mixed;
 
     /**
      * Checks if a file exists in storage
-     *
-     * @param string $path The file path
-     *
-     * @return bool
      *
      * @throws FileStorageException When error occurs
      */
@@ -58,21 +47,12 @@ interface FileStorage
     /**
      * Removes a file from storage
      *
-     * @param string $path The file path
-     *
-     * @return void
-     *
      * @throws FileStorageException When error occurs
      */
     public function removeFile(string $path): void;
 
     /**
      * Copies a file to another location in storage
-     *
-     * @param string $source      The source path
-     * @param string $destination The destination path
-     *
-     * @return void
      *
      * @throws FileStorageException When error occurs
      */
@@ -81,21 +61,12 @@ interface FileStorage
     /**
      * Moves a file to another location in storage
      *
-     * @param string $source      The source path
-     * @param string $destination The destination path
-     *
-     * @return void
-     *
      * @throws FileStorageException When error occurs
      */
     public function moveFile(string $source, string $destination): void;
 
     /**
      * Retrieves the file size in bytes
-     *
-     * @param string $path The file path
-     *
-     * @return int
      *
      * @throws FileStorageException When error occurs
      */
@@ -104,20 +75,12 @@ interface FileStorage
     /**
      * Retrieves the last modified date/time
      *
-     * @param string $path The file path
-     *
-     * @return DateTime
-     *
      * @throws FileStorageException When error occurs
      */
     public function lastModified(string $path): DateTime;
 
     /**
      * Retrieves a list of files in a given path
-     *
-     * @param string $path The directory path
-     *
-     * @return string[]
      *
      * @throws FileStorageException When error occurs
      */
@@ -126,10 +89,6 @@ interface FileStorage
     /**
      * Retrieves a list of files in a given path recursively
      *
-     * @param string $path The directory path
-     *
-     * @return string[]
-     *
      * @throws FileStorageException When error occurs
      */
     public function listFilesRecursively(?string $path = null): array;
@@ -137,20 +96,12 @@ interface FileStorage
     /**
      * Retrieves a list of directories in a given path
      *
-     * @param string $path The directory path
-     *
-     * @return string[]
-     *
      * @throws FileStorageException When error occurs
      */
     public function listDirectories(?string $path = null): array;
 
     /**
      * Retrieves a list of directories in a given path recursively
-     *
-     * @param string $path The directory path
-     *
-     * @return string[]
      *
      * @throws FileStorageException When error occurs
      */

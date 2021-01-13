@@ -1,16 +1,16 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Domain\Value\Money;
 
 use Novuso\Common\Domain\Type\RoundingMode;
 use Novuso\Common\Domain\Type\ValueObject;
-use Novuso\System\Exception\AssertionException;
 use Novuso\System\Exception\DomainException;
 use Novuso\System\Exception\RangeException;
 use Novuso\System\Exception\TypeException;
 use Novuso\System\Type\Comparable;
 use Novuso\System\Utility\Assert;
-use Novuso\System\Utility\VarPrinter;
 
 /**
  * Class Money
@@ -18,31 +18,12 @@ use Novuso\System\Utility\VarPrinter;
 final class Money extends ValueObject implements Comparable
 {
     /**
-     * Monetary amount
-     *
-     * Amount in the currency sub-unit
-     *
-     * @var int
-     */
-    protected $amount;
-
-    /**
-     * Currency
-     *
-     * @var Currency
-     */
-    protected $currency;
-
-    /**
      * Constructs Money
-     *
-     * @param int      $amount   The monetary amount
-     * @param Currency $currency The currency
      */
-    public function __construct(int $amount, Currency $currency)
-    {
-        $this->amount = $amount;
-        $this->currency = $currency;
+    public function __construct(
+        protected int $amount,
+        protected Currency $currency
+    ) {
     }
 
     /**
@@ -52,15 +33,10 @@ final class Money extends ValueObject implements Comparable
      * `Currency` and `1725` is the number of minor-units (eg. cents) in the
      * given currency. The monetary value for this example would be $17.25 USD.
      *
-     * @param string $method The name of the method
-     * @param array  $args   A list of arguments
-     *
-     * @return Money
-     *
      * @throws DomainException When the currency code is invalid
      * @throws TypeException When the first arg is not an integer
      */
-    public static function __callStatic($method, array $args): Money
+    public static function __callStatic(string $method, array $args): static
     {
         if (!isset($args[0]) || !is_int($args[0])) {
             $message = sprintf(
@@ -70,28 +46,27 @@ final class Money extends ValueObject implements Comparable
             throw new TypeException($message);
         }
 
-        /** @var int $amount */
         $amount = $args[0];
-        /** @var Currency $currency */
         $currency = Currency::fromValue($method);
 
         return new static($amount, $currency);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public static function fromString(string $value): Money
+    public static function fromString(string $value): static
     {
         $pattern = '/\A(?P<code>[A-Z]{3}):(?P<amount>-?[\d]+)\z/';
         if (!preg_match($pattern, $value, $matches)) {
-            $message = sprintf('%s expects $value in "CUR:0000" format', __METHOD__);
+            $message = sprintf(
+                '%s expects $value in "CUR:0000" format',
+                __METHOD__
+            );
             throw new DomainException($message);
         }
 
-        /** @var int $amount */
         $amount = (int) $matches['amount'];
-        /** @var Currency $currency */
         $currency = Currency::fromValue($matches['code']);
 
         return new static($amount, $currency);
@@ -99,20 +74,14 @@ final class Money extends ValueObject implements Comparable
 
     /**
      * Creates instance with a given amount using the same currency
-     *
-     * @param int $amount The amount
-     *
-     * @return Money
      */
-    public function withAmount(int $amount): Money
+    public function withAmount(int $amount): static
     {
         return new static($amount, $this->currency);
     }
 
     /**
      * Checks if the amount is zero
-     *
-     * @return bool
      */
     public function isZero(): bool
     {
@@ -121,8 +90,6 @@ final class Money extends ValueObject implements Comparable
 
     /**
      * Checks if the amount is positive
-     *
-     * @return bool
      */
     public function isPositive(): bool
     {
@@ -131,8 +98,6 @@ final class Money extends ValueObject implements Comparable
 
     /**
      * Checks if the amount is negative
-     *
-     * @return bool
      */
     public function isNegative(): bool
     {
@@ -141,8 +106,6 @@ final class Money extends ValueObject implements Comparable
 
     /**
      * Retrieves the amount
-     *
-     * @return int
      */
     public function amount(): int
     {
@@ -151,8 +114,6 @@ final class Money extends ValueObject implements Comparable
 
     /**
      * Retrieves the currency
-     *
-     * @return Currency
      */
     public function currency(): Currency
     {
@@ -162,14 +123,10 @@ final class Money extends ValueObject implements Comparable
     /**
      * Creates instance that adds the given monetary value
      *
-     * @param Money $other The other monetary value
-     *
-     * @return Money
-     *
      * @throws DomainException When other has different currency
      * @throws RangeException When integer overflow occurs
      */
-    public function add(Money $other): Money
+    public function add(Money $other): static
     {
         $this->guardCurrency($other);
 
@@ -183,14 +140,10 @@ final class Money extends ValueObject implements Comparable
     /**
      * Creates instance that subtracts the given monetary value
      *
-     * @param Money $other The other monetary value
-     *
-     * @return Money
-     *
      * @throws DomainException When other has different currency
      * @throws RangeException When integer overflow occurs
      */
-    public function subtract(Money $other): Money
+    public function subtract(Money $other): static
     {
         $this->guardCurrency($other);
 
@@ -204,21 +157,15 @@ final class Money extends ValueObject implements Comparable
     /**
      * Creates instance that multiplies this value by the given value
      *
-     * @param int|float         $multiplier The multiplier
-     * @param RoundingMode|null $mode       The rounding mode; null for HALF_UP
-     *
-     * @return Money
-     *
-     * @throws DomainException When multiplier is not an int or float
      * @throws RangeException When integer overflow occurs
      */
-    public function multiply($multiplier, ?RoundingMode $mode = null): Money
-    {
+    public function multiply(
+        int|float $multiplier,
+        ?RoundingMode $mode = null
+    ): static {
         if ($mode === null) {
             $mode = RoundingMode::HALF_UP();
         }
-
-        $this->guardOperand($multiplier);
 
         $amount = round($this->amount * $multiplier, 0, $mode->value());
         $amount = $this->castToInteger($amount);
@@ -228,10 +175,6 @@ final class Money extends ValueObject implements Comparable
 
     /**
      * Allocates the money according to a list of ratios
-     *
-     * @param array $ratios The list of ratios
-     *
-     * @return Money[]
      *
      * @throws RangeException When integer overflow occurs
      */
@@ -257,25 +200,24 @@ final class Money extends ValueObject implements Comparable
     /**
      * Allocates the money among a given number of targets
      *
-     * @param int $num The number of targets
-     *
-     * @return Money[]
-     *
      * @throws DomainException When num is not greater than zero
      * @throws RangeException When integer overflow occurs
      */
-    public function split(int $num): array
+    public function split(int $number): array
     {
-        if ($num <= 0) {
-            $message = sprintf('%s expects $num to be greater than zero', __METHOD__);
+        if ($number <= 0) {
+            $message = sprintf(
+                '%s expects $num to be greater than zero',
+                __METHOD__
+            );
             throw new DomainException($message);
         }
 
-        $amount = $this->castToInteger($this->amount / $num);
-        $remainder = $this->amount % $num;
+        $amount = $this->castToInteger($this->amount / $number);
+        $remainder = $this->amount % $number;
         $shares = [];
 
-        for ($i = 0; $i < $num; $i++) {
+        for ($i = 0; $i < $number; $i++) {
             $shares[] = $this->withAmount($amount);
         }
 
@@ -288,10 +230,6 @@ final class Money extends ValueObject implements Comparable
 
     /**
      * Retrieves a formatted string representation
-     *
-     * @param string $locale The locale
-     *
-     * @return string
      */
     public function format(string $locale = 'en_US'): string
     {
@@ -299,7 +237,7 @@ final class Money extends ValueObject implements Comparable
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function toString(): string
     {
@@ -308,10 +246,6 @@ final class Money extends ValueObject implements Comparable
 
     /**
      * Checks whether other money has the same currency
-     *
-     * @param Money $other The other monetary value
-     *
-     * @return bool
      */
     public function isSameCurrency(Money $other): bool
     {
@@ -319,7 +253,9 @@ final class Money extends ValueObject implements Comparable
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
+     *
+     * @throws DomainException When the currencies do not match
      */
     public function compareTo($object): int
     {
@@ -331,20 +267,13 @@ final class Money extends ValueObject implements Comparable
 
         $this->guardCurrency($object);
 
-        /** @var int $comp */
-        $comp = $this->amount <=> $object->amount;
-
-        return $comp;
+        return $this->amount <=> $object->amount;
     }
 
     /**
      * Checks if this monetary value is greater than another
      *
-     * @param Money $other The other monetary value
-     *
-     * @return bool
-     *
-     * @throws AssertionException When the currencies do not match
+     * @throws DomainException When the currencies do not match
      */
     public function greaterThan(Money $other): bool
     {
@@ -354,11 +283,7 @@ final class Money extends ValueObject implements Comparable
     /**
      * Checks if this monetary value is greater or equal to another
      *
-     * @param Money $other The other monetary value
-     *
-     * @return bool
-     *
-     * @throws AssertionException When the currencies do not match
+     * @throws DomainException When the currencies do not match
      */
     public function greaterThanOrEqual(Money $other): bool
     {
@@ -368,11 +293,7 @@ final class Money extends ValueObject implements Comparable
     /**
      * Checks if this monetary value is less than another
      *
-     * @param Money $other The other monetary value
-     *
-     * @return bool
-     *
-     * @throws AssertionException When the currencies do not match
+     * @throws DomainException When the currencies do not match
      */
     public function lessThan(Money $other): bool
     {
@@ -382,11 +303,7 @@ final class Money extends ValueObject implements Comparable
     /**
      * Checks if this monetary value is less or equal to another
      *
-     * @param Money $other The other monetary value
-     *
-     * @return bool
-     *
-     * @throws AssertionException When the currencies do not match
+     * @throws DomainException When the currencies do not match
      */
     public function lessThanOrEqual(Money $other): bool
     {
@@ -396,13 +313,9 @@ final class Money extends ValueObject implements Comparable
     /**
      * Casts amount to an integer after math operation; checking boundaries
      *
-     * @param mixed $amount The amount
-     *
-     * @return int
-     *
      * @throws RangeException When integer overflow occurs
      */
-    protected function castToInteger($amount): int
+    protected function castToInteger(int|float $amount): int
     {
         $this->guardAmountInBounds($amount);
 
@@ -412,13 +325,9 @@ final class Money extends ValueObject implements Comparable
     /**
      * Validates amount did not overflow integer bounds
      *
-     * @param mixed $amount The amount
-     *
-     * @return void
-     *
      * @throws RangeException When integer overflow occurs
      */
-    protected function guardAmountInBounds($amount): void
+    protected function guardAmountInBounds(int|float $amount): void
     {
         if (abs($amount) > PHP_INT_MAX) {
             throw new RangeException('Integer overflow');
@@ -426,39 +335,16 @@ final class Money extends ValueObject implements Comparable
     }
 
     /**
-     * Validates monetary operand is an integer or float
-     *
-     * @param mixed $operand The operand
-     *
-     * @return void
-     *
-     * @throws AssertionException When operand is not an int or float
-     */
-    protected function guardOperand($operand): void
-    {
-        if (!is_int($operand) && !is_float($operand)) {
-            $message = sprintf(
-                'Operand must be an integer or float; received (%s) %s',
-                gettype($operand),
-                VarPrinter::toString($operand)
-            );
-            throw new AssertionException($message);
-        }
-    }
-
-    /**
      * Validates another monetary value uses the same currency
      *
-     * @param Money $other The other monetary value
-     *
-     * @return void
-     *
-     * @throws AssertionException When other has different currency
+     * @throws DomainException When other has different currency
      */
     protected function guardCurrency(Money $other): void
     {
         if (!$this->isSameCurrency($other)) {
-            throw new AssertionException('Math and comparison operations require the same currency');
+            throw new DomainException(
+                'Math and comparison operations require the same currency'
+            );
         }
     }
 }

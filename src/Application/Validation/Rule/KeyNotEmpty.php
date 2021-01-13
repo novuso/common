@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Validation\Rule;
 
@@ -11,26 +13,16 @@ use Novuso\System\Utility\Validate;
 class KeyNotEmpty extends CompositeSpecification
 {
     /**
-     * Key
-     *
-     * @var string
-     */
-    protected $key;
-
-    /**
      * Constructs KeyNotEmpty
-     *
-     * @param string $key The key
      */
-    public function __construct(string $key)
+    public function __construct(protected string $key)
     {
-        $this->key = $key;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function isSatisfiedBy($candidate): bool
+    public function isSatisfiedBy(mixed $candidate): bool
     {
         return Validate::keyNotEmpty($candidate, $this->key);
     }

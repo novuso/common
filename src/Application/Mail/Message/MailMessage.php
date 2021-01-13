@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Mail\Message;
 
@@ -7,124 +9,24 @@ namespace Novuso\Common\Application\Mail\Message;
  */
 final class MailMessage
 {
-    /**
-     * Default character set
-     *
-     * @var string
-     */
     public const DEFAULT_CHARSET = 'utf-8';
-
-    /**
-     * HTML content type
-     *
-     * @var string
-     */
     public const CONTENT_TYPE_HTML = 'text/html';
-
-    /**
-     * Plain content type
-     *
-     * @var string
-     */
     public const CONTENT_TYPE_PLAIN = 'text/plain';
 
-    /**
-     * Subject
-     *
-     * @var string|null
-     */
-    protected $subject;
-
-    /**
-     * From addresses
-     *
-     * @var array
-     */
-    protected $from = [];
-
-    /**
-     * To addresses
-     *
-     * @var array
-     */
-    protected $to = [];
-
-    /**
-     * Reply-To addresses
-     *
-     * @var array
-     */
-    protected $replyTo = [];
-
-    /**
-     * CC addresses
-     *
-     * @var array
-     */
-    protected $cc = [];
-
-    /**
-     * BCC addresses
-     *
-     * @var array
-     */
-    protected $bcc = [];
-
-    /**
-     * Content parts
-     *
-     * @var array
-     */
-    protected $content = [];
-
-    /**
-     * Sender
-     *
-     * @var array|null
-     */
-    protected $sender;
-
-    /**
-     * Return path
-     *
-     * @var string|null
-     */
-    protected $returnPath;
-
-    /**
-     * Character set
-     *
-     * @var string
-     */
-    protected $charset;
-
-    /**
-     * Priority
-     *
-     * @var Priority
-     */
-    protected $priority;
-
-    /**
-     * Unix timestamp
-     *
-     * @var int|null
-     */
-    protected $timestamp;
-
-    /**
-     * Max line length
-     *
-     * @var int|null
-     */
-    protected $maxLineLength;
-
-    /**
-     * Attachments
-     *
-     * @var Attachment[]
-     */
-    protected $attachments = [];
+    protected ?string $subject = null;
+    protected array $from = [];
+    protected array $to = [];
+    protected array $replyTo = [];
+    protected array $cc = [];
+    protected array $bcc = [];
+    protected array $content = [];
+    protected ?array $sender = null;
+    protected ?string $returnPath = null;
+    protected string $charset = self::DEFAULT_CHARSET;
+    protected Priority $priority;
+    protected ?int $timestamp = null;
+    protected ?int $maxLineLength = null;
+    protected array $attachments = [];
 
     /**
      * Constructs MailMessage
@@ -132,27 +34,20 @@ final class MailMessage
     public function __construct()
     {
         $this->setPriority(Priority::NORMAL());
-        $this->setCharset(static::DEFAULT_CHARSET);
     }
 
     /**
      * Creates instance
-     *
-     * @return MailMessage
      */
-    public static function create(): MailMessage
+    public static function create(): static
     {
         return new static();
     }
 
     /**
      * Sets the subject
-     *
-     * @param string $subject The subject
-     *
-     * @return MailMessage
      */
-    public function setSubject(string $subject): MailMessage
+    public function setSubject(string $subject): static
     {
         $this->subject = $subject;
 
@@ -161,8 +56,6 @@ final class MailMessage
 
     /**
      * Retrieves the subject
-     *
-     * @return string|null
      */
     public function getSubject(): ?string
     {
@@ -171,13 +64,8 @@ final class MailMessage
 
     /**
      * Adds a From address
-     *
-     * @param string      $address The address
-     * @param string|null $name    The name
-     *
-     * @return MailMessage
      */
-    public function addFrom(string $address, ?string $name = null): MailMessage
+    public function addFrom(string $address, ?string $name = null): static
     {
         $this->from[] = [
             'address' => $address,
@@ -194,8 +82,6 @@ final class MailMessage
      *
      * * address => string
      * * name    => string|null
-     *
-     * @return array
      */
     public function getFrom(): array
     {
@@ -204,13 +90,8 @@ final class MailMessage
 
     /**
      * Adds a To address
-     *
-     * @param string      $address The address
-     * @param string|null $name    The name
-     *
-     * @return MailMessage
      */
-    public function addTo(string $address, ?string $name = null): MailMessage
+    public function addTo(string $address, ?string $name = null): static
     {
         $this->to[] = [
             'address' => $address,
@@ -227,8 +108,6 @@ final class MailMessage
      *
      * * address => string
      * * name    => string|null
-     *
-     * @return array
      */
     public function getTo(): array
     {
@@ -237,13 +116,8 @@ final class MailMessage
 
     /**
      * Adds a Reply-To address
-     *
-     * @param string      $address The address
-     * @param string|null $name    The name
-     *
-     * @return MailMessage
      */
-    public function addReplyTo(string $address, ?string $name = null): MailMessage
+    public function addReplyTo(string $address, ?string $name = null): static
     {
         $this->replyTo[] = [
             'address' => $address,
@@ -260,8 +134,6 @@ final class MailMessage
      *
      * * address => string
      * * name    => string|null
-     *
-     * @return array
      */
     public function getReplyTo(): array
     {
@@ -270,13 +142,8 @@ final class MailMessage
 
     /**
      * Adds a CC address
-     *
-     * @param string      $address The address
-     * @param string|null $name    The name
-     *
-     * @return MailMessage
      */
-    public function addCc(string $address, ?string $name = null): MailMessage
+    public function addCc(string $address, ?string $name = null): static
     {
         $this->cc[] = [
             'address' => $address,
@@ -293,8 +160,6 @@ final class MailMessage
      *
      * * address => string
      * * name    => string|null
-     *
-     * @return array
      */
     public function getCc(): array
     {
@@ -303,13 +168,8 @@ final class MailMessage
 
     /**
      * Adds a BCC address
-     *
-     * @param string      $address The address
-     * @param string|null $name    The name
-     *
-     * @return MailMessage
      */
-    public function addBcc(string $address, ?string $name = null): MailMessage
+    public function addBcc(string $address, ?string $name = null): static
     {
         $this->bcc[] = [
             'address' => $address,
@@ -326,8 +186,6 @@ final class MailMessage
      *
      * * address => string
      * * name    => string|null
-     *
-     * @return array
      */
     public function getBcc(): array
     {
@@ -338,15 +196,12 @@ final class MailMessage
      * Adds a content part
      *
      * Example content type: "text/plain" or "text/html"
-     *
-     * @param string      $content     The content
-     * @param string      $contentType The content type
-     * @param string|null $charset     The character set
-     *
-     * @return MailMessage
      */
-    public function addContent(string $content, string $contentType, ?string $charset = null): MailMessage
-    {
+    public function addContent(
+        string $content,
+        string $contentType,
+        ?string $charset = null
+    ): static {
         $charset = $charset ?: $this->getCharset();
 
         $this->content[] = [
@@ -366,8 +221,6 @@ final class MailMessage
      * * content      => string
      * * content_type => string
      * * charset      => string
-     *
-     * @return array
      */
     public function getContent(): array
     {
@@ -378,13 +231,8 @@ final class MailMessage
      * Sets the sender
      *
      * If set, this has a higher precedence than a from address.
-     *
-     * @param string      $address The address
-     * @param string|null $name    The name
-     *
-     * @return MailMessage
      */
-    public function setSender(string $address, ?string $name = null): MailMessage
+    public function setSender(string $address, ?string $name = null): static
     {
         $this->sender = [
             'address' => $address,
@@ -401,8 +249,6 @@ final class MailMessage
      *
      * * address => string
      * * name    => string|null
-     *
-     * @return array|null
      */
     public function getSender(): ?array
     {
@@ -413,12 +259,8 @@ final class MailMessage
      * Sets the return path
      *
      * If set, this determines where bounces should go.
-     *
-     * @param string $returnPath The email address
-     *
-     * @return MailMessage
      */
-    public function setReturnPath(string $returnPath): MailMessage
+    public function setReturnPath(string $returnPath): static
     {
         $this->returnPath = $returnPath;
 
@@ -427,8 +269,6 @@ final class MailMessage
 
     /**
      * Retrieves the return path
-     *
-     * @return string|null
      */
     public function getReturnPath(): ?string
     {
@@ -437,12 +277,8 @@ final class MailMessage
 
     /**
      * Sets the character set
-     *
-     * @param string $charset The character set
-     *
-     * @return MailMessage
      */
-    public function setCharset(string $charset): MailMessage
+    public function setCharset(string $charset): static
     {
         $this->charset = $charset;
 
@@ -451,8 +287,6 @@ final class MailMessage
 
     /**
      * Retrieves the character set
-     *
-     * @return string
      */
     public function getCharset(): string
     {
@@ -461,12 +295,8 @@ final class MailMessage
 
     /**
      * Sets the priority
-     *
-     * @param Priority $priority The priority
-     *
-     * @return MailMessage
      */
-    public function setPriority(Priority $priority): MailMessage
+    public function setPriority(Priority $priority): static
     {
         $this->priority = $priority;
 
@@ -475,8 +305,6 @@ final class MailMessage
 
     /**
      * Retrieves the priority
-     *
-     * @return Priority
      */
     public function getPriority(): Priority
     {
@@ -485,12 +313,8 @@ final class MailMessage
 
     /**
      * Sets the UNIX timestamp
-     *
-     * @param int $timestamp The timestamp
-     *
-     * @return MailMessage
      */
-    public function setTimestamp(int $timestamp): MailMessage
+    public function setTimestamp(int $timestamp): static
     {
         $this->timestamp = $timestamp;
 
@@ -499,8 +323,6 @@ final class MailMessage
 
     /**
      * Retrieves the UNIX timestamp
-     *
-     * @return int|null
      */
     public function getTimestamp(): ?int
     {
@@ -511,12 +333,8 @@ final class MailMessage
      * Sets the max line length
      *
      * Max line length should be a positive integer less than 998.
-     *
-     * @param int $maxLineLength The max line length
-     *
-     * @return MailMessage
      */
-    public function setMaxLineLength(int $maxLineLength): MailMessage
+    public function setMaxLineLength(int $maxLineLength): static
     {
         // Each line of characters MUST be no more than 998 characters,
         // and SHOULD be no more than 78 characters, excluding the CRLF.
@@ -534,8 +352,6 @@ final class MailMessage
 
     /**
      * Retrieves the max line length
-     *
-     * @return int|null
      */
     public function getMaxLineLength(): ?int
     {
@@ -544,12 +360,8 @@ final class MailMessage
 
     /**
      * Adds an attachment
-     *
-     * @param Attachment $attachment The attachment
-     *
-     * @return MailMessage
      */
-    public function addAttachment(Attachment $attachment): MailMessage
+    public function addAttachment(Attachment $attachment): static
     {
         $this->attachments[] = $attachment;
 
@@ -559,7 +371,7 @@ final class MailMessage
     /**
      * Retrieves the file attachments
      *
-     * @return Attachment[]
+     * @return array<Attachment>
      */
     public function getAttachments(): array
     {

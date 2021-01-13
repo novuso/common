@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Domain\Identity;
 
@@ -12,35 +14,25 @@ use Novuso\System\Utility\Assert;
 abstract class StringId extends ValueObject implements Identifier
 {
     /**
-     * String ID
-     *
-     * @var string
-     */
-    protected $id;
-
-    /**
      * Constructs StringId
-     *
-     * @param string $id The ID string
      *
      * @throws DomainException When the ID is not valid
      */
-    public function __construct(string $id)
+    public function __construct(protected string $id)
     {
         $this->guardId($id);
-        $this->id = $id;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public static function fromString(string $value)
+    public static function fromString(string $value): static
     {
         return new static($value);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function toString(): string
     {
@@ -48,9 +40,9 @@ abstract class StringId extends ValueObject implements Identifier
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function compareTo($object): int
+    public function compareTo(mixed $object): int
     {
         if ($this === $object) {
             return 0;
@@ -60,10 +52,7 @@ abstract class StringId extends ValueObject implements Identifier
 
         $strComp = strnatcmp($this->id, $object->id);
 
-        /** @var int $comp */
-        $comp = $strComp <=> 0;
-
-        return $comp;
+        return $strComp <=> 0;
     }
 
     /**
@@ -72,10 +61,6 @@ abstract class StringId extends ValueObject implements Identifier
      * Override to implement validation.
      *
      * @codeCoverageIgnore
-     *
-     * @param string $id The ID string
-     *
-     * @return void
      *
      * @throws DomainException When the ID is not valid
      */

@@ -1,11 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Messaging\Event;
 
 use Novuso\Common\Domain\Messaging\Event\EventMessage;
 use Novuso\Common\Domain\Messaging\Event\EventSubscriber;
-use Novuso\System\Exception\AssertionException;
-use Novuso\System\Exception\TypeException;
 use Novuso\System\Utility\Assert;
 use Novuso\System\Utility\ClassName;
 use Psr\Container\ContainerExceptionInterface;
@@ -16,50 +16,21 @@ use Psr\Container\ContainerInterface;
  */
 final class ServiceAwareEventDispatcher extends SimpleEventDispatcher
 {
-    /**
-     * Service container
-     *
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    /**
-     * Services
-     *
-     * @var array
-     */
-    protected $services = [];
-
-    /**
-     * Service IDs
-     *
-     * @var array
-     */
-    protected $serviceIds = [];
+    protected array $services = [];
+    protected array $serviceIds = [];
 
     /**
      * Constructs ServiceAwareEventDispatcher
-     *
-     * @param ContainerInterface $container The service container
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(protected ContainerInterface $container)
     {
-        $this->container = $container;
     }
 
     /**
      * Registers a subscriber service to handle events
      *
      * The subscriber class must implement:
-     * RateGenius\Common\Domain\Messaging\Event\EventSubscriber
-     *
-     * @param string $className The subscriber class name
-     * @param string $serviceId The subscriber service ID
-     *
-     * @return void
-     *
-     * @throws AssertionException When a subscriber class is not valid
-     * @throws TypeException When the event type is not valid
+     * Novuso\Common\Domain\Messaging\Event\EventSubscriber
      */
     public function registerService(string $className, string $serviceId): void
     {
@@ -71,11 +42,21 @@ final class ServiceAwareEventDispatcher extends SimpleEventDispatcher
                 $this->addHandlerService($eventType, $serviceId, $params);
             } elseif (is_string($params[0])) {
                 $priority = isset($params[1]) ? (int) $params[1] : 0;
-                $this->addHandlerService($eventType, $serviceId, $params[0], $priority);
+                $this->addHandlerService(
+                    $eventType,
+                    $serviceId,
+                    $params[0],
+                    $priority
+                );
             } else {
                 foreach ($params as $handler) {
                     $priority = isset($handler[1]) ? (int) $handler[1] : 0;
-                    $this->addHandlerService($eventType, $serviceId, $handler[0], $priority);
+                    $this->addHandlerService(
+                        $eventType,
+                        $serviceId,
+                        $handler[0],
+                        $priority
+                    );
                 }
             }
         }
@@ -83,16 +64,13 @@ final class ServiceAwareEventDispatcher extends SimpleEventDispatcher
 
     /**
      * Adds a handler service for a specific event
-     *
-     * @param string $eventType The event type
-     * @param string $serviceId The handler service ID
-     * @param string $method    The name of the method to invoke
-     * @param int    $priority  Higher priority handlers are called first
-     *
-     * @return void
      */
-    public function addHandlerService(string $eventType, string $serviceId, string $method, int $priority = 0): void
-    {
+    public function addHandlerService(
+        string $eventType,
+        string $serviceId,
+        string $method,
+        int $priority = 0
+    ): void {
         if (!isset($this->serviceIds[$eventType])) {
             $this->serviceIds[$eventType] = [];
         }
@@ -101,7 +79,7 @@ final class ServiceAwareEventDispatcher extends SimpleEventDispatcher
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function dispatch(EventMessage $message): void
     {
@@ -111,7 +89,7 @@ final class ServiceAwareEventDispatcher extends SimpleEventDispatcher
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function getHandlers(?string $eventType = null): array
     {
@@ -127,12 +105,13 @@ final class ServiceAwareEventDispatcher extends SimpleEventDispatcher
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function hasHandlers(?string $eventType = null): bool
     {
         if ($eventType === null) {
-            return (bool) count($this->serviceIds) || (bool) count($this->handlers);
+            return (bool) count($this->serviceIds)
+                || (bool) count($this->handlers);
         }
 
         if (isset($this->serviceIds[$eventType])) {
@@ -143,7 +122,7 @@ final class ServiceAwareEventDispatcher extends SimpleEventDispatcher
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function removeHandler(string $eventType, callable $handler): void
     {
@@ -151,10 +130,12 @@ final class ServiceAwareEventDispatcher extends SimpleEventDispatcher
 
         if (isset($this->serviceIds[$eventType])) {
             foreach ($this->serviceIds[$eventType] as $i => $args) {
-                list($serviceId, $method) = $args;
+                [$serviceId, $method] = $args;
                 $key = sprintf('%s.%s', $serviceId, $method);
-                if (isset($this->services[$eventType][$key])
-                    && $handler === [$this->services[$eventType][$key], $method]) {
+                if (
+                    isset($this->services[$eventType][$key])
+                    && $handler === [$this->services[$eventType][$key], $method]
+                ) {
                     unset($this->services[$eventType][$key]);
                     if (empty($this->services[$eventType])) {
                         unset($this->services[$eventType]);
@@ -173,24 +154,31 @@ final class ServiceAwareEventDispatcher extends SimpleEventDispatcher
     /**
      * Lazy loads event handlers from the service container
      *
-     * @param string $eventType The event type
-     *
-     * @return void
-     *
      * @throws ContainerExceptionInterface When an error occurs
      */
     protected function lazyLoad(string $eventType): void
     {
         if (isset($this->serviceIds[$eventType])) {
             foreach ($this->serviceIds[$eventType] as $args) {
-                list($serviceId, $method, $priority) = $args;
+                [$serviceId, $method, $priority] = $args;
                 $service = $this->container->get($serviceId);
                 $key = sprintf('%s.%s', $serviceId, $method);
                 if (!isset($this->services[$eventType][$key])) {
-                    $this->addHandler($eventType, [$service, $method], $priority);
+                    $this->addHandler(
+                        $eventType,
+                        [$service, $method],
+                        $priority
+                    );
                 } elseif ($service !== $this->services[$eventType][$key]) {
-                    parent::removeHandler($eventType, [$this->services[$eventType][$key], $method]);
-                    $this->addHandler($eventType, [$service, $method], $priority);
+                    parent::removeHandler(
+                        $eventType,
+                        [$this->services[$eventType][$key], $method]
+                    );
+                    $this->addHandler(
+                        $eventType,
+                        [$service, $method],
+                        $priority
+                    );
                 }
                 $this->services[$eventType][$key] = $service;
             }

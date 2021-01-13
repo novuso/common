@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Messaging\Query;
 
@@ -13,34 +15,24 @@ use Novuso\Common\Domain\Messaging\Query\QueryMessage;
 final class RoutingQueryBus implements QueryBus
 {
     /**
-     * Query router
-     *
-     * @var QueryRouter
-     */
-    protected $router;
-
-    /**
      * Constructs RoutingQueryBus
-     *
-     * @param QueryRouter $router The query router
      */
-    public function __construct(QueryRouter $router)
+    public function __construct(protected QueryRouter $router)
     {
-        $this->router = $router;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function fetch(Query $query)
+    public function fetch(Query $query): mixed
     {
         return $this->dispatch(QueryMessage::create($query));
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function dispatch(QueryMessage $message)
+    public function dispatch(QueryMessage $message): mixed
     {
         /** @var Query $query */
         $query = $message->payload();

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Messaging\Event\Subscriber;
 
@@ -38,7 +40,8 @@ class EventLoggerTest extends UnitTestCase
     {
         $event = new UserRegisteredEvent('jsmith@example.com', 'James', 'Smith', 'D');
         $this->dispatcher->trigger($event);
-        $this->assertTrue($this->logHandler->hasInfoThatContains(sprintf(
+
+        static::assertTrue($this->logHandler->hasInfoThatContains(sprintf(
             'Event dispatched {%s}',
             ClassName::canonical(UserRegisteredEvent::class)
         )));

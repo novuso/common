@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Validation\Rule;
 
@@ -11,26 +13,16 @@ use Novuso\System\Utility\Validate;
 class NumberExact extends CompositeSpecification
 {
     /**
-     * Exact number
-     *
-     * @var int|float
-     */
-    protected $number;
-
-    /**
      * Constructs NumberExact
-     *
-     * @param int|float $number The number
      */
-    public function __construct($number)
+    public function __construct(protected int|float $number)
     {
-        $this->number = $number;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function isSatisfiedBy($candidate): bool
+    public function isSatisfiedBy(mixed $candidate): bool
     {
         return Validate::exactNumber($candidate, $this->number);
     }

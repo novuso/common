@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Validation\Rule;
 
@@ -14,13 +16,13 @@ class IsNumericTest extends UnitTestCase
     {
         $rule = new IsNumeric();
 
-        $this->assertTrue($rule->isSatisfiedBy('12.3'));
+        static::assertTrue($rule->isSatisfiedBy('12.3'));
     }
 
     public function test_that_is_satisfied_by_returns_false_when_validation_fails()
     {
         $rule = new IsNumeric();
 
-        $this->assertFalse($rule->isSatisfiedBy('a12'));
+        static::assertFalse($rule->isSatisfiedBy('a12'));
     }
 }

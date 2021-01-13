@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Validation;
 
@@ -31,12 +33,12 @@ class ValidationContextTest extends UnitTestCase
             ->with('foo')
             ->andReturn('bar');
 
-        $this->assertSame('bar', $this->context->get('foo'));
+        static::assertSame('bar', $this->context->get('foo'));
     }
 
     public function test_that_has_errors_returns_false_when_errors_are_not_present()
     {
-        $this->assertFalse($this->context->hasErrors());
+        static::assertFalse($this->context->hasErrors());
     }
 
     public function test_that_adding_errors_works_as_expected()
@@ -58,6 +60,6 @@ class ValidationContextTest extends UnitTestCase
         // error messages are a set, so this is not added again
         $this->context->addError('foo', 'Foo is required');
 
-        $this->assertSame($expected, $this->context->getErrors());
+        static::assertSame($expected, $this->context->getErrors());
     }
 }

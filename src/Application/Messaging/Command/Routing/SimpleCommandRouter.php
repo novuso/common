@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Messaging\Command\Routing;
 
@@ -11,24 +13,14 @@ use Novuso\Common\Domain\Messaging\Command\CommandHandler;
 final class SimpleCommandRouter implements CommandRouter
 {
     /**
-     * Command map
-     *
-     * @var CommandMap
-     */
-    protected $commandMap;
-
-    /**
      * Constructs SimpleCommandRouter
-     *
-     * @param CommandMap $commandMap The command map
      */
-    public function __construct(CommandMap $commandMap)
+    public function __construct(protected CommandMap $commandMap)
     {
-        $this->commandMap = $commandMap;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function match(Command $command): CommandHandler
     {

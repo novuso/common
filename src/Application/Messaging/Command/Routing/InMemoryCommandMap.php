@@ -1,10 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Messaging\Command\Routing;
 
 use Novuso\Common\Domain\Messaging\Command\Command;
 use Novuso\Common\Domain\Messaging\Command\CommandHandler;
-use Novuso\System\Exception\AssertionException;
 use Novuso\System\Exception\LookupException;
 use Novuso\System\Type\Type;
 use Novuso\System\Utility\Assert;
@@ -14,12 +15,7 @@ use Novuso\System\Utility\Assert;
  */
 final class InMemoryCommandMap implements CommandMap
 {
-    /**
-     * Command handlers
-     *
-     * @var array
-     */
-    protected $handlers = [];
+    protected array $handlers = [];
 
     /**
      * Registers command handlers
@@ -28,12 +24,6 @@ final class InMemoryCommandMap implements CommandMap
      * [
      *     SomeCommand::class => $someHandlerInstance
      * ]
-     *
-     * @param array $commandToHandlerMap A map of class names to handlers
-     *
-     * @return void
-     *
-     * @throws AssertionException When a command class is not valid
      */
     public function registerHandlers(array $commandToHandlerMap): void
     {
@@ -44,16 +34,11 @@ final class InMemoryCommandMap implements CommandMap
 
     /**
      * Registers a command handler
-     *
-     * @param string         $commandClass The full command class name
-     * @param CommandHandler $handler      The command handler
-     *
-     * @return void
-     *
-     * @throws AssertionException When the command class is not valid
      */
-    public function registerHandler(string $commandClass, CommandHandler $handler): void
-    {
+    public function registerHandler(
+        string $commandClass,
+        CommandHandler $handler
+    ): void {
         Assert::implementsInterface($commandClass, Command::class);
 
         $type = Type::create($commandClass)->toString();
@@ -62,14 +47,17 @@ final class InMemoryCommandMap implements CommandMap
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function getHandler(string $commandClass): CommandHandler
     {
         $type = Type::create($commandClass)->toString();
 
         if (!isset($this->handlers[$type])) {
-            $message = sprintf('Handler not defined for command: %s', $commandClass);
+            $message = sprintf(
+                'Handler not defined for command: %s',
+                $commandClass
+            );
             throw new LookupException($message);
         }
 
@@ -77,7 +65,7 @@ final class InMemoryCommandMap implements CommandMap
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function hasHandler(string $commandClass): bool
     {

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Logging;
 
@@ -11,38 +13,16 @@ use Psr\Log\LogLevel;
 final class SqlLogger
 {
     /**
-     * Logger
-     *
-     * @var LoggerInterface
-     */
-    protected $logger;
-
-    /**
-     * Log level
-     *
-     * @var string
-     */
-    protected $logLevel;
-
-    /**
      * Constructs SqlLogger
-     *
-     * @param LoggerInterface $logger   The logger service
-     * @param string          $logLevel The log level
      */
-    public function __construct(LoggerInterface $logger, string $logLevel = LogLevel::DEBUG)
-    {
-        $this->logger = $logger;
-        $this->logLevel = $logLevel;
+    public function __construct(
+        protected LoggerInterface $logger,
+        protected string $logLevel = LogLevel::DEBUG
+    ) {
     }
 
     /**
      * Logs SQL and parameters
-     *
-     * @param string $sql        The SQL statement
-     * @param array  $parameters The parameters
-     *
-     * @return void
      */
     public function log(string $sql, array $parameters = []): void
     {
@@ -52,10 +32,6 @@ final class SqlLogger
 
     /**
      * Removes additional whitespace from SQL
-     *
-     * @param string $sql The SQL statement
-     *
-     * @return string
      */
     protected function removeWhitespace(string $sql): string
     {

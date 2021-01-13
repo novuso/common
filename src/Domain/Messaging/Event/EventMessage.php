@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Domain\Messaging\Event;
 
@@ -19,25 +21,26 @@ final class EventMessage extends BaseMessage
 {
     /**
      * Constructs EventMessage
-     *
-     * @param MessageId $id        The message ID
-     * @param DateTime  $timestamp The timestamp
-     * @param Event     $payload   The payload
-     * @param MetaData  $metaData  The meta data
      */
-    public function __construct(MessageId $id, DateTime $timestamp, Event $payload, MetaData $metaData)
-    {
-        parent::__construct($id, MessageType::EVENT(), $timestamp, $payload, $metaData);
+    public function __construct(
+        MessageId $id,
+        DateTime $timestamp,
+        Event $payload,
+        MetaData $metaData
+    ) {
+        parent::__construct(
+            $id,
+            MessageType::EVENT(),
+            $timestamp,
+            $payload,
+            $metaData
+        );
     }
 
     /**
      * Creates instance for an event
-     *
-     * @param Event $event The event
-     *
-     * @return EventMessage
      */
-    public static function create(Event $event): EventMessage
+    public static function create(Event $event): static
     {
         $timestamp = DateTime::now();
         $id = MessageId::generate();
@@ -47,14 +50,25 @@ final class EventMessage extends BaseMessage
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public static function arrayDeserialize(array $data): EventMessage
+    public static function arrayDeserialize(array $data): static
     {
-        $keys = ['id', 'type', 'timestamp', 'meta_data', 'payload_type', 'payload'];
+        $keys = [
+            'id',
+            'type',
+            'timestamp',
+            'meta_data',
+            'payload_type',
+            'payload'
+        ];
+
         foreach ($keys as $key) {
             if (!isset($data[$key])) {
-                $message = sprintf('Invalid serialization data: %s', VarPrinter::toString($data));
+                $message = sprintf(
+                    'Invalid serialization data: %s',
+                    VarPrinter::toString($data)
+                );
                 throw new DomainException($message);
             }
         }
@@ -64,29 +78,24 @@ final class EventMessage extends BaseMessage
             throw new DomainException($message);
         }
 
-        /** @var MessageId $id */
         $id = MessageId::fromString($data['id']);
-        /** @var DateTime $timestamp */
         $timestamp = DateTime::fromString($data['timestamp']);
-        /** @var MetaData $metaData */
         $metaData = MetaData::create($data['meta_data']);
-        /** @var Type $payloadType */
         $payloadType = Type::create($data['payload_type']);
         /** @var Event|string $payloadClass */
         $payloadClass = $payloadType->toClassName();
 
         Assert::implementsInterface($payloadClass, Event::class);
 
-        /** @var Event $payload */
         $payload = $payloadClass::fromArray($data['payload']);
 
         return new static($id, $timestamp, $payload, $metaData);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function withMetaData(MetaData $metaData): EventMessage
+    public function withMetaData(MetaData $metaData): static
     {
         /** @var Event $event */
         $event = $this->payload;
@@ -100,9 +109,9 @@ final class EventMessage extends BaseMessage
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
-    public function mergeMetaData(MetaData $metaData): EventMessage
+    public function mergeMetaData(MetaData $metaData): static
     {
         $meta = clone $this->metaData;
         $meta->merge($metaData);

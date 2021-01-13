@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Auth;
 
@@ -12,10 +14,6 @@ interface RequestService
 {
     /**
      * Signs a request with authentication credentials
-     *
-     * @param RequestInterface $request The request
-     *
-     * @return RequestInterface
      *
      * @throws Throwable When an error occurs
      */

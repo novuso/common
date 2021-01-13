@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Test\Application\Validation\Rule;
 
@@ -14,13 +16,13 @@ class IsNaturalNumberTest extends UnitTestCase
     {
         $rule = new IsNaturalNumber();
 
-        $this->assertTrue($rule->isSatisfiedBy('42'));
+        static::assertTrue($rule->isSatisfiedBy('42'));
     }
 
     public function test_that_is_satisfied_by_returns_false_when_validation_fails()
     {
         $rule = new IsNaturalNumber();
 
-        $this->assertFalse($rule->isSatisfiedBy('-12'));
+        static::assertFalse($rule->isSatisfiedBy('-12'));
     }
 }

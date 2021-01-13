@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\Messaging\Command;
 
@@ -8,7 +10,6 @@ use Novuso\Common\Domain\Messaging\Command\CommandFilter;
 use Novuso\Common\Domain\Messaging\Command\CommandMessage;
 use Novuso\Common\Domain\Messaging\Command\SynchronousCommandBus;
 use Novuso\System\Collection\LinkedStack;
-use Novuso\System\Collection\Type\Stack;
 use Throwable;
 
 /**
@@ -16,45 +17,20 @@ use Throwable;
  */
 final class CommandPipeline implements SynchronousCommandBus, CommandFilter
 {
-    /**
-     * Command bus
-     *
-     * @var CommandBus
-     */
-    protected $commandBus;
-
-    /**
-     * Command filters
-     *
-     * @var Stack
-     */
-    protected $filters;
-
-    /**
-     * Filter stack
-     *
-     * @var Stack|null
-     */
-    protected $executionStack;
+    protected LinkedStack $filters;
+    protected ?LinkedStack $executionStack = null;
 
     /**
      * Constructs CommandPipeline
-     *
-     * @param CommandBus $commandBus The command bus
      */
-    public function __construct(CommandBus $commandBus)
+    public function __construct(protected CommandBus $commandBus)
     {
-        $this->commandBus = $commandBus;
         $this->filters = LinkedStack::of(CommandFilter::class);
         $this->filters->push($this);
     }
 
     /**
      * Adds a command filter to the pipeline
-     *
-     * @param CommandFilter $filter The filter
-     *
-     * @return void
      */
     public function addFilter(CommandFilter $filter): void
     {
@@ -62,7 +38,7 @@ final class CommandPipeline implements SynchronousCommandBus, CommandFilter
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function execute(Command $command): void
     {
@@ -70,7 +46,7 @@ final class CommandPipeline implements SynchronousCommandBus, CommandFilter
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function dispatch(CommandMessage $message): void
     {
@@ -79,7 +55,7 @@ final class CommandPipeline implements SynchronousCommandBus, CommandFilter
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function process(CommandMessage $message, callable $next): void
     {
@@ -88,10 +64,6 @@ final class CommandPipeline implements SynchronousCommandBus, CommandFilter
 
     /**
      * Pipes command message to the next filter
-     *
-     * @param CommandMessage $message The command message
-     *
-     * @return void
      *
      * @throws Throwable
      */

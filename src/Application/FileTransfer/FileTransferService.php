@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Novuso\Common\Application\FileTransfer;
 
@@ -11,12 +13,7 @@ use Novuso\System\Exception\KeyException;
  */
 final class FileTransferService
 {
-    /**
-     * Transport table
-     *
-     * @var HashTable
-     */
-    protected $transports;
+    protected HashTable $transports;
 
     /**
      * Constructs FileTransferService
@@ -27,9 +24,7 @@ final class FileTransferService
     }
 
     /**
-     * @param string $key
-     *
-     * @return FileTransport
+     * Retrieves a transport by key
      *
      * @throws KeyException When the transport is not found
      */
@@ -45,11 +40,6 @@ final class FileTransferService
 
     /**
      * Adds file transport
-     *
-     * @param string        $key       The transport key
-     * @param FileTransport $transport The file transport
-     *
-     * @return void
      *
      * @throws FileTransferException When the key is already in use
      */
