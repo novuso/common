@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0] - 2021-01-13
+
 ### Added
 
 - Started keeping a changelog
@@ -29,3 +31,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Existing `HttpClient` interface is the preferred abstraction
 
 [Unreleased]: https://github.com/novuso/common/compare/master...develop
+[2.0.0]: https://github.com/novuso/common/compare/1.0.0...2.0.0
