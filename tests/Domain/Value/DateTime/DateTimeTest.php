@@ -477,7 +477,7 @@ class DateTimeTest extends UnitTestCase
     public function test_that_to_immutable_returns_expected_instance()
     {
         $dateTime = DateTime::create(2015, 6, 20, 16, 30, 6, 0, 'America/Chicago');
-        $native = $dateTime->toNative();
+        $native = $dateTime->toImmutable();
 
         static::assertTrue(
             '2015-06-20T16:30:06-05:00' === $native->format('Y-m-d\TH:i:sP')
