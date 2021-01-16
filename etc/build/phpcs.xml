@@ -8,5 +8,6 @@
         <exclude name="Squiz.WhiteSpace.ScopeKeywordSpacing.Incorrect" />
         <exclude name="PSR12.Operators.OperatorSpacing.NoSpaceBefore" />
         <exclude name="PSR12.Operators.OperatorSpacing.NoSpaceAfter" />
+        <exclude name="PSR1.Files.SideEffects.FoundWithSymbols" />
     </rule>
 </ruleset>

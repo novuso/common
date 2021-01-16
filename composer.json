@@ -22,7 +22,10 @@
     "autoload": {
         "psr-4": {
             "Novuso\\Common\\": "src"
-        }
+        },
+        "files": [
+            "inc/functions.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
