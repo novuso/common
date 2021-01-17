@@ -64,8 +64,6 @@ final class DateTime extends ValueObject implements Comparable
 
     /**
      * Creates instance for the current date and time
-     *
-     * @throws DomainException When the date/time or timezone is not valid
      */
     public static function now(?string $timezone = null): static
     {

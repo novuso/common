@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.0] - 2021-01-17
+
+### Added
+
+- Added `Validation` Attribute
+- Added various convenience functions
+
 ## [2.0.0] - 2021-01-13
 
 ### Added
@@ -32,3 +39,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [Unreleased]: https://github.com/novuso/common/compare/master...develop
 [2.0.0]: https://github.com/novuso/common/compare/1.0.0...2.0.0
+[2.1.0]: https://github.com/novuso/common/compare/2.0.0...2.1.0
