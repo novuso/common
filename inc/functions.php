@@ -22,6 +22,7 @@ use Novuso\Common\Domain\Value\Identifier\Uuid;
 use Novuso\System\Collection\ArrayList;
 use Novuso\System\Collection\HashSet;
 use Novuso\System\Collection\HashTable;
+use Novuso\System\Collection\Iterator\GeneratorIterator;
 use Novuso\System\Collection\LinkedDeque;
 use Novuso\System\Collection\LinkedQueue;
 use Novuso\System\Collection\LinkedStack;
@@ -31,6 +32,7 @@ use Novuso\System\Type\Arrayable;
 use Novuso\System\Type\Type;
 use Novuso\System\Utility\Environment;
 use Novuso\System\Utility\VarPrinter;
+use ReflectionException;
 
 /**
  * Creates an ArrayList instance
@@ -254,6 +256,17 @@ function env(
 }
 
 /**
+ * Creates a GeneratorIterator instance
+ *
+ * @throws DomainException When function is not a generator
+ * @throws ReflectionException
+ */
+function generator(callable $function, array $args = []): GeneratorIterator
+{
+    return new GeneratorIterator($function, $args);
+}
+
+/**
  * Creates a HashSet instance
  *
  * If a type is not provided, the item type is dynamic.
@@ -303,6 +316,10 @@ function hash_table(
  */
 function json_data(mixed $data, ?int $encodingOptions = null): JsonObject
 {
+    if ($encodingOptions === null) {
+        return JsonObject::fromData($data);
+    }
+
     return JsonObject::fromData($data, $encodingOptions);
 }
 
@@ -529,14 +546,6 @@ function time_from_native(DateTimeInterface $dateTime): Time
 }
 
 /**
- * Creates instance from a timestamp and timezone
- */
-function time_from_timestamp(int $timestamp, ?string $timezone = null): Time
-{
-    return Time::fromTimestamp($timestamp, $timezone);
-}
-
-/**
  * Creates a Time instance from a string representation
  *
  * @throws DomainException When the value is invalid
@@ -544,6 +553,14 @@ function time_from_timestamp(int $timestamp, ?string $timezone = null): Time
 function time_from_string(string $value): Time
 {
     return Time::fromString($value);
+}
+
+/**
+ * Creates instance from a timestamp and timezone
+ */
+function time_from_timestamp(int $timestamp, ?string $timezone = null): Time
+{
+    return Time::fromTimestamp($timestamp, $timezone);
 }
 
 /**
