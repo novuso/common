@@ -25,7 +25,7 @@ interface EventDispatcher
      *
      * @throws Throwable When an error occurs
      */
-    public function dispatch(EventMessage $message): void;
+    public function dispatch(EventMessage $eventMessage): void;
 
     /**
      * Registers a subscriber to handle events

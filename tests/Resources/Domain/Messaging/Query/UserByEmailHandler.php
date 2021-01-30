@@ -30,10 +30,10 @@ class UserByEmailHandler implements QueryHandler
         return UserByEmailQuery::class;
     }
 
-    public function handle(QueryMessage $message): array
+    public function handle(QueryMessage $queryMessage): array
     {
         /** @var UserByEmailQuery $query */
-        $query = $message->payload();
+        $query = $queryMessage->payload();
         $email = $query->email();
         foreach ($this->users as $user) {
             if ($user['email'] === $email) {

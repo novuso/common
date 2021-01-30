@@ -26,22 +26,22 @@ final class CommandLogger implements CommandFilter
     /**
      * @inheritDoc
      */
-    public function process(CommandMessage $message, callable $next): void
+    public function process(CommandMessage $commandMessage, callable $next): void
     {
-        $name = $message->payloadType()->toString();
+        $name = $commandMessage->payloadType()->toString();
 
         $this->logger->log(
             $this->logLevel,
             sprintf('Command received {%s}', $name),
-            ['message' => $message->toArray()]
+            ['message' => $commandMessage->toArray()]
         );
 
-        $next($message);
+        $next($commandMessage);
 
         $this->logger->log(
             $this->logLevel,
             sprintf('Command handled {%s}', $name),
-            ['message' => $message->toArray()]
+            ['message' => $commandMessage->toArray()]
         );
     }
 }

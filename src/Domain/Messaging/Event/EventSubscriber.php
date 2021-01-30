@@ -37,7 +37,7 @@ interface EventSubscriber
      *
      * Event handler signature:
      * <code>
-     * function (EventMessage $message): void {}
+     * function (EventMessage $eventMessage): void {}
      * </code>
      */
     public static function eventRegistration(): array;

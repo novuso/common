@@ -48,18 +48,18 @@ final class CommandPipeline implements SynchronousCommandBus, CommandFilter
     /**
      * @inheritDoc
      */
-    public function dispatch(CommandMessage $message): void
+    public function dispatch(CommandMessage $commandMessage): void
     {
         $this->executionStack = clone $this->filters;
-        $this->pipe($message);
+        $this->pipe($commandMessage);
     }
 
     /**
      * @inheritDoc
      */
-    public function process(CommandMessage $message, callable $next): void
+    public function process(CommandMessage $commandMessage, callable $next): void
     {
-        $this->commandBus->dispatch($message);
+        $this->commandBus->dispatch($commandMessage);
     }
 
     /**
@@ -67,10 +67,10 @@ final class CommandPipeline implements SynchronousCommandBus, CommandFilter
      *
      * @throws Throwable
      */
-    public function pipe(CommandMessage $message): void
+    public function pipe(CommandMessage $commandMessage): void
     {
         /** @var CommandFilter $filter */
         $filter = $this->executionStack->pop();
-        $filter->process($message, [$this, 'pipe']);
+        $filter->process($commandMessage, [$this, 'pipe']);
     }
 }

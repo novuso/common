@@ -81,11 +81,11 @@ final class ServiceAwareEventDispatcher extends SimpleEventDispatcher
     /**
      * @inheritDoc
      */
-    public function dispatch(EventMessage $message): void
+    public function dispatch(EventMessage $eventMessage): void
     {
-        $this->lazyLoad(ClassName::underscore($message->payload()));
+        $this->lazyLoad(ClassName::underscore($eventMessage->payload()));
 
-        parent::dispatch($message);
+        parent::dispatch($eventMessage);
     }
 
     /**

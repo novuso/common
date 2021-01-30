@@ -48,10 +48,10 @@ final class QueryPipeline implements QueryBus, QueryFilter
     /**
      * @inheritDoc
      */
-    public function dispatch(QueryMessage $message): mixed
+    public function dispatch(QueryMessage $queryMessage): mixed
     {
         $this->executionStack = clone $this->filters;
-        $this->pipe($message);
+        $this->pipe($queryMessage);
 
         $results = $this->results;
         $this->results = null;
@@ -62,10 +62,10 @@ final class QueryPipeline implements QueryBus, QueryFilter
     /**
      * @inheritDoc
      */
-    public function process(QueryMessage $message, callable $next): void
+    public function process(QueryMessage $queryMessage, callable $next): void
     {
         /** @var Query $query */
-        $query = $message->payload();
+        $query = $queryMessage->payload();
         $this->results = $this->queryBus->fetch($query);
     }
 
@@ -74,10 +74,10 @@ final class QueryPipeline implements QueryBus, QueryFilter
      *
      * @throws Throwable
      */
-    public function pipe(QueryMessage $message): void
+    public function pipe(QueryMessage $queryMessage): void
     {
         /** @var QueryFilter $filter */
         $filter = $this->executionStack->pop();
-        $filter->process($message, [$this, 'pipe']);
+        $filter->process($queryMessage, [$this, 'pipe']);
     }
 }

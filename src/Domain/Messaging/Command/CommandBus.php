@@ -25,5 +25,5 @@ interface CommandBus
      *
      * @throws Throwable When an error occurs
      */
-    public function dispatch(CommandMessage $message): void;
+    public function dispatch(CommandMessage $commandMessage): void;
 }

@@ -19,7 +19,7 @@ class RegisterUserHandler implements CommandHandler
         return RegisterUserCommand::class;
     }
 
-    public function handle(CommandMessage $message): void
+    public function handle(CommandMessage $commandMessage): void
     {
         $this->handled = true;
     }

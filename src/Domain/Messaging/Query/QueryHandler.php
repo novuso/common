@@ -24,5 +24,5 @@ interface QueryHandler
      *
      * @throws Throwable When an error occurs
      */
-    public function handle(QueryMessage $message): mixed;
+    public function handle(QueryMessage $queryMessage): mixed;
 }

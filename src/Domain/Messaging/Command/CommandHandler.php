@@ -24,5 +24,5 @@ interface CommandHandler
      *
      * @throws Throwable When an error occurs
      */
-    public function handle(CommandMessage $message): void;
+    public function handle(CommandMessage $commandMessage): void;
 }

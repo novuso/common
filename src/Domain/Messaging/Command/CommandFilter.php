@@ -17,10 +17,10 @@ interface CommandFilter
      * Signature of $next:
      *
      * <code>
-     * function (CommandMessage $message): void {}
+     * function (CommandMessage $commandMessage): void {}
      * </code>
      *
      * @throws Throwable When an error occurs
      */
-    public function process(CommandMessage $message, callable $next): void;
+    public function process(CommandMessage $commandMessage, callable $next): void;
 }
