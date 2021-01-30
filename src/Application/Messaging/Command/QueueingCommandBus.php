@@ -34,8 +34,8 @@ final class QueueingCommandBus implements AsynchronousCommandBus
     /**
      * @inheritDoc
      */
-    public function dispatch(CommandMessage $message): void
+    public function dispatch(CommandMessage $commandMessage): void
     {
-        $this->messageQueue->enqueue($this->queueName, $message);
+        $this->messageQueue->enqueue($this->queueName, $commandMessage);
     }
 }

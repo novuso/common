@@ -18,7 +18,7 @@ class ErrorUserHandler implements CommandHandler
         return RegisterUserCommand::class;
     }
 
-    public function handle(CommandMessage $message): void
+    public function handle(CommandMessage $commandMessage): void
     {
         throw new Exception('Something went wrong');
     }

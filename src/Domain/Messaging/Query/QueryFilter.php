@@ -17,10 +17,10 @@ interface QueryFilter
      * Signature of $next:
      *
      * <code>
-     * function (QueryMessage $message): void {}
+     * function (QueryMessage $queryMessage): void {}
      * </code>
      *
      * @throws Throwable When an error occurs
      */
-    public function process(QueryMessage $message, callable $next): void;
+    public function process(QueryMessage $queryMessage, callable $next): void;
 }

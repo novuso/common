@@ -30,17 +30,17 @@ class SimpleEventDispatcher implements SynchronousEventDispatcher
     /**
      * @inheritDoc
      */
-    public function dispatch(EventMessage $message): void
+    public function dispatch(EventMessage $eventMessage): void
     {
-        $eventType = ClassName::underscore($message->payload());
+        $eventType = ClassName::underscore($eventMessage->payload());
         $allEvents = ClassName::underscore(AllEvents::class);
 
         foreach ($this->getHandlers($eventType) as $handler) {
-            call_user_func($handler, $message);
+            call_user_func($handler, $eventMessage);
         }
 
         foreach ($this->getHandlers($allEvents) as $handler) {
-            call_user_func($handler, $message);
+            call_user_func($handler, $eventMessage);
         }
     }
 

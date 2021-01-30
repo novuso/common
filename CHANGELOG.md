@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Changed Message variables from `$message` to variants,
+  such as `$commandMessage` or `$eventMessage`
+
 ## [2.1.1] - 2021-01-28
 
 ### Added

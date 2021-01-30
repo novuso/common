@@ -35,9 +35,9 @@ final class QueueingEventDispatcher implements AsynchronousEventDispatcher
     /**
      * @inheritDoc
      */
-    public function dispatch(EventMessage $message): void
+    public function dispatch(EventMessage $eventMessage): void
     {
-        $this->messageQueue->enqueue($this->queueName, $message);
+        $this->messageQueue->enqueue($this->queueName, $eventMessage);
     }
 
     /**

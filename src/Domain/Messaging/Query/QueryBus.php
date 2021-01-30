@@ -23,5 +23,5 @@ interface QueryBus
      *
      * @throws Throwable When an error occurs
      */
-    public function dispatch(QueryMessage $message): mixed;
+    public function dispatch(QueryMessage $queryMessage): mixed;
 }

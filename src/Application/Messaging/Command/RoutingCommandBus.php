@@ -32,11 +32,11 @@ final class RoutingCommandBus implements SynchronousCommandBus
     /**
      * @inheritDoc
      */
-    public function dispatch(CommandMessage $message): void
+    public function dispatch(CommandMessage $commandMessage): void
     {
         /** @var Command $command */
-        $command = $message->payload();
+        $command = $commandMessage->payload();
 
-        $this->commandRouter->match($command)->handle($message);
+        $this->commandRouter->match($command)->handle($commandMessage);
     }
 }

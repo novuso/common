@@ -26,22 +26,22 @@ final class QueryLogger implements QueryFilter
     /**
      * @inheritDoc
      */
-    public function process(QueryMessage $message, callable $next): void
+    public function process(QueryMessage $queryMessage, callable $next): void
     {
-        $name = $message->payloadType()->toString();
+        $name = $queryMessage->payloadType()->toString();
 
         $this->logger->log(
             $this->logLevel,
             sprintf('Query received {%s}', $name),
-            ['message' => $message->toArray()]
+            ['message' => $queryMessage->toArray()]
         );
 
-        $next($message);
+        $next($queryMessage);
 
         $this->logger->log(
             $this->logLevel,
             sprintf('Query handled {%s}', $name),
-            ['message' => $message->toArray()]
+            ['message' => $queryMessage->toArray()]
         );
     }
 }
