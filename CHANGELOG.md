@@ -13,6 +13,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added support for `Psr\Container` 2.*
 
+### Deprecated
+
+- `DateTime::localeFormat` is deprecated now that `strftime` is deprecated
+  - No replacement available yet - PR welcome
+
 ## [2.1.2] - 2021-01-30
 
 ### Changed

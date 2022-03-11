@@ -468,12 +468,24 @@ final class DateTime extends ValueObject implements Comparable
      * Returns string formatted according to PHP strftime() function. Set the
      * current locale using the setlocale() function.
      *
+     * @deprecated 2.1.3
+     *
      * @link http://php.net/strftime PHP strftime function
      * @link http://php.net/setlocale PHP setlocale function
      */
     public function localeFormat(string $format): string
     {
-        return strftime($format, $this->timestamp());
+        trigger_deprecation('novuso/common', '2.1.3', 'DateTime::localeFormat is deprecated');
+
+        $string = @strftime($format, $this->timestamp());
+
+        // @codeCoverageIgnoreStart
+        if ($string === false) {
+            return '';
+        }
+        // @codeCoverageIgnoreEnd
+
+        return $string;
     }
 
     /**
@@ -537,26 +549,18 @@ final class DateTime extends ValueObject implements Comparable
 
     /**
      * Retrieves the month name
-     *
-     * Set the current locale using the setlocale() function.
-     *
-     * @link http://php.net/setlocale PHP setlocale function
      */
     public function monthName(): string
     {
-        return strftime('%B', $this->timestamp());
+        return date('F', $this->timestamp());
     }
 
     /**
      * Retrieves the month abbreviation
-     *
-     * Set the current locale using the setlocale() function.
-     *
-     * @link http://php.net/setlocale PHP setlocale function
      */
     public function monthAbbreviation(): string
     {
-        return strftime('%b', $this->timestamp());
+        return date('M', $this->timestamp());
     }
 
     /**
@@ -609,26 +613,18 @@ final class DateTime extends ValueObject implements Comparable
 
     /**
      * Retrieves the week day name
-     *
-     * Set the current locale using the setlocale() function.
-     *
-     * @link http://php.net/setlocale PHP setlocale function
      */
     public function weekDayName(): string
     {
-        return strftime('%A', $this->timestamp());
+        return date('l', $this->timestamp());
     }
 
     /**
      * Retrieves the week day abbreviation
-     *
-     * Set the current locale using the setlocale() function.
-     *
-     * @link http://php.net/setlocale PHP setlocale function
      */
     public function weekDayAbbreviation(): string
     {
-        return strftime('%a', $this->timestamp());
+        return date('D', $this->timestamp());
     }
 
     /**

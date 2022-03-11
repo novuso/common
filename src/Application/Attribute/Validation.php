@@ -17,7 +17,7 @@ class Validation
      */
     public function __construct(
         protected ?string $formName = null,
-        protected array $rules
+        protected array $rules = []
     ) {
     }
 
