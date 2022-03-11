@@ -9,5 +9,5 @@ namespace Novuso\Common;
  */
 final class CommonLibrary
 {
-    public const VERSION = '2.1.2';
+    public const VERSION = '2.1.3';
 }

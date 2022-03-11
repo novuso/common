@@ -182,14 +182,10 @@ final class Date extends ValueObject implements Comparable
 
     /**
      * Retrieves the week day name
-     *
-     * Set the current locale using the setlocale() function.
-     *
-     * @link http://php.net/setlocale PHP setlocale function
      */
     public function weekDayName(): string
     {
-        return strftime('%A', strtotime(sprintf(
+        return date('l', strtotime(sprintf(
             '%s-%s-%s',
             $this->year,
             $this->month,
