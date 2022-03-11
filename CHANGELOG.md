@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.4] - 2022-03-11
+
+### Fixed
+
+- Added support for `Psr\Log` 2.* and 3.*
+
 ## [2.1.3] - 2022-03-11
 
 ### Fixed
@@ -71,3 +77,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [2.1.1]: https://github.com/novuso/common/compare/2.1.0...2.1.1
 [2.1.2]: https://github.com/novuso/common/compare/2.1.1...2.1.2
 [2.1.3]: https://github.com/novuso/common/compare/2.1.2...2.1.3
+[2.1.4]: https://github.com/novuso/common/compare/2.1.3...2.1.4
